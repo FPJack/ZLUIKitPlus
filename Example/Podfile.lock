@@ -1,0 +1,31 @@
+PODS:
+  - FBSnapshotTestCase (2.1.4):
+    - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
+  - FBSnapshotTestCase/Core (2.1.4)
+  - FBSnapshotTestCase/SwiftSupport (2.1.4):
+    - FBSnapshotTestCase/Core
+  - Masonry (1.1.0)
+  - ZLUIKitPlus (0.1.0)
+
+DEPENDENCIES:
+  - FBSnapshotTestCase
+  - Masonry
+  - ZLUIKitPlus (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - FBSnapshotTestCase
+    - Masonry
+
+EXTERNAL SOURCES:
+  ZLUIKitPlus:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  ZLUIKitPlus: ec796051dca5a67e95e0db94072441d0da2d443d
+
+PODFILE CHECKSUM: d65819db212d6c65247bfb426dd994cac6cc18a4
+
+COCOAPODS: 1.16.2

@@ -4,6 +4,8 @@ platform :ios, '10.0'
 
 target 'ZLUIKitPlus_Example' do
   pod 'ZLUIKitPlus', :path => '../'
+#  pod 'ZLPopView'
+pod 'Masonry'
 
   target 'ZLUIKitPlus_Tests' do
     inherit! :search_paths

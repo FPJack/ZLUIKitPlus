@@ -1,0 +1,6 @@
+framework module ZLUIKitPlus {
+  umbrella header "ZLUIKitPlus-umbrella.h"
+
+  export *
+  module * { export * }
+}

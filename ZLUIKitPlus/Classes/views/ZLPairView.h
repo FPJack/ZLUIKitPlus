@@ -101,12 +101,12 @@ typedef NS_ENUM(NSInteger, ZLJustify) {
 ///贴紧父视图四边布局
 @property (nonatomic, copy, readonly) ObjectType (^z_edgesZero)(void);
 
-
-
 ///添加到父视图，参数是父视图
 @property (nonatomic, copy, readonly) ObjectType (^addTo)(UIView *superview);
 ///添加到父视图 并且贴紧父视图四边布局，参数是父视图
 @property (nonatomic, copy, readonly) ObjectType (^addToFull)(UIView *superview);
+///返回包裹好的一个view返回
+@property (nonatomic, copy, readonly) UIView *(^wrapEdges)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
 
 /// 子类必须重写，创建主视图
 - (FirstView)makeFirstView;

@@ -11,6 +11,7 @@
 #endif
 
 #import "ZLUI.h"
+#import "UIView+ZLView.h"
 #import "ZLButton.h"
 #import "ZLImageView.h"
 #import "ZLLabel.h"

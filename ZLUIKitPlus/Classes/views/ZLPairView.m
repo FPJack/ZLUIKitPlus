@@ -580,8 +580,11 @@
         return self;
     };
 }
-
-
+- (UIView * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))wrapEdges {
+    return ^(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing){
+        return self.KFC.wrapEdges(top, leading, bottom, trailing);
+    };
+}
 @end
 
 @implementation ZLPairLabelView

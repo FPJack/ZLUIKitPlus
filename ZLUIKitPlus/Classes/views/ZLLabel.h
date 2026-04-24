@@ -28,6 +28,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readonly) ZLLabel*  (^circle)(BOOL idCircle);
 
+@property (readonly) ZLLabel*  (^textAlign)(NSTextAlignment align);
+
+- (instancetype)textAlignLeft;
+- (instancetype)textAlignCenter;
+- (instancetype)textAlignRight;
+
 @property (readonly) ZLLabel* (^systemFont)(CGFloat fontSize);
 @property (readonly) ZLLabel* (^systemFontColor)(CGFloat fontSize,id color);
 

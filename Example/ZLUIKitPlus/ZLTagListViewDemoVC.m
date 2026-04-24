@@ -62,9 +62,12 @@
                 if (!lab) {
                     lab = ZLLab;
                 }
-                lab.txt(items[index]).mediumFont(14).color(UIColor.whiteColor)
+                lab.txt(items[index])
+                    .mediumFont(14)
+                    .color(UIColor.whiteColor)
                     .bgColor(colors[index % colors.count])
-                    .insets(6, 16, 6, 16).corner(14);
+                    .insets(6, 16, 6, 16)
+                    .corner(14);
                 return lab;
             }];
         blockTag.lineSpacing = 10;

@@ -177,6 +177,12 @@
                 [self.view addGestureRecognizer:tapGes];
                 objc_setAssociatedObject(self, _cmd, tapGes, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
             }
+        }else {
+            ZLUITapGestureRecognizer *tapGes = objc_getAssociatedObject(self, _cmd);
+            if (tapGes) {
+                [self.view removeGestureRecognizer:tapGes];
+                objc_setAssociatedObject(self, _cmd, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            }
         }
         return self;
     };
@@ -199,7 +205,13 @@
         return self;
     };
 }
-
+- (UIView * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))wrapEdges {
+    return ^(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing){
+        UIView *view = UIView.new;
+        self.addTo(view).edge(top, leading, bottom, trailing);
+        return view;
+    };
+}
 @end
 
 @implementation UIView (ZLUI)

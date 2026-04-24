@@ -273,6 +273,24 @@
         return self;
     };
 }
+- (ZLLabel * _Nonnull (^)(NSTextAlignment))textAlign {
+    return ^(NSTextAlignment textAlign) {
+        self.textAlignment = textAlign;
+        return self;
+    };
+}
+- (instancetype)textAlignLeft {
+    self.textAlignment = NSTextAlignmentLeft;
+    return self;
+}
+- (instancetype)textAlignCenter {
+    self.textAlignment = NSTextAlignmentCenter;
+    return self;
+}
+- (instancetype)textAlignRight {
+    self.textAlignment = NSTextAlignmentRight;
+    return self;
+}
 - (void)updateCircel {
     if (self.isCircle) {
         if (self.isCircle.boolValue) {

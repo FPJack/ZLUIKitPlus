@@ -25,8 +25,14 @@
         y += 30;
         
         ZLButton *btn = ZLBtnH;
-        btn.image(@"魔法棒").title(@"水平按钮").systemFont(15).titleColor(@"#333333")
-            .spacing(8).inset(10, 16, 10, 16).corner(8).bgColor(@"#F0F0F0")
+        btn.image(@"魔法棒")
+            .title(@"水平按钮")
+            .systemFont(15)
+            .titleColor(@"#333333")
+            .spacing(8)
+            .inset(10, 16, 10, 16)
+            .corner(8)
+            .bgColor(@"#F0F0F0")
             .touchAction(^(ZLButton *b) {
                 NSLog(@"水平按钮点击");
             });

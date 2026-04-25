@@ -13,33 +13,32 @@
 #import "ZLPairView.h"
 #import "ZLTagListView.h"
 #import <objc/runtime.h>
-@implementation UIView (ZLView)
-- (ZLLabel *)zl_lab {
-    ZLLabel *label = objc_getAssociatedObject(self, _cmd);
-    if (!label) {
-        label = ZLLabel.new;
-        [self addSubview:label];
-        objc_setAssociatedObject(self, _cmd, label, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
-    return label;
-}
-- (ZLImageView *)zl_imgView {
-    ZLImageView *imgView = objc_getAssociatedObject(self, _cmd);
-    if (!imgView) {
-        imgView = ZLImageView.new;
-        [self addSubview:imgView];
-        objc_setAssociatedObject(self, _cmd, imgView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
-    return imgView;
-}
-- (ZLButton *)zl_btn {
-    ZLButton *button = objc_getAssociatedObject(self, _cmd);
-    if (!button) {
-        button = ZLButton.horizontal;
-        [self addSubview:button];
-        objc_setAssociatedObject(self, _cmd, button, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
-    return button;
+
+
+#define kPropertyGetterImplementation(type, propertyName) \
+- (type *)propertyName { \
+    NSString *key = NSStringFromSelector(_cmd); \
+    type *view = [self.propertyObjs objectForKey:key]; \
+    if (!view) { \
+        view = [[type alloc] init]; \
+        [self addSubview:view]; \
+        [self.propertyObjs setObject:view forKey:key]; \
+    } \
+    return view; \
 }
 
+@implementation UIView (ZLView)
+
+
+- (NSMutableDictionary *)propertyObjs {
+    NSMutableDictionary *midc = objc_getAssociatedObject(self, _cmd);
+    if (!midc) {
+        midc = NSMutableDictionary.dictionary;
+        objc_setAssociatedObject(self, _cmd, midc, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return midc;
+}
+kPropertyGetterImplementation(ZLLabel, zl_lab)
+kPropertyGetterImplementation(ZLImageView, zl_imgView)
+kPropertyGetterImplementation(ZLButton, zl_btn)
 @end

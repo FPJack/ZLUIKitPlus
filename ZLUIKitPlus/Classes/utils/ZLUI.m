@@ -205,6 +205,14 @@
         return self;
     };
 }
+- (ZLUI * _Nonnull (^)(UIView * _Nonnull))addSubview {
+    return ^(UIView *subview){
+        if ([subview isKindOfClass:UIView.class]) {
+            [self.view addSubview:subview];
+        }
+        return self;
+    };
+}
 - (UIView * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))wrapEdges {
     return ^(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing){
         UIView *view = UIView.new;

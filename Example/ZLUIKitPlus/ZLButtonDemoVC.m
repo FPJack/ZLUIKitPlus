@@ -33,6 +33,13 @@
             .inset(10, 16, 10, 16)
             .corner(8)
             .bgColor(@"#F0F0F0")
+            .shColor(UIColor.redColor)
+            .addSubview(btn.zl_lab
+                        .z_square(4)
+                        .bgColor(UIColor.redColor)
+                        .z_top(10)
+                        .z_trailing(10)
+                        .circle(YES))
             .touchAction(^(ZLButton *b) {
                 NSLog(@"水平按钮点击");
             });
@@ -63,8 +70,15 @@
         y += 30;
         
         ZLButton *btn = ZLBtnH.titleFirst;
-        btn.title(@"文字在前").image(@"赞").mediumFont(15).titleColor(UIColor.whiteColor)
-            .spacing(6).inset(10, 20, 10, 20).corner(20).bgColor(@"#4A90D9");
+        btn.title(@"文字在前")
+            .image(@"赞")
+            .titleFirst
+            .mediumFont(15)
+            .titleColor(UIColor.whiteColor)
+            .spacing(6)
+            .inset(10, 20, 10, 20)
+            .corner(20)
+            .bgColor(@"#4A90D9");
         [content addSubview:btn];
         btn.KFC.top(y).leading(20);
         y += 60;

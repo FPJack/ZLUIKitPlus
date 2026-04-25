@@ -1033,5 +1033,12 @@
         return self;
     };
 }
-
+- (ZLButton* _Nonnull (^)(UIView * _Nonnull))addSubview {
+    return ^(UIView *subview){
+        if ([subview isKindOfClass:UIView.class]) {
+            [self addSubview:subview];
+        }
+        return self;
+    };
+}
 @end

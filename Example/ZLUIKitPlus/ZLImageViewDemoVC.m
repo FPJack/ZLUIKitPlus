@@ -19,9 +19,13 @@
         y += 25;
         
         ZLImageView *imgView = ZLImageView.new;
-        imgView.img(@"魔法棒").aspectFit;
-        [self.view addSubview:imgView];
-        imgView.KFC.top(y).leading(20).size(80, 80);
+        imgView
+        .img(@"魔法棒")
+        .aspectFit
+        .addTo(self.view)
+        .z_top(120)
+        .z_leading(20)
+        .z_square(80);
         y += 100;
     }
     

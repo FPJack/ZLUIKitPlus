@@ -253,6 +253,9 @@ typedef NS_ENUM(NSUInteger, ZLButtonContentAlignment) {
 ///添加到父视图 并且贴紧父视图四边布局，参数是父视图
 @property (nonatomic, copy, readonly) ZLButton* (^addToFull)(UIView *superview);
 
+@property (nonatomic, copy, readonly) ZLButton *(^addSubview)(UIView *subview);
+
+
 @end
 
 NS_ASSUME_NONNULL_END

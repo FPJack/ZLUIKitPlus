@@ -619,7 +619,7 @@
     return ZLButton.horizontal;
 }
 @end
-@implementation ZLPairImgLabelView
+@implementation ZLImgLabelView
 - (UIView *)makeFirstView {
     return ZLImageView.new;
 }
@@ -628,7 +628,7 @@
 }
 @end
 
-@implementation ZLPairImgButtonView
+@implementation ZLImgButtonView
 - (UIView *)makeFirstView {
     return ZLImageView.new;
 }
@@ -636,7 +636,7 @@
     return ZLButton.horizontal;
 }
 @end
-@implementation ZLPairButtonImgView
+@implementation ZLButtonImgView
 - (UIView *)makeFirstView {
     return ZLButton.horizontal;
 }

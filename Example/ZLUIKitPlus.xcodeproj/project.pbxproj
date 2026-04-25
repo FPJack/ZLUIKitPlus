@@ -22,6 +22,7 @@
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
+		62507C202F9BB95C00397C32 /* ZLViewControllerSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62507C1F2F9BB95C00397C32 /* ZLViewControllerSwift.swift */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		847541982F9B60C80011DC56 /* ZLImageViewDemoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 847541912F9B60C80011DC56 /* ZLImageViewDemoVC.m */; };
 		847541992F9B60C80011DC56 /* ZLButtonDemoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8475418F2F9B60C80011DC56 /* ZLButtonDemoVC.m */; };
@@ -65,6 +66,8 @@
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
+		62507C1E2F9BB95C00397C32 /* ZLUIKitPlus_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ZLUIKitPlus_Example-Bridging-Header.h"; sourceTree = "<group>"; };
+		62507C1F2F9BB95C00397C32 /* ZLViewControllerSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLViewControllerSwift.swift; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8475418E2F9B60C80011DC56 /* ZLButtonDemoVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLButtonDemoVC.h; sourceTree = "<group>"; };
 		8475418F2F9B60C80011DC56 /* ZLButtonDemoVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLButtonDemoVC.m; sourceTree = "<group>"; };
@@ -162,9 +165,11 @@
 				847541952F9B60C80011DC56 /* ZLPairViewDemoVC.m */,
 				847541962F9B60C80011DC56 /* ZLTagListViewDemoVC.h */,
 				847541972F9B60C80011DC56 /* ZLTagListViewDemoVC.m */,
+				62507C1F2F9BB95C00397C32 /* ZLViewControllerSwift.swift */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
+				62507C1E2F9BB95C00397C32 /* ZLUIKitPlus_Example-Bridging-Header.h */,
 			);
 			name = "Example for ZLUIKitPlus";
 			path = ZLUIKitPlus;
@@ -273,6 +278,9 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = fanpeng;
 				TargetAttributes = {
+					6003F589195388D20070C39A = {
+						LastSwiftMigration = 1500;
+					};
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
 					};
@@ -416,6 +424,7 @@
 				8475419B2F9B60C80011DC56 /* ZLPairViewDemoVC.m in Sources */,
 				8475419C2F9B60C80011DC56 /* ZLLabelDemoVC.m in Sources */,
 				6003F59E195388D20070C39A /* ZLAppDelegate.m in Sources */,
+				62507C202F9BB95C00397C32 /* ZLViewControllerSwift.swift in Sources */,
 				6003F5A7195388D20070C39A /* ZLViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 			);
@@ -545,12 +554,15 @@
 			baseConfigurationReference = 598D417D380F124FE8944FF5 /* Pods-ZLUIKitPlus_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ZLUIKitPlus/ZLUIKitPlus-Prefix.pch";
 				INFOPLIST_FILE = "ZLUIKitPlus/ZLUIKitPlus-Info.plist";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ZLUIKitPlus/ZLUIKitPlus_Example-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				WRAPPER_EXTENSION = app;
 			};
@@ -561,12 +573,14 @@
 			baseConfigurationReference = 2839C654B11E26244F105C78 /* Pods-ZLUIKitPlus_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ZLUIKitPlus/ZLUIKitPlus-Prefix.pch";
 				INFOPLIST_FILE = "ZLUIKitPlus/ZLUIKitPlus-Info.plist";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ZLUIKitPlus/ZLUIKitPlus_Example-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				WRAPPER_EXTENSION = app;
 			};
@@ -576,6 +590,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D9591D4DE513E53E60842B94 /* Pods-ZLUIKitPlus_Tests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
@@ -601,6 +616,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1D20B489C2427C428E25B55F /* Pods-ZLUIKitPlus_Tests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",

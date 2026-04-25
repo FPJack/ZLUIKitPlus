@@ -83,6 +83,9 @@ static inline UIColor * _Nullable ZLColorFromObj(NSObject * _Nullable obj) {
 @property (nonatomic, copy, readonly) ZLUI *(^addTo)(UIView *superview);
 ///添加到父视图 并且贴紧父视图四边布局，参数是父视图
 @property (nonatomic, copy, readonly) ZLUI *(^addToFull)(UIView *superview);
+
+@property (nonatomic, copy, readonly) ZLUI *(^addSubview)(UIView *subview);
+
 ///返回包裹好的一个view返回
 @property (nonatomic, copy, readonly) UIView *(^wrapEdges)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
 

@@ -30,9 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property ( readonly) ZLPairLabelView    *zl_pairLab;
 @property ( readonly) ZLPairImageView    *zl_pairImg;
 @property ( readonly) ZLPairButtonView   *zl_pairBtn;
-@property ( readonly) ZLPairImgLabelView *zl_pairImgLab;
-@property ( readonly) ZLPairImgButtonView *zl_pairImgBtn;
-@property ( readonly) ZLPairButtonImgView *zl_pairBtnImg;
+@property ( readonly) ZLImgLabelView     *zl_pairImgLab;
+@property ( readonly) ZLImgButtonView    *zl_pairImgBtn;
+@property ( readonly) ZLButtonImgView    *zl_pairBtnImg;
 
 @end
 

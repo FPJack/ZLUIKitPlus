@@ -115,8 +115,8 @@ typedef NS_ENUM(NSInteger, ZLJustify) {
 @end
 
 @class ZLPairLabelView,ZLPairImageView
-,ZLPairButtonView,ZLPairImgLabelView
-,ZLPairImgButtonView,ZLPairButtonImgView;
+,ZLPairButtonView,ZLImgLabelView
+,ZLImgButtonView,ZLButtonImgView;
 
 ///两个Label的组合视图，firstView和secondView分别是两个Label，
 @interface ZLPairLabelView : ZLPairView<ZLPairLabelView *,ZLLabel *,ZLLabel *>
@@ -134,17 +134,17 @@ typedef NS_ENUM(NSInteger, ZLJustify) {
 @end
 
 /// ImageView和Label的组合视图，firstView是ImageView，secondView是Label
-@interface ZLPairImgLabelView : ZLPairView<ZLPairImgLabelView *,ZLImageView *,ZLLabel *>
+@interface ZLImgLabelView : ZLPairView<ZLImgLabelView *,ZLImageView *,ZLLabel *>
 
 @end
 
 /// ImageView和Button的组合视图，firstView是ImageView，secondView是Button
-@interface ZLPairImgButtonView : ZLPairView<ZLPairImgButtonView *,ZLImageView *,ZLButton *>
+@interface ZLImgButtonView : ZLPairView<ZLImgButtonView *,ZLImageView *,ZLButton *>
 
 @end
 
 /// Button和ImageView的组合视图，firstView是Button，secondView是ImageView
-@interface ZLPairButtonImgView : ZLPairView<ZLPairButtonImgView *,ZLButton *,ZLImageView *>
+@interface ZLButtonImgView : ZLPairView<ZLButtonImgView *,ZLButton *,ZLImageView *>
 
 @end
 NS_ASSUME_NONNULL_END

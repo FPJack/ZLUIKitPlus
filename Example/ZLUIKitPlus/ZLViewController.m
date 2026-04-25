@@ -39,6 +39,16 @@
     [tableView registerClass:UITableViewCell.class forCellReuseIdentifier:@"cell"];
     [self.view addSubview:tableView];
     tableView.KFC.edgesZero();
+    
+    self.view
+        .zl_imgView
+        .img(@"猫狗通用-分离焦虑")
+        .aspectFit
+        .bgColor(UIColor.orangeColor)
+        .z_size(200, 300)
+        .z_center();
+   
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

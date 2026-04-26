@@ -189,7 +189,7 @@
                 if (isFirst) {
                     cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:0];
                 }else {
-                    cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:fView.leadingAnchor constant:view.zl_frontSpacing];
+                    cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:fView.trailingAnchor constant:view.zl_frontSpacing];
                 }
                 break;
             default:

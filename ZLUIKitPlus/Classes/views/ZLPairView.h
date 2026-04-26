@@ -22,7 +22,6 @@ typedef NS_ENUM(NSInteger, ZLJustify) {
    ZLJustifyStart,
    ZLJustifyCenter,
    ZlJustifyEnd,
-  
 };
 @class ZLPairView;
 ///firstView和secondView的组合视图，firstView和secondView分别是两个view，firstView在secondView的左边或者上边，取决于horizontal属性
@@ -70,36 +69,6 @@ typedef NS_ENUM(NSInteger, ZLJustify) {
 
 
 
-///布局相关
-@property (nonatomic,  readonly) ObjectType (^z_centerX)(CGFloat x);
-
-@property (nonatomic,  readonly) ObjectType (^z_centerY)(CGFloat y);
-
-@property (nonatomic,  readonly) ObjectType (^z_center)(void);
-
-@property (nonatomic,  readonly) ObjectType (^z_centerOffset)(CGFloat x,CGFloat y);
-
-@property (nonatomic,  readonly) ObjectType (^z_top)(CGFloat top);
-
-@property (nonatomic,  readonly) ObjectType (^z_leading)(CGFloat leading);
-
-@property (nonatomic,  readonly) ObjectType (^z_bottom)(CGFloat bottom);
-
-@property (nonatomic,  readonly) ObjectType (^z_trailing)(CGFloat trailling);
-
-///设置高度
-@property (nonatomic, copy, readonly) ObjectType (^z_height)(CGFloat height);
-///设置宽度
-@property (nonatomic, copy, readonly) ObjectType (^z_width)(CGFloat width);
-///同时设置宽高
-@property (nonatomic, copy, readonly) ObjectType (^z_size)(CGFloat width,CGFloat height);
-///设置宽高相等
-@property (nonatomic, copy, readonly) ObjectType (^z_square)(CGFloat wh);
-///贴紧父视图四边(参数布局)
-@property (nonatomic, copy, readonly) ObjectType (^z_edge)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
- // ⭐高频
-///贴紧父视图四边布局
-@property (nonatomic, copy, readonly) ObjectType (^z_edgesZero)(void);
 
 ///添加到父视图，参数是父视图
 @property (nonatomic, copy, readonly) ObjectType (^addTo)(UIView *superview);

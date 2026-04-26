@@ -12,7 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSInteger, ZLAlign) {
     ZLAlignStart,
     ZLAlignCenter,
-    ZLAlignEnd
+    ZLAlignEnd,
+    ZLAlignFill,
 };
 typedef NS_ENUM(NSInteger, ZLJustify) {
    ZlJustifyFill,
@@ -20,10 +21,15 @@ typedef NS_ENUM(NSInteger, ZLJustify) {
    ZLJustifyStart,
    ZLJustifyCenter,
    ZlJustifyEnd,
+   ZlJustifySpaceBetween,//两边没有间距，中间相等
+   ZlJustifySpaceAround,//两边是中间一半
+   ZlJustifySpaceEvenly,//所有间距都相等
 };
 @interface ZLStackView : UIView
 @property (nonatomic,assign)BOOL horizontal;
 @property (nonatomic,assign)ZLAlign alignment;
+@property (nonatomic,assign)ZLJustify justify;
+
 @property (nonatomic,assign)CGFloat spacing;
 - (void)addArrandgeView:(UIView *)view;
 - (void)updateViewsConstraints;

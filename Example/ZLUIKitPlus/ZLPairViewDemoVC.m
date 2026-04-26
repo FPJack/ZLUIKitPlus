@@ -51,20 +51,24 @@
 //    }
     
     ZLStackView *stackView = [ZLStackView new];
+    stackView.horizontal = YES;
     stackView.backgroundColor = UIColor.redColor;
     [self.view addSubview:stackView];
     [stackView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.mas_equalTo(self.view);
+        make.height.mas_equalTo(200);
     }];
     UILabel *label = UILabel.new;
     label.text = @"dasdfd";
     [stackView addArrandgeView:label];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        label.text = @"adfdsafdsfasdffadsf";
+       // label.text = @"adfdsafdsfasdffadsf";
     });
     stackView.alignment = ZLAlignEnd;
+    stackView.justify = ZlJustifyEnd;
+    
     [stackView addArrandgeView:UISwitch.new];
-    [stackView addArrandgeView:UISwitch.new];
+   // [stackView addArrandgeView:UISwitch.new];
 
     [stackView updateViewsConstraints];
     

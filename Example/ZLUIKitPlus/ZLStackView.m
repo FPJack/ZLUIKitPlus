@@ -34,6 +34,7 @@
 @implementation ZLStackView
 - (NSMutableArray *)views {
     if (!_views) {
+        
         self.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
         _views = NSMutableArray.array;
     }
@@ -73,21 +74,49 @@
     UIView *fView = [self frontViewWithView:view];
     UIView *bView = [self behindViewWithView:view];
     NSLayoutConstraint *cons;
-    if (!self.horizontal) {
-        if (isFirst) {
-            cons = [view.topAnchor constraintEqualToAnchor:fView.layoutMarginsGuide.topAnchor constant:view.zl_frontSpacing];
-        }else {
-            cons = [view.topAnchor constraintEqualToAnchor:fView.bottomAnchor constant:view.zl_frontSpacing];
-        }
-    }else {
+    if (self.horizontal) {
         switch (self.alignment) {
             case ZLAlignStart:
-            cons = [view.topAnchor constraintEqualToAnchor:fView.topAnchor constant:view.zl_startSpacing];
+            case ZLAlignFill:
+            cons = [view.topAnchor constraintEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:view.zl_startSpacing];
                 break;
             case ZLAlignCenter:
             case ZLAlignEnd:
             default:
-                cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:self.topAnchor constant:view.zl_startSpacing];
+                cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:view.zl_startSpacing];
+                break;
+        }
+    }else {
+//        ZlJustifyFill,
+//        ZlJustifyFillEqually,
+//        ZLJustifyStart,
+//        ZLJustifyCenter,
+//        ZlJustifyEnd,
+//        ZlJustifySpaceBetween,//两边没有间距，中间相等
+//        ZlJustifySpaceAround,//两边是中间一半
+//        ZlJustifySpaceEvenly,//所有间距都相等
+        switch (self.justify) {
+            case ZlJustifyFill:
+            case ZlJustifyFillEqually:
+            case ZLJustifyStart:
+            case ZlJustifySpaceBetween:
+            case ZlJustifySpaceAround:
+            case ZlJustifySpaceEvenly:
+                if (isFirst) {
+                    cons = [view.topAnchor constraintEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:0];
+                }else {
+                    cons = [view.topAnchor constraintEqualToAnchor:fView.bottomAnchor constant:view.zl_frontSpacing];
+                }
+                break;
+            case ZLJustifyCenter:
+            case ZlJustifyEnd:
+                if (isFirst) {
+                    cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:0];
+                }else {
+                    cons = [view.topAnchor constraintEqualToAnchor:fView.bottomAnchor constant:view.zl_frontSpacing];
+                }
+                break;
+            default:
                 break;
         }
     }
@@ -102,17 +131,35 @@
     if (self.horizontal) {
         switch (self.alignment) {
             case ZLAlignEnd:
-            cons = [view.bottomAnchor constraintEqualToAnchor:fView.bottomAnchor constant:view.zl_startSpacing];
+            case ZLAlignFill:
+            cons = [view.bottomAnchor constraintEqualToAnchor:self.layoutMarginsGuide.bottomAnchor constant:view.zl_endSpacing];
                 break;
             case ZLAlignStart:
             case ZLAlignCenter:
             default:
-                cons = [view.bottomAnchor constraintGreaterThanOrEqualToAnchor:self.bottomAnchor constant:-view.zl_startSpacing];
+                cons = [view.bottomAnchor constraintLessThanOrEqualToAnchor:self.layoutMarginsGuide.bottomAnchor constant:-view.zl_endSpacing];
                 break;
         }
     }else {
-        if (isLast) {
-            cons = [view.bottomAnchor constraintEqualToAnchor:self.layoutMarginsGuide.bottomAnchor constant:view.zl_frontSpacing];
+        switch (self.justify) {
+            case ZlJustifyFill:
+            case ZlJustifyFillEqually:
+            case ZlJustifyEnd:
+            case ZlJustifySpaceBetween:
+            case ZlJustifySpaceAround:
+            case ZlJustifySpaceEvenly:
+                if (isLast) {
+                    cons = [view.bottomAnchor constraintEqualToAnchor:self.layoutMarginsGuide.bottomAnchor constant:0];
+                }
+                break;
+            case ZLJustifyCenter:
+            case ZLJustifyStart:
+                if (isLast) {
+                    cons = [view.bottomAnchor constraintLessThanOrEqualToAnchor:self.layoutMarginsGuide.bottomAnchor constant:0];
+                }
+                break;
+            default:
+                break;
         }
     }
     cons.active = YES;
@@ -124,14 +171,34 @@
     UIView *bView = [self behindViewWithView:view];
     NSLayoutConstraint *cons;
     if (self.horizontal) {
-        if (isFirst) {
-            cons = [view.leadingAnchor constraintEqualToAnchor:fView.leadingAnchor constant:view.zl_frontSpacing];
-        }else {
-            cons = [view.leadingAnchor constraintEqualToAnchor:fView.trailingAnchor constant:view.zl_frontSpacing];
+        switch (self.justify) {
+            case ZlJustifyFill:
+            case ZlJustifyFillEqually:
+            case ZLJustifyStart:
+            case ZlJustifySpaceBetween:
+            case ZlJustifySpaceAround:
+            case ZlJustifySpaceEvenly:
+                if (isFirst) {
+                    cons = [view.leadingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:0];
+                }else {
+                    cons = [view.leadingAnchor constraintEqualToAnchor:fView.trailingAnchor constant:view.zl_frontSpacing];
+                }
+                break;
+            case ZLJustifyCenter:
+            case ZlJustifyEnd:
+                if (isFirst) {
+                    cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:0];
+                }else {
+                    cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:fView.leadingAnchor constant:view.zl_frontSpacing];
+                }
+                break;
+            default:
+                break;
         }
     }else {
         switch (self.alignment) {
             case ZLAlignStart:
+            case ZLAlignFill:
             cons = [view.leadingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:view.zl_startSpacing];
                 break;
             case ZLAlignCenter:
@@ -150,12 +217,30 @@
     UIView *bView = [self behindViewWithView:view];
     NSLayoutConstraint *cons;
     if (self.horizontal) {
-        if (isLast) {
-            cons = [view.trailingAnchor constraintEqualToAnchor:bView.layoutMarginsGuide.trailingAnchor constant:view.zl_frontSpacing];
+        switch (self.justify) {
+            case ZlJustifyFill:
+            case ZlJustifyFillEqually:
+            case ZlJustifyEnd:
+            case ZlJustifySpaceBetween:
+            case ZlJustifySpaceAround:
+            case ZlJustifySpaceEvenly:
+                if (isLast) {
+                    cons = [view.trailingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.trailingAnchor constant:0];
+                }
+                break;
+            case ZLJustifyCenter:
+            case ZLJustifyStart:
+                if (isLast) {
+                    cons = [view.trailingAnchor constraintLessThanOrEqualToAnchor:self.layoutMarginsGuide.trailingAnchor constant:0];
+                }
+                break;
+            default:
+                break;
         }
     }else {
         switch (self.alignment) {
             case ZLAlignEnd:
+            case ZLAlignFill:
                 cons = [view.trailingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.trailingAnchor constant:-view.zl_endSpacing];
                 break;
             case ZLAlignStart:

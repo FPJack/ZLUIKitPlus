@@ -29,6 +29,7 @@ typedef NS_ENUM(NSInteger, ZLJustify) {
 @property (nonatomic,assign)BOOL horizontal;
 @property (nonatomic,assign)ZLAlign alignment;
 @property (nonatomic,assign)ZLJustify justify;
+@property (nonatomic,strong)NSMutableArray<UIView *> *views;
 
 @property (nonatomic,assign)CGFloat spacing;
 - (void)addArrandgeView:(UIView *)view;

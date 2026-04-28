@@ -2,7 +2,24 @@
 //#import <ZLUIKitPlus/ZLUIKitPlus.h>
 #import <Masonry/Masonry.h>
 #import "ZLStackView.h"
+@interface SwitchA: UISwitch
+@end
+@implementation SwitchA
 
+- (NSLayoutXAxisAnchor *)leadingAnchor {
+    return [super leadingAnchor];
+}
+
+@end
+@interface SwitchB: UISwitch
+@end
+@implementation SwitchB
+
+- (NSLayoutXAxisAnchor *)leadingAnchor {
+    return [super leadingAnchor];
+}
+
+@end
 @interface TestStackView: UIStackView
 @end
 @implementation TestStackView
@@ -61,11 +78,11 @@
 
     }];
     UILabel *label = UILabel.new;
-    label.text = @"dasdfd";
+    label.text = @"dddd";
     label.backgroundColor = UIColor.orangeColor;
     [stackView addArrandgeView:label];
     {
-        UILabel *label = UILabel.new;
+        UILabel *label = [[UILabel alloc] init];
         label.text = @"dasdfd";
         label.backgroundColor = UIColor.orangeColor;
       //  [stackView addArrandgeView:label];
@@ -74,12 +91,36 @@
        // label.text = @"adfdsafdsfasdffadsf";
     });
     stackView.alignment = ZLAlignStart;
-    stackView.justify = ZlJustifySpaceEvenly;
+    stackView.justify = ZLJustifyCenter;
     
-    [stackView addArrandgeView:UISwitch.new];
-    [stackView addArrandgeView:UISwitch.new];
+    [stackView addArrandgeView:SwitchA.new];
+    [stackView addArrandgeView:SwitchB.new];
 
     [stackView updateViewsConstraints];
+    
+   
+    {
+        UIStackView *stackView = [[UIStackView alloc] init];
+        stackView.axis = UILayoutConstraintAxisHorizontal;
+        stackView.alignment = UIStackViewAlignmentFill;
+        stackView.distribution = UIStackViewDistributionFill;
+        stackView.spacing = 10;
+        stackView.backgroundColor = UIColor.greenColor;
+        stackView.translatesAutoresizingMaskIntoConstraints = NO;
+//        [self.view addSubview:stackView];
+//        UILabel *label = UILabel.new;
+//        label.text = @"dasdfddasdfddasdfddasdfddasdfddasdfddasdfddasdfddasdfddasdfddasdfddasdfddasdfddasdfddasdfd";
+//        label.backgroundColor = UIColor.orangeColor;
+//        [stackView addArrangedSubview:label];
+//        [stackView addArrangedSubview:UISwitch.new];
+//        [stackView addArrangedSubview:UISwitch.new];
+//        
+//        [stackView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.center.mas_equalTo(self.view);
+//            make.height.mas_equalTo(200);
+//            make.width.mas_equalTo(300);
+//        }];
+    }
     
 }
 //- (void)viewDidLoad {

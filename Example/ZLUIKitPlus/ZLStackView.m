@@ -122,6 +122,9 @@
         if (justify  == ZLJustifyCenter && self.isLastView) {
             return self.endGapGuide.trailingAnchor;
         }
+        if (justify == ZlJustifySpaceBetween && !self.isLastView) {
+            return self.endGapGuide.trailingAnchor;
+        }
     }
     return self.view.trailingAnchor;
 }
@@ -152,6 +155,9 @@
             return self.endGapGuide.bottomAnchor;
         }
         if (justify  == ZLJustifyCenter && self.isLastView) {
+            return self.endGapGuide.bottomAnchor;
+        }
+        if (justify == ZlJustifySpaceBetween && !self.isLastView) {
             return self.endGapGuide.bottomAnchor;
         }
     }
@@ -478,6 +484,12 @@
                 }
                 break;
             case ZLJustifyCenter:
+                if (isFirst) {
+                    cons = [view.zl_layoutCfg.topAnchor constraintEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:0];
+                }else {
+                    cons = [view.zl_layoutCfg.topAnchor constraintEqualToAnchor:fView.zl_layoutCfg.bottomAnchor constant:fView.zl_layoutCfg.behindSpacing];
+                }
+                break;
             case ZlJustifyEnd:
                 if (isFirst) {
                     cons = [view.zl_layoutCfg.topAnchor constraintGreaterThanOrEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:0];

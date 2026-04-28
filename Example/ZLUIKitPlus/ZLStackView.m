@@ -323,6 +323,7 @@
         [arr addObjectsFromArray:view.zl_layoutCfg.boundaryWithOrHeightGapAnchors];
     }
     [arr.firstObject constraintEqualToAnchor:arr.lastObject].active = YES;
+    
 
 }
 - (void)gapEqualSpaceBetween{
@@ -537,6 +538,10 @@
                 }
                 break;
             case ZLJustifyCenter:
+                if (isFirst) {
+                    cons = [view.zl_layoutCfg.leadingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:0];
+                }
+                break;
             case ZlJustifyEnd:
                 if (isFirst) {
                     cons = [view.zl_layoutCfg.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:0];
@@ -581,6 +586,10 @@
                 }
                 break;
             case ZLJustifyCenter:
+                if (isLast) {
+                    cons = [view.zl_layoutCfg.trailingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.trailingAnchor constant:0];
+                }
+                break;
             case ZLJustifyStart:
                 if (isLast) {
                     cons = [view.zl_layoutCfg.trailingAnchor constraintLessThanOrEqualToAnchor:self.layoutMarginsGuide.trailingAnchor constant:0];

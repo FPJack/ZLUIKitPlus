@@ -91,7 +91,7 @@
        // label.text = @"adfdsafdsfasdffadsf";
     });
     stackView.alignment = ZLAlignStart;
-    stackView.justify = ZLJustifyCenter;
+    stackView.justify = ZlJustifySpaceBetween;
     
     [stackView addArrandgeView:SwitchA.new];
     [stackView addArrandgeView:SwitchB.new];

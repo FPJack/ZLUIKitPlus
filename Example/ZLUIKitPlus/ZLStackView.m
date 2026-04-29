@@ -534,6 +534,10 @@
                 }
                 break;
             case ZLJustifyCenter:
+                if (isLast) {
+                    cons = [view.zl_layoutCfg.bottomAnchor constraintEqualToAnchor:self.layoutMarginsGuide.bottomAnchor constant:0];
+                }
+                break;
             case ZLJustifyStart:
                 if (isLast) {
                     cons = [view.zl_layoutCfg.bottomAnchor constraintLessThanOrEqualToAnchor:self.layoutMarginsGuide.bottomAnchor constant:0];

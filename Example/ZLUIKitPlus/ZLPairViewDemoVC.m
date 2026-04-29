@@ -68,7 +68,7 @@
 //    }
     
     ZLStackView *stackView = [ZLStackView new];
-    stackView.horizontal = YES;
+    stackView.horizontal = NO;
     stackView.backgroundColor = UIColor.redColor;
     [self.view addSubview:stackView];
     [stackView mas_makeConstraints:^(MASConstraintMaker *make) {

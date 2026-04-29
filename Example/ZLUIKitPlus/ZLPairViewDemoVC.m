@@ -70,8 +70,8 @@
 //        return;
 //    }
     
-    BOOL useSystemStackView = YES;
-    NSInteger count = 80;
+    BOOL useSystemStackView = NO;
+    NSInteger count = 100;
     CFAbsoluteTime total = 0;
     CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
 
@@ -131,6 +131,7 @@
             [subStackView addArrangedSubview:UISwitch.new];
 
             [stackView addArrangedSubview:subStackView];
+            
         }
         [self.view setNeedsLayout];
 

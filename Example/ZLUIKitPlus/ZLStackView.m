@@ -8,11 +8,16 @@
 
 #import "ZLStackView.h"
 #import <objc/runtime.h>
+#define kViewAlignStartConsId @"kViewAlignStartConsId"
+#define kViewAlignEndConsId @"kViewAlignEndConsId"
 @interface ZLViewLayoutCfg: NSObject
 @property (nonatomic,assign)CGFloat startSpacing;
 @property (nonatomic,assign)CGFloat endSpacing;
 @property (nonatomic,assign)CGFloat behindSpacing;
 @property (nonatomic,assign)ZLAlign alignSelf;
+
+@property (nonatomic,weak)NSLayoutConstraint *alignStartCons;
+@property (nonatomic,weak)NSLayoutConstraint *alignEndCons;
 ///是否设置对齐方式
 @property (nonatomic,assign)BOOL isSetAlign;
 @property (nonatomic,weak)ZLStackView *stackView;
@@ -58,12 +63,13 @@
 - (CGFloat)spacing {
     return self.stackView.spacing;
 }
-- (CGFloat)startSpacing {
-    return _startSpacing;
+- (void)setStartSpacing:(CGFloat)startSpacing {
+    _startSpacing = startSpacing;
 }
-- (CGFloat)endSpacing {
-    return _endSpacing;
+- (void)setEndSpacing:(CGFloat)endSpacing {
+    _endSpacing = endSpacing;
 }
+
 - (CGFloat)behindSpacing {
     switch (self.justify) {
         case ZlJustifySpaceAround:
@@ -98,13 +104,16 @@
     _view = view;
     [view addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
 }
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
         if ([keyPath isEqualToString:@"hidden"]) {
             BOOL oldHidden = [change[NSKeyValueChangeOldKey] boolValue];
             BOOL newHidden = [change[NSKeyValueChangeNewKey] boolValue];
             if (oldHidden == newHidden) return;
-            [self.stackView setNeedsUpdateConstraints];
+            if (self.stackView) {
+                [self.stackView setNeedsUpdateConstraints];
+            }
         }
 }
 - (void)dealloc
@@ -361,6 +370,7 @@
     [view removeFromSuperview];
     [self.arrangedViews removeObject:view];
     [view.zl_layoutCfg deactivateConstraints];
+    view.zl_layoutCfg.stackView = nil;
     [self setNeedsUpdateConstraints];
 }
 - (void)setCustomSpacing:(CGFloat)spacing afterView:(UIView *)arrangedSubview {
@@ -378,6 +388,10 @@
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
     arrangedSubview.zl_layoutCfg.startSpacing = spacing;
     [self setNeedsUpdateConstraints];
+    
+    arrangedSubview.zl_layoutCfg.alignStartCons.constant = spacing;
+    
+    
 }
 ///设置view的alignment方向end间距
 - (void)setCustomAlignmentEndSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview {
@@ -404,10 +418,8 @@
     [self updateViewsConstraints];
 }
 - (void)updateViewsConstraints {
-    
     [self refreshArrangedSubviews];
 
-    
     [NSLayoutConstraint deactivateConstraints:_constraintsArr];
     [_constraintsArr removeAllObjects];
     
@@ -574,6 +586,7 @@
                 cons = [view.zl_layoutCfg.topAnchor constraintGreaterThanOrEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:view.zl_layoutCfg.startSpacing];
                 break;
         }
+        view.zl_layoutCfg.alignStartCons = cons;
     }else {
         switch (self.justify) {
             case ZlJustifyFill:
@@ -626,6 +639,7 @@
                 cons = [view.zl_layoutCfg.bottomAnchor constraintLessThanOrEqualToAnchor:self.layoutMarginsGuide.bottomAnchor constant:-view.zl_layoutCfg.endSpacing];
                 break;
         }
+        view.zl_layoutCfg.alignEndCons = cons;
     }else {
         switch (self.justify) {
             case ZlJustifyFill:
@@ -705,6 +719,7 @@
                 cons = [view.zl_layoutCfg.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:view.zl_layoutCfg.startSpacing];
                 break;
         }
+        view.zl_layoutCfg.alignStartCons = cons;
     }
     cons.active = YES;
     if (cons) {
@@ -751,6 +766,7 @@
                 cons = [view.zl_layoutCfg.trailingAnchor constraintLessThanOrEqualToAnchor:self.trailingAnchor constant:-view.zl_layoutCfg.endSpacing];
                 break;
         }
+        view.zl_layoutCfg.alignEndCons = cons;
     }
     cons.active = YES;
     if (cons) {

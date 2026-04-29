@@ -348,7 +348,9 @@
 - (void)setSpacing:(CGFloat)spacing {
     if (spacing == _spacing) return;
     _spacing = spacing;
-    [self setNeedsUpdateConstraints];
+    [self.arrangedViews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        obj.zl_layoutCfg.spaceCons.constant = obj.zl_layoutCfg.behindSpacing;
+    }];
 }
 - (void)addArrangedSubview:(UIView *)view{
     if ([view isKindOfClass:UIView.class]) {
@@ -612,6 +614,7 @@
                     cons = [view.zl_layoutCfg.topAnchor constraintEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:0];
                 }else {
                     cons = [view.zl_layoutCfg.topAnchor constraintEqualToAnchor:fView.zl_layoutCfg.bottomAnchor constant:fView.zl_layoutCfg.behindSpacing];
+                    view.zl_layoutCfg.spaceCons = cons;
                 }
                 break;
             case ZLJustifyCenter:
@@ -619,6 +622,7 @@
                     cons = [view.zl_layoutCfg.topAnchor constraintEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:0];
                 }else {
                     cons = [view.zl_layoutCfg.topAnchor constraintEqualToAnchor:fView.zl_layoutCfg.bottomAnchor constant:fView.zl_layoutCfg.behindSpacing];
+                    view.zl_layoutCfg.spaceCons = cons;
                 }
                 break;
             case ZlJustifyEnd:
@@ -626,6 +630,7 @@
                     cons = [view.zl_layoutCfg.topAnchor constraintGreaterThanOrEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:0];
                 }else {
                     cons = [view.zl_layoutCfg.topAnchor constraintEqualToAnchor:fView.zl_layoutCfg.bottomAnchor constant:fView.zl_layoutCfg.behindSpacing];
+                    view.zl_layoutCfg.spaceCons = cons;
                 }
                 break;
             default:
@@ -701,6 +706,7 @@
                     cons = [view.zl_layoutCfg.leadingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:0];
                 }else {
                     cons = [view.zl_layoutCfg.leadingAnchor constraintEqualToAnchor:fView.zl_layoutCfg.trailingAnchor constant:fView.zl_layoutCfg.behindSpacing];
+                    view.zl_layoutCfg.spaceCons = cons;
                 }
                 break;
             case ZLJustifyCenter:
@@ -708,6 +714,7 @@
                     cons = [view.zl_layoutCfg.leadingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:0];
                 }else {
                     cons = [view.zl_layoutCfg.leadingAnchor constraintEqualToAnchor:fView.zl_layoutCfg.trailingAnchor constant:fView.zl_layoutCfg.behindSpacing];
+                    view.zl_layoutCfg.spaceCons = cons;
                 }
                 break;
             case ZlJustifyEnd:
@@ -715,6 +722,7 @@
                     cons = [view.zl_layoutCfg.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:0];
                 }else {
                     cons = [view.zl_layoutCfg.leadingAnchor constraintEqualToAnchor:fView.zl_layoutCfg.trailingAnchor constant:fView.zl_layoutCfg.behindSpacing];
+                    view.zl_layoutCfg.spaceCons = cons;
                 }
                 break;
             default:

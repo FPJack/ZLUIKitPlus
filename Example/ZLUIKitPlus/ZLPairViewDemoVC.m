@@ -91,10 +91,10 @@
     label.text = @"dddd";
     label.backgroundColor = UIColor.blueColor;
     [stackView addArrangedSubview:label];
-    [stackView setCustomSpacing:20 afterView:label];
-    [stackView setCustomAlignmentStartSpacing:20 forView:label];
-    [stackView setCustomAlignmentEndSpacing:40 forView:label];
-    [stackView setCustomAlignment:ZLAlignEnd forView:label];
+//    [stackView setCustomSpacing:20 afterView:label];
+//    [stackView setCustomAlignmentStartSpacing:20 forView:label];
+//    [stackView setCustomAlignmentEndSpacing:40 forView:label];
+//    [stackView setCustomAlignment:ZLAlignEnd forView:label];
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
        // label.text = @"adfdsafdsfasdffadsf";
@@ -104,7 +104,8 @@
     stackView.spacing = 10;
     
     [stackView addArrangedSubview:SwitchA.new];
-    
+    [stackView addArrangedSubview:SwitchA.new];
+
     {
 //        UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
 //        [btn setTitle:@"" forState:UIControlStateNormal];
@@ -113,9 +114,8 @@
         
     }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [stackView setCustomAlignmentStartSpacing:50 forView:label];
-        [stackView setCustomAlignmentEndSpacing:100 forView:label];
-
+       
+        stackView.spacing = 50;
 //        stackView.horizontal = YES;
 //        stackView.alignment = ZLAlignStart;
 //        stackView.justify = ZlJustifySpaceEvenly;

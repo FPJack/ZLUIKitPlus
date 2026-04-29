@@ -26,11 +26,18 @@ typedef NS_ENUM(NSInteger, ZLJustify) {
    ZlJustifySpaceEvenly,//所有间距都相等
 };
 @interface ZLStackView : UIView
+
 @property (nonatomic,assign)BOOL horizontal;
+
 @property (nonatomic,assign)ZLAlign alignment;
+
 @property (nonatomic,assign)ZLJustify justify;
-@property(nonatomic,readonly,copy) NSArray<__kindof UIView *> *arrangedSubviews;
-@property(nonatomic,strong) NSMutableArray<__kindof UIView *> *views;
+
+@property(nonatomic,strong) NSMutableArray<__kindof UIView *> *arrangedViews;
+
+@property(nonatomic,strong) NSMutableArray<__kindof UIView *> *allViews;
+
+
 
 @property (nonatomic,assign)CGFloat spacing;
 

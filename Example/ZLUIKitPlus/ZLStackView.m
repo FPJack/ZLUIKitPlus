@@ -23,7 +23,6 @@
 @property (nonatomic,weak)ZLStackView *stackView;
 ///view和UILayoutGuide之间的约束
 @property (nonatomic,strong)NSMutableArray<NSLayoutConstraint *> *viewAndGuideConstraints;
-
 ///两边边界的宽度或者高度anchor数据
 @property (nonatomic,strong)NSMutableArray<NSLayoutDimension *> *boundaryWithOrHeightGapAnchors;
 ///中心宽度或者高度anchor数据
@@ -357,6 +356,14 @@
         cfg.stackView = self;
         view.translatesAutoresizingMaskIntoConstraints = NO;
         [self addSubview:view];
+    }
+}
+- (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)stackIndex {
+    if ([view isKindOfClass:UIView.class]) {
+        if ([self.allViews containsObject:view]) return;
+        [self.allViews insertObject:view atIndex:stackIndex];
+        if (view.hidden) return;
+        [self setNeedsUpdateConstraints];
     }
 }
 - (void)refreshArrangedSubviews {

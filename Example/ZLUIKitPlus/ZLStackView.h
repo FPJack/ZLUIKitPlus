@@ -43,6 +43,8 @@ typedef NS_ENUM(NSInteger, ZLJustify) {
 
 - (void)addArrangedSubview:(UIView *)view;
 
+- (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)stackIndex;
+
 - (void)removeArrangedSubview:(UIView *)view;
 
 - (void)setCustomSpacing:(CGFloat)spacing afterView:(UIView *)arrangedSubview;

@@ -48,12 +48,18 @@ typedef NS_ENUM(NSInteger, ZLJustify) {
 - (void)removeArrangedSubview:(UIView *)view;
 
 - (void)setCustomSpacing:(CGFloat)spacing afterView:(UIView *)arrangedSubview;
+
+///在某个view后面设置是否弹性空间
+- (void)setFlexibleSpacing:(BOOL)flexible afterView:(UIView *)arrangedSubview;
+
 ///设置view的alignment，优先级高于stackView的alignment
-- (void)setCustomAlignment:(ZLAlign)alignment forView:(UIView *)arrangedSubview;
+- (void)setAlignment:(ZLAlign)alignment forView:(UIView *)arrangedSubview;
+
 ///设置view的alignment方向start间距
-- (void)setCustomAlignmentStartSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview;
+- (void)setAlignmentStartSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview;
+
 ///设置view的alignment方向end间距
-- (void)setCustomAlignmentEndSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview;
+- (void)setAlignmentEndSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview;
 
 @end
 

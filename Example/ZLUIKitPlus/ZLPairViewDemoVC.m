@@ -2,6 +2,7 @@
 //#import <ZLUIKitPlus/ZLUIKitPlus.h>
 #import <Masonry/Masonry.h>
 #import "ZLStackView.h"
+
 @interface SwitchA: UISwitch
 @end
 @implementation SwitchA
@@ -78,23 +79,25 @@
 //    }
     
     ZLStackView *stackView = [ZLStackView new];
-    stackView.horizontal = YES;
+    stackView.horizontal = NO;
     stackView.backgroundColor = UIColor.redColor;
     [self.view addSubview:stackView];
     [stackView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.mas_equalTo(self.view);
-//        make.height.mas_equalTo(200);
-//        make.width.mas_equalTo(300);
+        make.height.mas_equalTo(200);
+        make.width.mas_equalTo(300);
 
     }];
     UILabel *label = UILabel.new;
-    label.text = @"dddd";
+    label.text = @"ddddd";
+//    label.numberOfLines = 0;
     label.backgroundColor = UIColor.blueColor;
+    
     [stackView addArrangedSubview:label];
 //    [stackView setCustomSpacing:20 afterView:label];
-//    [stackView setCustomAlignmentStartSpacing:20 forView:label];
-//    [stackView setCustomAlignmentEndSpacing:40 forView:label];
-//    [stackView setCustomAlignment:ZLAlignEnd forView:label];
+//    [stackView setAlignmentStartSpacing:20 forView:label];
+//    [stackView setAlignmentEndSpacing:40 forView:label];
+//    [stackView setAlignment:ZLAlignEnd forView:label];
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
        // label.text = @"adfdsafdsfasdffadsf";
@@ -103,19 +106,29 @@
     stackView.justify = ZlJustifyFill;
     stackView.spacing = 10;
     
-    [stackView addArrangedSubview:SwitchA.new];
-    [stackView addArrangedSubview:SwitchA.new];
+//    [stackView addArrangedSubview:SwitchA.new];
 
+//    {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
+        [btn setTitle:@"button" forState:UIControlStateNormal];
+        [btn setBackgroundColor:UIColor.greenColor];
+   
+        [stackView addArrangedSubview:btn];
+//        [stackView setFlexibleSpacingAfterView:btn];
     {
-//        UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
-//        [btn setTitle:@"" forState:UIControlStateNormal];
-//        [btn setBackgroundColor:UIColor.greenColor];
-//        [stackView addArrangedSubview:btn];
-        
+        UISwitch *sw = UISwitch.new;
+        [stackView addArrangedSubview:sw];
+        [stackView setFlexibleSpacing:YES afterView:sw];
+      
+
     }
+        [stackView addArrangedSubview:UISwitch.new];
+
+//
+//    }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
        
-        stackView.spacing = 50;
+//        stackView.spacing = 50;
 //        stackView.horizontal = YES;
 //        stackView.alignment = ZLAlignStart;
 //        stackView.justify = ZlJustifySpaceEvenly;

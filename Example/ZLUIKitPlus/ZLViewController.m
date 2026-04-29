@@ -25,6 +25,45 @@
     self.title = @"ZLUIKitPlus Demos";
     self.view.backgroundColor = UIColor.whiteColor;
     
+    {
+        UIStackView *stack = UIStackView.new;
+//        stack.axis = UILayoutConstraintAxisVertical;
+//        [self.view addSubview:stack];
+//        stack.backgroundColor = UIColor.lightGrayColor;
+//        stack.KFC.width(200);
+//        stack.KFC.center();
+        
+        UILabel *lab1 = UILabel.new;
+        lab1.text = @"Hello";
+        [stack addArrangedSubview:lab1];
+        
+        UIButton *btn = UIButton.new;
+        [btn setTitle:@"World" forState:UIControlStateNormal];
+        [stack addArrangedSubview:btn];
+        
+        UIImageView *imgView = UIImageView.new;
+        imgView.image = [UIImage systemImageNamed:@"star"];
+        [stack addArrangedSubview:imgView];
+        
+        UITextField *textField = UITextField.new;
+        textField.placeholder = @"Input";
+        textField.text = @"ZLUIKitPlus";
+        [stack addArrangedSubview:textField];
+        
+        UISwitch *switchView = UISwitch.new;
+        switchView.on = YES;
+        [stack addArrangedSubview:switchView];
+        
+        UITextView *textView = UITextView.new;
+        textView.text = @"This is a UITextView.";
+        [stack addArrangedSubview:textView];
+        
+    }
+    
+    
+    
+//    return;
+    
     self.demos = @[
         @{@"title": @"ZLButton Demo", @"class": ZLButtonDemoVC.class},
         @{@"title": @"ZLImageView Demo", @"class": ZLImageViewDemoVC.class},

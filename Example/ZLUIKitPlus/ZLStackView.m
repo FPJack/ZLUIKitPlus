@@ -14,6 +14,7 @@
 @property (nonatomic,assign)CGFloat startSpacing;
 @property (nonatomic,assign)CGFloat endSpacing;
 @property (nonatomic,assign)CGFloat behindSpacing;
+@property (nonatomic,assign)BOOL    isFlexSpace;
 @property (nonatomic,assign)ZLAlign alignSelf;
 
 @property (nonatomic,weak)NSLayoutConstraint *alignStartCons;
@@ -388,18 +389,29 @@
     view.zl_layoutCfg.stackView = nil;
     [self setNeedsUpdateConstraints];
 }
+- (void)setFlexibleSpacing:(BOOL)flexible afterView:(UIView *)arrangedSubview {
+    if (![self.arrangedViews containsObject:arrangedSubview]) return;
+    if (flexible == arrangedSubview.zl_layoutCfg.isFlexSpace) return;
+    arrangedSubview.zl_layoutCfg.isFlexSpace = flexible;
+    [self setNeedsUpdateConstraints];
+}
 - (void)setCustomSpacing:(CGFloat)spacing afterView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
     arrangedSubview.zl_layoutCfg.behindSpacing = spacing;
 }
-- (void)setCustomAlignment:(ZLAlign)alignment forView:(UIView *)arrangedSubview {
+- (void)setFlexibleSpacingAfterView:(UIView *)arrangedSubview {
+    if (![self.arrangedViews containsObject:arrangedSubview]) return;
+    
+}
+
+- (void)setAlignment:(ZLAlign)alignment forView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
     arrangedSubview.zl_layoutCfg.isSetAlign = YES;
     arrangedSubview.zl_layoutCfg.alignSelf = alignment;
     [self setNeedsUpdateConstraints];
 }
 ///设置view的alignment方向start间距
-- (void)setCustomAlignmentStartSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview {
+- (void)setAlignmentStartSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
     arrangedSubview.zl_layoutCfg.startSpacing = spacing;
     [self setNeedsUpdateConstraints];
@@ -409,7 +421,7 @@
     
 }
 ///设置view的alignment方向end间距
-- (void)setCustomAlignmentEndSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview {
+- (void)setAlignmentEndSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
     arrangedSubview.zl_layoutCfg.endSpacing = spacing;
     [self setNeedsUpdateConstraints];
@@ -610,27 +622,39 @@
             case ZlJustifySpaceBetween:
             case ZlJustifySpaceAround:
             case ZlJustifySpaceEvenly:
-                if (isFirst) {
-                    cons = [view.zl_layoutCfg.topAnchor constraintEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:0];
-                }else {
-                    cons = [view.zl_layoutCfg.topAnchor constraintEqualToAnchor:fView.zl_layoutCfg.bottomAnchor constant:fView.zl_layoutCfg.behindSpacing];
-                    view.zl_layoutCfg.spaceCons = cons;
-                }
-                break;
             case ZLJustifyCenter:
+
                 if (isFirst) {
                     cons = [view.zl_layoutCfg.topAnchor constraintEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:0];
                 }else {
-                    cons = [view.zl_layoutCfg.topAnchor constraintEqualToAnchor:fView.zl_layoutCfg.bottomAnchor constant:fView.zl_layoutCfg.behindSpacing];
-                    view.zl_layoutCfg.spaceCons = cons;
+                    if (fView.zl_layoutCfg.isFlexSpace) {
+                        cons = [view.zl_layoutCfg.topAnchor constraintGreaterThanOrEqualToAnchor:fView.zl_layoutCfg.bottomAnchor];
+                        view.zl_layoutCfg.spaceCons = cons;
+                    }else {
+                        cons = [view.zl_layoutCfg.topAnchor constraintEqualToAnchor:fView.zl_layoutCfg.bottomAnchor constant:fView.zl_layoutCfg.behindSpacing];
+                        view.zl_layoutCfg.spaceCons = cons;
+                    }
                 }
                 break;
+//            case ZLJustifyCenter:
+//                if (isFirst) {
+//                    cons = [view.zl_layoutCfg.topAnchor constraintEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:0];
+//                }else {
+//                    cons = [view.zl_layoutCfg.topAnchor constraintEqualToAnchor:fView.zl_layoutCfg.bottomAnchor constant:fView.zl_layoutCfg.behindSpacing];
+//                    view.zl_layoutCfg.spaceCons = cons;
+//                }
+//                break;
             case ZlJustifyEnd:
                 if (isFirst) {
                     cons = [view.zl_layoutCfg.topAnchor constraintGreaterThanOrEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:0];
                 }else {
-                    cons = [view.zl_layoutCfg.topAnchor constraintEqualToAnchor:fView.zl_layoutCfg.bottomAnchor constant:fView.zl_layoutCfg.behindSpacing];
-                    view.zl_layoutCfg.spaceCons = cons;
+                    if (fView.zl_layoutCfg.isFlexSpace) {
+                        cons = [view.zl_layoutCfg.topAnchor constraintGreaterThanOrEqualToAnchor:fView.zl_layoutCfg.bottomAnchor];
+                        view.zl_layoutCfg.spaceCons = cons;
+                    }else {
+                        cons = [view.zl_layoutCfg.topAnchor constraintEqualToAnchor:fView.zl_layoutCfg.bottomAnchor constant:fView.zl_layoutCfg.behindSpacing];
+                        view.zl_layoutCfg.spaceCons = cons;
+                    }
                 }
                 break;
             default:
@@ -702,27 +726,39 @@
             case ZlJustifySpaceBetween:
             case ZlJustifySpaceAround:
             case ZlJustifySpaceEvenly:
-                if (isFirst) {
-                    cons = [view.zl_layoutCfg.leadingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:0];
-                }else {
-                    cons = [view.zl_layoutCfg.leadingAnchor constraintEqualToAnchor:fView.zl_layoutCfg.trailingAnchor constant:fView.zl_layoutCfg.behindSpacing];
-                    view.zl_layoutCfg.spaceCons = cons;
-                }
-                break;
             case ZLJustifyCenter:
+
                 if (isFirst) {
                     cons = [view.zl_layoutCfg.leadingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:0];
                 }else {
-                    cons = [view.zl_layoutCfg.leadingAnchor constraintEqualToAnchor:fView.zl_layoutCfg.trailingAnchor constant:fView.zl_layoutCfg.behindSpacing];
-                    view.zl_layoutCfg.spaceCons = cons;
+                    if (fView.zl_layoutCfg.isFlexSpace) {
+                        cons = [view.zl_layoutCfg.leadingAnchor constraintGreaterThanOrEqualToAnchor:fView.zl_layoutCfg.trailingAnchor];
+                    }else {
+                        cons = [view.zl_layoutCfg.leadingAnchor constraintEqualToAnchor:fView.zl_layoutCfg.trailingAnchor constant:fView.zl_layoutCfg.behindSpacing];
+                        view.zl_layoutCfg.spaceCons = cons;
+                    }
+                   
+                    
                 }
                 break;
+//            case ZLJustifyCenter:
+//                if (isFirst) {
+//                    cons = [view.zl_layoutCfg.leadingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:0];
+//                }else {
+//                    cons = [view.zl_layoutCfg.leadingAnchor constraintEqualToAnchor:fView.zl_layoutCfg.trailingAnchor constant:fView.zl_layoutCfg.behindSpacing];
+//                    view.zl_layoutCfg.spaceCons = cons;
+//                }
+//                break;
             case ZlJustifyEnd:
                 if (isFirst) {
                     cons = [view.zl_layoutCfg.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:0];
                 }else {
-                    cons = [view.zl_layoutCfg.leadingAnchor constraintEqualToAnchor:fView.zl_layoutCfg.trailingAnchor constant:fView.zl_layoutCfg.behindSpacing];
-                    view.zl_layoutCfg.spaceCons = cons;
+                    if (fView.zl_layoutCfg.isFlexSpace) {
+                        cons = [view.zl_layoutCfg.leadingAnchor constraintGreaterThanOrEqualToAnchor:fView.zl_layoutCfg.trailingAnchor];
+                    }else {
+                        cons = [view.zl_layoutCfg.leadingAnchor constraintEqualToAnchor:fView.zl_layoutCfg.trailingAnchor constant:fView.zl_layoutCfg.behindSpacing];
+                        view.zl_layoutCfg.spaceCons = cons;
+                    }
                 }
                 break;
             default:

@@ -18,6 +18,7 @@
 
 @property (nonatomic,weak)NSLayoutConstraint *alignStartCons;
 @property (nonatomic,weak)NSLayoutConstraint *alignEndCons;
+@property (nonatomic,weak)NSLayoutConstraint *spaceCons;
 ///是否设置对齐方式
 @property (nonatomic,assign)BOOL isSetAlign;
 @property (nonatomic,weak)ZLStackView *stackView;
@@ -342,6 +343,11 @@
 - (void)setAlignment:(ZLAlign)alignment {
     if (alignment == _alignment) return;
     _alignment = alignment;
+    [self setNeedsUpdateConstraints];
+}
+- (void)setSpacing:(CGFloat)spacing {
+    if (spacing == _spacing) return;
+    _spacing = spacing;
     [self setNeedsUpdateConstraints];
 }
 - (void)addArrangedSubview:(UIView *)view{

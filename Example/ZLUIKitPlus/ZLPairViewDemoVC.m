@@ -78,13 +78,13 @@
 //    }
     
     ZLStackView *stackView = [ZLStackView new];
-    stackView.horizontal = NO;
+    stackView.horizontal = YES;
     stackView.backgroundColor = UIColor.redColor;
     [self.view addSubview:stackView];
     [stackView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.mas_equalTo(self.view);
-        make.height.mas_equalTo(200);
-        make.width.mas_equalTo(300);
+//        make.height.mas_equalTo(200);
+//        make.width.mas_equalTo(300);
 
     }];
     UILabel *label = UILabel.new;

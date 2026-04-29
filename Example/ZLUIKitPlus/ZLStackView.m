@@ -298,15 +298,6 @@
     }
     return cfg;
 }
-- (CGFloat)zl_frontSpacing {
-    return 0;
-}
-- (CGFloat)zl_startSpacing {
-    return 0;
-}
-- (CGFloat)zl_endSpacing {
-    return 10;
-}
 @end
 
 @interface ZLStackView()
@@ -314,6 +305,14 @@
 @property (nonatomic, strong) NSMutableArray <NSLayoutConstraint *> *constraintsArr;
 @end
 @implementation ZLStackView
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+    }
+    return self;
+}
 - (NSMutableArray<NSLayoutConstraint *> *)viewsWidthOrHeightConstraints {
     if (!_viewsWidthOrHeightConstraints) {
         _viewsWidthOrHeightConstraints = NSMutableArray.array;
@@ -328,7 +327,6 @@
 }
 - (NSMutableArray *)views {
     if (!_views) {
-        self.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
         _views = NSMutableArray.array;
     }
     return _views;
@@ -741,12 +739,12 @@
         switch (view.zl_layoutCfg.alignSelf) {
             case ZLAlignEnd:
             case ZLAlignFill:
-                cons = [view.zl_layoutCfg.trailingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.trailingAnchor constant:-view.zl_endSpacing];
+                cons = [view.zl_layoutCfg.trailingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.trailingAnchor constant:-view.zl_layoutCfg.endSpacing];
                 break;
             case ZLAlignStart:
             case ZLAlignCenter:
             default:
-                cons = [view.zl_layoutCfg.trailingAnchor constraintLessThanOrEqualToAnchor:self.trailingAnchor constant:-view.zl_endSpacing];
+                cons = [view.zl_layoutCfg.trailingAnchor constraintLessThanOrEqualToAnchor:self.trailingAnchor constant:-view.zl_layoutCfg.endSpacing];
                 break;
         }
     }

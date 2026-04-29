@@ -112,7 +112,8 @@
             BOOL oldHidden = [change[NSKeyValueChangeOldKey] boolValue];
             BOOL newHidden = [change[NSKeyValueChangeNewKey] boolValue];
             if (oldHidden == newHidden) return;
-            if (self.stackView) {
+            if (self.stackView &&
+                [self.view.superview isEqual:self.stackView]) {
                 [self.stackView setNeedsUpdateConstraints];
             }
         }
@@ -398,10 +399,6 @@
 - (void)setCustomSpacing:(CGFloat)spacing afterView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
     arrangedSubview.zl_layoutCfg.behindSpacing = spacing;
-}
-- (void)setFlexibleSpacingAfterView:(UIView *)arrangedSubview {
-    if (![self.arrangedViews containsObject:arrangedSubview]) return;
-    
 }
 
 - (void)setAlignment:(ZLAlign)alignment forView:(UIView *)arrangedSubview {

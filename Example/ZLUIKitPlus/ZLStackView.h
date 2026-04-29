@@ -10,8 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSInteger, ZLAlign) {
-    ZLAlignStart,
     ZLAlignCenter,
+    ZLAlignStart,
     ZLAlignEnd,
     ZLAlignFill,
 };
@@ -33,9 +33,18 @@ typedef NS_ENUM(NSInteger, ZLJustify) {
 @property(nonatomic,strong) NSMutableArray<__kindof UIView *> *views;
 
 @property (nonatomic,assign)CGFloat spacing;
+
 - (void)addArrangedSubview:(UIView *)view;
+
 - (void)removeArrangedSubview:(UIView *)view;
+
 - (void)setCustomSpacing:(CGFloat)spacing afterView:(UIView *)arrangedSubview;
+///设置view的alignment，优先级高于stackView的alignment
+- (void)setCustomAlignment:(ZLAlign)alignment forView:(UIView *)arrangedSubview;
+///设置view的alignment方向start间距
+- (void)setCustomAlignmentStartSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview;
+///设置view的alignment方向end间距
+- (void)setCustomAlignmentEndSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview;
 
 @end
 

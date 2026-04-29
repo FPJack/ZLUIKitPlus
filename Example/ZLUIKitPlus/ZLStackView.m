@@ -12,6 +12,9 @@
 @property (nonatomic,assign)CGFloat startSpacing;
 @property (nonatomic,assign)CGFloat endSpacing;
 @property (nonatomic,assign)CGFloat behindSpacing;
+@property (nonatomic,assign)ZLAlign alignSelf;
+///是否设置对齐方式
+@property (nonatomic,assign)BOOL isSetAlign;
 @property (nonatomic,weak)ZLStackView *stackView;
 ///view和UILayoutGuide之间的约束
 @property (nonatomic,strong)NSMutableArray<NSLayoutConstraint *> *viewAndGuideConstraints;
@@ -43,10 +46,10 @@
 @property(nonatomic,readonly)BOOL isFirstView;
 @property(nonatomic,readonly)BOOL isLastView;
 @property(nonatomic,readonly)ZLJustify justify;
-@property(nonatomic,readonly)ZLAlign align;
 @property(nonatomic,readonly)CGFloat spacing;
 @end
 @implementation ZLViewLayoutCfg
+
 - (BOOL)isFirstView {
     return [self.stackView.views indexOfObject:self.view] == 0;
 }
@@ -56,8 +59,8 @@
 - (ZLJustify)justify {
     return self.stackView.justify;
 }
-- (ZLAlign)align {
-    return self.stackView.alignment;
+- (ZLAlign)alignSelf {
+    return self.isSetAlign ? _alignSelf : self.stackView.alignment;
 }
 - (CGFloat)spacing {
     return self.stackView.spacing;
@@ -365,6 +368,24 @@
     if (![self.views containsObject:arrangedSubview]) return;
     arrangedSubview.zl_layoutCfg.behindSpacing = spacing;
 }
+- (void)setCustomAlignment:(ZLAlign)alignment forView:(UIView *)arrangedSubview {
+    if (![self.views containsObject:arrangedSubview]) return;
+    arrangedSubview.zl_layoutCfg.isSetAlign = YES;
+    arrangedSubview.zl_layoutCfg.alignSelf = alignment;
+    [self setNeedsUpdateConstraints];
+}
+///设置view的alignment方向start间距
+- (void)setCustomAlignmentStartSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview {
+    if (![self.views containsObject:arrangedSubview]) return;
+    arrangedSubview.zl_layoutCfg.startSpacing = spacing;
+    [self setNeedsUpdateConstraints];
+}
+///设置view的alignment方向end间距
+- (void)setCustomAlignmentEndSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview {
+    if (![self.views containsObject:arrangedSubview]) return;
+    arrangedSubview.zl_layoutCfg.endSpacing = spacing;
+    [self setNeedsUpdateConstraints];
+}
 - (UIView *)frontViewWithView:(UIView *)view {
     NSInteger idx = [self.views indexOfObject:view];
     if (idx > 0 && idx < self.views.count) {
@@ -520,7 +541,7 @@
 
 - (void)addCenterX:(UIView *)view index:(NSInteger)index {
     if (self.horizontal) return;
-    if (self.alignment == ZLAlignCenter) {
+    if (view.zl_layoutCfg.alignSelf == ZLAlignCenter) {
         NSLayoutConstraint *cons = [view.zl_layoutCfg.centerXAnchor constraintEqualToAnchor:self.layoutMarginsGuide.centerXAnchor];
         cons.active = YES;
         [self.constraintsArr addObject:cons];
@@ -528,7 +549,7 @@
 }
 - (void)addCenterY:(UIView *)view index:(NSInteger)index {
     if (!self.horizontal) return;
-    if (self.alignment == ZLAlignCenter) {
+    if (view.zl_layoutCfg.alignSelf == ZLAlignCenter) {
         NSLayoutConstraint *cons = [view.zl_layoutCfg.centerYAnchor constraintEqualToAnchor:self.layoutMarginsGuide.centerYAnchor];
         cons.active = YES;
         [self.constraintsArr addObject:cons];
@@ -540,7 +561,7 @@
     UIView *fView = [self frontViewWithView:view];
     NSLayoutConstraint *cons;
     if (self.horizontal) {
-        switch (self.alignment) {
+        switch (view.zl_layoutCfg.alignSelf) {
             case ZLAlignStart:
             case ZLAlignFill:
             cons = [view.zl_layoutCfg.topAnchor constraintEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:view.zl_layoutCfg.startSpacing];
@@ -592,7 +613,7 @@
     BOOL isLast = index == self.views.count - 1;
     NSLayoutConstraint *cons;
     if (self.horizontal) {
-        switch (self.alignment) {
+        switch (view.zl_layoutCfg.alignSelf) {
             case ZLAlignEnd:
             case ZLAlignFill:
             cons = [view.zl_layoutCfg.bottomAnchor constraintEqualToAnchor:self.layoutMarginsGuide.bottomAnchor constant:-view.zl_layoutCfg.endSpacing];
@@ -671,7 +692,7 @@
                 break;
         }
     }else {
-        switch (self.alignment) {
+        switch (view.zl_layoutCfg.alignSelf) {
             case ZLAlignStart:
             case ZLAlignFill:
             cons = [view.zl_layoutCfg.leadingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:view.zl_layoutCfg.startSpacing];
@@ -717,7 +738,7 @@
                 break;
         }
     }else {
-        switch (self.alignment) {
+        switch (view.zl_layoutCfg.alignSelf) {
             case ZLAlignEnd:
             case ZLAlignFill:
                 cons = [view.zl_layoutCfg.trailingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.trailingAnchor constant:-view.zl_endSpacing];

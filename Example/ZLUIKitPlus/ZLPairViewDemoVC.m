@@ -37,19 +37,29 @@
 @implementation ZLPairViewDemoVC
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    UIStackView *stackView = TestStackView.new;
-//    [stackView addArrangedSubview:UISwitch.new];
+    
+    
+    
+    {
+//        UIStackView *stackView = TestStackView.new;
+//        [stackView addArrangedSubview:UISwitch.new];
+//        [stackView addArrangedSubview:UISwitch.new];
+//        [stackView addArrangedSubview:UISwitch.new];
+//        [self.view addSubview:stackView];
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            stackView.arrangedSubviews.firstObject.hidden = YES;   stackView.arrangedSubviews.firstObject.hidden = NO;
+//            stackView.arrangedSubviews.firstObject.hidden = YES;
+//            stackView.arrangedSubviews.firstObject.hidden = NO;
 //
-//    stackView.KFC.addTo(self.view).center();
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [stackView addArrangedSubview:UISwitch.new];
-//        [stackView layoutIfNeeded];
-//        [stackView addArrangedSubview:UISwitch.new];
-//        [stackView layoutIfNeeded];
-//        [stackView addArrangedSubview:UISwitch.new];
-//        [stackView layoutIfNeeded];
 //
-//    });
+//        });
+//        [stackView mas_makeConstraints:^(MASConstraintMaker *make) {
+//           make.center.mas_equalTo(self.view);
+//        }];
+    }
+   
+
+   
     self.view.backgroundColor = UIColor.orangeColor;
     
 //    {
@@ -79,24 +89,36 @@
     }];
     UILabel *label = UILabel.new;
     label.text = @"dddd";
-    label.backgroundColor = UIColor.orangeColor;
-    [stackView addArrandgeView:label];
-    {
-        UILabel *label = [[UILabel alloc] init];
-        label.text = @"dasdfd";
-        label.backgroundColor = UIColor.orangeColor;
-      //  [stackView addArrandgeView:label];
-    }
+    label.backgroundColor = UIColor.blueColor;
+    [stackView addArrangedSubview:label];
+    [stackView setCustomSpacing:20 afterView:label];
+
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
        // label.text = @"adfdsafdsfasdffadsf";
     });
-    stackView.alignment = ZLAlignStart;
-    stackView.justify = ZLJustifyCenter;
+    stackView.alignment = ZLAlignCenter;
+    stackView.justify = ZlJustifyFill;
+    stackView.spacing = 10;
     
-    [stackView addArrandgeView:SwitchA.new];
-    [stackView addArrandgeView:SwitchB.new];
+    [stackView addArrangedSubview:SwitchA.new];
+    
+    {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
+        [btn setTitle:@"" forState:UIControlStateNormal];
+        [btn setBackgroundColor:UIColor.greenColor];
+        [stackView addArrangedSubview:btn];
+        
+    }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        label.hidden = YES;
+        
+//        stackView.horizontal = YES;
+//        stackView.alignment = ZLAlignStart;
+//        stackView.justify = ZlJustifySpaceEvenly;
+    });
+//    [stackView addArrandgeView:UIButton.new];
 
-    [stackView updateViewsConstraints];
+    
     
    
     {

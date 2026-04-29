@@ -34,14 +34,7 @@
     *topAnchor;
 @property(nonatomic,readonly,strong)NSLayoutYAxisAnchor
     *bottomAnchor;
-@property(nonatomic,readonly,strong)NSLayoutDimension
-    *widthAnchor;
-@property(nonatomic,readonly,strong)NSLayoutDimension
-    *heightAnchor;
-@property(nonatomic,readonly,strong)NSLayoutXAxisAnchor
-    *centerXAnchor;
-@property(nonatomic,readonly,strong)NSLayoutYAxisAnchor
-    *centerYAnchor;
+
 
 @property(nonatomic,readonly)BOOL isFirstView;
 @property(nonatomic,readonly)BOOL isLastView;
@@ -200,18 +193,7 @@
     }
     return self.view.bottomAnchor;
 }
-- (NSLayoutDimension *)widthAnchor {
-    return self.view.widthAnchor;
-}
-- (NSLayoutDimension *)heightAnchor {
-    return self.view.heightAnchor;
-}
-- (NSLayoutYAxisAnchor *)centerYAnchor {
-    return self.view.centerYAnchor;
-}
-- (NSLayoutXAxisAnchor *)centerXAnchor {
-    return self.view.centerXAnchor;
-}
+
 ///取消view和布局引导之间的所有约束
 - (void)deactivateConstraints {
     if (_viewAndGuideConstraints && _viewAndGuideConstraints.count > 0) {
@@ -540,7 +522,7 @@
 - (void)addCenterX:(UIView *)view index:(NSInteger)index {
     if (self.horizontal) return;
     if (view.zl_layoutCfg.alignSelf == ZLAlignCenter) {
-        NSLayoutConstraint *cons = [view.zl_layoutCfg.centerXAnchor constraintEqualToAnchor:self.layoutMarginsGuide.centerXAnchor];
+        NSLayoutConstraint *cons = [view.centerXAnchor constraintEqualToAnchor:self.layoutMarginsGuide.centerXAnchor];
         cons.active = YES;
         [self.constraintsArr addObject:cons];
     }
@@ -548,7 +530,7 @@
 - (void)addCenterY:(UIView *)view index:(NSInteger)index {
     if (!self.horizontal) return;
     if (view.zl_layoutCfg.alignSelf == ZLAlignCenter) {
-        NSLayoutConstraint *cons = [view.zl_layoutCfg.centerYAnchor constraintEqualToAnchor:self.layoutMarginsGuide.centerYAnchor];
+        NSLayoutConstraint *cons = [view.centerYAnchor constraintEqualToAnchor:self.layoutMarginsGuide.centerYAnchor];
         cons.active = YES;
         [self.constraintsArr addObject:cons];
     }

@@ -49,6 +49,7 @@
     *widthAnchor;
 @property(nonatomic,readonly)NSLayoutDimension
     *heightAnchor;
+@property (nonatomic,readonly)UIEdgeInsets insets;
 @property(nonatomic,assign)BOOL isFirstView;
 @property(nonatomic,assign)BOOL isLastView;
 @property(nonatomic,readonly)ZLJustify justify;
@@ -78,6 +79,15 @@
     [self addTrailingCons];
     [self addCenterXCons];
     [self addCenterYCons];
+    
+    NSMutableArray *mArr = NSMutableArray.array;
+    if (self.leadingCons) [mArr addObject:self.leadingCons];
+    if (self.topCons) [mArr addObject:self.topCons];
+    if (self.trailingCons) [mArr addObject:self.trailingCons];
+    if (self.bottomCons) [mArr addObject:self.bottomCons];
+    if (self.centerXCons) [mArr addObject:self.centerXCons];
+    if (self.centerYCons) [mArr addObject:self.centerYCons];
+    [NSLayoutConstraint activateConstraints:mArr];
 }
 
 - (NSLayoutConstraint *)addLeadingCons {
@@ -85,15 +95,16 @@
     UIView *frontView = self.frontView;
     ZLViewLayoutCfg *fCfg = frontView.zl_layoutCfg;
     NSLayoutConstraint *cons;
+    CGFloat leadingInset = self.insets.left;
     if (self.stackView.horizontal) {
         if (self.isFirstView) {
             switch (self.justify) {
                 case ZLJustifyCenter:
                 case ZlJustifyEnd:
-                    cons = [self.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.stackView.layoutMarginsGuide.leadingAnchor];
+                    cons = [self.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.stackView.leadingAnchor constant:leadingInset];
                     break;
                 default:
-                    cons = [self.leadingAnchor constraintEqualToAnchor:self.stackView.layoutMarginsGuide.leadingAnchor constant:0];
+                    cons = [self.leadingAnchor constraintEqualToAnchor:self.stackView.leadingAnchor constant:leadingInset];
                     break;
             }
         }else {
@@ -107,17 +118,16 @@
         switch (self.alignSelf) {
             case ZLAlignStart:
             case ZLAlignFill:
-                cons = [self.leadingAnchor constraintEqualToAnchor:self.stackView.layoutMarginsGuide.leadingAnchor constant:self.startSpacing];
+                cons = [self.leadingAnchor constraintEqualToAnchor:self.stackView.leadingAnchor constant:self.startSpacing + leadingInset];
                 break;
             case ZLAlignCenter:
             case ZLAlignEnd:
-                cons = [self.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.stackView.layoutMarginsGuide.leadingAnchor constant:self.startSpacing];
+                cons = [self.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.stackView.leadingAnchor constant:self.startSpacing + leadingInset];
                 break;
             default:
                 break;
         }
     }
-    cons.active = YES;
     _leadingCons = cons;
     return _leadingCons;
 }
@@ -126,15 +136,16 @@
     UIView *frontView = self.frontView;
     ZLViewLayoutCfg *fCfg = frontView.zl_layoutCfg;
     NSLayoutConstraint *cons;
+    CGFloat insetTop = self.insets.top;
     if (!self.stackView.horizontal) {
         if (self.isFirstView) {
             switch (self.justify) {
                 case ZLJustifyCenter:
                 case ZlJustifyEnd:
-                    cons = [self.topAnchor constraintGreaterThanOrEqualToAnchor:self.stackView.layoutMarginsGuide.topAnchor];
+                    cons = [self.topAnchor constraintGreaterThanOrEqualToAnchor:self.stackView.topAnchor constant:insetTop];
                     break;
                 default:
-                    cons = [self.topAnchor constraintEqualToAnchor:self.stackView.layoutMarginsGuide.topAnchor constant:0];
+                    cons = [self.topAnchor constraintEqualToAnchor:self.stackView.topAnchor constant:insetTop];
                     break;
             }
         }else {
@@ -148,17 +159,16 @@
         switch (self.alignSelf) {
             case ZLAlignStart:
             case ZLAlignFill:
-                cons = [self.topAnchor constraintEqualToAnchor:self.stackView.layoutMarginsGuide.topAnchor constant:self.startSpacing];
+                cons = [self.topAnchor constraintEqualToAnchor:self.stackView.topAnchor constant:self.startSpacing + insetTop];
                 break;
             case ZLAlignCenter:
             case ZLAlignEnd:
-                cons = [self.topAnchor constraintGreaterThanOrEqualToAnchor:self.stackView.layoutMarginsGuide.topAnchor constant:self.startSpacing];
+                cons = [self.topAnchor constraintGreaterThanOrEqualToAnchor:self.stackView.topAnchor constant:self.startSpacing + insetTop];
                 break;
             default:
                 break;
         }
     }
-    cons.active = YES;
     _topCons = cons;
     return _topCons;
 }
@@ -166,15 +176,16 @@
 - (NSLayoutConstraint *)addTrailingCons {
     if (_trailingCons) return _trailingCons;
     NSLayoutConstraint *cons;
+    CGFloat insetTrailing = self.insets.right;
     if (!self.stackView.horizontal) {
         switch (self.alignSelf) {
             case ZLAlignStart:
             case ZLAlignCenter:
-                cons = [self.trailingAnchor constraintLessThanOrEqualToAnchor:self.stackView.layoutMarginsGuide.trailingAnchor constant:-self.endSpacing];;
+                cons = [self.trailingAnchor constraintLessThanOrEqualToAnchor:self.stackView.trailingAnchor constant:-self.endSpacing - insetTrailing];;
                 break;
             case ZLAlignFill:
             case ZLAlignEnd:
-                cons = [self.trailingAnchor constraintEqualToAnchor:self.stackView.layoutMarginsGuide.trailingAnchor constant:-self.endSpacing];
+                cons = [self.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor constant:-self.endSpacing - insetTrailing];
                 break;
             default:
                 break;
@@ -183,30 +194,30 @@
         if (self.isLastView) {
 
             if (self.justify == ZlJustifyFillEqually || self.justify == ZlJustifyFill) {
-                cons = [self.trailingAnchor constraintEqualToAnchor:self.stackView.layoutMarginsGuide.trailingAnchor constant:0];
+                cons = [self.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor constant:-insetTrailing];
             }else {
-                cons = [self.trailingAnchor constraintLessThanOrEqualToAnchor:self.stackView.layoutMarginsGuide.trailingAnchor];
+                cons = [self.trailingAnchor constraintLessThanOrEqualToAnchor:self.stackView.trailingAnchor constant:-insetTrailing];
                 cons.priority = UILayoutPriorityDefaultHigh;
             }
            
         }
     }
-    cons.active = YES;
     _trailingCons = cons;
     return _trailingCons;
 }
 - (NSLayoutConstraint *)addBottomCons {
     if (_bottomCons) return _bottomCons;
     NSLayoutConstraint *cons;
+    CGFloat insetBottom = self.insets.bottom;
     if (self.stackView.horizontal) {//水平才添加底部约束
         switch (self.alignSelf) {
             case ZLAlignStart:
             case ZLAlignCenter:
-                cons = [self.bottomAnchor constraintLessThanOrEqualToAnchor:self.stackView.layoutMarginsGuide.bottomAnchor constant:-self.endSpacing];;
+                cons = [self.bottomAnchor constraintLessThanOrEqualToAnchor:self.stackView.bottomAnchor constant:-self.endSpacing - insetBottom];;
                 break;
             case ZLAlignFill:
             case ZLAlignEnd:
-                cons = [self.bottomAnchor constraintEqualToAnchor:self.stackView.layoutMarginsGuide.bottomAnchor constant:-self.endSpacing];
+                cons = [self.bottomAnchor constraintEqualToAnchor:self.stackView.bottomAnchor constant:-self.endSpacing - insetBottom];
                 break;
             default:
                 break;
@@ -215,14 +226,13 @@
         if (self.isLastView) {
             if (self.justify == ZlJustifyFillEqually ||
                 self.justify == ZlJustifyFill) {
-                cons = [self.bottomAnchor constraintEqualToAnchor:self.stackView.layoutMarginsGuide.bottomAnchor];
+                cons = [self.bottomAnchor constraintEqualToAnchor:self.stackView.bottomAnchor constant:-insetBottom];
             }else {
-                cons = [self.bottomAnchor constraintLessThanOrEqualToAnchor:self.stackView.layoutMarginsGuide.bottomAnchor constant:0];
+                cons = [self.bottomAnchor constraintLessThanOrEqualToAnchor:self.stackView.bottomAnchor constant:-insetBottom];
                 cons.priority = UILayoutPriorityDefaultHigh;
             }
         }
     }
-    cons.active = YES;
     _bottomCons = cons;
     return _bottomCons;
 }
@@ -234,7 +244,6 @@
             cons = [self.centerXAnchor constraintEqualToAnchor:self.stackView.centerXAnchor];
         }
     }
-    cons.active = YES;
     _centerXCons = cons;
     return _centerXCons;
 }
@@ -246,7 +255,6 @@
             cons = [self.centerYAnchor constraintEqualToAnchor:self.stackView.centerYAnchor];
         }
     }
-    cons.active = YES;
     _centerYCons = cons;
     return _centerYCons;
 }
@@ -290,16 +298,16 @@
                 [self.stackView setNeedsUpdateConstraints];
             }
         }
-    if ([keyPath isEqualToString:@"bounds"]) {
-        CGRect oldBounds = [change[NSKeyValueChangeOldKey] CGRectValue];
-        CGRect newBounds = [change[NSKeyValueChangeNewKey] CGRectValue];
-        if (CGSizeEqualToSize(oldBounds.size, newBounds.size)) return;
-        if (self.stackView &&
-            [self.view.superview isEqual:self.stackView]) {
+//    if ([keyPath isEqualToString:@"bounds"]) {
+//        CGRect oldBounds = [change[NSKeyValueChangeOldKey] CGRectValue];
+//        CGRect newBounds = [change[NSKeyValueChangeNewKey] CGRectValue];
+//        if (CGSizeEqualToSize(oldBounds.size, newBounds.size)) return;
+//        if (self.stackView &&
+//            [self.view.superview isEqual:self.stackView]) {
 //            self.stackView.markedDirty = YES;
 //            [self.stackView setNeedsLayout];
-        }
-    }
+//        }
+//    }
 }
 - (void)dealloc
 {
@@ -332,14 +340,19 @@
 - (NSLayoutDimension *)heightAnchor {
     return self.view.heightAnchor;
 }
+- (UIEdgeInsets)insets {
+    return self.stackView.insets;
+}
 ///取消view和布局引导之间的所有约束
 - (void)deactivateConstraints {
-    self.leadingCons.active = NO;
-    self.topCons.active = NO;
-    self.trailingCons.active = NO;
-    self.bottomCons.active = NO;
-    self.centerXCons.active = NO;
-    self.centerYCons.active = NO;
+    NSMutableArray *mArr = NSMutableArray.array;
+    if (self.leadingCons) [mArr addObject:self.leadingCons];
+    if (self.topCons) [mArr addObject:self.topCons];
+    if (self.trailingCons) [mArr addObject:self.trailingCons];
+    if (self.bottomCons) [mArr addObject:self.bottomCons];
+    if (self.centerXCons) [mArr addObject:self.centerXCons];
+    if (self.centerYCons) [mArr addObject:self.centerYCons];
+    [NSLayoutConstraint deactivateConstraints:mArr];
 }
 @end
 
@@ -374,8 +387,6 @@
     }
     return _viewsWidthOrHeightConstraints;
 }
-
-
 - (NSMutableArray<__kindof UIView *> *)arrangedViews {
     if (!_arrangedViews) {
         _arrangedViews = NSMutableArray.array;
@@ -664,11 +675,19 @@
 }
 - (void)layoutSubviews {
     [super layoutSubviews];
-    if (!self.markedDirty) return;
-    [self refreshArrangedSubviews];
-    [NSLayoutConstraint deactivateConstraints:_viewsWidthOrHeightConstraints.allObjects];
-    [_viewsWidthOrHeightConstraints removeAllObjects];
+    [self.arrangedViews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+       NSLog(@"view frame:%f",obj.frame.size.height);
+    }];
     
+    if (!self.markedDirty) return;
+    
+    [self refreshArrangedSubviews];
+    
+    if (_viewsWidthOrHeightConstraints.count > 0) {
+        [NSLayoutConstraint deactivateConstraints:_viewsWidthOrHeightConstraints.allObjects];
+        [_viewsWidthOrHeightConstraints removeAllObjects];
+    }
+   
     NSInteger visibleCount = self.arrangedViews.count;
     for (int i = 0 ; i < visibleCount ; i ++) {
         UIView *view= self.arrangedViews[i];

@@ -196,62 +196,26 @@
     
     
     
-    ZLStackView *stackView = [ZLStackView new];
-    stackView.horizontal = YES;
-    stackView.alignment = ZLAlignStart;
-    stackView.justify = ZLJustifyStart;
-    stackView.spacing = 10;
-    stackView.layoutMargins = UIEdgeInsetsMake(10, 10, 10, 10);
-    stackView.backgroundColor = UIColor.redColor;
-    [self.view addSubview:stackView];
-    [stackView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.mas_equalTo(self.view);
-        make.height.mas_equalTo(200);
-        make.width.mas_equalTo(300);
-
-    }];
-   
-    {
-        UILabel *label = UILabel.new;
-        label.text = @"dddd";
-        label.backgroundColor = UIColor.blueColor;
-        [stackView addArrangedSubview:label];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            stackView.horizontal = NO;
-            label.text = @"ddddddddddddddd";
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                label.text = @"add";
-            });
-        });
-        
-//        [stackView setAlignment:ZLAlignFill forView:label];
-        
-    }
     
     {
-        UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
-        [btn setTitle:@"dd" forState:UIControlStateNormal];
-        [btn setBackgroundColor:UIColor.greenColor];
-        [stackView addArrangedSubview:btn];
-
-    }
-    {
-        UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
-        [btn setTitle:@"dd" forState:UIControlStateNormal];
-        [btn setBackgroundColor:UIColor.greenColor];
-        [stackView addArrangedSubview:btn];
-
-    }
-    return;
-    {
         ZLStackView *sk = [ZLStackView new];
-        sk.horizontal = YES;
-        sk.alignment = ZLAlignCenter;
-        sk.justify = ZlJustifySpaceEvenly;
+        sk.horizontal = NO;
+        sk.alignment = ZLAlignFill;
+        sk.justify = ZlJustifyFill;
         sk.spacing = 10;
-        sk.layoutMargins = UIEdgeInsetsMake(20, 20, 20, 20);
+        sk.insets = UIEdgeInsetsMake(20, 20, 20, 20);
         sk.backgroundColor = UIColor.grayColor;
-        [sk addArrangedSubview:stackView];
+        UIView *view = UIView.new;
+        view.backgroundColor = UIColor.redColor;
+        
+        
+        [sk addArrangedSubview:self.getStackView];
+        [sk addArrangedSubview:self.getStackView];
+        [sk addArrangedSubview:self.getStackView];
+        [sk addArrangedSubview:self.getStackView];
+        [sk addArrangedSubview:self.getStackView];
+        [sk addArrangedSubview:self.getStackView];
+        
         [self.view addSubview:sk];
         [sk mas_makeConstraints:^(MASConstraintMaker *make) {
             make.center.mas_equalTo(self.view);
@@ -270,6 +234,43 @@
 
     
     
+}
+- (ZLStackView *)getStackView {
+    ZLStackView *stackView = [ZLStackView new];
+    stackView.horizontal = NO;
+    stackView.alignment = ZLAlignStart;
+    stackView.justify = ZLJustifyStart;
+    stackView.spacing = 10;
+    stackView.layoutMargins = UIEdgeInsetsMake(10, 10, 10, 10);
+    stackView.backgroundColor = UIColor.redColor;
+   
+    {
+        UILabel *label = UILabel.new;
+        label.text = @"dddd";
+        label.backgroundColor = UIColor.blueColor;
+        [stackView addArrangedSubview:label];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            label.text = @"dddddaddArrangedSubviewddddddd";
+        });
+    }
+    
+    {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
+        [btn setTitle:@"dd" forState:UIControlStateNormal];
+        [btn setBackgroundColor:UIColor.greenColor];
+        [stackView addArrangedSubview:btn];
+
+    }
+    {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
+        [btn setTitle:@"dd" forState:UIControlStateNormal];
+        [btn setBackgroundColor:UIColor.greenColor];
+        [stackView addArrangedSubview:btn];
+
+    }
+    [stackView addArrangedSubview:UISwitch.new];
+
+    return stackView;
 }
 //- (void)viewDidLoad {
 //    [super viewDidLoad];

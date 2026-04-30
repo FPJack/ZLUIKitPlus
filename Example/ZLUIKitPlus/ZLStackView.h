@@ -39,6 +39,8 @@ typedef NS_ENUM(NSInteger, ZLJustify) {
 
 @property (nonatomic,assign)BOOL markedDirty;
 
+@property(nonatomic,assign)UIEdgeInsets insets;
+
 @property(nonatomic,strong) NSMutableArray<__kindof UIView *> *arrangedViews;
 
 @property(nonatomic,strong) NSMutableArray<__kindof UIView *> *allViews;

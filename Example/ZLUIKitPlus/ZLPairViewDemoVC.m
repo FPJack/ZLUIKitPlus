@@ -25,12 +25,45 @@
 @end
 @implementation TestStackView
 
-
+- (void)layoutSubviews {
+    [super layoutSubviews];
+}
 @end
 @implementation ZLPairViewDemoVC
+- (void)test {
+    UIView *view = UIView.new;
+    view.backgroundColor = UIColor.grayColor;
+    [self.view addSubview:view];
+    [view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.mas_equalTo(300);
+        make.center.mas_equalTo(self.view);
+    }];
+    
+    {
+        UIView *v = UIView.new;
+        v.backgroundColor = UIColor.blueColor;
+        [view addSubview:v];
+        [v mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.leading.greaterThanOrEqualTo(view);
+            make.bottom.trailing.lessThanOrEqualTo(view);
+            make.centerX.mas_equalTo(view);
+        }];
+        
+        {
+            UISwitch *sw = UISwitch.new;
+            [v addSubview:sw];
+            [sw mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.leading.greaterThanOrEqualTo(view);
+                make.bottom.trailing.lessThanOrEqualTo(view);
+                make.centerX.mas_equalTo(view);
+            }];
+        }
+    }
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+//    [self test];
+//    return;
     
     
     {
@@ -70,83 +103,105 @@
 //        return;
 //    }
     
+           
+//    {
+//        TestStackView *stackView = [[TestStackView alloc] init];
+//        stackView.axis = UILayoutConstraintAxisVertical;
+//        stackView.alignment = UIStackViewAlignmentCenter;
+//        stackView.distribution = UIStackViewDistributionFill;
+//        stackView.backgroundColor = UIColor.redColor;
+//        [self.view addSubview:stackView];
+//        [stackView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.center.mas_equalTo(self.view);
+//            make.width.mas_equalTo(300);
+//
+//        }];
+//        [stackView addArrangedSubview:UISwitch.new];
+//        return;
+//    }
+    
     BOOL useSystemStackView = NO;
-    NSInteger count = 100;
+    NSInteger count = 200;
     CFAbsoluteTime total = 0;
     CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
 
-    if (useSystemStackView) {
-        TestStackView *stackView = [[TestStackView alloc] init];
-        stackView.axis = UILayoutConstraintAxisVertical;
-        stackView.alignment = UIStackViewAlignmentCenter;
-        stackView.distribution = UIStackViewDistributionFill;
-        stackView.backgroundColor = UIColor.redColor;
-        [self.view addSubview:stackView];
-        [stackView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.mas_equalTo(self.view);
-            make.width.mas_equalTo(300);
-
-        }];
-        for (int i = 0; i < count; i++) {
-           
-            TestStackView *subStackView = [[TestStackView alloc] init];
-            subStackView.tag = 80;
-            subStackView.axis = UILayoutConstraintAxisHorizontal;
-            subStackView.alignment = UIStackViewAlignmentCenter;
-            subStackView.distribution = UIStackViewDistributionFill;
-            UILabel *label = UILabel.new;
-            label.text = [NSString stringWithFormat:@"%d", i];
-            label.font = [UIFont systemFontOfSize:10];
-            label.backgroundColor = UIColor.blueColor;
-            [subStackView addArrangedSubview:label];
-            [subStackView addArrangedSubview:UISwitch.new];
-            [subStackView addArrangedSubview:UISwitch.new];
-
-            [stackView addArrangedSubview:subStackView];
-        }
-    }else {
-        ZLStackView *stackView = [[ZLStackView alloc] init];
-        stackView.horizontal = NO;
-        stackView.alignment = ZLAlignCenter;
-        stackView.justify = ZlJustifyFill;
-        stackView.backgroundColor = UIColor.redColor;
-        [self.view addSubview:stackView];
-        [stackView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.mas_equalTo(self.view);
-            make.width.mas_equalTo(300);
-        }];
-        for (int i = 0; i < count; i++) {
-           
-            ZLStackView *subStackView = [[ZLStackView alloc] init];
-            subStackView.tag = 100;
-            subStackView.horizontal = YES;
-            subStackView.alignment = ZLAlignCenter;
-            subStackView.justify = ZlJustifyFill;
-            UILabel *label = UILabel.new;
-            label.text = [NSString stringWithFormat:@"%d", i];
-            label.font = [UIFont systemFontOfSize:10];
-            label.backgroundColor = UIColor.blueColor;
-            [subStackView addArrangedSubview:label];
-            [subStackView addArrangedSubview:UISwitch.new];
-            [subStackView addArrangedSubview:UISwitch.new];
-
-            [stackView addArrangedSubview:subStackView];
-            
-        }
-        [self.view setNeedsLayout];
-
-        [self.view layoutIfNeeded];
-       
-    }
-    CFAbsoluteTime end = CFAbsoluteTimeGetCurrent();
-
-    total += (end - start);
-    NSLog(@"avg: %.3f ms", total / 100 * 1000);
-    return;
+//    if (useSystemStackView) {
+//        TestStackView *stackView = [[TestStackView alloc] init];
+//        stackView.axis = UILayoutConstraintAxisVertical;
+//        stackView.alignment = UIStackViewAlignmentCenter;
+//        stackView.distribution = UIStackViewDistributionFill;
+//        stackView.backgroundColor = UIColor.redColor;
+//        [self.view addSubview:stackView];
+//        [stackView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.center.mas_equalTo(self.view);
+//            make.width.mas_equalTo(300);
+//
+//        }];
+//        for (int i = 0; i < count; i++) {
+//           
+//            TestStackView *subStackView = [[TestStackView alloc] init];
+//            subStackView.tag = 80;
+//            subStackView.axis = UILayoutConstraintAxisHorizontal;
+//            subStackView.alignment = UIStackViewAlignmentCenter;
+//            subStackView.distribution = UIStackViewDistributionFill;
+//            UILabel *label = UILabel.new;
+//            label.text = [NSString stringWithFormat:@"%d", i];
+//            label.font = [UIFont systemFontOfSize:10];
+//            label.backgroundColor = UIColor.blueColor;
+//            [subStackView addArrangedSubview:label];
+//            [subStackView addArrangedSubview:UISwitch.new];
+//            [subStackView addArrangedSubview:UISwitch.new];
+//
+//            [stackView addArrangedSubview:subStackView];
+//        }
+//    }else {
+//        ZLStackView *stackView = [[ZLStackView alloc] init];
+//        stackView.horizontal = NO;
+//        stackView.alignment = ZLAlignCenter;
+//        stackView.justify = ZlJustifyFill;
+//        stackView.backgroundColor = UIColor.redColor;
+//        [self.view addSubview:stackView];
+//        [stackView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.center.mas_equalTo(self.view);
+//            make.width.mas_equalTo(300);
+//        }];
+//        for (int i = 0; i < count; i++) {
+//           
+//            ZLStackView *subStackView = [[ZLStackView alloc] init];
+//            subStackView.tag = 100;
+//            subStackView.horizontal = YES;
+//            subStackView.alignment = ZLAlignCenter;
+//            subStackView.justify = ZlJustifyFill;
+//            UILabel *label = UILabel.new;
+//            label.text = [NSString stringWithFormat:@"%d", i];
+//            label.font = [UIFont systemFontOfSize:10];
+//            label.backgroundColor = UIColor.blueColor;
+//            [subStackView addArrangedSubview:label];
+//            [subStackView addArrangedSubview:UISwitch.new];
+//            [subStackView addArrangedSubview:UISwitch.new];
+//            subStackView.backgroundColor = UIColor.blueColor;
+//            [stackView addArrangedSubview:subStackView];
+//            
+//        }
+//        [self.view setNeedsLayout];
+//
+//        [self.view layoutIfNeeded];
+//       
+//    }
+//    CFAbsoluteTime end = CFAbsoluteTimeGetCurrent();
+//
+//    total += (end - start);
+//    NSLog(@"avg: %.3f ms", total / 100 * 1000);
+//    return;
     
     
     
     ZLStackView *stackView = [ZLStackView new];
+    stackView.horizontal = YES;
+    stackView.alignment = ZLAlignStart;
+    stackView.justify = ZLJustifyStart;
+    stackView.spacing = 10;
+    stackView.layoutMargins = UIEdgeInsetsMake(10, 10, 10, 10);
     stackView.backgroundColor = UIColor.redColor;
     [self.view addSubview:stackView];
     [stackView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -155,73 +210,65 @@
         make.width.mas_equalTo(300);
 
     }];
-    UILabel *label = UILabel.new;
-    label.text = @"ddddd";
-    label.backgroundColor = UIColor.blueColor;
-    
-    [stackView addArrangedSubview:label];
-    stackView.alignment = ZLAlignCenter;
-    stackView.justify = ZlJustifyFill;
-    stackView.spacing = 10;
-    
-//    [stackView addArrangedSubview:SwitchA.new];
-
-//    {
-        UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
-        [btn setTitle:@"button" forState:UIControlStateNormal];
-        [btn setBackgroundColor:UIColor.greenColor];
    
-        [stackView addArrangedSubview:btn];
-//        [stackView setFlexibleSpacingAfterView:btn];
     {
-        UISwitch *sw = UISwitch.new;
-        [stackView addArrangedSubview:sw];
-        [stackView setFlexibleSpacing:YES afterView:sw];
+        UILabel *label = UILabel.new;
+        label.text = @"dddd";
+        label.backgroundColor = UIColor.blueColor;
+        [stackView addArrangedSubview:label];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [stackView setFlexibleSpacing:NO afterView:sw];
-            [stackView setFlexibleSpacing:YES afterView:label];
-
+//            stackView.horizontal = NO;
+            label.text = @"ddddddddddddddd";
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                label.text = @"add";
+            });
         });
+        
+//        [stackView setAlignment:ZLAlignFill forView:label];
+        
+    }
+    
+    {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
+        [btn setTitle:@"dd" forState:UIControlStateNormal];
+        [btn setBackgroundColor:UIColor.greenColor];
+        [stackView addArrangedSubview:btn];
 
     }
-        [stackView addArrangedSubview:UISwitch.new];
-
-//
-//    }
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-       
-//        stackView.spacing = 50;
-//        stackView.horizontal = YES;
-//        stackView.alignment = ZLAlignStart;
-//        stackView.justify = ZlJustifySpaceEvenly;
-    });
-//    [stackView addArrandgeView:UIButton.new];
-
-    
-    
-   
     {
-        UIStackView *stackView = [[UIStackView alloc] init];
-        stackView.axis = UILayoutConstraintAxisHorizontal;
-        stackView.alignment = UIStackViewAlignmentFill;
-        stackView.distribution = UIStackViewDistributionFill;
-        stackView.spacing = 10;
-        stackView.backgroundColor = UIColor.greenColor;
-        stackView.translatesAutoresizingMaskIntoConstraints = NO;
-//        [self.view addSubview:stackView];
-//        UILabel *label = UILabel.new;
-//        label.text = @"dasdfddasdfddasdfddasdfddasdfddasdfddasdfddasdfddasdfddasdfddasdfddasdfddasdfddasdfddasdfd";
-//        label.backgroundColor = UIColor.orangeColor;
-//        [stackView addArrangedSubview:label];
-//        [stackView addArrangedSubview:UISwitch.new];
-//        [stackView addArrangedSubview:UISwitch.new];
-//        
-//        [stackView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.center.mas_equalTo(self.view);
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
+        [btn setTitle:@"dd" forState:UIControlStateNormal];
+        [btn setBackgroundColor:UIColor.greenColor];
+        [stackView addArrangedSubview:btn];
+
+    }
+    return;
+    {
+        ZLStackView *sk = [ZLStackView new];
+        sk.horizontal = YES;
+        sk.alignment = ZLAlignCenter;
+        sk.justify = ZlJustifySpaceEvenly;
+        sk.spacing = 10;
+        sk.layoutMargins = UIEdgeInsetsMake(20, 20, 20, 20);
+        sk.backgroundColor = UIColor.grayColor;
+        [sk addArrangedSubview:stackView];
+        [self.view addSubview:sk];
+        [sk mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.mas_equalTo(self.view);
 //            make.height.mas_equalTo(200);
 //            make.width.mas_equalTo(300);
-//        }];
+
+        }];
     }
+    
+    {
+       
+//        [stackView addArrangedSubview:UISwitch.new];
+
+    }
+   
+
+    
     
 }
 //- (void)viewDidLoad {

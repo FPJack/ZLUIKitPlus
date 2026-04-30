@@ -17,44 +17,239 @@
 @property (nonatomic,assign)BOOL    isFlexSpace;
 @property (nonatomic,assign)ZLAlign alignSelf;
 
-@property (nonatomic,weak)NSLayoutConstraint *alignStartCons;
-@property (nonatomic,weak)NSLayoutConstraint *alignEndCons;
-@property (nonatomic,weak)NSLayoutConstraint *spaceCons;
+
+@property (nonatomic,weak)NSLayoutConstraint *leadingCons;
+@property (nonatomic,weak)NSLayoutConstraint *trailingCons;
+@property (nonatomic,weak)NSLayoutConstraint *topCons;
+@property (nonatomic,weak)NSLayoutConstraint *bottomCons;
+@property (nonatomic,weak)NSLayoutConstraint *centerXCons;
+@property (nonatomic,weak)NSLayoutConstraint *centerYCons;
+@property (nonatomic,weak)NSLayoutConstraint *widthCons;
+@property (nonatomic,weak)NSLayoutConstraint *heightCons;
+
 ///是否设置对齐方式
 @property (nonatomic,assign)BOOL isSetAlign;
 @property (nonatomic,weak)ZLStackView *stackView;
-///view和UILayoutGuide之间的约束
-@property (nonatomic,strong)NSMutableSet<NSLayoutConstraint *> *viewAndGuideConstraints;
-///两边边界的宽度或者高度anchor数据
-@property (nonatomic,strong)NSMutableSet<NSLayoutDimension *> *boundaryWithOrHeightGapAnchors;
-///中心宽度或者高度anchor数据
-@property (nonatomic,strong)NSMutableSet<NSLayoutDimension *> *centerWidthOrHeightGapAnchors;
+
 
 @property (nonatomic,weak)UIView *view;
-@property (nonatomic,strong)UILayoutGuide *endGapGuide;
-@property (nonatomic,strong)UILayoutGuide *startGapGuide;
-@property(nonatomic,readonly,strong)NSLayoutXAxisAnchor
+@property(nonatomic,readonly)NSLayoutXAxisAnchor
     *leadingAnchor;
-@property(nonatomic,readonly,strong)NSLayoutXAxisAnchor *trailingAnchor;
-@property(nonatomic,readonly,strong)NSLayoutYAxisAnchor
+@property(nonatomic,readonly)NSLayoutXAxisAnchor *trailingAnchor;
+@property(nonatomic,readonly)NSLayoutYAxisAnchor
     *topAnchor;
-@property(nonatomic,readonly,strong)NSLayoutYAxisAnchor
+@property(nonatomic,readonly)NSLayoutYAxisAnchor
     *bottomAnchor;
+@property(nonatomic,readonly)NSLayoutXAxisAnchor
+    *centerXAnchor;
+@property(nonatomic,readonly)NSLayoutYAxisAnchor
+    *centerYAnchor;
 
-
+@property(nonatomic,readonly)NSLayoutDimension
+    *widthAnchor;
+@property(nonatomic,readonly)NSLayoutDimension
+    *heightAnchor;
 @property(nonatomic,assign)BOOL isFirstView;
 @property(nonatomic,assign)BOOL isLastView;
 @property(nonatomic,readonly)ZLJustify justify;
 @property(nonatomic,readonly)CGFloat spacing;
 @end
 @implementation ZLViewLayoutCfg
+- (UIView *)frontView {
+    NSInteger idx = [self.stackView.arrangedViews indexOfObject:self.view];
+    if (idx > 0 && idx < self.stackView.arrangedViews.count) {
+        return self.stackView.arrangedViews[idx - 1];
+        
+    }
+    return self.stackView;
+}
+- (UIView *)behindView {
+    NSInteger idx = [self.stackView.arrangedViews indexOfObject:self.view];
+    if (idx < self.stackView.arrangedViews.count - 1 && idx >= 0) {
+        return self.stackView.arrangedViews[idx + 1];
+    }
+    return self.stackView;
+}
 
-//- (BOOL)isFirstView {
-//    return [self.stackView.arrangedViews indexOfObject:self.view] == 0;
-//}
-//- (BOOL)isLastView {
-//    return [self.stackView.arrangedViews indexOfObject:self.view] == self.stackView.arrangedViews.count - 1;
-//}
+- (void)addAllConstraints {
+    [self addTopCons];
+    [self addLeadingCons];
+    [self addBottomCons];
+    [self addTrailingCons];
+    [self addCenterXCons];
+    [self addCenterYCons];
+}
+
+- (NSLayoutConstraint *)addLeadingCons {
+    if (_leadingCons) return _leadingCons;
+    UIView *frontView = self.frontView;
+    ZLViewLayoutCfg *fCfg = frontView.zl_layoutCfg;
+    NSLayoutConstraint *cons;
+    if (self.stackView.horizontal) {
+        if (self.isFirstView) {
+            switch (self.justify) {
+                case ZLJustifyCenter:
+                case ZlJustifyEnd:
+                    cons = [self.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.stackView.layoutMarginsGuide.leadingAnchor];
+                    break;
+                default:
+                    cons = [self.leadingAnchor constraintEqualToAnchor:self.stackView.layoutMarginsGuide.leadingAnchor constant:0];
+                    break;
+            }
+        }else {
+            if (self.isFlexSpace) {
+                cons = [self.leadingAnchor constraintGreaterThanOrEqualToAnchor:fCfg.trailingAnchor constant:fCfg.behindSpacing];
+            }else {
+                cons = [self.leadingAnchor constraintEqualToAnchor:fCfg.trailingAnchor constant:fCfg.behindSpacing];
+            }
+        }
+    }else {
+        switch (self.alignSelf) {
+            case ZLAlignStart:
+            case ZLAlignFill:
+                cons = [self.leadingAnchor constraintEqualToAnchor:self.stackView.layoutMarginsGuide.leadingAnchor constant:self.startSpacing];
+                break;
+            case ZLAlignCenter:
+            case ZLAlignEnd:
+                cons = [self.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.stackView.layoutMarginsGuide.leadingAnchor constant:self.startSpacing];
+                break;
+            default:
+                break;
+        }
+    }
+    cons.active = YES;
+    _leadingCons = cons;
+    return _leadingCons;
+}
+- (NSLayoutConstraint *)addTopCons {
+    if (_topCons) return _topCons;
+    UIView *frontView = self.frontView;
+    ZLViewLayoutCfg *fCfg = frontView.zl_layoutCfg;
+    NSLayoutConstraint *cons;
+    if (!self.stackView.horizontal) {
+        if (self.isFirstView) {
+            switch (self.justify) {
+                case ZLJustifyCenter:
+                case ZlJustifyEnd:
+                    cons = [self.topAnchor constraintGreaterThanOrEqualToAnchor:self.stackView.layoutMarginsGuide.topAnchor];
+                    break;
+                default:
+                    cons = [self.topAnchor constraintEqualToAnchor:self.stackView.layoutMarginsGuide.topAnchor constant:0];
+                    break;
+            }
+        }else {
+            if (self.isFlexSpace) {
+                cons = [self.topAnchor constraintGreaterThanOrEqualToAnchor:fCfg.bottomAnchor constant:fCfg.behindSpacing];
+            }else {
+                cons = [self.topAnchor constraintEqualToAnchor:fCfg.bottomAnchor constant:fCfg.behindSpacing];
+            }
+        }
+    }else {
+        switch (self.alignSelf) {
+            case ZLAlignStart:
+            case ZLAlignFill:
+                cons = [self.topAnchor constraintEqualToAnchor:self.stackView.layoutMarginsGuide.topAnchor constant:self.startSpacing];
+                break;
+            case ZLAlignCenter:
+            case ZLAlignEnd:
+                cons = [self.topAnchor constraintGreaterThanOrEqualToAnchor:self.stackView.layoutMarginsGuide.topAnchor constant:self.startSpacing];
+                break;
+            default:
+                break;
+        }
+    }
+    cons.active = YES;
+    _topCons = cons;
+    return _topCons;
+}
+
+- (NSLayoutConstraint *)addTrailingCons {
+    if (_trailingCons) return _trailingCons;
+    NSLayoutConstraint *cons;
+    if (!self.stackView.horizontal) {
+        switch (self.alignSelf) {
+            case ZLAlignStart:
+            case ZLAlignCenter:
+                cons = [self.trailingAnchor constraintLessThanOrEqualToAnchor:self.stackView.layoutMarginsGuide.trailingAnchor constant:-self.endSpacing];;
+                break;
+            case ZLAlignFill:
+            case ZLAlignEnd:
+                cons = [self.trailingAnchor constraintEqualToAnchor:self.stackView.layoutMarginsGuide.trailingAnchor constant:-self.endSpacing];
+                break;
+            default:
+                break;
+        }
+    }else {
+        if (self.isLastView) {
+
+            if (self.justify == ZlJustifyFillEqually || self.justify == ZlJustifyFill) {
+                cons = [self.trailingAnchor constraintEqualToAnchor:self.stackView.layoutMarginsGuide.trailingAnchor constant:0];
+            }else {
+                cons = [self.trailingAnchor constraintLessThanOrEqualToAnchor:self.stackView.layoutMarginsGuide.trailingAnchor];
+                cons.priority = UILayoutPriorityDefaultHigh;
+            }
+           
+        }
+    }
+    cons.active = YES;
+    _trailingCons = cons;
+    return _trailingCons;
+}
+- (NSLayoutConstraint *)addBottomCons {
+    if (_bottomCons) return _bottomCons;
+    NSLayoutConstraint *cons;
+    if (self.stackView.horizontal) {//水平才添加底部约束
+        switch (self.alignSelf) {
+            case ZLAlignStart:
+            case ZLAlignCenter:
+                cons = [self.bottomAnchor constraintLessThanOrEqualToAnchor:self.stackView.layoutMarginsGuide.bottomAnchor constant:-self.endSpacing];;
+                break;
+            case ZLAlignFill:
+            case ZLAlignEnd:
+                cons = [self.bottomAnchor constraintEqualToAnchor:self.stackView.layoutMarginsGuide.bottomAnchor constant:-self.endSpacing];
+                break;
+            default:
+                break;
+        }
+    }else {
+        if (self.isLastView) {
+            if (self.justify == ZlJustifyFillEqually ||
+                self.justify == ZlJustifyFill) {
+                cons = [self.bottomAnchor constraintEqualToAnchor:self.stackView.layoutMarginsGuide.bottomAnchor];
+            }else {
+                cons = [self.bottomAnchor constraintLessThanOrEqualToAnchor:self.stackView.layoutMarginsGuide.bottomAnchor constant:0];
+                cons.priority = UILayoutPriorityDefaultHigh;
+            }
+        }
+    }
+    cons.active = YES;
+    _bottomCons = cons;
+    return _bottomCons;
+}
+- (NSLayoutConstraint *)addCenterXCons {
+    if (_centerXCons) return _centerXCons;
+    NSLayoutConstraint *cons;
+    if(!self.stackView.horizontal) {
+        if (self.alignSelf == ZLAlignCenter) {
+            cons = [self.centerXAnchor constraintEqualToAnchor:self.stackView.centerXAnchor];
+        }
+    }
+    cons.active = YES;
+    _centerXCons = cons;
+    return _centerXCons;
+}
+- (NSLayoutConstraint *)addCenterYCons {
+    if (_centerYCons) return _centerYCons;
+    NSLayoutConstraint *cons;
+    if(self.stackView.horizontal) {
+        if (self.alignSelf == ZLAlignCenter) {
+            cons = [self.centerYAnchor constraintEqualToAnchor:self.stackView.centerYAnchor];
+        }
+    }
+    cons.active = YES;
+    _centerYCons = cons;
+    return _centerYCons;
+}
 - (ZLJustify)justify {
     return self.stackView.justify;
 }
@@ -72,38 +267,16 @@
 }
 
 - (CGFloat)behindSpacing {
-    switch (self.justify) {
-        case ZlJustifySpaceAround:
-        case ZlJustifySpaceBetween:
-        case ZlJustifySpaceEvenly:
-            return 0;
-        default:
-            break;
-    }
+    if (self.isLastView) return 0;
     if (_behindSpacing > 0) return _behindSpacing;
     return self.spacing;
 }
-- (NSMutableSet<NSLayoutConstraint *> *)viewAndGuideConstraints {
-    if (!_viewAndGuideConstraints) {
-        _viewAndGuideConstraints = NSMutableSet.set;
-    }
-    return _viewAndGuideConstraints;
-}
-- (NSMutableSet<NSLayoutDimension *> *)boundaryWithOrHeightGapAnchors {
-    if (!_boundaryWithOrHeightGapAnchors) {
-        _boundaryWithOrHeightGapAnchors = NSMutableSet.set;
-    }
-    return _boundaryWithOrHeightGapAnchors;
-}
-- (NSMutableSet<NSLayoutDimension *> *)centerWidthOrHeightGapAnchors {
-    if (!_centerWidthOrHeightGapAnchors) {
-        _centerWidthOrHeightGapAnchors = NSMutableSet.set;
-    }
-    return _centerWidthOrHeightGapAnchors;
-}
+
 - (void)setView:(UIView *)view {
     _view = view;
     [view addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+//    [view addObserver:self forKeyPath:@"bounds" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -117,171 +290,59 @@
                 [self.stackView setNeedsUpdateConstraints];
             }
         }
+    if ([keyPath isEqualToString:@"bounds"]) {
+        CGRect oldBounds = [change[NSKeyValueChangeOldKey] CGRectValue];
+        CGRect newBounds = [change[NSKeyValueChangeNewKey] CGRectValue];
+        if (CGSizeEqualToSize(oldBounds.size, newBounds.size)) return;
+        if (self.stackView &&
+            [self.view.superview isEqual:self.stackView]) {
+//            self.stackView.markedDirty = YES;
+//            [self.stackView setNeedsLayout];
+        }
+    }
 }
 - (void)dealloc
 {
     [self.view removeObserver:self forKeyPath:@"hidden"];
+//    [self.view removeObserver:self forKeyPath:@"bounds"];
+
 }
-- (UILayoutGuide *)endGapGuide {
-    if (!_endGapGuide) {
-        _endGapGuide = [[UILayoutGuide alloc] init];
-    }
-    return _endGapGuide;
-}
-- (UILayoutGuide *)startGapGuide {
-    if (!_startGapGuide) {
-        _startGapGuide = [[UILayoutGuide alloc] init];
-    }
-    return _startGapGuide;
-}
+
 - (NSLayoutXAxisAnchor *)leadingAnchor {
-    if (self.stackView.horizontal) {
-        [self addStartGapGuide];
-        ZLJustify justify = self.stackView.justify;
-        if (justify ==  ZlJustifySpaceAround ||
-            justify ==  ZlJustifySpaceEvenly ||
-            justify ==  ZLJustifyCenter
-            ) {
-            if (self.isFirstView) {
-                return self.startGapGuide.leadingAnchor;
-            }
-        }
-    }
     return self.view.leadingAnchor;
 }
 - (NSLayoutXAxisAnchor *)trailingAnchor {
-    if (self.stackView.horizontal) {
-        [self addCenterGapGuide];
-        [self addEndGapGuide];
-        
-        ZLJustify justify = self.stackView.justify;
-        if (justify ==  ZlJustifySpaceAround ||
-            justify ==  ZlJustifySpaceEvenly
-            ) {
-            return self.endGapGuide.trailingAnchor;
-        }
-        if (justify  == ZLJustifyCenter && self.isLastView) {
-            return self.endGapGuide.trailingAnchor;
-        }
-        if (justify == ZlJustifySpaceBetween && !self.isLastView) {
-            return self.endGapGuide.trailingAnchor;
-        }
-    }
     return self.view.trailingAnchor;
 }
 - (NSLayoutYAxisAnchor *)topAnchor {
-    if (!self.stackView.horizontal) {
-        [self addStartGapGuide];
-        ZLJustify justify = self.stackView.justify;
-        if (justify ==  ZlJustifySpaceAround ||
-            justify ==  ZlJustifySpaceEvenly ||
-            justify == ZLJustifyCenter
-            ) {
-                if (self.isFirstView) {
-                    return self.startGapGuide.topAnchor;
-                }
-        }
-    }
     return self.view.topAnchor;
 }
 - (NSLayoutYAxisAnchor *)bottomAnchor {
-    if (!self.stackView.horizontal) {
-        [self addCenterGapGuide];
-        [self addEndGapGuide];
-        
-        ZLJustify justify = self.stackView.justify;
-        if (justify ==  ZlJustifySpaceAround ||
-            justify ==  ZlJustifySpaceEvenly
-            ) {
-            return self.endGapGuide.bottomAnchor;
-        }
-        if (justify  == ZLJustifyCenter && self.isLastView) {
-            return self.endGapGuide.bottomAnchor;
-        }
-        if (justify == ZlJustifySpaceBetween && !self.isLastView) {
-            return self.endGapGuide.bottomAnchor;
-        }
-    }
     return self.view.bottomAnchor;
 }
-
+- (NSLayoutXAxisAnchor *)centerXAnchor {
+    return self.view.centerXAnchor;
+}
+- (NSLayoutYAxisAnchor *)centerYAnchor {
+    return self.view.centerYAnchor;
+}
+- (NSLayoutDimension *)widthAnchor {
+    return self.view.widthAnchor;
+}
+- (NSLayoutDimension *)heightAnchor {
+    return self.view.heightAnchor;
+}
 ///取消view和布局引导之间的所有约束
 - (void)deactivateConstraints {
-    if (_viewAndGuideConstraints && _viewAndGuideConstraints.count > 0) {
-        [NSLayoutConstraint deactivateConstraints:self.viewAndGuideConstraints.allObjects];
-        [self.viewAndGuideConstraints removeAllObjects];
-    }
-}
-- (void)addStartGapGuide  {
-    ZLJustify justify = self.stackView.justify;
-    if (justify == ZLJustifyCenter ||
-        justify ==  ZlJustifySpaceAround ||
-        justify ==  ZlJustifySpaceEvenly) {
-        if (!self.isFirstView) return;
-        if (self.stackView.horizontal) {
-            [self.stackView addLayoutGuide:self.startGapGuide];
-            NSLayoutConstraint *cons = [self.startGapGuide.trailingAnchor constraintEqualToAnchor:self.view.leadingAnchor];
-            cons.active = YES;
-            [self.viewAndGuideConstraints addObject:cons];
-            [self.boundaryWithOrHeightGapAnchors addObject:self.startGapGuide.widthAnchor];
-        }else {
-            [self.stackView addLayoutGuide:self.startGapGuide];
-            NSLayoutConstraint *cons = [self.startGapGuide.bottomAnchor constraintEqualToAnchor:self.view.topAnchor];
-            cons.active = YES;
-            [self.viewAndGuideConstraints addObject:cons];
-            [self.boundaryWithOrHeightGapAnchors addObject:self.startGapGuide.heightAnchor];
-        }
-    }
-}
-- (void)addEndGapGuide  {
-    ZLJustify justify = self.stackView.justify;
-    if (justify == ZLJustifyCenter ||
-        justify ==  ZlJustifySpaceAround ||
-        justify ==  ZlJustifySpaceEvenly) {
-        if (!self.isLastView) return;
-        if (self.stackView.horizontal) {
-            [self.stackView addLayoutGuide:self.endGapGuide];
-            NSLayoutConstraint *cons = [self.endGapGuide.leadingAnchor constraintEqualToAnchor:self.view.trailingAnchor];
-            cons.active = YES;
-            [self.viewAndGuideConstraints addObject:cons];
-            [self.boundaryWithOrHeightGapAnchors addObject:self.endGapGuide.widthAnchor];
-        }else {
-            [self.stackView addLayoutGuide:self.endGapGuide];
-            NSLayoutConstraint *cons = [self.endGapGuide.topAnchor constraintEqualToAnchor:self.view.bottomAnchor];
-            cons.active = YES;
-            [self.viewAndGuideConstraints addObject:cons];
-            [self.boundaryWithOrHeightGapAnchors addObject:self.endGapGuide.heightAnchor];
-        }
-    }
-}
-- (void)addCenterGapGuide  {
-    ZLJustify justify = self.stackView.justify;
-    if (justify == ZlJustifySpaceBetween ||
-        justify ==  ZlJustifySpaceAround ||
-        justify ==  ZlJustifySpaceEvenly) {
-        if (self.isLastView ) return;
-        if (self.stackView.horizontal) {
-            [self.stackView addLayoutGuide:self.endGapGuide];
-            NSLayoutConstraint *cons = [self.endGapGuide.leadingAnchor constraintEqualToAnchor:self.view.trailingAnchor];
-            cons.active = YES;
-            [self.viewAndGuideConstraints addObject:cons];
-            [self.centerWidthOrHeightGapAnchors addObject:self.endGapGuide.widthAnchor];
-        }else {
-            [self.stackView addLayoutGuide:self.endGapGuide];
-            NSLayoutConstraint *cons = [self.endGapGuide.topAnchor constraintEqualToAnchor:self.view.bottomAnchor];
-            cons.active = YES;
-            [self.viewAndGuideConstraints addObject:cons];
-            [self.centerWidthOrHeightGapAnchors addObject:self.endGapGuide.heightAnchor];
-        }
-    }
+    self.leadingCons.active = NO;
+    self.topCons.active = NO;
+    self.trailingCons.active = NO;
+    self.bottomCons.active = NO;
+    self.centerXCons.active = NO;
+    self.centerYCons.active = NO;
 }
 @end
 
-
-
-@interface UIView (ZLView)
-@property (nonatomic,readonly)ZLViewLayoutCfg *zl_layoutCfg;
-@end
 @implementation UIView (ZLView)
 - (ZLViewLayoutCfg *)zl_layoutCfg {
     ZLViewLayoutCfg *cfg = objc_getAssociatedObject(self, _cmd);
@@ -295,7 +356,6 @@
 
 @interface ZLStackView()
 @property (nonatomic, strong) NSMutableSet <NSLayoutConstraint *> *viewsWidthOrHeightConstraints;
-@property (nonatomic, strong) NSMutableSet <NSLayoutConstraint *> *constraintsArr;
 
 @end
 @implementation ZLStackView
@@ -303,6 +363,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.markedDirty = YES;
         self.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
     }
     return self;
@@ -313,12 +374,7 @@
     }
     return _viewsWidthOrHeightConstraints;
 }
-- (NSMutableSet<NSLayoutConstraint *> *)constraintsArr {
-    if (!_constraintsArr) {
-        _constraintsArr = NSMutableSet.set;
-    }
-    return _constraintsArr;
-}
+
 
 - (NSMutableArray<__kindof UIView *> *)arrangedViews {
     if (!_arrangedViews) {
@@ -335,24 +391,26 @@
 - (void)setHorizontal:(BOOL)horizontal {
     if (horizontal == _horizontal) return;
     _horizontal = horizontal;
-    [self setNeedsUpdateConstraints];
+    self.markedDirty = YES;
+    [self setNeedsLayout];
 }
 - (void)setJustify:(ZLJustify)justify {
     if (justify == _justify) return;
     _justify = justify;
-    [self setNeedsUpdateConstraints];
+    self.markedDirty = YES;
+    [self setNeedsLayout];
 }
 - (void)setAlignment:(ZLAlign)alignment {
     if (alignment == _alignment) return;
     _alignment = alignment;
-    [self setNeedsUpdateConstraints];
+    self.markedDirty = YES;
+    [self setNeedsLayout];
 }
 - (void)setSpacing:(CGFloat)spacing {
     if (spacing == _spacing) return;
     _spacing = spacing;
-    [self.arrangedViews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        obj.zl_layoutCfg.spaceCons.constant = obj.zl_layoutCfg.behindSpacing;
-    }];
+    self.markedDirty = YES;
+    [self setNeedsLayout];
 }
 - (void)addArrangedSubview:(UIView *)view{
     if ([view isKindOfClass:UIView.class]) {
@@ -366,6 +424,8 @@
         cfg.stackView = self;
         view.translatesAutoresizingMaskIntoConstraints = NO;
         [self addSubview:view];
+        self.markedDirty = YES;
+        [self setNeedsLayout];
     }
 }
 - (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)stackIndex {
@@ -373,7 +433,8 @@
         if ([self.allViews containsObject:view]) return;
         [self.allViews insertObject:view atIndex:stackIndex];
         if (view.hidden) return;
-        [self setNeedsUpdateConstraints];
+        self.markedDirty = YES;
+        [self setNeedsLayout];
     }
 }
 - (void)refreshArrangedSubviews {
@@ -386,15 +447,17 @@
     if (![self.arrangedViews containsObject:view]) return;
     [view removeFromSuperview];
     [self.arrangedViews removeObject:view];
+    [self.allViews removeObject:view];
     [view.zl_layoutCfg deactivateConstraints];
     view.zl_layoutCfg.stackView = nil;
-    [self setNeedsUpdateConstraints];
+    self.markedDirty = YES;
+    [self setNeedsLayout];
 }
 - (void)setFlexibleSpacing:(BOOL)flexible afterView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
     if (flexible == arrangedSubview.zl_layoutCfg.isFlexSpace) return;
     arrangedSubview.zl_layoutCfg.isFlexSpace = flexible;
-    [self setNeedsUpdateConstraints];
+    [self setNeedsLayout];
 }
 - (void)setCustomSpacing:(CGFloat)spacing afterView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
@@ -403,49 +466,209 @@
 
 - (void)setAlignment:(ZLAlign)alignment forView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
-    arrangedSubview.zl_layoutCfg.isSetAlign = YES;
-    arrangedSubview.zl_layoutCfg.alignSelf = alignment;
-    [self setNeedsUpdateConstraints];
+    ZLViewLayoutCfg *cfg = arrangedSubview.zl_layoutCfg;
+    if (alignment == cfg.alignSelf) return;
+    cfg.isSetAlign = YES;
+    cfg.alignSelf = alignment;
+    self.markedDirty = YES;
+    [self setNeedsLayout];
 }
 ///设置view的alignment方向start间距
 - (void)setAlignmentStartSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
-    arrangedSubview.zl_layoutCfg.startSpacing = spacing;
-    [self setNeedsUpdateConstraints];
-    arrangedSubview.zl_layoutCfg.alignStartCons.constant = spacing;
+    ZLViewLayoutCfg *cfg = arrangedSubview.zl_layoutCfg;
+    if (spacing == cfg.startSpacing) return;
+    cfg.startSpacing = spacing;
+    self.markedDirty = YES;
+    [self setNeedsLayout];
 }
 ///设置view的alignment方向end间距
 - (void)setAlignmentEndSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
-    arrangedSubview.zl_layoutCfg.endSpacing = spacing;
-    [self setNeedsUpdateConstraints];
-}
-- (UIView *)frontViewWithView:(UIView *)view {
-    NSInteger idx = [self.arrangedViews indexOfObject:view];
-    if (idx > 0 && idx < self.arrangedViews.count) {
-        return self.arrangedViews[idx - 1];
-    }
-    return self;
-}
-- (UIView *)behindViewWithView:(UIView *)view {
-    NSInteger idx = [self.arrangedViews indexOfObject:view];
-    if (idx < self.arrangedViews.count - 1 && idx >= 0) {
-        return self.arrangedViews[idx + 1];
-    }
-    return self;
+    ZLViewLayoutCfg *cfg = arrangedSubview.zl_layoutCfg;
+    if (cfg.endSpacing == spacing) return;
+    cfg.endSpacing = spacing;
+    self.markedDirty = YES;
+    [self setNeedsLayout];
 }
 - (void)updateConstraints {
     [super updateConstraints];
     [self updateViewsConstraints];
 }
 - (void)updateViewsConstraints {
-    [self refreshArrangedSubviews];
-
-    [NSLayoutConstraint deactivateConstraints:_constraintsArr.allObjects];
-    [_constraintsArr removeAllObjects];
     
+}
+
+///设置中心gap等宽或者等高
+- (void)gapEqualSpaceBetween{
+    if (self.justify != ZlJustifySpaceBetween) return;
+    if (self.arrangedViews.count < 2) return;
+    NSMutableArray<NSLayoutConstraint *> *spaceCons = NSMutableArray.array;
+    BOOL isHorizontal = self.horizontal;
+    [self.arrangedViews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (idx > 0 && obj.zl_layoutCfg.leadingCons) {
+            if (isHorizontal) {
+                [spaceCons addObject:obj.zl_layoutCfg.leadingCons];
+            }else {
+                [spaceCons addObject:obj.zl_layoutCfg.topCons];
+            }
+        }
+    }];
+    if (spaceCons.count < 2) return;
+    
+    CGFloat totalValue = self.layoutMargins.left + self.layoutMargins.right;
+    for (UIView *view  in self.arrangedViews) {
+        totalValue += self.horizontal ? view.frame.size.width : view.frame.size.height;
+    }
+    
+    CGFloat gapValue = [self availableHeightOrWidth];
+    CGFloat itemGapValue = gapValue / (self.arrangedViews.count - 1);
+    itemGapValue = MAX(0, itemGapValue);
+    [spaceCons enumerateObjectsUsingBlock:^(NSLayoutConstraint * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        obj.constant = itemGapValue;
+    }];
+}
+///view的可用空间
+- (CGFloat)availableHeightOrWidthForView:(UIView *)view {
+    CGFloat totalValue = self.horizontal ? self.layoutMargins.left + self.layoutMargins.right : self.layoutMargins.top + self.layoutMargins.bottom;
+    return (self.horizontal ? self.frame.size.width : self.frame.size.height) - totalValue;
+}
+        
+///剩余空间
+- (CGFloat)availableHeightOrWidth {
+    CGFloat totalValue = self.horizontal ? self.layoutMargins.left + self.layoutMargins.right : self.layoutMargins.top + self.layoutMargins.bottom;
+    for (UIView *view  in self.arrangedViews) {
+        CGFloat widthOrHeight = self.horizontal ? view.frame.size.width : view.frame.size.height;
+        totalValue += widthOrHeight;
+    }
+    return (self.horizontal ? self.frame.size.width : self.frame.size.height) - totalValue;
+}
+///view的所有宽高
+- (CGFloat)arrangedViewsTotalWidthOrHeight {
+    CGFloat totalValue = 0;
+    for (UIView *view  in self.arrangedViews) {
+        totalValue += self.horizontal ? view.frame.size.width : view.frame.size.height;
+    }
+    return totalValue;
+}
+///view 的所有间距
+- (CGFloat)arrangedViewsTotalSpacing {
+    CGFloat totalValue = 0;
+    for (UIView *view  in self.arrangedViews) {
+        totalValue += view.zl_layoutCfg.behindSpacing;
+    }
+    return totalValue;
+}
+///设置中心和边界gap等宽或者等高
+- (void)gapEqualSpaceEvenly{
+    if (self.justify != ZlJustifySpaceEvenly) return;
+    if (self.arrangedViews.count < 2) return;
+    NSMutableArray<NSLayoutConstraint *> *spaceCons = NSMutableArray.array;
+    BOOL isHorizontal = self.horizontal;
+    [self.arrangedViews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj.zl_layoutCfg.leadingCons) {
+            if (isHorizontal) {
+                [spaceCons addObject:obj.zl_layoutCfg.leadingCons];
+            }else {
+                [spaceCons addObject:obj.zl_layoutCfg.topCons];
+            }
+        }
+    }];
+    if (spaceCons.count < 1) return;
+    CGFloat gapValue = [self availableHeightOrWidth];
+    CGFloat itemGapValue = gapValue / (self.arrangedViews.count + 1);
+    itemGapValue = MAX(0, itemGapValue);
+    [spaceCons enumerateObjectsUsingBlock:^(NSLayoutConstraint * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        obj.constant = itemGapValue;
+    }];
+    
+}
+
+///设置中心gap等宽或者等高，边界gap是中心gap的一半
+- (void)gapEqualSpaceAround{
+   if(self.justify != ZlJustifySpaceAround) return;
+    if (self.arrangedViews.count < 2) return;
+    NSMutableArray<NSLayoutConstraint *> *spaceCons = NSMutableArray.array;
+    BOOL isHorizontal = self.horizontal;
+    [self.arrangedViews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj.zl_layoutCfg.leadingCons) {
+            if (isHorizontal) {
+                [spaceCons addObject:obj.zl_layoutCfg.leadingCons];
+            }else {
+                [spaceCons addObject:obj.zl_layoutCfg.topCons];
+            }
+        }
+    }];
+    if (spaceCons.count < 1) return;
+    CGFloat gapValue = [self availableHeightOrWidth];
+    CGFloat itemGapValue = gapValue / self.arrangedViews.count;
+    itemGapValue = MAX(0, itemGapValue);
+    [spaceCons enumerateObjectsUsingBlock:^(NSLayoutConstraint * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (idx == 0) {
+            obj.constant = itemGapValue / 2.0;
+        }else {
+            obj.constant = itemGapValue;
+        }
+    }];
+}
+///配置居中对齐
+- (void)configCenterAlign {
+    if (self.justify != ZLJustifyCenter) return;
+    if (self.arrangedViews.count < 1) return;
+    CGFloat gapValue = [self availableHeightOrWidth];
+    CGFloat spacing = [self arrangedViewsTotalSpacing];
+    CGFloat leadingOrTopGap = gapValue - spacing;
+    leadingOrTopGap = MAX(0, leadingOrTopGap);
+    if (self.horizontal) {
+        self.arrangedViews.firstObject.zl_layoutCfg.leadingCons.constant = leadingOrTopGap / 2.0;
+    }else {
+        self.arrangedViews.firstObject.zl_layoutCfg.topCons.constant = leadingOrTopGap / 2.0;
+    }
+}
+- (void)configJustifyEnd {
+    if (self.justify != ZlJustifyEnd) return;
+    if (self.arrangedViews.count < 1) return;
+    CGFloat gapValue = [self availableHeightOrWidth];
+    CGFloat spacing = [self arrangedViewsTotalSpacing];
+    CGFloat leadingOrTopGap = gapValue - spacing;
+    leadingOrTopGap = MAX(0, leadingOrTopGap);
+    if (self.horizontal) {
+        self.arrangedViews.firstObject.zl_layoutCfg.leadingCons.constant = leadingOrTopGap;
+    }else {
+        self.arrangedViews.firstObject.zl_layoutCfg.topCons.constant = leadingOrTopGap;
+    }
+}
+- (void)configJustifyStart {
+    if (self.justify != ZLJustifyStart) return;
+    if (self.arrangedViews.count < 1) return;
+    if (self.horizontal) {
+        self.arrangedViews.firstObject.zl_layoutCfg.leadingCons.constant = 0;
+    }else {
+        self.arrangedViews.firstObject.zl_layoutCfg.topCons.constant = 0;
+    }
+}
+- (void)configJustifyFillEqually {
+    if (self.justify != ZlJustifyFillEqually) return;
+    if (self.arrangedViews.count < 1) return;
+    [NSLayoutConstraint deactivateConstraints:self.viewsWidthOrHeightConstraints.allObjects];
+    [self.viewsWidthOrHeightConstraints removeAllObjects];
+    NSLayoutDimension *firstAnchor = self.horizontal ? self.arrangedViews.firstObject.zl_layoutCfg.widthAnchor : self.arrangedViews.firstObject.zl_layoutCfg.heightAnchor;
+    [self.arrangedViews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj > 0) {
+            NSLayoutDimension *anchor = self.horizontal ? obj.zl_layoutCfg.widthAnchor : obj.zl_layoutCfg.heightAnchor;
+           NSLayoutConstraint *cons = [firstAnchor constraintEqualToAnchor:anchor];
+            [self.viewsWidthOrHeightConstraints addObject:cons];
+        }
+    }];
+    [NSLayoutConstraint activateConstraints:self.viewsWidthOrHeightConstraints.allObjects];
+}
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    if (!self.markedDirty) return;
+    [self refreshArrangedSubviews];
     [NSLayoutConstraint deactivateConstraints:_viewsWidthOrHeightConstraints.allObjects];
     [_viewsWidthOrHeightConstraints removeAllObjects];
+    
     NSInteger visibleCount = self.arrangedViews.count;
     for (int i = 0 ; i < visibleCount ; i ++) {
         UIView *view= self.arrangedViews[i];
@@ -453,387 +676,19 @@
         cfg.isFirstView = i == 0;
         cfg.isLastView = i == visibleCount - 1;
         [cfg deactivateConstraints];
-        [self addTop:view index:i];
-        [self addBottom:view index:i];
-        [self addLeading:view index:i];
-        [self addTrailing:view index:i];
-        [self addCenterX:view index:i];
-        [self addCenterY:view index:i];
+        [cfg addAllConstraints];
     }
-    
-    [self equalViewWidthOrHeightAnchors];
-
-    if (self.justify == ZlJustifySpaceBetween) {
-        [self gapEqualSpaceBetween];
-    }else if (self.justify == ZlJustifySpaceAround) {
-        [self gapEqualSpaceAround];
-    }else if (self.justify == ZlJustifySpaceEvenly) {
-        [self gapEqualSpaceEvenly];
-    }else if (self.justify == ZLJustifyCenter) {
-        [self boundryGapEqualWidthOrHeight];
-    }
+    [self gapEqualSpaceBetween];
+    [self gapEqualSpaceEvenly];
+    [self gapEqualSpaceAround];
+    [self configCenterAlign];
+    [self configJustifyEnd];
+    [self configJustifyStart];
+    [self configJustifyFillEqually];
+    self.markedDirty = NO;
 }
-///设置等宽或者等高
-- (void)equalViewWidthOrHeightAnchors {
-    if (self.justify != ZlJustifyFillEqually) return;
-    if (self.arrangedViews.count <= 1) return;
-    NSMutableArray *arr = NSMutableArray.array;
-    [self.arrangedViews enumerateObjectsUsingBlock:^(UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-         [arr addObject:self.horizontal ? obj.widthAnchor : obj.heightAnchor];
-    }];
-    NSLayoutDimension *first = arr.firstObject;
-    [arr enumerateObjectsUsingBlock:^(NSLayoutDimension * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if (idx > 0) {
-                NSLayoutConstraint *cons = [first constraintEqualToAnchor:obj];
-                cons.active = YES;
-                [self.viewsWidthOrHeightConstraints addObject:cons];
-            }
-    }];
-}
-//设置边界的gap等宽或者等高
-- (void)boundryGapEqualWidthOrHeight {
-    NSMutableArray<NSLayoutDimension *>  *arr = NSMutableArray.array;
-    for (int i = 0 ; i < self.arrangedViews.count ; i ++) {
-        UIView *view= self.arrangedViews[i];
-        [arr addObjectsFromArray:view.zl_layoutCfg.boundaryWithOrHeightGapAnchors.allObjects];
-    }
-    NSLayoutConstraint *cons = [arr.firstObject constraintEqualToAnchor:arr.lastObject];
-    cons.active = YES;
-    [self.constraintsArr addObject:cons];
-}
-
-///设置中心gap等宽或者等高
-- (void)gapEqualSpaceBetween{
-    NSMutableArray  *arr = NSMutableArray.array;
-    for (int i = 0 ; i < self.arrangedViews.count ; i ++) {
-        UIView *view= self.arrangedViews[i];
-        [arr addObjectsFromArray:view.zl_layoutCfg.centerWidthOrHeightGapAnchors.allObjects];
-
-    }
-    NSLayoutDimension *first = arr.firstObject;
-    [arr enumerateObjectsUsingBlock:^(NSLayoutDimension*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (idx > 0) {
-            NSLayoutConstraint *cons = [first constraintEqualToAnchor:obj];
-            cons.active = YES;
-            [self.constraintsArr addObject:cons];
-        }
-    }];
-}
-
-///设置中心和边界gap等宽或者等高
-- (void)gapEqualSpaceEvenly{
-    NSMutableArray  *arr = NSMutableArray.array;
-    for (int i = 0 ; i < self.arrangedViews.count ; i ++) {
-        UIView *view= self.arrangedViews[i];
-        ZLViewLayoutCfg *cfg = view.zl_layoutCfg;
-        [arr addObjectsFromArray:cfg.boundaryWithOrHeightGapAnchors.allObjects];
-        [arr addObjectsFromArray:cfg.centerWidthOrHeightGapAnchors.allObjects];
-
-    }
-    NSLayoutDimension *first = arr.firstObject;
-    [arr enumerateObjectsUsingBlock:^(NSLayoutDimension*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (idx > 0) {
-            NSLayoutConstraint *cons = [first constraintEqualToAnchor:obj];
-            cons.active = YES;
-            [self.constraintsArr addObject:cons];
-        }
-    }];
-}
-
-///设置中心gap等宽或者等高，边界gap是中心gap的一半
-- (void)gapEqualSpaceAround{
-    
-    NSMutableArray<NSLayoutDimension*>  *arr1 = NSMutableArray.array;
-    NSMutableArray<NSLayoutDimension*>  *arr2 = NSMutableArray.array;
-
-    for (int i = 0 ; i < self.arrangedViews.count ; i ++) {
-        UIView *view= self.arrangedViews[i];
-        ZLViewLayoutCfg *cfg = view.zl_layoutCfg;
-        [arr1 addObjectsFromArray:cfg.boundaryWithOrHeightGapAnchors.allObjects];
-        [arr2 addObjectsFromArray:cfg.centerWidthOrHeightGapAnchors.allObjects];
-
-    }
-   
-    
-    {
-        NSLayoutConstraint *cons = [arr1.firstObject constraintEqualToAnchor:arr1.lastObject];
-        cons.active = YES;
-        [self.constraintsArr addObject:cons];
-    }
-    
-    {
-        NSLayoutDimension *first1 = arr2.firstObject;
-        [arr2 enumerateObjectsUsingBlock:^(NSLayoutDimension*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if (idx > 0) {
-                NSLayoutConstraint *cons = [first1 constraintEqualToAnchor:obj];
-                cons.active = YES;
-                [self.constraintsArr addObject:cons];
-            }
-        }];
-    }
-    {
-        NSLayoutConstraint *cons = [arr1.firstObject constraintEqualToAnchor:arr2.firstObject multiplier:0.5];
-        cons.active = YES;
-        [self.constraintsArr addObject:cons];
-    }
-}
-
-
-- (void)addCenterX:(UIView *)view index:(NSInteger)index {
-    if (self.horizontal) return;
-    if (view.zl_layoutCfg.alignSelf == ZLAlignCenter) {
-        NSLayoutConstraint *cons = [view.centerXAnchor constraintEqualToAnchor:self.layoutMarginsGuide.centerXAnchor];
-        cons.active = YES;
-        [self.constraintsArr addObject:cons];
-    }
-}
-- (void)addCenterY:(UIView *)view index:(NSInteger)index {
-    if (!self.horizontal) return;
-    if (view.zl_layoutCfg.alignSelf == ZLAlignCenter) {
-        NSLayoutConstraint *cons = [view.centerYAnchor constraintEqualToAnchor:self.layoutMarginsGuide.centerYAnchor];
-        cons.active = YES;
-        [self.constraintsArr addObject:cons];
-    }
-}
-
-- (void)addTop:(UIView *)view index:(NSInteger)index {
-    BOOL isFirst = index == 0;
-    UIView *fView = [self frontViewWithView:view];
-    NSLayoutConstraint *cons;
-    ZLViewLayoutCfg *cfg = view.zl_layoutCfg;
-    ZLViewLayoutCfg *fCfg = fView.zl_layoutCfg;
-    if (self.horizontal) {
-        switch (view.zl_layoutCfg.alignSelf) {
-            case ZLAlignStart:
-            case ZLAlignFill:
-            cons = [cfg.topAnchor constraintEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:cfg.startSpacing];
-                break;
-            case ZLAlignCenter:
-            case ZLAlignEnd:
-            default:
-                cons = [cfg.topAnchor constraintGreaterThanOrEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:cfg.startSpacing];
-                break;
-        }
-        cfg.alignStartCons = cons;
-    }else {
-        switch (self.justify) {
-            case ZlJustifyFill:
-            case ZlJustifyFillEqually:
-            case ZLJustifyStart:
-            case ZlJustifySpaceBetween:
-            case ZlJustifySpaceAround:
-            case ZlJustifySpaceEvenly:
-            case ZLJustifyCenter:
-
-                if (isFirst) {
-                    cons = [cfg.topAnchor constraintEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:0];
-                }else {
-                    if (fCfg.isFlexSpace) {
-                        cons = [cfg.topAnchor constraintGreaterThanOrEqualToAnchor:fCfg.bottomAnchor];
-                        cfg.spaceCons = cons;
-                    }else {
-                        cons = [cfg.topAnchor constraintEqualToAnchor:fCfg.bottomAnchor constant:fCfg.behindSpacing];
-                        cfg.spaceCons = cons;
-                    }
-                }
-                break;
-//            case ZLJustifyCenter:
-//                if (isFirst) {
-//                    cons = [view.zl_layoutCfg.topAnchor constraintEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:0];
-//                }else {
-//                    cons = [view.zl_layoutCfg.topAnchor constraintEqualToAnchor:fView.zl_layoutCfg.bottomAnchor constant:fView.zl_layoutCfg.behindSpacing];
-//                    view.zl_layoutCfg.spaceCons = cons;
-//                }
-//                break;
-            case ZlJustifyEnd:
-                if (isFirst) {
-                    cons = [cfg.topAnchor constraintGreaterThanOrEqualToAnchor:self.layoutMarginsGuide.topAnchor constant:0];
-                }else {
-                    if (fCfg.isFlexSpace) {
-                        cons = [cfg.topAnchor constraintGreaterThanOrEqualToAnchor:fCfg.bottomAnchor];
-                        cfg.spaceCons = cons;
-                    }else {
-                        cons = [cfg.topAnchor constraintEqualToAnchor:fCfg.bottomAnchor constant:fCfg.behindSpacing];
-                        cfg.spaceCons = cons;
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-    }
-    cons.active = YES;
-    if (cons) {
-        [self.constraintsArr addObject:cons];
-    }
-}
-- (void)addBottom:(UIView *)view index:(NSInteger)index {
-    BOOL isLast = index == self.arrangedViews.count - 1;
-    ZLViewLayoutCfg *cfg = view.zl_layoutCfg;
-
-    NSLayoutConstraint *cons;
-    if (self.horizontal) {
-        switch (cfg.alignSelf) {
-            case ZLAlignEnd:
-            case ZLAlignFill:
-            cons = [cfg.bottomAnchor constraintEqualToAnchor:self.layoutMarginsGuide.bottomAnchor constant:-cfg.endSpacing];
-                break;
-            case ZLAlignStart:
-            case ZLAlignCenter:
-            default:
-                cons = [cfg.bottomAnchor constraintLessThanOrEqualToAnchor:self.layoutMarginsGuide.bottomAnchor constant:-cfg.endSpacing];
-                break;
-        }
-        cfg.alignEndCons = cons;
-    }else {
-        switch (self.justify) {
-            case ZlJustifyFill:
-            case ZlJustifyFillEqually:
-            case ZlJustifyEnd:
-            case ZlJustifySpaceBetween:
-            case ZlJustifySpaceAround:
-            case ZlJustifySpaceEvenly:
-                if (isLast) {
-                    cons = [cfg.bottomAnchor constraintEqualToAnchor:self.layoutMarginsGuide.bottomAnchor constant:0];
-                }
-                break;
-            case ZLJustifyCenter:
-                if (isLast) {
-                    cons = [cfg.bottomAnchor constraintEqualToAnchor:self.layoutMarginsGuide.bottomAnchor constant:0];
-                }
-                break;
-            case ZLJustifyStart:
-                if (isLast) {
-                    cons = [cfg.bottomAnchor constraintLessThanOrEqualToAnchor:self.layoutMarginsGuide.bottomAnchor constant:0];
-                }
-                break;
-            default:
-                break;
-        }
-    }
-    cons.active = YES;
-    if (cons) {
-        [self.constraintsArr addObject:cons];
-    }
-}
-- (void)addLeading:(UIView *)view index:(NSInteger)index {
-    
-    BOOL isFirst = index == 0;
-    UIView *fView = [self frontViewWithView:view];
-    ZLViewLayoutCfg *cfg = view.zl_layoutCfg;
-    ZLViewLayoutCfg *fCfg = fView.zl_layoutCfg;
-    NSLayoutConstraint *cons;
-    if (self.horizontal) {
-        switch (self.justify) {
-            case ZlJustifyFill:
-            case ZlJustifyFillEqually:
-            case ZLJustifyStart:
-            case ZlJustifySpaceBetween:
-            case ZlJustifySpaceAround:
-            case ZlJustifySpaceEvenly:
-            case ZLJustifyCenter:
-
-                if (isFirst) {
-                    cons = [cfg.leadingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:0];
-                }else {
-                    if (fView.zl_layoutCfg.isFlexSpace) {
-                        cons = [cfg.leadingAnchor constraintGreaterThanOrEqualToAnchor:fCfg.trailingAnchor];
-                    }else {
-                        cons = [cfg.leadingAnchor constraintEqualToAnchor:fCfg.trailingAnchor constant:fCfg.behindSpacing];
-                        view.zl_layoutCfg.spaceCons = cons;
-                    }
-                   
-                    
-                }
-                break;
-//            case ZLJustifyCenter:
-//                if (isFirst) {
-//                    cons = [view.zl_layoutCfg.leadingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:0];
-//                }else {
-//                    cons = [view.zl_layoutCfg.leadingAnchor constraintEqualToAnchor:fView.zl_layoutCfg.trailingAnchor constant:fView.zl_layoutCfg.behindSpacing];
-//                    view.zl_layoutCfg.spaceCons = cons;
-//                }
-//                break;
-            case ZlJustifyEnd:
-                if (isFirst) {
-                    cons = [cfg.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:0];
-                }else {
-                    if (fCfg.isFlexSpace) {
-                        cons = [cfg.leadingAnchor constraintGreaterThanOrEqualToAnchor:fCfg.trailingAnchor];
-                    }else {
-                        cons = [cfg.leadingAnchor constraintEqualToAnchor:fCfg.trailingAnchor constant:fCfg.behindSpacing];
-                        cfg.spaceCons = cons;
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-    }else {
-        switch (cfg.alignSelf) {
-            case ZLAlignStart:
-            case ZLAlignFill:
-            cons = [cfg.leadingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:cfg.startSpacing];
-                break;
-            case ZLAlignCenter:
-            case ZLAlignEnd:
-            default:
-                cons = [cfg.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.layoutMarginsGuide.leadingAnchor constant:cfg.startSpacing];
-                break;
-        }
-        cfg.alignStartCons = cons;
-    }
-    cons.active = YES;
-    if (cons) {
-        [self.constraintsArr addObject:cons];
-    }
-}
-- (void)addTrailing:(UIView *)view index:(NSInteger)index {
-    BOOL isLast = index == self.arrangedViews.count - 1;
-    ZLViewLayoutCfg *cfg = view.zl_layoutCfg;
-    NSLayoutConstraint *cons;
-    if (self.horizontal) {
-        switch (self.justify) {
-            case ZlJustifyFill:
-            case ZlJustifyFillEqually:
-            case ZlJustifyEnd:
-            case ZlJustifySpaceBetween:
-            case ZlJustifySpaceAround:
-            case ZlJustifySpaceEvenly:
-                if (isLast) {
-                    cons = [cfg.trailingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.trailingAnchor constant:0];
-                }
-                break;
-            case ZLJustifyCenter:
-                if (isLast) {
-                    cons = [cfg.trailingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.trailingAnchor constant:0];
-                }
-                break;
-            case ZLJustifyStart:
-                if (isLast) {
-                    cons = [cfg.trailingAnchor constraintLessThanOrEqualToAnchor:self.layoutMarginsGuide.trailingAnchor constant:0];
-                }
-                break;
-            default:
-                break;
-        }
-    }else {
-        switch (cfg.alignSelf) {
-            case ZLAlignEnd:
-            case ZLAlignFill:
-                cons = [cfg.trailingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.trailingAnchor constant:-cfg.endSpacing];
-                break;
-            case ZLAlignStart:
-            case ZLAlignCenter:
-            default:
-                cons = [cfg.trailingAnchor constraintLessThanOrEqualToAnchor:self.trailingAnchor constant:-cfg.endSpacing];
-                break;
-        }
-        cfg.alignEndCons = cons;
-    }
-    cons.active = YES;
-    if (cons) {
-        [self.constraintsArr addObject:cons];
-    }
+///至关重要
+- (CGSize)intrinsicContentSize {
+    return CGSizeZero;
 }
 @end

@@ -199,28 +199,71 @@
     
     {
         ZLStackView *sk = [ZLStackView new];
-        sk.horizontal = NO;
-        sk.alignment = ZLAlignFill;
-        sk.justify = ZlJustifyFill;
+        sk.tag = 999;
+        sk.horizontal = YES;
+        sk.alignment = ZLAlignCenter;
+        sk.justify = ZlJustifySpaceEvenly;
         sk.spacing = 10;
-        sk.insets = UIEdgeInsetsMake(20, 20, 20, 20);
         sk.backgroundColor = UIColor.grayColor;
-        UIView *view = UIView.new;
-        view.backgroundColor = UIColor.redColor;
+       
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            sk.horizontal = YES;
+//            sk.alignment = ZLAlignStart;
+//            sk.justify = ZlJustifySpaceAround;
+
+        });
         
+//        {
+//            UILabel *label = UILabel.new;
+//            label.text = @"dddd";
+//            label.backgroundColor = UIColor.blueColor;
+//            [sk addArrangedSubview:label];
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                label.text = @"addArrangedSubview";
+//            });
+//        }
         
-        [sk addArrangedSubview:self.getStackView];
-        [sk addArrangedSubview:self.getStackView];
-        [sk addArrangedSubview:self.getStackView];
-        [sk addArrangedSubview:self.getStackView];
-        [sk addArrangedSubview:self.getStackView];
-        [sk addArrangedSubview:self.getStackView];
+//        {
+//            UIView *view = [self getStackView];
+//            [sk addArrangedSubview:view];
+//        }
+        
+        {
+            UILabel *label = UILabel.new;
+            label.text = @"kdkd";
+            label.backgroundColor = UIColor.orangeColor;
+            [sk addArrangedSubview:label];
+            [sk addArrangedSubview:UISwitch.new];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                label.text = @"kdklabeldkdkdkdkdkdkdkdklabeldkdkdkdkdkdkdkdklabeldkdkdkdkdkdkdkdklabeldkdkdkdkdkdkd";
+            });
+        }
+        
+//        {
+//            ////有问题
+//            ZLStackView *view = [self getStackView];
+//            
+//            {
+//                ZLStackView *v = [[ZLStackView alloc] init];
+//                v.justify = ZLJustifyStart;
+//                v.alignment = ZLAlignStart;
+//                [v addArrangedSubview:UISwitch.new];
+//                [view addArrangedSubview:v];
+//            }
+//            [view addArrangedSubview:[self getStackView]];
+//            [sk addArrangedSubview:view];
+//        }
+//        {
+//            UIView *view = [self getStackView];
+//            [sk addArrangedSubview:view];
+//        }
+        
         
         [self.view addSubview:sk];
         [sk mas_makeConstraints:^(MASConstraintMaker *make) {
             make.center.mas_equalTo(self.view);
-//            make.height.mas_equalTo(200);
-//            make.width.mas_equalTo(300);
+            make.height.mas_equalTo(400);
+            make.width.mas_equalTo(300);
 
         }];
     }
@@ -237,7 +280,7 @@
 }
 - (ZLStackView *)getStackView {
     ZLStackView *stackView = [ZLStackView new];
-    stackView.horizontal = NO;
+    stackView.horizontal = YES;
     stackView.alignment = ZLAlignStart;
     stackView.justify = ZLJustifyStart;
     stackView.spacing = 10;
@@ -250,26 +293,37 @@
         label.backgroundColor = UIColor.blueColor;
         [stackView addArrangedSubview:label];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            label.text = @"dddddaddArrangedSubviewddddddd";
+//            stackView.horizontal = NO;
+//            label.preferredMaxLayoutWidth = 100;
+            [label setContentCompressionResistancePriority:749 forAxis:UILayoutConstraintAxisHorizontal];
+            [label setContentCompressionResistancePriority:749 forAxis:UILayoutConstraintAxisVertical];
+
+            label.numberOfLines = 0;
+            label.text = @"addArrangedSubviewaddArrangedSubview";
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                label.text = @"addd";
+            });
         });
     }
+    
     
     {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
         [btn setTitle:@"dd" forState:UIControlStateNormal];
         [btn setBackgroundColor:UIColor.greenColor];
         [stackView addArrangedSubview:btn];
-
     }
+    
+    
     {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
         [btn setTitle:@"dd" forState:UIControlStateNormal];
         [btn setBackgroundColor:UIColor.greenColor];
-        [stackView addArrangedSubview:btn];
-
+//        [stackView addArrangedSubview:btn];
     }
-    [stackView addArrangedSubview:UISwitch.new];
-
+    
+//    [stackView addArrangedSubview:UISwitch.new];
+    
     return stackView;
 }
 //- (void)viewDidLoad {

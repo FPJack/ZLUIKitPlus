@@ -29,7 +29,43 @@ typedef NS_ENUM(NSInteger, ZLJustify) {
 @interface UIView (ZLView)
 @property (nonatomic,readonly)ZLViewLayoutCfg *zl_layoutCfg;
 @end
+
+@class ZLStackView;
+
+@interface ZLLayoutGuide : UILayoutGuide
+@property (nonatomic,weak)NSLayoutConstraint *widthCons;
+@property (nonatomic,weak)NSLayoutConstraint *heightCons;
+@property (nonatomic,weak)ZLStackView *stackView;
+@property (nonatomic,assign)int direction;// 0 1 2 3
+- (instancetype)initWithStackView:(ZLStackView *)stackView direction:(int)direction;
+- (void)addGreadThanWidthCons;
+- (void)addGreadThanHeightCons;
+- (void)addZeroHeightCons;
+- (void)addZeroWidthCons;
+@end
+
+@interface ZLLayoutGuideMerge : NSObject
+@property (nonatomic,weak)ZLStackView *stackView;
+@property (nonatomic,strong)ZLLayoutGuide *topGuide;
+@property (nonatomic,strong)ZLLayoutGuide *leadingGuide;
+@property (nonatomic,strong)ZLLayoutGuide *bottomGuide;
+@property (nonatomic,strong)ZLLayoutGuide *trailingGuide;
+@property (nonatomic,weak)NSLayoutConstraint *eqWidthCons;
+@property (nonatomic,weak)NSLayoutConstraint *eqHeightCons;
+
+- (void)addJustifyConstraints;
+- (void)addAlignConstraints;
+- (void)setEqWidthConstant:(CGFloat)constant;
+- (void)setEqHeightConstant:(CGFloat)constant;
+- (void)setEqConstraintsValue:(CGFloat)constant;
+@end
+
 @interface ZLStackView : UIView
+
+@property (nonatomic,strong)UILayoutGuide *topGuide;
+@property (nonatomic,strong)UILayoutGuide *leadingGuide;
+@property (nonatomic,strong)UILayoutGuide *bottomGuide;
+@property (nonatomic,strong)UILayoutGuide *trailingGuide;
 
 @property (nonatomic,assign)BOOL horizontal;
 

@@ -10,54 +10,7 @@
 #import <objc/runtime.h>
 #define kViewAlignStartConsId @"kViewAlignStartConsId"
 #define kViewAlignEndConsId @"kViewAlignEndConsId"
-@interface ZLViewLayoutCfg: NSObject
-@property (nonatomic,assign)CGFloat startSpacing;
-@property (nonatomic,assign)CGFloat endSpacing;
-@property (nonatomic,assign)CGFloat behindSpacing;
-@property (nonatomic,assign)BOOL    isFlexSpace;
-@property (nonatomic,assign)ZLAlign alignSelf;
 
-
-@property (nonatomic,weak)NSLayoutConstraint *leadingCons;
-@property (nonatomic,weak)NSLayoutConstraint *trailingCons;
-@property (nonatomic,weak)NSLayoutConstraint *topCons;
-@property (nonatomic,weak)NSLayoutConstraint *bottomCons;
-@property (nonatomic,weak)NSLayoutConstraint *centerXCons;
-@property (nonatomic,weak)NSLayoutConstraint *centerYCons;
-@property (nonatomic,weak)NSLayoutConstraint *widthCons;
-@property (nonatomic,weak)NSLayoutConstraint *heightCons;
-
-///是否设置对齐方式
-@property (nonatomic,assign)BOOL isSetAlign;
-@property (nonatomic,weak)ZLStackView *stackView;
-
-
-@property (nonatomic,weak)UIView *view;
-@property(nonatomic,readonly)NSLayoutXAxisAnchor
-    *leadingAnchor;
-@property(nonatomic,readonly)NSLayoutXAxisAnchor *trailingAnchor;
-@property(nonatomic,readonly)NSLayoutYAxisAnchor
-    *topAnchor;
-@property(nonatomic,readonly)NSLayoutYAxisAnchor
-    *bottomAnchor;
-@property(nonatomic,readonly)NSLayoutXAxisAnchor
-    *centerXAnchor;
-@property(nonatomic,readonly)NSLayoutYAxisAnchor
-    *centerYAnchor;
-
-@property(nonatomic,readonly)NSLayoutDimension
-    *widthAnchor;
-@property(nonatomic,readonly)NSLayoutDimension
-    *heightAnchor;
-@property (nonatomic,readonly)UIEdgeInsets insets;
-@property(nonatomic,assign)BOOL isFirstView;
-@property(nonatomic,assign)BOOL isLastView;
-@property(nonatomic,readonly)ZLJustify justify;
-@property(nonatomic,readonly)CGFloat spacing;
-
-///记录已kvo
-@property (nonatomic,assign)BOOL isKVOAdded;
-@end
 @implementation ZLViewLayoutCfg
 - (UIView *)frontView {
     NSInteger idx = [self.stackView.arrangedViews indexOfObject:self.view];
@@ -247,6 +200,20 @@
     }
 }
 
+- (CGFloat)widthOrHeightPlusBehindSpacing {
+    if (_isFirstView) return 0;
+    if (self.stackView.horizontal) {
+        return CGRectGetWidth(self.view.frame) + self.behindSpacing;
+    }else {
+        return CGRectGetHeight(self.view.frame) + self.behindSpacing;
+    }
+}
+- (CGFloat)leadingOrTopContant {
+    UIView *frontView = self.frontView;
+    UIView *frontViewFrontView = frontView.zl_layoutCfg.frontView;
+    return  frontViewFrontView.zl_layoutCfg.widthOrHeightPlusBehindSpacing + frontView.zl_layoutCfg
+        .widthOrHeightPlusBehindSpacing;
+}
 - (NSLayoutXAxisAnchor *)leadingAnchor {
     return self.view.leadingAnchor;
 }

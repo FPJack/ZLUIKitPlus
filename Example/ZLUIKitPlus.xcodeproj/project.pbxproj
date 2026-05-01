@@ -31,6 +31,8 @@
 		8475419A2F9B60C80011DC56 /* ZLTagListViewDemoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 847541972F9B60C80011DC56 /* ZLTagListViewDemoVC.m */; };
 		8475419B2F9B60C80011DC56 /* ZLPairViewDemoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 847541952F9B60C80011DC56 /* ZLPairViewDemoVC.m */; };
 		8475419C2F9B60C80011DC56 /* ZLLabelDemoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 847541932F9B60C80011DC56 /* ZLLabelDemoVC.m */; };
+		84E99C652FA4AB420048BD1D /* ZLSpacingGuide.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E99C642FA4AB420048BD1D /* ZLSpacingGuide.m */; };
+		84E99C682FA4AB5E0048BD1D /* ZLSpacingGuideCoordinator.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E99C672FA4AB5E0048BD1D /* ZLSpacingGuideCoordinator.m */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -85,6 +87,10 @@
 		847541952F9B60C80011DC56 /* ZLPairViewDemoVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLPairViewDemoVC.m; sourceTree = "<group>"; };
 		847541962F9B60C80011DC56 /* ZLTagListViewDemoVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLTagListViewDemoVC.h; sourceTree = "<group>"; };
 		847541972F9B60C80011DC56 /* ZLTagListViewDemoVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLTagListViewDemoVC.m; sourceTree = "<group>"; };
+		84E99C632FA4AB420048BD1D /* ZLSpacingGuide.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLSpacingGuide.h; sourceTree = "<group>"; };
+		84E99C642FA4AB420048BD1D /* ZLSpacingGuide.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLSpacingGuide.m; sourceTree = "<group>"; };
+		84E99C662FA4AB5E0048BD1D /* ZLSpacingGuideCoordinator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLSpacingGuideCoordinator.h; sourceTree = "<group>"; };
+		84E99C672FA4AB5E0048BD1D /* ZLSpacingGuideCoordinator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLSpacingGuideCoordinator.m; sourceTree = "<group>"; };
 		85F4B8346B22B8B5ACFFBD82 /* ZLUIKitPlus.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ZLUIKitPlus.podspec; path = ../ZLUIKitPlus.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AFE2B5E7D34344C837F6F6F2 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -175,6 +181,10 @@
 				62507C282F9D043200397C32 /* ZLDoubleView.m */,
 				62507C2A2F9D0F2700397C32 /* ZLStackView.h */,
 				62507C2B2F9D0F2700397C32 /* ZLStackView.m */,
+				84E99C632FA4AB420048BD1D /* ZLSpacingGuide.h */,
+				84E99C642FA4AB420048BD1D /* ZLSpacingGuide.m */,
+				84E99C662FA4AB5E0048BD1D /* ZLSpacingGuideCoordinator.h */,
+				84E99C672FA4AB5E0048BD1D /* ZLSpacingGuideCoordinator.m */,
 				62507C1F2F9BB95C00397C32 /* ZLViewControllerSwift.swift */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
@@ -433,8 +443,10 @@
 				847541982F9B60C80011DC56 /* ZLImageViewDemoVC.m in Sources */,
 				62507C292F9D043200397C32 /* ZLDoubleView.m in Sources */,
 				847541992F9B60C80011DC56 /* ZLButtonDemoVC.m in Sources */,
+				84E99C682FA4AB5E0048BD1D /* ZLSpacingGuideCoordinator.m in Sources */,
 				62507C2C2F9D0F2700397C32 /* ZLStackView.m in Sources */,
 				8475419A2F9B60C80011DC56 /* ZLTagListViewDemoVC.m in Sources */,
+				84E99C652FA4AB420048BD1D /* ZLSpacingGuide.m in Sources */,
 				8475419B2F9B60C80011DC56 /* ZLPairViewDemoVC.m in Sources */,
 				8475419C2F9B60C80011DC56 /* ZLLabelDemoVC.m in Sources */,
 				6003F59E195388D20070C39A /* ZLAppDelegate.m in Sources */,

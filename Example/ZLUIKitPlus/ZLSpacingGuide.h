@@ -21,4 +21,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)addZeroWidthCons;
 @end
 
+
+@interface ZLSpacerGuide : UILayoutGuide
+@property (nonatomic,weak)NSLayoutConstraint *widthCons;
+@property (nonatomic,weak)NSLayoutConstraint *heightCons;
+@property (nonatomic,copy)NSNumber *spacing;
+@property (nonatomic,weak)UIView *view;
++ (instancetype)spacerWith:(UIView *)view;
+- (NSLayoutConstraint *)leadingConstraintEqualToAnchor:(NSLayoutXAxisAnchor *)anchor;
+- (NSLayoutConstraint *)topConstraintEqualToAnchor:(NSLayoutYAxisAnchor *)anchor;
+- (NSLayoutConstraint *)widthConstraintEqualToConstant:(CGFloat )width;
+- (NSLayoutConstraint *)heightConstraintEqualToConstant:(CGFloat )height;
+
+
+@end
+
 NS_ASSUME_NONNULL_END

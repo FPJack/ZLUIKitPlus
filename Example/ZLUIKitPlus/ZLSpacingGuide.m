@@ -37,3 +37,28 @@
     self.widthCons.active = YES;
 }
 @end
+@implementation ZLSpacerGuide
+
++ (instancetype)spacerWith:(UIView *)view {
+    ZLSpacerGuide *spacer = ZLSpacerGuide.new;
+    spacer.view = view;
+    [view addLayoutGuide:spacer];
+    return spacer;
+}
+
+- (NSLayoutConstraint *)leadingConstraintEqualToAnchor:(NSLayoutXAxisAnchor *)anchor {
+    return [self.leadingAnchor constraintEqualToAnchor:anchor];
+}
+- (NSLayoutConstraint *)topConstraintEqualToAnchor:(NSLayoutYAxisAnchor *)anchor{
+    return [self.topAnchor constraintEqualToAnchor:anchor];
+}
+- (NSLayoutConstraint *)widthConstraintEqualToConstant:(CGFloat )width {
+    self.widthCons = [self.widthAnchor constraintEqualToConstant:width];
+    return self.widthCons;
+}
+- (NSLayoutConstraint *)heightConstraintEqualToConstant:(CGFloat )height {
+    self.heightCons = [self.heightAnchor constraintEqualToConstant:height];
+    return self.heightCons;
+}
+@end
+

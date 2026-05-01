@@ -37,8 +37,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)NSMutableSet<NSLayoutConstraint *> *verticalConstraints;
 ///所有宽度约束
 @property (nonatomic,strong)NSMutableSet<NSLayoutConstraint *> *widthConstraints;
+
+///所有宽度约束
+@property (nonatomic,strong)NSMutableSet<NSLayoutConstraint *> *eqWidthConstraints;
+
 ///所有高度约束
 @property (nonatomic,strong)NSMutableSet<NSLayoutConstraint *> *heightConstraints;
+
+@property (nonatomic,strong)NSMutableSet<ZLSpacerGuide *> *spacerGuides;
 
 ///添加水平边侧约束
 - (void)addHorizontalEdgeConstraint;
@@ -52,6 +58,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)addWidthConstraint;
 ///添加高度约束
 - (void)addHeightConstraint;
+
+- (void)activateConstraints;
+
 
 @end
 

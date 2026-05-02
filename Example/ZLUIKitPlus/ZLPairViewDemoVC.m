@@ -200,9 +200,9 @@
     {
         ZLStackView *sk = [ZLStackView new];
         sk.tag = 999;
-        sk.horizontal = YES;
-        sk.alignment = ZLAlignCenter;
-        sk.justify = ZlJustifyFillEqually;
+        sk.horizontal = NO;
+        sk.alignment = ZLAlignEnd;
+        sk.justify = ZLJustifyCenter;
         sk.spacing = 20;
         sk.backgroundColor = UIColor.grayColor;
        
@@ -241,9 +241,7 @@
 
             [sk addArrangedSubview:UISwitch.new];
 //            [sk addArrangedSubview:UISwitch.new];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                label.text = @"kdklabeldkdkdkdkdkdkdkdklabeldkdkdkdkdkdkdkdklabeldkdkdkdkdkdkdkdklabeldkdkdkdkdkdkd";
-            });
+           
         }
         
 //        {
@@ -269,7 +267,7 @@
         [self.view addSubview:sk];
         [sk mas_makeConstraints:^(MASConstraintMaker *make) {
             make.center.mas_equalTo(self.view);
-//            make.height.mas_equalTo(400);
+            make.height.mas_equalTo(400);
             make.width.mas_equalTo(300);
 
         }];

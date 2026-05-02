@@ -895,6 +895,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     [self.spacingGuideCoordinator addHorizontalLayoutConstraints];
+    [self.spacingGuideCoordinator addVerticalLayoutConstraints];
     [self.spacingGuideCoordinator activateConstraints];
     
     return;

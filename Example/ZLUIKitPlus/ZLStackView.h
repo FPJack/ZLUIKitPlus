@@ -59,10 +59,6 @@ typedef NS_ENUM(NSInteger, ZLJustify) {
 @property (nonatomic,readonly)NSLayoutYAxisAnchor *bottomAnchor;
 
 
-@property (nonatomic,readonly)NSLayoutXAxisAnchor *alignLeadingAnchor;
-@property (nonatomic,readonly)NSLayoutXAxisAnchor *alignTrailingAnchor;
-@property (nonatomic,readonly)NSLayoutYAxisAnchor *alignTopAnchor;
-@property (nonatomic,readonly)NSLayoutYAxisAnchor *alignBottomAnchor;
 
 
 @property (nonatomic,copy)NSArray<NSLayoutDimension *> *widthAnchors;

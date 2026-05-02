@@ -405,56 +405,6 @@
     }
     return self.stackView.bottomAnchor;
 }
-- (NSLayoutYAxisAnchor *)alignTopAnchor {
-    switch (self.stackView.alignment) {
-        case ZLAlignCenter:
-            return self.topGuide.bottomAnchor;
-        case ZLAlignStart:
-        case ZLAlignFill:
-        case ZLAlignEnd:
-        default:
-            break;
-    }
-    return self.stackView.topAnchor;
-}
-- (NSLayoutYAxisAnchor *)alignBottomAnchor {
-    switch (self.stackView.alignment) {
-        case ZLAlignCenter:
-            return self.bottomGuide.topAnchor;
-        case ZLAlignEnd:
-        case ZLAlignFill:
-        case ZLAlignStart:
-        default:
-            break;
-    }
-    return self.stackView.bottomAnchor;
-}
-- (NSLayoutXAxisAnchor *)alignLeadingAnchor {
-    switch (self.stackView.alignment) {
-        case ZLAlignCenter:
-            return self.leadingGuide.trailingAnchor;
-        case ZLAlignStart:
-        case ZLAlignFill:
-        case ZLAlignEnd:
-        default:
-            break;
-    }
-        return self.stackView.leadingAnchor;
-    
-}
-- (NSLayoutXAxisAnchor *)alignTrailingAnchor {
-    switch (self.stackView.alignment) {
-        case ZLAlignCenter:
-            return self.trailingGuide.leadingAnchor;
-        case ZLAlignEnd:
-        case ZLAlignFill:
-        case ZLAlignStart:
-        default:
-            break;
-    }
-    return self.stackView.trailingAnchor;
-
-}
 
 - (NSArray<NSLayoutDimension *> *)widthAnchors {
     return @[
@@ -944,7 +894,7 @@
 }
 - (void)layoutSubviews {
     [super layoutSubviews];
-    [self.spacingGuideCoordinator addHorizontalConstraint];
+    [self.spacingGuideCoordinator addHorizontalLayoutConstraints];
     [self.spacingGuideCoordinator activateConstraints];
     
     return;

@@ -203,7 +203,7 @@
         sk.horizontal = YES;
         sk.alignment = ZLAlignCenter;
         sk.justify = ZlJustifyFillEqually;
-        sk.spacing = 0;
+        sk.spacing = 20;
         sk.backgroundColor = UIColor.grayColor;
        
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -269,7 +269,7 @@
         [self.view addSubview:sk];
         [sk mas_makeConstraints:^(MASConstraintMaker *make) {
             make.center.mas_equalTo(self.view);
-            make.height.mas_equalTo(400);
+//            make.height.mas_equalTo(400);
             make.width.mas_equalTo(300);
 
         }];

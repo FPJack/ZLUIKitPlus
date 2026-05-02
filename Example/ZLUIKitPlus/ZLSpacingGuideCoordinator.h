@@ -40,6 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///所有高度约束
 @property (nonatomic,strong)NSMutableSet<NSLayoutConstraint *> *heightConstraints;
 
+@property (nonatomic,strong)NSMutableArray<NSLayoutConstraint *> *constraints;
+
+
 ///添加水平边侧约束
 - (void)addHorizontalEdgeConstraint;
 ///添加垂直边侧约束
@@ -52,6 +55,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)addWidthConstraint;
 ///添加高度约束
 - (void)addHeightConstraint;
+
+///激活所有约束
+- (void)activateConstraints;
 
 @end
 

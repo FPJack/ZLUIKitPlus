@@ -8,6 +8,8 @@
 
 #import "ZLStackView.h"
 #import <objc/runtime.h>
+#import "ZLSpacingGuideCoordinator.h"
+
 #define kViewAlignStartConsId @"kViewAlignStartConsId"
 #define kViewAlignEndConsId @"kViewAlignEndConsId"
 
@@ -278,6 +280,12 @@
     self.direction = direction;
     return self;
 }
+- (void)setStackView:(ZLStackView *)stackView{
+    _stackView = stackView;
+    if (stackView) {
+        [stackView addLayoutGuide:self];
+    }
+}
 - (void)addGreadThanWidthCons {
     if (_widthCons) {
         _widthCons.active = NO;
@@ -338,6 +346,128 @@
 @implementation ZLTrailingGuide
 @end
 @implementation ZLLayoutGuideMerge
+
+- (NSLayoutXAxisAnchor *)leadingAnchor {
+    switch (self.stackView.justify) {
+        case ZLJustifyCenter:
+        case ZlJustifySpaceAround:
+        case ZlJustifySpaceEvenly:
+        {
+            return self.leadingGuide.trailingAnchor;
+        }
+            break;
+        default:
+            break;
+    }
+    return self.stackView.leadingAnchor;
+}
+
+- (NSLayoutXAxisAnchor *)trailingAnchor {
+    switch (self.stackView.justify) {
+        case ZLJustifyCenter:
+        case ZlJustifySpaceAround:
+        case ZlJustifySpaceEvenly:
+        {
+            return self.trailingGuide.leadingAnchor;
+        }
+            break;
+        default:
+            break;
+    }
+    return self.stackView.trailingAnchor;
+}
+
+- (NSLayoutYAxisAnchor *)topAnchor {
+    switch (self.stackView.justify) {
+        case ZLJustifyCenter:
+        case ZlJustifySpaceAround:
+        case ZlJustifySpaceEvenly:
+        {
+            return self.topGuide.bottomAnchor;
+        }
+            break;
+        default:
+            break;
+    }
+    return self.stackView.topAnchor;
+}
+- (NSLayoutYAxisAnchor *)bottomAnchor {
+    switch (self.stackView.justify) {
+        case ZLJustifyCenter:
+        case ZlJustifySpaceAround:
+        case ZlJustifySpaceEvenly:
+        {
+            return self.bottomGuide.topAnchor;
+        }
+            break;
+        default:
+            break;
+    }
+    return self.stackView.bottomAnchor;
+}
+- (NSLayoutYAxisAnchor *)alignTopAnchor {
+    switch (self.stackView.alignment) {
+        case ZLAlignCenter:
+            return self.topGuide.bottomAnchor;
+        case ZLAlignStart:
+        case ZLAlignFill:
+        case ZLAlignEnd:
+        default:
+            break;
+    }
+    return self.stackView.topAnchor;
+}
+- (NSLayoutYAxisAnchor *)alignBottomAnchor {
+    switch (self.stackView.alignment) {
+        case ZLAlignCenter:
+            return self.bottomGuide.topAnchor;
+        case ZLAlignEnd:
+        case ZLAlignFill:
+        case ZLAlignStart:
+        default:
+            break;
+    }
+    return self.stackView.bottomAnchor;
+}
+- (NSLayoutXAxisAnchor *)alignLeadingAnchor {
+    switch (self.stackView.alignment) {
+        case ZLAlignCenter:
+            return self.leadingGuide.trailingAnchor;
+        case ZLAlignStart:
+        case ZLAlignFill:
+        case ZLAlignEnd:
+        default:
+            break;
+    }
+        return self.stackView.leadingAnchor;
+    
+}
+- (NSLayoutXAxisAnchor *)alignTrailingAnchor {
+    switch (self.stackView.alignment) {
+        case ZLAlignCenter:
+            return self.trailingGuide.leadingAnchor;
+        case ZLAlignEnd:
+        case ZLAlignFill:
+        case ZLAlignStart:
+        default:
+            break;
+    }
+    return self.stackView.trailingAnchor;
+
+}
+
+- (NSArray<NSLayoutDimension *> *)widthAnchors {
+    return @[
+        self.leadingGuide.widthAnchor,
+        self.trailingGuide.widthAnchor
+    ];
+}
+- (NSArray<NSLayoutDimension *> *)heightAnchors {
+    return @[
+        self.topGuide.heightAnchor,
+        self.bottomGuide.heightAnchor
+    ];
+}
 - (UILayoutGuide *)topGuide {
     if (!_topGuide) {
         _topGuide = [[ZLTopGuide alloc] initWithStackView:self.stackView direction:0];
@@ -504,8 +634,16 @@
 @property (nonatomic, strong) NSMutableSet <NSLayoutConstraint *> *viewsWidthOrHeightConstraints;
 @property (nonatomic, strong) NSMutableSet <NSLayoutConstraint *> *gapWidthOrHeightConstraints;
 @property (nonatomic,strong)ZLLayoutGuideMerge *guideMerge;
+@property (nonatomic,strong)ZLSpacingGuideCoordinator *spacingGuideCoordinator;
 @end
 @implementation ZLStackView
+- (ZLSpacingGuideCoordinator *)spacingGuideCoordinator {
+    if (!_spacingGuideCoordinator) {
+        _spacingGuideCoordinator = [[ZLSpacingGuideCoordinator alloc] init];
+        _spacingGuideCoordinator.stackView = self;
+    }
+    return _spacingGuideCoordinator;
+}
 - (ZLLayoutGuideMerge *)guideMerge {
     if (!_guideMerge) {
         _guideMerge = [[ZLLayoutGuideMerge alloc] init];
@@ -775,6 +913,10 @@
             }
         }
     }];
+    
+    
+    
+    
     if (spaceCons.count < 1) return;
     CGFloat gapValue = [self availableHeightOrWidth];
     CGFloat itemGapValue = gapValue / self.arrangedViews.count;
@@ -783,7 +925,6 @@
         obj.constant = itemGapValue;
     }];
     [self.gapWidthOrHeightConstraints addObjectsFromArray:spaceCons];
-
 }
 
 - (void)configJustifyFillEqually {
@@ -803,6 +944,10 @@
 }
 - (void)layoutSubviews {
     [super layoutSubviews];
+    [self.spacingGuideCoordinator addHorizontalConstraint];
+    [self.spacingGuideCoordinator activateConstraints];
+    
+    return;
     if (!self.markedDirty) {
 //        [self updateCons];
         return;

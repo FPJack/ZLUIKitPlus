@@ -125,74 +125,74 @@
     CFAbsoluteTime total = 0;
     CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
 
-    if (useSystemStackView) {
-        TestStackView *stackView = [[TestStackView alloc] init];
-        stackView.axis = UILayoutConstraintAxisVertical;
-        stackView.alignment = UIStackViewAlignmentCenter;
-        stackView.distribution = UIStackViewDistributionFill;
-        stackView.backgroundColor = UIColor.redColor;
-        [self.view addSubview:stackView];
-        [stackView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.mas_equalTo(self.view);
-            make.width.mas_equalTo(300);
-
-        }];
-        for (int i = 0; i < count; i++) {
-           
-            TestStackView *subStackView = [[TestStackView alloc] init];
-            subStackView.tag = 80;
-            subStackView.axis = UILayoutConstraintAxisHorizontal;
-            subStackView.alignment = UIStackViewAlignmentCenter;
-            subStackView.distribution = UIStackViewDistributionFill;
-            UILabel *label = UILabel.new;
-            label.text = [NSString stringWithFormat:@"%d", i];
-            label.font = [UIFont systemFontOfSize:10];
-            label.backgroundColor = UIColor.blueColor;
-            [subStackView addArrangedSubview:label];
-            [subStackView addArrangedSubview:UISwitch.new];
-            [subStackView addArrangedSubview:UISwitch.new];
-
-            [stackView addArrangedSubview:subStackView];
-        }
-    }else {
-        ZLStackView *stackView = [[ZLStackView alloc] init];
-        stackView.horizontal = NO;
-        stackView.alignment = ZLAlignCenter;
-        stackView.justify = ZlJustifyFill;
-        stackView.backgroundColor = UIColor.redColor;
-        [self.view addSubview:stackView];
-        [stackView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.mas_equalTo(self.view);
-            make.width.mas_equalTo(300);
-        }];
-        for (int i = 0; i < count; i++) {
-           
-            ZLStackView *subStackView = [[ZLStackView alloc] init];
-            subStackView.tag = 100;
-            subStackView.horizontal = YES;
-            subStackView.alignment = ZLAlignCenter;
-            subStackView.justify = ZlJustifyFill;
-            UILabel *label = UILabel.new;
-            label.text = [NSString stringWithFormat:@"%d", i];
-            label.font = [UIFont systemFontOfSize:10];
-            label.backgroundColor = UIColor.blueColor;
-            [subStackView addArrangedSubview:label];
-            [subStackView addArrangedSubview:UISwitch.new];
-            [subStackView addArrangedSubview:UISwitch.new];
-            subStackView.backgroundColor = UIColor.blueColor;
-            [stackView addArrangedSubview:subStackView];
-            
-        }
-        [self.view setNeedsLayout];
-
-        [self.view layoutIfNeeded];
-       
-    }
-    CFAbsoluteTime end = CFAbsoluteTimeGetCurrent();
-
-    total += (end - start);
-    NSLog(@"avg: %.3f ms", total / 100 * 1000);
-    return;
+//    if (useSystemStackView) {
+//        TestStackView *stackView = [[TestStackView alloc] init];
+//        stackView.axis = UILayoutConstraintAxisVertical;
+//        stackView.alignment = UIStackViewAlignmentCenter;
+//        stackView.distribution = UIStackViewDistributionFill;
+//        stackView.backgroundColor = UIColor.redColor;
+//        [self.view addSubview:stackView];
+//        [stackView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.center.mas_equalTo(self.view);
+//            make.width.mas_equalTo(300);
+//
+//        }];
+//        for (int i = 0; i < count; i++) {
+//           
+//            TestStackView *subStackView = [[TestStackView alloc] init];
+//            subStackView.tag = 80;
+//            subStackView.axis = UILayoutConstraintAxisHorizontal;
+//            subStackView.alignment = UIStackViewAlignmentCenter;
+//            subStackView.distribution = UIStackViewDistributionFill;
+//            UILabel *label = UILabel.new;
+//            label.text = [NSString stringWithFormat:@"%d", i];
+//            label.font = [UIFont systemFontOfSize:10];
+//            label.backgroundColor = UIColor.blueColor;
+//            [subStackView addArrangedSubview:label];
+//            [subStackView addArrangedSubview:UISwitch.new];
+//            [subStackView addArrangedSubview:UISwitch.new];
+//
+//            [stackView addArrangedSubview:subStackView];
+//        }
+//    }else {
+//        ZLStackView *stackView = [[ZLStackView alloc] init];
+//        stackView.horizontal = NO;
+//        stackView.alignment = ZLAlignCenter;
+//        stackView.justify = ZlJustifyFill;
+//        stackView.backgroundColor = UIColor.redColor;
+//        [self.view addSubview:stackView];
+//        [stackView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.center.mas_equalTo(self.view);
+//            make.width.mas_equalTo(300);
+//        }];
+//        for (int i = 0; i < count; i++) {
+//           
+//            ZLStackView *subStackView = [[ZLStackView alloc] init];
+//            subStackView.tag = 100;
+//            subStackView.horizontal = YES;
+//            subStackView.alignment = ZLAlignCenter;
+//            subStackView.justify = ZlJustifyFill;
+//            UILabel *label = UILabel.new;
+//            label.text = [NSString stringWithFormat:@"%d", i];
+//            label.font = [UIFont systemFontOfSize:10];
+//            label.backgroundColor = UIColor.blueColor;
+//            [subStackView addArrangedSubview:label];
+//            [subStackView addArrangedSubview:UISwitch.new];
+//            [subStackView addArrangedSubview:UISwitch.new];
+//            subStackView.backgroundColor = UIColor.blueColor;
+//            [stackView addArrangedSubview:subStackView];
+//            
+//        }
+//        [self.view setNeedsLayout];
+//
+//        [self.view layoutIfNeeded];
+//       
+//    }
+//    CFAbsoluteTime end = CFAbsoluteTimeGetCurrent();
+//
+//    total += (end - start);
+//    NSLog(@"avg: %.3f ms", total / 100 * 1000);
+//    return;
     
     
     
@@ -202,15 +202,14 @@
         sk.tag = 999;
         sk.horizontal = YES;
         sk.alignment = ZLAlignCenter;
-        sk.justify = ZlJustifySpaceEvenly;
-        sk.spacing = 10;
+        sk.justify = ZlJustifyFillEqually;
+        sk.spacing = 0;
         sk.backgroundColor = UIColor.grayColor;
        
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //            sk.horizontal = YES;
 //            sk.alignment = ZLAlignStart;
 //            sk.justify = ZlJustifySpaceAround;
-
         });
         
 //        {
@@ -231,14 +230,19 @@
         {
             UILabel *label = UILabel.new;
             label.text = @"kdkd";
+
             label.numberOfLines = 0;
             label.backgroundColor = UIColor.orangeColor;
 //            [label setContentCompressionResistancePriority:749 forAxis:UILayoutConstraintAxisHorizontal];
 //            [label setContentCompressionResistancePriority:749 forAxis:UILayoutConstraintAxisVertical];
+            
             [sk addArrangedSubview:label];
             [sk addArrangedSubview:UISwitch.new];
+
+            [sk addArrangedSubview:UISwitch.new];
+//            [sk addArrangedSubview:UISwitch.new];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                label.text = @"kdklabeldkdkdkdkdkdkdkdklabeldkdkdkdkdkdkdkdklabeldkdkdkdkdkdkdkdklabeldkdkdkdkdkdkd";
+//                label.text = @"kdklabeldkdkdkdkdkdkdkdklabeldkdkdkdkdkdkdkdklabeldkdkdkdkdkdkdkdklabeldkdkdkdkdkdkd";
             });
         }
         

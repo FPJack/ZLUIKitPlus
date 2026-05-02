@@ -36,12 +36,10 @@
 - (BOOL)horizontal {
     return self.stackView.horizontal;
 }
-
-
 ///水平布局时添加所有约束
 - (void)addHorizontalLayoutConstraints {
-    [self deactivateConstraints];
     if (!self.horizontal) return;
+    [self deactivateConstraints];
     NSLayoutXAxisAnchor *nextAnchor = self.guideMerge.leadingAnchor;
     NSInteger count = self.views.count;
     NSLayoutConstraint *cons;
@@ -163,7 +161,8 @@
     
     
     if (self.justify == ZLJustifyStart) {
-        cons = [nextAnchor constraintLessThanOrEqualToAnchor:self.guideMerge.trailingAnchor];
+        
+        cons = [nextAnchor constraintLessThanOrEqualToAnchor:self.guideMerge.trailingAnchor ] ;
         [self.constraints addObject:cons];
     }else {
         cons = [nextAnchor constraintEqualToAnchor:self.guideMerge.trailingAnchor];
@@ -196,8 +195,8 @@
     }
 }
 - (void)addVerticalLayoutConstraints {
-    [self deactivateConstraints];
     if (self.horizontal) return;
+    [self deactivateConstraints];
     NSLayoutYAxisAnchor *nextAnchor = self.guideMerge.topAnchor;
     NSInteger count = self.views.count;
     NSLayoutConstraint *cons;

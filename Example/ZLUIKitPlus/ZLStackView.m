@@ -752,13 +752,8 @@
     self.markedDirty = YES;
     [self setNeedsLayout];
 }
-- (void)updateConstraints {
-    [super updateConstraints];
-    [self updateViewsConstraints];
-}
-- (void)updateViewsConstraints {
-    
-}
+
+
 
 ///设置中心gap等宽或者等高
 - (void)gapEqualSpaceBetween{
@@ -892,11 +887,15 @@
     }];
     [NSLayoutConstraint activateConstraints:self.viewsWidthOrHeightConstraints.allObjects];
 }
-- (void)layoutSubviews {
-    [super layoutSubviews];
+- (void)updateConstraints {
+    [super updateConstraints];
     [self.spacingGuideCoordinator addHorizontalLayoutConstraints];
     [self.spacingGuideCoordinator addVerticalLayoutConstraints];
     [self.spacingGuideCoordinator activateConstraints];
+}
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
     
     return;
     if (!self.markedDirty) {
@@ -944,8 +943,8 @@
 }
 
 ///至关重要
-//- (CGSize)intrinsicContentSize {
-//    //返回自适应
-//    return CGSizeZero;
-//}
+- (CGSize)intrinsicContentSize {
+    //返回自适应
+    return CGSizeZero;
+}
 @end

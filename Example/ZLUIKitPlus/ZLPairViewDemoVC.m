@@ -12,6 +12,16 @@
 }
 
 @end
+@interface Label  : UILabel
+
+@end
+@implementation Label
+- (CGSize)intrinsicContentSize
+{
+    return CGSizeMake(-1, -1);
+}
+
+@end
 @interface SwitchB: UISwitch
 @end
 @implementation SwitchB
@@ -64,7 +74,143 @@
     [super viewDidLoad];
 //    [self test];
 //    return;
+    self.view.backgroundColor = UIColor.orangeColor;
+    {
+        if (NO) {
+            UIView *view = UIView.new;
+            view.backgroundColor = UIColor.redColor;
+            view.translatesAutoresizingMaskIntoConstraints = NO; // 必须加
+
+            UILabel *label = UILabel.new;
+            label.text = @"lalabellabellabellabelbel";
+            label.numberOfLines = 0;
+           // label.lineBreakMode = NSLineBreakByTruncatingMiddle;
+            label.translatesAutoresizingMaskIntoConstraints = NO;
+            [view addSubview:label];
+
+            UISwitch *sw = UISwitch.new;
+            sw.translatesAutoresizingMaskIntoConstraints = NO;
+            [view addSubview:sw];
+
+            // 开始用 Anchors 布局（完全等价于你原来的约束）
+            [label.topAnchor constraintEqualToAnchor:view.topAnchor].active = YES;
+            [label.bottomAnchor constraintEqualToAnchor:view.bottomAnchor].active = YES;
+            [label.leadingAnchor constraintEqualToAnchor:view.leadingAnchor].active = YES;
+
+            [sw.topAnchor constraintEqualToAnchor:view.topAnchor].active = YES;
+            [sw.bottomAnchor constraintEqualToAnchor:view.bottomAnchor].active = YES;
+            [sw.leadingAnchor constraintEqualToAnchor:label.trailingAnchor].active = YES;
+
+            // 右边：view 右边 = sw 右边
+            [view.trailingAnchor constraintEqualToAnchor:sw.trailingAnchor].active = YES;
+
+            // 添加到父视图
+            [self.view addSubview:view];
+
+            // view 自己居中 + 宽度 200（Anchor 版）
+            [view.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
+            [view.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor].active = YES;
+            [view.widthAnchor constraintEqualToConstant:200].active = YES;
+            return;
+        }
     
+    }
+    
+   
+    int res = 0;
+    if (res) {
+        UIView *view = UIView.new;
+        view.backgroundColor = UIColor.redColor;
+        UILabel *label = UILabel.new;
+        label.text = @"lalabellabellabellabelbel";
+        label.lineBreakMode = NSLineBreakByTruncatingMiddle;
+        label.translatesAutoresizingMaskIntoConstraints = NO;
+        [view addSubview:label];
+        
+        UISwitch *sw = UISwitch.new;
+        sw.translatesAutoresizingMaskIntoConstraints = NO;
+        [view addSubview:sw];
+        NSMutableArray *arr = NSMutableArray.array;
+        NSLayoutConstraint *cons;
+        // 完全等价于 Masonry 可以工作的那段代码，一对一翻译
+        cons = [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeLeading
+                                            relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeLeading
+                                           multiplier:1 constant:0];
+        [arr addObject:cons];
+        cons =[NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeTop
+                                           relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeTop
+                                          multiplier:1 constant:0];
+        [arr addObject:cons];
+        cons = [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeBottom
+                                            relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeBottom
+                                           multiplier:1 constant:0];
+        [arr addObject:cons];
+        
+        cons = [NSLayoutConstraint constraintWithItem:sw attribute:NSLayoutAttributeTop
+                                            relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeTop
+                                           multiplier:1 constant:0];
+        [arr addObject:cons];
+        
+        cons = [NSLayoutConstraint constraintWithItem:sw attribute:NSLayoutAttributeBottom
+                                            relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeBottom
+                                           multiplier:1 constant:0];
+        [arr addObject:cons];
+        
+        cons = [NSLayoutConstraint constraintWithItem:sw attribute:NSLayoutAttributeLeading
+                                            relatedBy:NSLayoutRelationEqual toItem:label attribute:NSLayoutAttributeTrailing
+                                           multiplier:1 constant:0];
+        [arr addObject:cons];
+        
+        // ↓ offset 必须非零，这是触发 UISwitch 内部 bug 的关键，用 -1 即可，视觉无感知
+        cons = [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTrailing
+                                            relatedBy:NSLayoutRelationEqual toItem:sw attribute:NSLayoutAttributeTrailing
+                                           multiplier:1 constant:0];
+        
+        
+        [arr addObject:cons];
+        
+        //        UIView *spacerView = UIView.new;
+        //        [spacerView setContentCompressionResistancePriority:UILayoutPriorityDefaultLow - 1 forAxis:UILayoutConstraintAxisHorizontal];
+        ////        spacerView.translatesAutoresizingMaskIntoConstraints = NO;
+        ////        [view addSubview:spacerView];
+        ////        [spacerView.centerYAnchor constraintEqualToAnchor:view.centerYAnchor].active = YES;
+        ////        [spacerView.leadingAnchor constraintEqualToAnchor:sw.trailingAnchor].active = YES;
+        ////        [spacerView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor].active = YES;
+        ////
+        //
+        [NSLayoutConstraint activateConstraints:arr];
+        [self.view addSubview:view];
+        [view mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.mas_equalTo(0);
+            make.width.mas_equalTo(200);
+        }];
+        return;
+    }
+//    }else {
+//        UIView *view = UIView.new;
+//                view.backgroundColor = UIColor.redColor;
+//                UILabel *label = UILabel.new;
+//                label.text = @"UILabelUILabelUILabelUILabel";
+//                [view addSubview:label];
+//                [label mas_makeConstraints:^(MASConstraintMaker *make) {
+//                    make.leading.top.bottom.mas_equalTo(0);
+//                }];
+//                
+//                UISwitch *sw = UISwitch.new;
+//                [view addSubview:sw];
+//                [sw mas_makeConstraints:^(MASConstraintMaker *make) {
+//                    make.top.bottom.mas_equalTo(0);
+//                    make.trailing.mas_equalTo(0).offset(0);
+//                    make.leading.mas_equalTo(label.mas_trailing);
+//                }];
+//                [self.view addSubview:view];
+//                [view mas_makeConstraints:^(MASConstraintMaker *make) {
+//                    make.center.mas_equalTo(0);
+//                    make.width.mas_equalTo(200);
+//                }];
+//    }
+//    return;
+//    
     
     {
 //        UIStackView *stackView = TestStackView.new;
@@ -120,7 +266,7 @@
 //        return;
 //    }
     
-    BOOL useSystemStackView = NO;
+    BOOL useSystemStackView = YES;
     NSInteger count = 200;
     CFAbsoluteTime total = 0;
     CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
@@ -201,44 +347,46 @@
         ZLStackView *sk = [ZLStackView new];
         sk.tag = 999;
         sk.horizontal = YES;
-        sk.alignment = ZLAlignCenter;
+        sk.alignment = ZLAlignEnd;
         sk.justify = ZlJustifySpaceEvenly;
         sk.spacing = 10;
+        sk.insets = UIEdgeInsetsMake(0, 20, 0, 0);
         sk.backgroundColor = UIColor.grayColor;
        
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //            sk.horizontal = YES;
 //            sk.alignment = ZLAlignStart;
 //            sk.justify = ZlJustifySpaceAround;
-
         });
-        
-//        {
-//            UILabel *label = UILabel.new;
-//            label.text = @"dddd";
-//            label.backgroundColor = UIColor.blueColor;
-//            [sk addArrangedSubview:label];
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                label.text = @"addArrangedSubview";
-//            });
-//        }
-        
-//        {
-//            UIView *view = [self getStackView];
-//            [sk addArrangedSubview:view];
-//        }
+       
         
         {
             UILabel *label = UILabel.new;
-            label.text = @"kdkdkdkd";
+            label.text = @"label";
             label.numberOfLines = 0;
+            [label setContentCompressionResistancePriority:749 forAxis:UILayoutConstraintAxisHorizontal];
             label.backgroundColor = UIColor.orangeColor;
-//            [label setContentCompressionResistancePriority:749 forAxis:UILayoutConstraintAxisHorizontal];
-//            [label setContentCompressionResistancePriority:749 forAxis:UILayoutConstraintAxisVertical];
+            label.zl_layoutCfg.isFlexSpace =  YES;
+
+            //[sk addArrangedSubview:UISwitch.new];
             [sk addArrangedSubview:label];
-            [sk addArrangedSubview:UISwitch.new];
+            UISwitch *sw = UISwitch.new;
+//            sw.zl_layoutCfg.isFlexSpace = YES;
+            [sk addArrangedSubview:sw];
             [sk addArrangedSubview:UISwitch.new];
 
+           // [sk addArrangedSubview:UISwitch.new];
+
+            [self.view addSubview:sk];
+            [sk mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.center.mas_equalTo(self.view);
+                make.height.mas_equalTo(400);
+                make.width.mas_equalTo(300);
+    
+            }];
+            return;
+                   
+           
         }
         
 //        {
@@ -261,13 +409,25 @@
 //        }
         
         
-        [self.view addSubview:sk];
-        [sk mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.mas_equalTo(self.view);
-            make.height.mas_equalTo(400);
-            make.width.mas_equalTo(300);
 
-        }];
+        
+        
+        {
+            ZLStackView *stackview = [[ZLStackView alloc] init];
+            stackview.backgroundColor = UIColor.redColor;
+            stackview.horizontal = YES;
+            stackview.justify = ZLJustifyCenter;
+            stackview.alignment = ZLAlignCenter;
+            [stackview addArrangedSubview:sk];
+            
+            [self.view addSubview:stackview];
+            [stackview mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.center.mas_equalTo(self.view);
+                make.height.mas_equalTo(400);
+                make.width.mas_equalTo(300);
+
+            }];
+        }
     }
     
     {
@@ -283,9 +443,9 @@
 - (ZLStackView *)getStackView {
     ZLStackView *stackView = [ZLStackView new];
     stackView.horizontal = YES;
-    stackView.alignment = ZLAlignStart;
-    stackView.justify = ZLJustifyStart;
-    stackView.spacing = 10;
+    stackView.alignment = ZLAlignFill;
+    stackView.justify = ZlJustifyFill;
+    stackView.spacing = 0;
     stackView.layoutMargins = UIEdgeInsetsMake(10, 10, 10, 10);
     stackView.backgroundColor = UIColor.redColor;
    

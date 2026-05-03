@@ -53,15 +53,27 @@ typedef NS_ENUM(NSInteger, ZLJustify) {
 @property (nonatomic,weak)NSLayoutConstraint *eqWidthCons;
 @property (nonatomic,weak)NSLayoutConstraint *eqHeightCons;
 
+@property (nonatomic,readonly)NSLayoutXAxisAnchor *leadingAnchor;
+@property (nonatomic,readonly)NSLayoutXAxisAnchor *trailingAnchor;
+@property (nonatomic,readonly)NSLayoutYAxisAnchor *topAnchor;
+@property (nonatomic,readonly)NSLayoutYAxisAnchor *bottomAnchor;
+
+
+
+
+@property (nonatomic,copy)NSArray<NSLayoutDimension *> *widthAnchors;
+@property (nonatomic,copy)NSArray<NSLayoutDimension *> *heightAnchors;
+
 - (void)addJustifyConstraints;
 - (void)addAlignConstraints;
 - (void)setEqWidthConstant:(CGFloat)constant;
 - (void)setEqHeightConstant:(CGFloat)constant;
 - (void)setEqConstraintsValue:(CGFloat)constant;
+
 @end
 
 @interface ZLStackView : UIView
-
+@property (nonatomic, strong)ZLLayoutGuideMerge *layoutGuideMerge;
 @property (nonatomic,strong)UILayoutGuide *topGuide;
 @property (nonatomic,strong)UILayoutGuide *leadingGuide;
 @property (nonatomic,strong)UILayoutGuide *bottomGuide;

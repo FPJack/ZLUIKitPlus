@@ -10,9 +10,10 @@
 #import "ZLStackView.h"
 #import "ZLLayoutViewCfg.h"
 #import "ZLStackEdgeInsets.h"
+#import "ZLConstraintsCfg.h"
 @interface ZLLayoutManager()
 @property (nonatomic,strong)ZLStackEdgeInsets *stackEdgeInsets;
-@property (nonatomic,strong)NSMutableArray<NSLayoutConstraint *> *constraints;
+@property (nonatomic,strong,readwrite)NSMutableArray<NSLayoutConstraint *> *constraints;
 @property (nonatomic,readonly)NSArray<UIView *> *views;
 @property (nonatomic,readonly)ZLJustify justify;
 @property (nonatomic,readonly)ZLAlign align;
@@ -47,7 +48,6 @@
 ///水平布局时添加所有约束
 - (void)addHorizontalLayoutConstraints {
     if (!self.horizontal) return;
-    [self deactivateConstraints];
     NSLayoutXAxisAnchor *nextAnchor = self.stackEdgeInsets.leadingAnchor;
     NSInteger count = self.views.count;
     NSLayoutConstraint *cons;
@@ -64,7 +64,7 @@
         CGFloat startSpacing = cfg.startSpacing;
         CGFloat endSpacing = cfg.endSpacing;
         CGFloat behindSpacing = cfg.behindSpacing;
-        switch (self.align) {
+        switch (cfg.alignSelf) {
             case ZLAlignStart:
             {
                 cons = [view.topAnchor constraintEqualToAnchor:self.stackView.topAnchor constant:startSpacing + inset.top];
@@ -157,6 +157,8 @@
                     [self.constraints addObject:cons];
                     nextAnchor = spacingGuide.trailingAnchor;
                     cons = [spacingGuide.widthAnchor constraintEqualToConstant:behindSpacing];
+                    cons.cfg.type = ZLLayoutConTypeSpacing;
+                    cons.cfg.view = view;
                     [self.constraints addObject:cons];
                 }
                 
@@ -223,7 +225,6 @@
 }
 - (void)addVerticalLayoutConstraints {
     if (self.horizontal) return;
-    [self deactivateConstraints];
     NSLayoutYAxisAnchor *nextAnchor = self.stackEdgeInsets.topAnchor;
     NSInteger count = self.views.count;
     NSLayoutConstraint *cons;
@@ -240,7 +241,7 @@
         CGFloat startSpacing = cfg.startSpacing;
         CGFloat endSpacing = cfg.endSpacing;
         CGFloat behindSpacing = cfg.behindSpacing;
-        switch (self.align) {
+        switch (cfg.alignSelf) {
             case ZLAlignStart:
             {
                 cons = [view.leadingAnchor constraintEqualToAnchor:self.stackView.leadingAnchor constant:startSpacing + inset.left];
@@ -333,6 +334,8 @@
                     [self.constraints addObject:cons];
                     nextAnchor = spacingGuide.bottomAnchor;
                     cons = [spacingGuide.heightAnchor constraintEqualToConstant:behindSpacing];
+                    cons.cfg.type = ZLLayoutConTypeSpacing;
+                    cons.cfg.view = view;
                     [self.constraints addObject:cons];
                 }
                 

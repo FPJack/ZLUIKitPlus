@@ -17,9 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class ZLStackView;
 
-
-
-
 @interface ZLStackView : UIView
 @property (nonatomic,assign)BOOL horizontal;
 

@@ -347,9 +347,9 @@
         sk.tag = 999;
         sk.horizontal = YES;
         sk.alignment = ZLAlignCenter;
-        sk.justify = ZlJustifySpaceAround;
-        sk.spacing = 10;
-        //sk.insets = UIEdgeInsetsMake(20, 20, 20, 20);
+        sk.justify = ZLJustifyStart;
+        sk.spacing = 0;
+        sk.insets = UIEdgeInsetsMake(20, 20, 20, 20);
         sk.backgroundColor = UIColor.grayColor;
        
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -373,8 +373,13 @@
 //            sw.zl_layoutCfg.isFlexSpace = YES;
             [sk addArrangedSubview:sw];
             [sk addArrangedSubview:UISwitch.new];
-           
-        
+            [sk addArrangedSubview:UISwitch.new];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [sk setCustomSpacing:30 afterView:label];
+                [sk setCustomSpacing:20 afterView:sw];
+
+            });
 
            // [sk addArrangedSubview:UISwitch.new];
 

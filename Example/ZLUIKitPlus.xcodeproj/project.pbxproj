@@ -29,6 +29,7 @@
 		62507C732FA88C7D00397C32 /* ZLLayoutViewCfg.m in Sources */ = {isa = PBXBuildFile; fileRef = 62507C722FA88C7D00397C32 /* ZLLayoutViewCfg.m */; };
 		62507C762FA88D0000397C32 /* ZLLayoutGuide.m in Sources */ = {isa = PBXBuildFile; fileRef = 62507C752FA88D0000397C32 /* ZLLayoutGuide.m */; };
 		62507C792FA88FCD00397C32 /* ZLStackEdgeInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = 62507C782FA88FCD00397C32 /* ZLStackEdgeInsets.m */; };
+		62507C7C2FA8BC5700397C32 /* ZLConstraintsCfg.m in Sources */ = {isa = PBXBuildFile; fileRef = 62507C7B2FA8BC5700397C32 /* ZLConstraintsCfg.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		847541982F9B60C80011DC56 /* ZLImageViewDemoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 847541912F9B60C80011DC56 /* ZLImageViewDemoVC.m */; };
 		847541992F9B60C80011DC56 /* ZLButtonDemoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8475418F2F9B60C80011DC56 /* ZLButtonDemoVC.m */; };
@@ -87,6 +88,8 @@
 		62507C752FA88D0000397C32 /* ZLLayoutGuide.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLLayoutGuide.m; sourceTree = "<group>"; };
 		62507C772FA88FCD00397C32 /* ZLStackEdgeInsets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLStackEdgeInsets.h; sourceTree = "<group>"; };
 		62507C782FA88FCD00397C32 /* ZLStackEdgeInsets.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLStackEdgeInsets.m; sourceTree = "<group>"; };
+		62507C7A2FA8BC5700397C32 /* ZLConstraintsCfg.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLConstraintsCfg.h; sourceTree = "<group>"; };
+		62507C7B2FA8BC5700397C32 /* ZLConstraintsCfg.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLConstraintsCfg.m; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8475418E2F9B60C80011DC56 /* ZLButtonDemoVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLButtonDemoVC.h; sourceTree = "<group>"; };
 		8475418F2F9B60C80011DC56 /* ZLButtonDemoVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLButtonDemoVC.m; sourceTree = "<group>"; };
@@ -254,6 +257,8 @@
 				62507C752FA88D0000397C32 /* ZLLayoutGuide.m */,
 				62507C772FA88FCD00397C32 /* ZLStackEdgeInsets.h */,
 				62507C782FA88FCD00397C32 /* ZLStackEdgeInsets.m */,
+				62507C7A2FA8BC5700397C32 /* ZLConstraintsCfg.h */,
+				62507C7B2FA8BC5700397C32 /* ZLConstraintsCfg.m */,
 			);
 			name = ZLStackView;
 			sourceTree = "<group>";
@@ -466,6 +471,7 @@
 				847541982F9B60C80011DC56 /* ZLImageViewDemoVC.m in Sources */,
 				62507C292F9D043200397C32 /* ZLDoubleView.m in Sources */,
 				847541992F9B60C80011DC56 /* ZLButtonDemoVC.m in Sources */,
+				62507C7C2FA8BC5700397C32 /* ZLConstraintsCfg.m in Sources */,
 				62507C362FA8872C00397C32 /* ZLLayoutManager.m in Sources */,
 				62507C2C2F9D0F2700397C32 /* ZLStackView.m in Sources */,
 				62507C792FA88FCD00397C32 /* ZLStackEdgeInsets.m in Sources */,

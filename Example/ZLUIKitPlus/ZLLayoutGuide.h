@@ -25,6 +25,7 @@ typedef NS_ENUM(NSInteger, ZLJustify) {
    ZlJustifySpaceAround,//两边是中间一半
    ZlJustifySpaceEvenly,//所有间距都相等
 };
+
 @interface ZLLayoutGuide : UILayoutGuide
 @property (nonatomic,weak)UIView *stackView;
 

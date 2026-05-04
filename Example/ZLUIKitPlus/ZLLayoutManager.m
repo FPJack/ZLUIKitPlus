@@ -1,22 +1,30 @@
 //
-//  ZLSpacingGuideCoordinator.m
+//  ZLLayoutManager.m
 //  ZLUIKitPlus_Example
 //
-//  Created by admin on 2026/5/1.
+//  Created by Qiuxia Cui on 2026/5/4.
 //  Copyright © 2026 fanpeng. All rights reserved.
 //
 
-#import "ZLSpacingGuideCoordinator.h"
-@interface ZLSpacingGuideCoordinator()
-@property (nonatomic,strong)ZLLayoutGuideMerge *guideMerge;
+#import "ZLLayoutManager.h"
+#import "ZLStackView.h"
+#import "ZLLayoutViewCfg.h"
+#import "ZLStackEdgeInsets.h"
+@interface ZLLayoutManager()
+@property (nonatomic,strong)ZLStackEdgeInsets *stackEdgeInsets;
+@property (nonatomic,strong)NSMutableArray<NSLayoutConstraint *> *constraints;
+@property (nonatomic,readonly)NSArray<UIView *> *views;
+@property (nonatomic,readonly)ZLJustify justify;
+@property (nonatomic,readonly)ZLAlign align;
+@property (nonatomic,readonly)BOOL horizontal;
 @end
-@implementation ZLSpacingGuideCoordinator
-- (ZLLayoutGuideMerge *)guideMerge {
-    if (!_guideMerge) {
-        _guideMerge = [[ZLLayoutGuideMerge alloc] init];
-        _guideMerge.stackView = self.stackView;
+@implementation ZLLayoutManager
+- (ZLStackEdgeInsets *)stackEdgeInsets {
+    if (!_stackEdgeInsets) {
+        _stackEdgeInsets = [[ZLStackEdgeInsets alloc] init];
+        _stackEdgeInsets.stackView = self.stackView;
     }
-    return _guideMerge;
+    return _stackEdgeInsets;
 }
 - (NSMutableArray<NSLayoutConstraint *> *)constraints {
     if (!_constraints) {
@@ -40,7 +48,7 @@
 - (void)addHorizontalLayoutConstraints {
     if (!self.horizontal) return;
     [self deactivateConstraints];
-    NSLayoutXAxisAnchor *nextAnchor = self.guideMerge.leadingAnchor;
+    NSLayoutXAxisAnchor *nextAnchor = self.stackEdgeInsets.leadingAnchor;
     NSInteger count = self.views.count;
     NSLayoutConstraint *cons;
     NSLayoutDimension  *widthDim;
@@ -50,7 +58,7 @@
     UIEdgeInsets inset = self.stackView.insets;
     for (int i = 0; i < count; i ++) {
         UIView *view = self.views[i];
-        ZLViewLayoutCfg *cfg = view.zl_layoutCfg;
+        ZLLayoutViewCfg *cfg = view.zl_layoutCfg;
         
         //添加垂直约束
         CGFloat startSpacing = cfg.startSpacing;
@@ -181,17 +189,17 @@
     CGFloat trailingMarge = inset.right;
     if (self.justify == ZLJustifyStart) {
         
-        cons = [nextAnchor constraintLessThanOrEqualToAnchor:self.guideMerge.trailingAnchor constant:-trailingMarge] ;
+        cons = [nextAnchor constraintLessThanOrEqualToAnchor:self.stackEdgeInsets.trailingAnchor constant:-trailingMarge] ;
         [self.constraints addObject:cons];
     }else {
-        cons = [nextAnchor constraintEqualToAnchor:self.guideMerge.trailingAnchor constant:-trailingMarge];
+        cons = [nextAnchor constraintEqualToAnchor:self.stackEdgeInsets.trailingAnchor constant:-trailingMarge];
         [self.constraints addObject:cons];
     }
     
     if (widthDim) {///设置两边间距和中间距的关系
-        NSLayoutConstraint *cons;
-        NSLayoutDimension *guideLeadingDim = self.guideMerge.leadingGuide.widthAnchor;
-        cons = [guideLeadingDim constraintEqualToAnchor:self.guideMerge.trailingGuide.widthAnchor];
+        NSArray<NSLayoutDimension *> *widthAnchors = self.stackEdgeInsets.widthAnchors;
+        NSLayoutDimension *guideLeadingDim = widthAnchors.firstObject;
+        cons = [guideLeadingDim constraintEqualToAnchor:widthAnchors.lastObject];
         [self.constraints addObject:cons];
         if (self.justify == ZlJustifySpaceAround) {
              cons = [guideLeadingDim constraintEqualToAnchor:widthDim multiplier:0.5];
@@ -202,13 +210,13 @@
     }
     
     if (self.justify == ZLJustifyCenter) {//中心布局设置两边间距相等
-        NSArray<NSLayoutDimension *> *widthDimens = self.guideMerge.widthAnchors;
+        NSArray<NSLayoutDimension *> *widthDimens = self.stackEdgeInsets.widthAnchors;
         cons = [widthDimens.firstObject constraintEqualToAnchor:widthDimens.lastObject];
         [self.constraints addObject:cons];
     }
     
     if (self.align == ZLAlignCenter) {//中心布局设置两边间距相等
-        NSArray<NSLayoutDimension *> *heightDimens = self.guideMerge.heightAnchors;
+        NSArray<NSLayoutDimension *> *heightDimens = self.stackEdgeInsets.heightAnchors;
         cons = [heightDimens.firstObject constraintEqualToAnchor:heightDimens.lastObject];
         [self.constraints addObject:cons];
     }
@@ -216,7 +224,7 @@
 - (void)addVerticalLayoutConstraints {
     if (self.horizontal) return;
     [self deactivateConstraints];
-    NSLayoutYAxisAnchor *nextAnchor = self.guideMerge.topAnchor;
+    NSLayoutYAxisAnchor *nextAnchor = self.stackEdgeInsets.topAnchor;
     NSInteger count = self.views.count;
     NSLayoutConstraint *cons;
     NSLayoutDimension  *heightDim;
@@ -226,7 +234,7 @@
 
     for (int i = 0; i < count; i ++) {
         UIView *view = self.views[i];
-        ZLViewLayoutCfg *cfg = view.zl_layoutCfg;
+        ZLLayoutViewCfg *cfg = view.zl_layoutCfg;
         
         //添加垂直约束
         CGFloat startSpacing = cfg.startSpacing;
@@ -356,17 +364,17 @@
     
     CGFloat bottomMarge = inset.bottom;
     if (self.justify == ZLJustifyStart) {
-        cons = [nextAnchor constraintLessThanOrEqualToAnchor:self.guideMerge.bottomAnchor constant:-bottomMarge];
+        cons = [nextAnchor constraintLessThanOrEqualToAnchor:self.stackEdgeInsets.bottomAnchor constant:-bottomMarge];
         [self.constraints addObject:cons];
     }else {
-        cons = [nextAnchor constraintEqualToAnchor:self.guideMerge.bottomAnchor constant:-bottomMarge];
+        cons = [nextAnchor constraintEqualToAnchor:self.stackEdgeInsets.bottomAnchor constant:-bottomMarge];
         [self.constraints addObject:cons];
     }
     
     if (heightDim) {///设置两边间距和中间距的关系
-        NSLayoutConstraint *cons;
-        NSLayoutDimension *guideLeadingDim = self.guideMerge.topGuide.heightAnchor;
-        cons = [guideLeadingDim constraintEqualToAnchor:self.guideMerge.bottomGuide.heightAnchor];
+        NSArray<NSLayoutDimension *> *heightAnchors = self.stackEdgeInsets.heightAnchors;
+        NSLayoutDimension *guideLeadingDim = self.stackEdgeInsets.heightAnchors.firstObject;
+        cons = [guideLeadingDim constraintEqualToAnchor:heightAnchors.lastObject];
         [self.constraints addObject:cons];
         if (self.justify == ZlJustifySpaceAround) {
              cons = [guideLeadingDim constraintEqualToAnchor:heightDim multiplier:0.5];
@@ -377,13 +385,13 @@
     }
     
     if (self.justify == ZLJustifyCenter) {//中心布局设置两边间距相等
-        NSArray<NSLayoutDimension *> *heightsDimens = self.guideMerge.heightAnchors;
+        NSArray<NSLayoutDimension *> *heightsDimens = self.stackEdgeInsets.heightAnchors;
         cons = [heightsDimens.firstObject constraintEqualToAnchor:heightsDimens.lastObject];
         [self.constraints addObject:cons];
     }
     
     if (self.align == ZLAlignCenter) {//中心布局设置两边间距相等
-        NSArray<NSLayoutDimension *> *heightDimens = self.guideMerge.heightAnchors;
+        NSArray<NSLayoutDimension *> *heightDimens = self.stackEdgeInsets.heightAnchors;
         cons = [heightDimens.firstObject constraintEqualToAnchor:heightDimens.lastObject];
         [self.constraints addObject:cons];
     }

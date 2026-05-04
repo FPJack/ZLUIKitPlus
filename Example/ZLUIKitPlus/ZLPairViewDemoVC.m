@@ -348,7 +348,7 @@
         sk.horizontal = YES;
         sk.alignment = ZLAlignCenter;
         sk.justify = ZLJustifyStart;
-        sk.spacing = 0;
+        sk.spacing = 10;
         sk.insets = UIEdgeInsetsMake(20, 20, 20, 20);
         sk.backgroundColor = UIColor.grayColor;
        

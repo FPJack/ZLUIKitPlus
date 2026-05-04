@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,readonly)NSLayoutYAxisAnchor *bottomAnchor;
 @property (nonatomic,copy)NSArray<NSLayoutDimension *> *widthAnchors;
 @property (nonatomic,copy)NSArray<NSLayoutDimension *> *heightAnchors;
+- (void)removeEdgeInsets;
 @end
 
 NS_ASSUME_NONNULL_END

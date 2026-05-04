@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ZLLayoutManager : NSObject
 @property (nonatomic,weak)ZLStackView *stackView;
 @property (nonatomic,strong,readonly)NSMutableArray<NSLayoutConstraint *> *constraints;
+- (void)removeAllSpacing;
 - (void)addHorizontalLayoutConstraints;
 - (void)addVerticalLayoutConstraints;
 ///激活所有约束

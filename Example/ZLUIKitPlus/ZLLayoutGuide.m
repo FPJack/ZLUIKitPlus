@@ -15,4 +15,7 @@
         [stackView addLayoutGuide:self];
     }
 }
+- (void)removeFromOwningView {
+    [self.owningView removeLayoutGuide:self];
+}
 @end

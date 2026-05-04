@@ -90,7 +90,19 @@
     }
     return self.stackView.bottomAnchor;
 }
-
+- (void)removeEdgeInsets {
+    [_leadingGuide removeFromOwningView];
+    _leadingGuide = nil;
+    
+    [_trailingGuide removeFromOwningView];
+    _trailingGuide = nil;
+    
+    [_topGuide removeFromOwningView];
+    _topGuide = nil;
+    
+    [_bottomGuide removeFromOwningView];
+    _bottomGuide = nil;
+}
 - (NSArray<NSLayoutDimension *> *)widthAnchors {
     return @[
         self.leadingGuide.widthAnchor,

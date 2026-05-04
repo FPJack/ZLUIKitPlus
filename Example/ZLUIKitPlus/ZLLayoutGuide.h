@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, ZLJustify) {
 
 @interface ZLLayoutGuide : UILayoutGuide
 @property (nonatomic,weak)UIView *stackView;
-
+- (void)removeFromOwningView;
 @end
 
 NS_ASSUME_NONNULL_END

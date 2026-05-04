@@ -8,27 +8,26 @@
 
 #import "ZLLayoutViewCfg.h"
 #import "ZLStackView.h"
+#import <objc/runtime.h>
 
-@implementation ZLLayoutViewCfg
-- (ZLJustify)justify {
-    return self.stackView.justify;
+@implementation UIView (ZLView)
+- (ZLLayoutViewCfg *)zl_layoutCfg {
+    ZLLayoutViewCfg *cfg = objc_getAssociatedObject(self, _cmd);
+    if (!cfg) {
+        cfg = ZLLayoutViewCfg.new;
+        objc_setAssociatedObject(self, _cmd, cfg, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return cfg;
 }
+@end
+@implementation ZLLayoutViewCfg
+
 - (ZLAlign)alignSelf {
     return self.isSetAlign ? _alignSelf : self.stackView.alignment;
 }
-- (CGFloat)spacing {
-    return self.stackView.spacing;
-}
-- (void)setStartSpacing:(CGFloat)startSpacing {
-    _startSpacing = startSpacing;
-}
-- (void)setEndSpacing:(CGFloat)endSpacing {
-    _endSpacing = endSpacing;
-}
 - (CGFloat)behindSpacing {
-    if (self.isLastView) return 0;
     if (_behindSpacing > 0) return _behindSpacing;
-    return self.spacing;
+    return self.stackView.spacing;
 }
 - (void)setView:(UIView *)view {
     _view = view;
@@ -46,6 +45,7 @@
             if (oldHidden == newHidden) return;
             if (self.stackView &&
                 [self.view.superview isEqual:self.stackView]) {
+                [self.stackView setValue:@(YES) forKey:@"markedDirty"];
                 [self.stackView setNeedsUpdateConstraints];
             }
         }
@@ -55,8 +55,5 @@
     if (self.isKVOAdded) {
         [self.view removeObserver:self forKeyPath:@"hidden"];
     }
-}
-- (UIEdgeInsets)insets {
-    return self.stackView.insets;
 }
 @end

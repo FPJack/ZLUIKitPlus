@@ -9,7 +9,6 @@
 #import "ZLConstraintsCfg.h"
 #import <objc/runtime.h>
 @implementation ZLConstraintsCfg
-
 @end
 @implementation NSLayoutConstraint (Cfg)
 - (ZLConstraintsCfg *)cfg {

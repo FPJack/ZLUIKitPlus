@@ -11,6 +11,7 @@
 #import "ZLLayoutViewCfg.h"
 #import "ZLStackEdgeInsets.h"
 #import "ZLConstraintsCfg.h"
+
 @interface ZLLayoutManager()
 @property (nonatomic,strong)ZLStackEdgeInsets *stackEdgeInsets;
 @property (nonatomic,strong,readwrite)NSMutableArray<NSLayoutConstraint *> *constraints;
@@ -44,6 +45,14 @@
 }
 - (BOOL)horizontal {
     return self.stackView.horizontal;
+}
+- (void)removeAllSpacing {
+    [self.stackEdgeInsets  removeEdgeInsets];
+    [[self.stackView.layoutGuides filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(UILayoutGuide*  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+            return [evaluatedObject isKindOfClass:ZLLayoutGuide.class];
+    }]] enumerateObjectsUsingBlock:^(__kindof ZLLayoutGuide * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [obj removeFromOwningView];
+    }];
 }
 ///水平布局时添加所有约束
 - (void)addHorizontalLayoutConstraints {
@@ -394,8 +403,8 @@
     }
     
     if (self.align == ZLAlignCenter) {//中心布局设置两边间距相等
-        NSArray<NSLayoutDimension *> *heightDimens = self.stackEdgeInsets.heightAnchors;
-        cons = [heightDimens.firstObject constraintEqualToAnchor:heightDimens.lastObject];
+        NSArray<NSLayoutDimension *> *widthDimens = self.stackEdgeInsets.widthAnchors;
+        cons = [widthDimens.firstObject constraintEqualToAnchor:widthDimens.lastObject];
         [self.constraints addObject:cons];
     }
 }

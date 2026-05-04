@@ -10,10 +10,7 @@
 #import "ZLLayoutGuide.h"
 
 NS_ASSUME_NONNULL_BEGIN
-@class ZLLayoutViewCfg;
-@interface UIView (ZLView)
-@property (nonatomic,readonly)ZLLayoutViewCfg *zl_layoutCfg;
-@end
+
 
 @class ZLStackView;
 
@@ -24,13 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,assign)ZLJustify justify;
 
-@property (nonatomic,assign)BOOL markedDirty;
-
 @property(nonatomic,assign)UIEdgeInsets insets;
 
 @property(nonatomic,strong) NSMutableArray<__kindof UIView *> *arrangedViews;
-
-@property(nonatomic,strong) NSMutableArray<__kindof UIView *> *allViews;
 
 @property (nonatomic,assign)CGFloat spacing;
 

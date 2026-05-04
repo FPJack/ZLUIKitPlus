@@ -7,24 +7,15 @@
 //
 
 #import "ZLStackView.h"
-#import <objc/runtime.h>
 #import "ZLLayoutManager.h"
 #import "ZLLayoutViewCfg.h"
 #import "ZLConstraintsCfg.h"
 
-
-@implementation UIView (ZLView)
-- (ZLLayoutViewCfg *)zl_layoutCfg {
-    ZLLayoutViewCfg *cfg = objc_getAssociatedObject(self, _cmd);
-    if (!cfg) {
-        cfg = ZLLayoutViewCfg.new;
-        objc_setAssociatedObject(self, _cmd, cfg, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
-    return cfg;
-}
-@end
 @interface ZLStackView()
 @property (nonatomic,strong)ZLLayoutManager *layoutManager;
+@property(nonatomic,strong) NSMutableArray<__kindof UIView *> *allViews;
+@property (nonatomic,assign)BOOL markedDirty;
+
 @end
 @implementation ZLStackView
 - (ZLLayoutManager *)layoutManager {
@@ -43,7 +34,6 @@
     }
     return self;
 }
-
 - (NSMutableArray<__kindof UIView *> *)arrangedViews {
     if (!_arrangedViews) {
         _arrangedViews = NSMutableArray.array;
@@ -116,28 +106,31 @@
     }];
 }
 - (void)removeArrangedSubview:(UIView *)view {
-    if (![self.arrangedViews containsObject:view]) return;
+    if (![self.allViews containsObject:view]) return;
     [view removeFromSuperview];
-    [self.arrangedViews removeObject:view];
     [self.allViews removeObject:view];
     view.zl_layoutCfg.stackView = nil;
+    if (![self.arrangedViews containsObject:view]) return;
+    [self.arrangedViews removeObject:view];
     self.markedDirty = YES;
     [self setNeedsUpdateConstraints];
 }
 - (void)setFlexibleSpacing:(BOOL)flexible afterView:(UIView *)arrangedSubview {
+    if (![arrangedSubview isKindOfClass:UIView.class]) return;
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
     if (flexible == arrangedSubview.zl_layoutCfg.isFlexSpace) return;
     arrangedSubview.zl_layoutCfg.isFlexSpace = flexible;
+    if (arrangedSubview.hidden) return;
     self.markedDirty = YES;
     [self setNeedsUpdateConstraints];
 }
 - (void)setCustomSpacing:(CGFloat)spacing afterView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
     if (![arrangedSubview isKindOfClass:UIView.class]) return;
-    if (arrangedSubview.hidden) return;
     ZLLayoutViewCfg *viewCfg = arrangedSubview.zl_layoutCfg;
     if (viewCfg.behindSpacing == spacing) return;
     viewCfg.behindSpacing = spacing;
+    if (arrangedSubview.hidden) return;
     if (self.layoutManager.constraints.count == 0) return;
     NSArray<NSLayoutConstraint *> * arr = [self.layoutManager.constraints filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSLayoutConstraint*  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
         ZLConstraintsCfg *cfg = evaluatedObject.cfg;
@@ -158,8 +151,10 @@
 - (void)setAlignment:(ZLAlign)alignment forView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
     ZLLayoutViewCfg *cfg = arrangedSubview.zl_layoutCfg;
-    if (alignment == cfg.alignSelf) return;
-    cfg.isSetAlign = YES;
+    if (alignment == cfg.alignSelf) {
+        cfg.isSetAlign = YES;
+        return;
+    }
     cfg.alignSelf = alignment;
     self.markedDirty = YES;
     [self setNeedsUpdateConstraints];
@@ -185,12 +180,13 @@
 - (void)updateConstraints {
     [super updateConstraints];
     if (!self.markedDirty) return;
-    self.markedDirty = NO;
     [self refreshArrangedSubviews];
+    [self.layoutManager removeAllSpacing];
     [self.layoutManager deactivateConstraints];
     [self.layoutManager addHorizontalLayoutConstraints];
     [self.layoutManager addVerticalLayoutConstraints];
     [self.layoutManager activateConstraints];
+    self.markedDirty = NO;
 }
 ///至关重要
 - (CGSize)intrinsicContentSize {

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ZLLayoutGuide.h"
+#import "ZLLayoutViewCfg.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -29,6 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)addArrangedSubview:(UIView *)view;
 
+- (void)addArrangedSubview:(UIView *)view layout:(void(^)(ZLLayoutViewCfg *viewCfg))config;
+
 - (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)stackIndex;
 
 - (void)removeArrangedSubview:(UIView *)view;
@@ -37,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///设置view在主轴方向的权重
 - (void)setFlex:(NSInteger)flex forView:(UIView *)arrangedSubview;
-///在某个view后面设置是否弹性空间
+///在某个view后面设置是否弹性空间 只有justify  ==  ZlJustifyFill 才会有效
 - (void)setFlexibleSpacing:(BOOL)flexible afterView:(UIView *)arrangedSubview;
 ///设置view的alignment，优先级高于stackView的alignment
 - (void)setAlignment:(ZLAlign)alignment forView:(UIView *)arrangedSubview;

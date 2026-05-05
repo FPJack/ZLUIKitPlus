@@ -88,6 +88,10 @@
         [self setNeedsUpdateConstraints];
     }
 }
+- (void)addArrangedSubview:(UIView *)view layout:(void(^)(ZLLayoutViewCfg *viewCfg))config{
+    [self addArrangedSubview:view];
+    if (config) config(view.zl_layoutCfg);
+}
 - (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)stackIndex {
     if ([view isKindOfClass:UIView.class]) {
         if ([self.allViews containsObject:view]) return;

@@ -389,7 +389,13 @@
                         make.edges.mas_equalTo(0);
                     }];
     
-                    [stackview addArrangedSubview:btn];
+                    [stackview addArrangedSubview:btn layout:^(ZLLayoutViewCfg * _Nonnull viewCfg) {
+                        viewCfg.startSpacing = 20;
+                        viewCfg.endSpacing = 30;
+                        viewCfg.behindSpacing = 50;
+                        viewCfg.flex = 1;
+                        viewCfg.isFlexSpace = YES;
+                    }];
                     
                 }
                 UISwitch *sw = UISwitch.new;

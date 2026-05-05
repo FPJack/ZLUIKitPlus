@@ -14,7 +14,6 @@
 @property (nonatomic,strong)ZLLayoutManager *layoutManager;
 @property(nonatomic,strong) NSMutableArray<__kindof UIView *> *allViews;
 @property (nonatomic,assign)BOOL markedDirty;
-
 @end
 @implementation ZLStackView
 - (ZLLayoutManager *)layoutManager {
@@ -78,8 +77,8 @@
     if ([view isKindOfClass:UIView.class]) {
         if ([self.allViews containsObject:view]) return;
         ZLLayoutViewCfg *cfg = view.zl_layoutCfg;
-        cfg.view = view;
-        cfg.stackView = self;
+        [cfg setValue:view forKey:@"view"];
+        [cfg setValue:self forKey:@"stackView"];
         [self.allViews addObject:view];
         if (view.hidden) return;
         [self.arrangedViews addObject:view];
@@ -108,7 +107,6 @@
     if (![self.allViews containsObject:view]) return;
     [view removeFromSuperview];
     [self.allViews removeObject:view];
-    view.zl_layoutCfg.stackView = nil;
     if (![self.arrangedViews containsObject:view]) return;
     [self.arrangedViews removeObject:view];
     self.markedDirty = YES;
@@ -157,10 +155,7 @@
 - (void)setAlignment:(ZLAlign)alignment forView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
     ZLLayoutViewCfg *cfg = arrangedSubview.zl_layoutCfg;
-    if (alignment == cfg.alignSelf) {
-        cfg.isSetAlign = YES;
-        return;
-    }
+    if (alignment == cfg.alignSelf) return;
     cfg.alignSelf = alignment;
     self.markedDirty = YES;
     [self setNeedsUpdateConstraints];

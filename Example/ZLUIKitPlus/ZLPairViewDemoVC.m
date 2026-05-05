@@ -2,6 +2,7 @@
 //#import <ZLUIKitPlus/ZLUIKitPlus.h>
 #import <Masonry/Masonry.h>
 #import "ZLStackView.h"
+#import "ZLLayoutViewCfg.h"
 
 @interface SwitchA: UISwitch
 @end
@@ -347,7 +348,7 @@
         sk.tag = 999;
         sk.horizontal = YES;
         sk.alignment = ZLAlignCenter;
-        sk.justify = ZLJustifyStart;
+        sk.justify = ZLJustifyCenter;
         sk.spacing = 10;
         sk.insets = UIEdgeInsetsMake(20, 20, 20, 20);
         sk.backgroundColor = UIColor.grayColor;
@@ -360,29 +361,34 @@
        
         
         {
-            UILabel *label = UILabel.new;
-            label.text = @"UILabel";
-//            label.numberOfLines = 0;
-//            [label setContentCompressionResistancePriority:749 forAxis:UILayoutConstraintAxisHorizontal];
-            label.backgroundColor = UIColor.orangeColor;
-           // label.zl_layoutCfg.isFlexSpace =  YES;
-
-            //[sk addArrangedSubview:UISwitch.new];
-            [sk addArrangedSubview:label];
-            UISwitch *sw = UISwitch.new;
-//            sw.zl_layoutCfg.isFlexSpace = YES;
-            [sk addArrangedSubview:sw];
-            [sk addArrangedSubview:UISwitch.new];
-            [sk addArrangedSubview:UISwitch.new];
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [sk setCustomSpacing:30 afterView:label];
-                [sk setCustomSpacing:20 afterView:sw];
-
-            });
-
-           // [sk addArrangedSubview:UISwitch.new];
-
+           
+            {
+                
+                ZLStackView *stackview = [ZLStackView new];
+                stackview.backgroundColor = UIColor.redColor;
+                stackview.horizontal = NO;
+                stackview.alignment = ZLAlignCenter;
+//                stackview.justify = ZLJustifyCenter;
+                stackview.spacing = 10;
+                UILabel *label = UILabel.new;
+                label.text = @"UILabel";
+                label.numberOfLines = 0;
+                label.zl_layoutCfg.flex = 1;
+               
+                label.backgroundColor = UIColor.orangeColor;
+                [stackview addArrangedSubview:label];
+                UISwitch *sw = UISwitch.new;
+                sw.zl_layoutCfg.flex = 1;
+                [stackview addArrangedSubview:sw];
+                [stackview addArrangedSubview:UISwitch.new];
+                [sk  addArrangedSubview:stackview];
+                [stackview mas_makeConstraints:^(MASConstraintMaker *make) {
+                   
+                    make.height.mas_equalTo(300);
+        
+                }];
+            }
+        
             [self.view addSubview:sk];
             [sk mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.center.mas_equalTo(self.view);

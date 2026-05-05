@@ -462,7 +462,7 @@
 
     NSString *title = [self titleForState:self.state] ?: [self titleForState:UIControlStateNormal];
     NSAttributedString *attrTitle = [self attributedTitleForState:self.state] ?: [self attributedTitleForState:UIControlStateNormal];
-    CGFloat maxWidth = CGFLOAT_MAX;
+    CGFloat maxWidth = self.bounds.size.width;
     if (self.titleLabel.preferredMaxLayoutWidth > 0) {
         maxWidth = self.titleLabel.preferredMaxLayoutWidth;
     } else if (self.titleLabel.numberOfLines == 1) {

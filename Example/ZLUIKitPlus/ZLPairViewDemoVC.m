@@ -2,7 +2,7 @@
 //#import <ZLUIKitPlus/ZLUIKitPlus.h>
 #import <Masonry/Masonry.h>
 #import "ZLStackView.h"
-
+#import "ZLButton.h"
 @interface SwitchA: UISwitch
 @end
 @implementation SwitchA
@@ -379,11 +379,13 @@
                     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
                     [btn setTitle:@"UILabelUIUILabelUIUILabelUIUILabelUILabelLabelUILabelUIUILabelUILabelLabelLabelLabel" forState:UIControlStateNormal];
                     [btn.titleLabel setNumberOfLines:0];
+                    [btn setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh - 1 forAxis:UILayoutConstraintAxisHorizontal];
+                    [btn.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                        make.edges.mas_equalTo(0);
+                    }];
     
                     [stackview addArrangedSubview:btn];
-                    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                        make.height.mas_equalTo(btn.titleLabel.mas_height);
-                    }];
+                    
                 }
                 UISwitch *sw = UISwitch.new;
 //                [stackview addArrangedSubview:sw];

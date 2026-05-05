@@ -10,7 +10,6 @@
 #import "ZLLayoutManager.h"
 #import "ZLLayoutViewCfg.h"
 #import "ZLConstraintsCfg.h"
-
 @interface ZLStackView()
 @property (nonatomic,strong)ZLLayoutManager *layoutManager;
 @property(nonatomic,strong) NSMutableArray<__kindof UIView *> *allViews;
@@ -147,7 +146,14 @@
         arr.firstObject.constant = MAX(0, spacing);
     }
 }
-
+- (void)setFlex:(NSInteger)flex forView:(UIView *)arrangedSubview{
+    ZLLayoutViewCfg *cfg = arrangedSubview.zl_layoutCfg;
+    if (flex < 0 || cfg.flex == flex) return;
+    cfg.flex = flex;
+    self.markedDirty = YES;
+    [self setNeedsUpdateConstraints];
+    
+}
 - (void)setAlignment:(ZLAlign)alignment forView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
     ZLLayoutViewCfg *cfg = arrangedSubview.zl_layoutCfg;

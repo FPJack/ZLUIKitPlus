@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign)CGFloat endSpacing;
 @property (nonatomic,assign)CGFloat behindSpacing;
 @property (nonatomic,assign)BOOL    isFlexSpace;
-@property (nonatomic, assign) CGFloat flex;  // 弹性权重（横向=宽度比例，纵向=高度比例）
+@property (nonatomic, assign) NSInteger flex;  // 弹性权重（横向=宽度比例，纵向=高度比例）
 @property (nonatomic,assign)ZLAlign alignSelf;
 ///是否设置对齐方式
 @property (nonatomic,assign)BOOL isSetAlign;

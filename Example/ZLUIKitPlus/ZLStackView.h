@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-
+///按钮不会跟随文字撑开 titleLabel需要和button加相等高度约束
 @class ZLStackView;
 
 @interface ZLStackView : UIView
@@ -35,15 +35,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setCustomSpacing:(CGFloat)spacing afterView:(UIView *)arrangedSubview;
 
+///设置view在主轴方向的权重
+- (void)setFlex:(NSInteger)flex forView:(UIView *)arrangedSubview;
 ///在某个view后面设置是否弹性空间
 - (void)setFlexibleSpacing:(BOOL)flexible afterView:(UIView *)arrangedSubview;
-
 ///设置view的alignment，优先级高于stackView的alignment
 - (void)setAlignment:(ZLAlign)alignment forView:(UIView *)arrangedSubview;
-
 ///设置view的alignment方向start间距
 - (void)setAlignmentStartSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview;
-
 ///设置view的alignment方向end间距
 - (void)setAlignmentEndSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview;
 

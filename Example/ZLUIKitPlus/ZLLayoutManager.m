@@ -238,7 +238,7 @@
     
     //设置宽度的相对权重
     NSLayoutDimension *firstWidthDim = flexViews.firstObject.widthAnchor;
-    CGFloat firstFlex = flexViews.firstObject.zl_layoutCfg.flex;
+    CGFloat firstFlex = flexViews.firstObject.zl_layoutCfg.flex * 1.0;
     for (int i = 0; i < flexViews.count; i ++) {
         UIView *view = flexViews[i];
         [view setContentHuggingPriority:UILayoutPriorityDefaultLow - 1 forAxis:UILayoutConstraintAxisHorizontal];
@@ -432,7 +432,7 @@
     
     //设置高度的相对权重
     NSLayoutDimension *firstHeightDim = flexViews.firstObject.heightAnchor;
-    CGFloat firstFlex = flexViews.firstObject.zl_layoutCfg.flex;
+    CGFloat firstFlex = flexViews.firstObject.zl_layoutCfg.flex * 1.0;
     for (int i = 0; i < flexViews.count; i ++) {
         UIView *view = flexViews[i];
         [view setContentHuggingPriority:UILayoutPriorityDefaultLow - 1 forAxis:UILayoutConstraintAxisVertical];

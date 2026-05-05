@@ -2,7 +2,6 @@
 //#import <ZLUIKitPlus/ZLUIKitPlus.h>
 #import <Masonry/Masonry.h>
 #import "ZLStackView.h"
-#import "ZLLayoutViewCfg.h"
 
 @interface SwitchA: UISwitch
 @end
@@ -359,41 +358,44 @@
 //            sk.justify = ZlJustifySpaceAround;
         });
        
-        
         {
            
             {
                 
                 ZLStackView *stackview = [ZLStackView new];
                 stackview.backgroundColor = UIColor.redColor;
-                stackview.horizontal = NO;
+                stackview.horizontal = YES;
                 stackview.alignment = ZLAlignCenter;
-//                stackview.justify = ZLJustifyCenter;
-                stackview.spacing = 10;
+                stackview.justify = ZLJustifyCenter;
+                stackview.spacing = 0;
                 UILabel *label = UILabel.new;
-                label.text = @"UILabel";
+    
+                label.text = @"UILabelUIUILabelUILabelLabel";
                 label.numberOfLines = 0;
-                label.zl_layoutCfg.flex = 1;
-               
                 label.backgroundColor = UIColor.orangeColor;
-                [stackview addArrangedSubview:label];
+                [label setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh - 1 forAxis:UILayoutConstraintAxisHorizontal];
+                //[stackview addArrangedSubview:label];
+                {
+                    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+                    [btn setTitle:@"UILabelUIUILabelUIUILabelUIUILabelUILabelLabelUILabelUIUILabelUILabelLabelLabelLabel" forState:UIControlStateNormal];
+                    [btn.titleLabel setNumberOfLines:0];
+    
+                    [stackview addArrangedSubview:btn];
+                    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+                        make.height.mas_equalTo(btn.titleLabel.mas_height);
+                    }];
+                }
                 UISwitch *sw = UISwitch.new;
-                sw.zl_layoutCfg.flex = 1;
-                [stackview addArrangedSubview:sw];
+//                [stackview addArrangedSubview:sw];
                 [stackview addArrangedSubview:UISwitch.new];
                 [sk  addArrangedSubview:stackview];
-                [stackview mas_makeConstraints:^(MASConstraintMaker *make) {
-                   
-                    make.height.mas_equalTo(300);
-        
-                }];
             }
         
             [self.view addSubview:sk];
             [sk mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.center.mas_equalTo(self.view);
                 make.height.mas_equalTo(400);
-                make.width.mas_equalTo(300);
+                make.width.mas_equalTo(200);
     
             }];
             return;

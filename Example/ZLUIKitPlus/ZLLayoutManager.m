@@ -242,6 +242,7 @@
     for (int i = 0; i < flexViews.count; i ++) {
         UIView *view = flexViews[i];
         [view setContentHuggingPriority:UILayoutPriorityDefaultLow - 1 forAxis:UILayoutConstraintAxisHorizontal];
+        [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh - 1 forAxis:UILayoutConstraintAxisHorizontal];
         if (i > 0) {
           cons = [view.widthAnchor constraintEqualToAnchor:firstWidthDim multiplier:view.zl_layoutCfg.flex / firstFlex];
           [self.constraints addObject:cons];
@@ -437,6 +438,7 @@
         [view setContentHuggingPriority:UILayoutPriorityDefaultLow - 1 forAxis:UILayoutConstraintAxisVertical];
         if (i > 0) {
           cons = [view.heightAnchor constraintEqualToAnchor:firstHeightDim multiplier:view.zl_layoutCfg.flex / firstFlex];
+            [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh - 1 forAxis:UILayoutConstraintAxisVertical];
           [self.constraints addObject:cons];
         }
     }

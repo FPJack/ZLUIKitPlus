@@ -149,6 +149,11 @@ NS_INLINE GMStartEndInsets GMStartEndInsetsMake(CGFloat start, CGFloat end) {
 
 /// 图片偏移量（在布局计算完成后额外偏移），正值向右/下，负值向左/上 ，纯视觉偏移，不影响 intrinsicContentSize
 @property (nonatomic, assign) UIOffset imageOffset;
+
+///图片start end间距
+@property (nonatomic, assign) GMStartEndInsets imageInsets;
+@property (nonatomic, assign) GMStartEndInsets titleInsets;
+
 @property (nonatomic, copy, readonly) ZLButton* (^imgOffset)(CGFloat horizontal, CGFloat vertical);
 
 /// 文字偏移量（在布局计算完成后额外偏移），正值向右/下，负值向左/上，纯视觉偏移，不影响 intrinsicContentSize

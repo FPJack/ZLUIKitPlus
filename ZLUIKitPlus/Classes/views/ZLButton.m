@@ -136,7 +136,10 @@
     
     for (int i = 0 ; i < count; i ++) {
         UIView *view = arr[i];
-        CGFloat offset = [view isEqual:self.lab] ? titleOffset : imgOffSet;
+//        CGFloat offset = [view isEqual:self.lab] ? titleOffset : imgOffSet;
+        CGFloat startSpacing = [view isEqual:self.lab] ? self.titleInsets.start : self.imageInsets.start;
+        CGFloat endSpacing = [view isEqual:self.lab] ? self.titleInsets.end : self.imageInsets.end;
+
         if (self.axis == ZLButtonAxisHorizontal) {
             if (i == 0) {
                 cons = [nextXAnchor constraintEqualToAnchor:self.leadingAnchor constant:insets.left];
@@ -163,21 +166,21 @@
             
             switch (self.layoutContentAlignment) {
                 case ZLButtonContentAlignmentStart:
-                    cons = [view.topAnchor constraintEqualToAnchor:self.topAnchor constant:insets.top + offset];
+                    cons = [view.topAnchor constraintEqualToAnchor:self.topAnchor constant:insets.top + startSpacing];
                     [self.customContraints addObject:cons];
                     
-                    cons = [view.bottomAnchor constraintLessThanOrEqualToAnchor:self.bottomAnchor constant:-insets.bottom];
+                    cons = [view.bottomAnchor constraintLessThanOrEqualToAnchor:self.bottomAnchor constant:-insets.bottom - endSpacing];
                     [self.customContraints addObject:cons];
                     break;
                  case ZLButtonContentAlignmentCenter:
                     
-                    cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:self.topAnchor constant:insets.top];
+                    cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:self.topAnchor constant:insets.top + startSpacing];
                     [self.customContraints addObject:cons];
                     
-                    cons = [view.bottomAnchor constraintLessThanOrEqualToAnchor:self.bottomAnchor constant: - insets.bottom];
+                    cons = [view.bottomAnchor constraintLessThanOrEqualToAnchor:self.bottomAnchor constant: - insets.bottom - endSpacing];
                     [self.customContraints addObject:cons];
                     
-                    CGFloat offsetY = (insets.top - insets.bottom) / 2 + offset;
+                    CGFloat offsetY = (insets.top - insets.bottom + startSpacing - endSpacing) / 2;
                     
                     cons = [view.centerYAnchor constraintEqualToAnchor:self.centerYAnchor constant:offsetY];
                     [self.customContraints addObject:cons];
@@ -185,10 +188,10 @@
                     break;
                  case ZLButtonContentAlignmentEnd:
                     
-                    cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:self.topAnchor constant:insets.top];
+                    cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:self.topAnchor constant:insets.top + startSpacing];
                     [self.customContraints addObject:cons];
                     
-                    cons = [self.bottomAnchor constraintEqualToAnchor:view.bottomAnchor constant:insets.bottom];
+                    cons = [self.bottomAnchor constraintEqualToAnchor:view.bottomAnchor constant:insets.bottom + endSpacing];
                     [self.customContraints addObject:cons];
                         break;
                 default:
@@ -220,30 +223,29 @@
             
             switch (self.layoutContentAlignment) {
                 case ZLButtonContentAlignmentStart:
-                    cons = [view.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:insets.left];
+                    cons = [view.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:insets.left + startSpacing];
                     [self.customContraints addObject:cons];
                     
-                    cons = [view.trailingAnchor constraintLessThanOrEqualToAnchor:self.trailingAnchor constant:-insets.right];
+                    cons = [view.trailingAnchor constraintLessThanOrEqualToAnchor:self.trailingAnchor constant:-insets.right - endSpacing];
                     [self.customContraints addObject:cons];
                     
                     break;
                 case ZLButtonContentAlignmentCenter:
-                    cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.leadingAnchor constant:insets.left];
+                    cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.leadingAnchor constant:insets.left + startSpacing];
                     [self.customContraints addObject:cons];
-                    cons = [self.trailingAnchor constraintGreaterThanOrEqualToAnchor:view.trailingAnchor constant:insets.right];
+                    cons = [self.trailingAnchor constraintGreaterThanOrEqualToAnchor:view.trailingAnchor constant:insets.right + endSpacing];
                     [self.customContraints addObject:cons];
                     
-                    CGFloat offsetX = (insets.left - insets.right) / 2 + offset;
+                    CGFloat offsetX = (insets.left - insets.right + startSpacing - endSpacing) / 2;
 
-                    
                     cons = [view.centerXAnchor constraintEqualToAnchor:self.centerXAnchor constant:offsetX];
                     [self.customContraints addObject:cons];
                     break;
 
                 case ZLButtonContentAlignmentEnd:
-                    cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.leadingAnchor constant:insets.left];
+                    cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.leadingAnchor constant:insets.left + startSpacing];
                     [self.customContraints addObject:cons];
-                    cons = [self.trailingAnchor constraintEqualToAnchor:view.trailingAnchor constant:insets.right];
+                    cons = [self.trailingAnchor constraintEqualToAnchor:view.trailingAnchor constant:insets.right + endSpacing];
                     [self.customContraints addObject:cons];
                         break;
                     
@@ -625,6 +627,15 @@
         self.layoutImageSize = CGSizeMake(width, height);
         return self;
     };
+}
+- (void)setImageInsets:(GMStartEndInsets)imageInsets {
+    _imageInsets = imageInsets;
+    [self setNeedsUpdateConstraints];
+    
+}
+- (void)setTitleInsets:(GMStartEndInsets)titleInsets {
+    _titleInsets = titleInsets;
+    [self setNeedsUpdateConstraints];
 }
 
 - (void)setImageOffset:(UIOffset)imageOffset {

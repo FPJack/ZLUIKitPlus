@@ -378,16 +378,16 @@
                 [label setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh - 1 forAxis:UILayoutConstraintAxisHorizontal];
                 //[stackview addArrangedSubview:label];
                 {
-                    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+                    UIButton *btn = [ZLButton buttonWithType:UIButtonTypeCustom];
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         btn.zl_layoutCfg.behindSpacing = 20;
                     });
                     [btn setTitle:@"UILabelUIUILabelUIUILabelUIUILabelUILabelLabelUILabelUIUILabelUILabelLabelLabelLabel" forState:UIControlStateNormal];
                     [btn.titleLabel setNumberOfLines:0];
-                    [btn setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh - 1 forAxis:UILayoutConstraintAxisHorizontal];
-                    [btn.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                        make.edges.mas_equalTo(0);
-                    }];
+//                    [btn setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh - 1 forAxis:UILayoutConstraintAxisHorizontal];
+//                    [btn.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//                        make.edges.mas_equalTo(0);
+//                    }];
     
                     [stackview addArrangedSubview:btn layout:^(ZLLayoutViewCfg * _Nonnull viewCfg) {
                         viewCfg.startSpacing = 20;

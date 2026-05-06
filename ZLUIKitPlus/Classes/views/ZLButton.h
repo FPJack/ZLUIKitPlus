@@ -31,6 +31,18 @@ typedef NS_ENUM(NSUInteger, ZLButtonContentAlignment) {
     ZLButtonContentAlignmentEnd,        // 末尾对齐（右/下）
 };
 
+struct GMStartEndInsets {
+    CGFloat start;
+    CGFloat end;
+};
+typedef struct CF_BOXABLE GMStartEndInsets GMStartEndInsets;
+NS_INLINE GMStartEndInsets GMStartEndInsetsMake(CGFloat start, CGFloat end) {
+    GMStartEndInsets insets;
+    insets.start = start;
+    insets.end = end;
+    return insets;
+}
+
 /**
  * ZLButton - 继承 UIButton，支持自定义图文布局
  *

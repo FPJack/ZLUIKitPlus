@@ -28,11 +28,16 @@
         btn.image(@"魔法棒")
             .title(@"水平按钮")
             .systemFont(15)
+            .titleFirst
+            .alignCenter
             .titleColor(@"#333333")
             .spacing(8)
-            .inset(10, 16, 10, 16)
+            .flexSpacing
+            .inset(20, 16, 20, 16)
+//            .inset(0, 0, 0, 0)
+
             .corner(8)
-            .bgColor(@"#F0F0F0")
+            .bgColor(UIColor.orangeColor)
             .shColor(UIColor.redColor)
             .addSubview(btn.zl_lab
                         .z_square(4)
@@ -46,8 +51,11 @@
         [content addSubview:btn];
         btn.KFC.top(y).leading(20);
         y += 60;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            btn.spacing(30).inset(10, 10, 10, 10);
+        });
     }
-    
+    return;
     // 2. 垂直按钮（图上文下）
     {
         UILabel *tip = [self tipLabel:@"2. 垂直按钮(图上文下)" y:y];
@@ -76,7 +84,7 @@
             .mediumFont(15)
             .titleColor(UIColor.whiteColor)
             .spacing(6)
-            .inset(10, 20, 10, 20)
+            .inset(15, 25, 15, 25)
             .corner(20)
             .bgColor(@"#4A90D9");
         [content addSubview:btn];

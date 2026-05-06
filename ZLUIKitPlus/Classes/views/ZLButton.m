@@ -8,13 +8,14 @@
 #import "ZLButton.h"
 #import "ZLUI.h"
 #import <objc/runtime.h>
+#define kInsetLeadingId @"kInsetLeadingId"
+#define kInsetTrailingId @"kInsetTrailingId"
+#define kInsetTopId @"kInsetTopId"
+#define kInsetBottomId @"kInsetBottomId"
+#define kSpacingId @"kSpacingId"
 
 
 @interface ZLButton ()
-/// 缓存的内容尺寸，避免重复计算
-@property (nonatomic, assign) CGSize cachedImageSize;
-@property (nonatomic, assign) CGSize cachedTitleSize;
-@property (nonatomic, assign) BOOL needsRecalculate;
 @property (nonatomic,weak)UILabel *lab;
 @property (nonatomic,weak)UIImageView *imgView;
 @property (nonatomic,copy)NSNumber* isCircleClip;
@@ -24,36 +25,14 @@
 @property (nonatomic,assign)CGFloat tapInerval;
 @property (nonatomic,copy)void (^activeStyleBlock)(ZLButton *);
 @property (nonatomic,copy)void (^inactiveStyleBlock)(ZLButton *);
+@property (nonatomic,strong)UILayoutGuide *middelGuide;
+@property (nonatomic,strong)NSMutableArray *customContraints;
+///图片和文字展示顺序的拼接字段
+@property (nonatomic,copy)NSString *orderKey;
 @end
 
 @implementation ZLButton
 
-#pragma mark - RTL Support
-
-- (BOOL)_zl_isRTL {
-    
-    if (@available(iOS 10.0, *)) {
-        return self.effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
-    }
-    return [UIApplication sharedApplication].userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
-}
-
-/// RTL 下翻转水平值
-- (CGFloat)_zl_flipH:(CGFloat)value {
-    return [self _zl_isRTL] ? -value : value;
-}
-
-/// RTL 下翻转 Start/End 对齐
-- (ZLButtonContentAlignment)_zl_effectiveAlignment {
-    if (![self _zl_isRTL]) return _layoutContentAlignment;
-    switch (_layoutContentAlignment) {
-        case ZLButtonContentAlignmentStart: return ZLButtonContentAlignmentEnd;
-        case ZLButtonContentAlignmentEnd:   return ZLButtonContentAlignmentStart;
-        default: return _layoutContentAlignment;
-    }
-}
-
-/// RTL 下翻转 UIEdgeInsets 的 left/right
 - (UIEdgeInsets)_zl_effectiveInsets {
     UIEdgeInsets insets = _layoutEdgeInsets;
     if ([self _zl_isRTL]) {
@@ -63,7 +42,243 @@
     }
     return insets;
 }
+- (NSMutableArray *)customContraints {
+    if (!_customContraints) {
+        _customContraints = NSMutableArray.array;
+    }
+    return _customContraints;
+}
+- (UILayoutGuide *)middelGuide {
+    if (!_middelGuide) {
+        _middelGuide = [[UILayoutGuide alloc] init];
+        [self addLayoutGuide:_middelGuide];
+    }
+    return _middelGuide;
+}
+- (void)updateConstraints {
+    [super updateConstraints];
+    [self updateAllConstraints];
+}
 
+- (void)updateAllConstraints {
+   ///刷选不是宽高的约束
+    NSArray *filterConstraints = [self.constraints filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSLayoutConstraint * _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        BOOL res2 = [self.customContraints containsObject:evaluatedObject];
+        if (res2) return NO;
+        BOOL res1 = evaluatedObject.firstItem == self || evaluatedObject.secondItem == self;
+        if (res1) {
+            if (evaluatedObject.firstAttribute == NSLayoutAttributeWidth ||
+                evaluatedObject.firstAttribute == NSLayoutAttributeHeight ||
+                evaluatedObject.secondAttribute == NSLayoutAttributeWidth ||
+                evaluatedObject.secondAttribute == NSLayoutAttributeHeight) {
+                return NO;
+            }
+        }
+        return YES;
+    }]];
+
+    [NSLayoutConstraint deactivateConstraints:filterConstraints];
+    
+    NSMutableArray<UIView *> *arr = NSMutableArray.array;
+    NSLayoutXAxisAnchor *nextXAnchor;
+    NSLayoutYAxisAnchor *nextYAnchor;
+    if (self.lab) {
+        ///判断size 是否宽高有一个为0
+        NSString *title = [self titleForState:self.state];
+        if (title.length > 0) {
+            self.lab.translatesAutoresizingMaskIntoConstraints = NO;
+            [arr addObject:self.lab];
+        }
+    }
+    if (self.imgView) {
+        UIImage *image = [self imageForState:self.state];
+        CGSize size = image.size;
+        if (size.width > 0 && size.height > 0) {
+            [self.imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+            [self.imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+            self.imgView.translatesAutoresizingMaskIntoConstraints = NO;
+            [arr addObject:self.imgView];
+        }
+    }
+    if (arr.count > 1 && self.layoutOrder == ZLButtonOrderImageFirst) {
+        [arr exchangeObjectAtIndex:0 withObjectAtIndex:arr.count - 1];
+    }
+    
+    
+    __block NSString *orderKey = @"";
+    [arr enumerateObjectsUsingBlock:^(UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        orderKey = [orderKey stringByAppendingFormat:@"%d", [obj isEqual:self.lab] ? 0 : 1];
+    }];
+    
+    orderKey = [self generateOrderKeyWithStr:orderKey];
+    if ([self.orderKey isEqualToString:orderKey]) {
+        return;
+    }
+    self.orderKey = orderKey;
+    
+    [NSLayoutConstraint deactivateConstraints:self.customContraints];
+    [self.customContraints removeAllObjects];
+    nextXAnchor = arr.firstObject.leadingAnchor;
+    nextYAnchor = arr.firstObject.topAnchor;
+
+    NSLayoutConstraint *cons;
+    NSInteger count = arr.count;
+    UIEdgeInsets insets = [self _zl_effectiveInsets];
+    CGFloat imgOffSet = 0;
+    CGFloat titleOffset = 0;
+    CGFloat space = self.layoutSpacing;
+    if (count == 0) {
+        cons = [self.widthAnchor constraintEqualToConstant: MAX(0, insets.left + insets.right)];
+        [self.customContraints addObject:cons];
+        cons = [self.heightAnchor constraintEqualToConstant:MAX(insets.top + insets.bottom, 0)];
+        [self.customContraints addObject:cons];
+    }
+    
+    for (int i = 0 ; i < count; i ++) {
+        UIView *view = arr[i];
+        CGFloat offset = [view isEqual:self.lab] ? titleOffset : imgOffSet;
+        if (self.axis == ZLButtonAxisHorizontal) {
+            if (i == 0) {
+                cons = [nextXAnchor constraintEqualToAnchor:self.leadingAnchor constant:insets.left];
+                cons.identifier = kInsetLeadingId;
+                [self.customContraints addObject:cons];
+                nextXAnchor = view.trailingAnchor;
+            }else {
+                if (self.flexibleSpacing) {
+                    cons = [self.middelGuide.leadingAnchor constraintEqualToAnchor:nextXAnchor];
+                    [self.customContraints addObject:cons];
+                    nextXAnchor = self.middelGuide.trailingAnchor;
+                }
+                cons = [view.leadingAnchor constraintEqualToAnchor:nextXAnchor constant:space];
+                cons.identifier = kSpacingId;
+                [self.customContraints addObject:cons];
+                nextXAnchor = view.trailingAnchor;
+            }
+            
+            if (i  == count - 1) {
+                cons = [self.trailingAnchor constraintEqualToAnchor:nextXAnchor constant:insets.right];
+                cons.identifier = kInsetTrailingId;
+                [self.customContraints addObject:cons];
+            }
+            
+            switch (self.layoutContentAlignment) {
+                case ZLButtonContentAlignmentStart:
+                    cons = [view.topAnchor constraintEqualToAnchor:self.topAnchor constant:insets.top + offset];
+                    [self.customContraints addObject:cons];
+                    
+                    cons = [view.bottomAnchor constraintLessThanOrEqualToAnchor:self.bottomAnchor constant:-insets.bottom];
+                    [self.customContraints addObject:cons];
+                    break;
+                 case ZLButtonContentAlignmentCenter:
+                    
+                    cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:self.topAnchor constant:insets.top];
+                    [self.customContraints addObject:cons];
+                    
+                    cons = [view.bottomAnchor constraintLessThanOrEqualToAnchor:self.bottomAnchor constant: - insets.bottom];
+                    [self.customContraints addObject:cons];
+                    
+                    CGFloat offsetY = (insets.top - insets.bottom) / 2 + offset;
+                    
+                    cons = [view.centerYAnchor constraintEqualToAnchor:self.centerYAnchor constant:offsetY];
+                    [self.customContraints addObject:cons];
+                    
+                    break;
+                 case ZLButtonContentAlignmentEnd:
+                    
+                    cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:self.topAnchor constant:insets.top];
+                    [self.customContraints addObject:cons];
+                    
+                    cons = [self.bottomAnchor constraintEqualToAnchor:view.bottomAnchor constant:insets.bottom];
+                    [self.customContraints addObject:cons];
+                        break;
+                default:
+                    break;
+            }
+        }else {
+            if (i == 0) {
+                cons = [nextYAnchor constraintEqualToAnchor:self.topAnchor constant:insets.top];
+                cons.identifier = kInsetTopId;
+                [self.customContraints addObject:cons];
+                nextYAnchor = view.bottomAnchor;
+            }else {
+                if (self.flexibleSpacing) {
+                    cons = [self.middelGuide.topAnchor constraintEqualToAnchor:nextYAnchor];
+                    [self.customContraints addObject:cons];
+                    nextYAnchor = self.middelGuide.bottomAnchor;
+                }
+                
+                cons = [view.topAnchor constraintEqualToAnchor:nextYAnchor constant:space];
+                cons.identifier = kSpacingId;
+                [self.customContraints addObject:cons];
+                nextYAnchor = view.bottomAnchor;
+            }
+            if (i  == count - 1) {
+                cons = [self.bottomAnchor constraintEqualToAnchor:nextYAnchor constant:insets.bottom];
+                cons.identifier = kInsetBottomId;
+                [self.customContraints addObject:cons];
+            }
+            
+            switch (self.layoutContentAlignment) {
+                case ZLButtonContentAlignmentStart:
+                    cons = [view.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:insets.left];
+                    [self.customContraints addObject:cons];
+                    
+                    cons = [view.trailingAnchor constraintLessThanOrEqualToAnchor:self.trailingAnchor constant:-insets.right];
+                    [self.customContraints addObject:cons];
+                    
+                    break;
+                case ZLButtonContentAlignmentCenter:
+                    cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.leadingAnchor constant:insets.left];
+                    [self.customContraints addObject:cons];
+                    cons = [self.trailingAnchor constraintGreaterThanOrEqualToAnchor:view.trailingAnchor constant:insets.right];
+                    [self.customContraints addObject:cons];
+                    
+                    CGFloat offsetX = (insets.left - insets.right) / 2 + offset;
+
+                    
+                    cons = [view.centerXAnchor constraintEqualToAnchor:self.centerXAnchor constant:offsetX];
+                    [self.customContraints addObject:cons];
+                    break;
+
+                case ZLButtonContentAlignmentEnd:
+                    cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.leadingAnchor constant:insets.left];
+                    [self.customContraints addObject:cons];
+                    cons = [self.trailingAnchor constraintEqualToAnchor:view.trailingAnchor constant:insets.right];
+                    [self.customContraints addObject:cons];
+                        break;
+                    
+                default:
+                    break;
+            }
+            
+        }
+    }
+    [self.customContraints enumerateObjectsUsingBlock:^(NSLayoutConstraint*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        obj.priority = UILayoutPriorityRequired - 1;
+    }];
+    [NSLayoutConstraint activateConstraints:self.customContraints];
+}
+///重新生成orderKey
+- (NSString *)generateOrderKeyWithStr:(NSString *)str {
+    NSString *orderKey = str ?: @"";
+    orderKey = [orderKey stringByAppendingFormat:@"%ld", self.axis];
+    orderKey = [orderKey stringByAppendingFormat:@"%ld", self.layoutContentAlignment];
+    orderKey = [orderKey stringByAppendingFormat:@"%d", self.flexibleSpacing];
+    UIEdgeInsets insets = [self _zl_effectiveInsets];
+    if (self.axis == ZLButtonAxisHorizontal) {
+        orderKey = [orderKey stringByAppendingFormat:@"%f-%f", insets.top,insets.bottom];
+    }else {
+        orderKey = [orderKey stringByAppendingFormat:@"%f-%f", insets.left,insets.right];
+    }
+    return orderKey;
+}
+///根据id获取约束对象
+- (NSLayoutConstraint *)constraintWithIdentifier:(NSString *)identifier {
+    return [self.customContraints filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSLayoutConstraint*  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [evaluatedObject.identifier isEqualToString:identifier];
+    }]].firstObject;
+}
+#pragma mark - RTL Support
 - (void)addSubview:(UIView *)view {
     [super addSubview: view];
     [self saveView:view];
@@ -83,9 +298,11 @@
 - (void)saveView:(UIView *)view {
     if ([self.titleLabel isEqual:view]) {
         self.lab = (UILabel*)view;
+        self.lab.translatesAutoresizingMaskIntoConstraints = NO;
     }
     if ([self.imageView isEqual:view]) {
         self.imgView = (UIImageView *)view;
+        self.imgView.translatesAutoresizingMaskIntoConstraints = NO;
     }
 }
 #pragma mark - Init
@@ -125,7 +342,6 @@
     _layoutImageSize = CGSizeZero;
     _imageOffset = UIOffsetZero;
     _titleOffset = UIOffsetZero;
-    _needsRecalculate = YES;
     [self setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
 }
 
@@ -133,7 +349,6 @@
 
 - (void)setLayoutImage:(UIImage *)layoutImage {
     [self setImage:layoutImage forState:UIControlStateNormal];
-    [self _zl_markDirty];
 }
 - (UIImage *)imageWithObj:(id)image {
     UIImage *img = nil;
@@ -154,7 +369,6 @@
     return ^(id img) {
         [self setImage:[self imageWithObj:img] forState:UIControlStateSelected];
 
-        [self _zl_markDirty];
         return self;
     };
 }
@@ -170,13 +384,11 @@
 - (ZLButton * _Nonnull (^)(id _Nonnull))selectBgImage {
     return ^(id img) {
         [self setBackgroundImage:[self imageWithObj:img] forState:UIControlStateSelected];
-        [self _zl_markDirty];
         return self;
     };
 }
 - (void)setLayoutTitle:(NSString *)layoutTitle {
     [self setTitle:layoutTitle forState:UIControlStateNormal];
-    [self _zl_markDirty];
 }
 
 - (NSString *)layoutTitle {
@@ -195,13 +407,11 @@
         } else {
             [self setTitle:nil forState:UIControlStateSelected];
         }
-        [self _zl_markDirty];
         return self;
     };
 }
 - (void)setLayoutTitleFont:(UIFont *)layoutTitleFont {
     self.titleLabel.font = layoutTitleFont;
-    [self _zl_markDirty];
 }
 - (ZLButton * _Nonnull (^)(CGFloat))systemFont {
     return ^(CGFloat size) {
@@ -252,14 +462,12 @@
 - (ZLButton * _Nonnull (^)(CGFloat))titleMaxWidth {
     return ^(CGFloat maxWidth) {
         self.titleLabel.preferredMaxLayoutWidth = maxWidth;
-        [self _zl_markDirty];
         return self;
     };
 }
 - (ZLButton * _Nonnull (^)(NSInteger))titleLines {
     return ^(NSInteger lines) {
         self.titleLabel.numberOfLines = lines;
-        [self _zl_markDirty];
         return self;
     };
 }
@@ -276,7 +484,10 @@
 #pragma mark - Layout Property Setters
 
 - (void)setAxis:(ZLButtonAxis)layoutAxis {
-    if (_axis != layoutAxis) { _axis = layoutAxis; [self _zl_markDirty]; }
+    if (_axis != layoutAxis) {
+        _axis = layoutAxis;
+        [self setNeedsUpdateConstraints];
+    }
 }
 - (instancetype)vertical {
     self.axis = ZLButtonAxisVertical;
@@ -287,7 +498,10 @@
     return self;
 }
 - (void)setLayoutOrder:(ZLButtonOrder)layoutOrder {
-    if (_layoutOrder != layoutOrder) { _layoutOrder = layoutOrder; [self _zl_markDirty]; }
+    if (_layoutOrder != layoutOrder) {
+        _layoutOrder = layoutOrder;
+        [self setNeedsUpdateConstraints];
+    }
 }
 - (instancetype)imageFirst {
     self.layoutOrder = ZLButtonOrderImageFirst;
@@ -298,7 +512,9 @@
     return self;
 }
 - (void)setLayoutContentAlignment:(ZLButtonContentAlignment)layoutContentAlignment {
-    if (_layoutContentAlignment != layoutContentAlignment) { _layoutContentAlignment = layoutContentAlignment; [self setNeedsLayout]; }
+    if (_layoutContentAlignment != layoutContentAlignment) { _layoutContentAlignment = layoutContentAlignment;
+        [self setNeedsUpdateConstraints];
+    }
 }
 - (instancetype)alignCenter {
     self.layoutContentAlignment = ZLButtonContentAlignmentCenter;
@@ -341,7 +557,13 @@
     [super sendAction:action to:target forEvent:event];
 }
 - (void)setLayoutSpacing:(CGFloat)layoutSpacing {
-    if (_layoutSpacing != layoutSpacing) { _layoutSpacing = layoutSpacing; [self _zl_markDirty]; }
+    if (_layoutSpacing != layoutSpacing) {
+        _layoutSpacing = layoutSpacing;
+        NSLayoutConstraint *cons = [self constraintWithIdentifier:kSpacingId];
+        if (cons) {
+            cons.constant = layoutSpacing;
+        }
+    }
 }
 - (ZLButton * _Nonnull (^)(CGFloat))spacing {
     return ^(CGFloat spacing) {
@@ -351,7 +573,10 @@
 }
 
 - (void)setFlexibleSpacing:(BOOL)flexibleSpacing {
-    if (_flexibleSpacing != flexibleSpacing) { _flexibleSpacing = flexibleSpacing; [self _zl_markDirty]; }
+    if (_flexibleSpacing != flexibleSpacing) {
+        _flexibleSpacing = flexibleSpacing;
+        [self setNeedsUpdateConstraints];
+    }
 }
 
 - (instancetype)flexSpacing{
@@ -377,12 +602,23 @@
     };
 }
 - (void)setLayoutEdgeInsets:(UIEdgeInsets)layoutEdgeInsets {
+    if (UIEdgeInsetsEqualToEdgeInsets(layoutEdgeInsets, _layoutEdgeInsets)) return;
     _layoutEdgeInsets = layoutEdgeInsets;
-    [self _zl_markDirty];
+    NSLayoutConstraint *leadingCons = [self constraintWithIdentifier:kInsetLeadingId];
+    if (leadingCons) leadingCons.constant = layoutEdgeInsets.left;
+    NSLayoutConstraint *trailingCons = [self constraintWithIdentifier:kInsetTrailingId];
+    if (trailingCons) trailingCons.constant = layoutEdgeInsets.right;
+    NSLayoutConstraint *topCons = [self constraintWithIdentifier:kInsetTopId];
+    if (topCons) topCons.constant = layoutEdgeInsets.top;
+    NSLayoutConstraint *bottomCons = [self constraintWithIdentifier:kInsetBottomId];
+    if (bottomCons) bottomCons.constant = layoutEdgeInsets.bottom;
+    [self setNeedsUpdateConstraints];
 }
 - (void)setLayoutImageSize:(CGSize)layoutImageSize {
     _layoutImageSize = layoutImageSize;
-    [self _zl_markDirty];
+//    [self.imgView.widthAnchor constraintEqualToConstant:layoutImageSize.width];
+//    [self.imgView.heightAnchor constraintEqualToConstant:layoutImageSize.height];
+    [self setNeedsUpdateConstraints];
 }
 - (ZLButton * _Nonnull (^)(CGFloat, CGFloat))imageSize {
     return ^(CGFloat width, CGFloat height) {
@@ -433,102 +669,10 @@
     void (^action)(ZLButton *) = objc_getAssociatedObject(self, _cmd);
     if (action) action(self);
 }
-- (void)_zl_markDirty {
-    _needsRecalculate = YES;
-    [self invalidateIntrinsicContentSize];
-    [self setNeedsLayout];
-}
+
 
 #pragma mark - Size Calculation
 
-- (void)_zl_recalculateIfNeeded {
-    if (!_needsRecalculate) return;
-    [self _zl_doRecalculate];
-}
-
-- (void)_zl_doRecalculate {
-    _needsRecalculate = NO;
-
-    UIImage *img = [self imageForState:self.state] ?: [self imageForState:UIControlStateNormal];
-    if (img) {
-        if (_layoutImageSize.width > 0 && _layoutImageSize.height > 0) {
-            _cachedImageSize = _layoutImageSize;
-        } else {
-            _cachedImageSize = img.size;
-        }
-    } else {
-        _cachedImageSize = CGSizeZero;
-    }
-
-    NSString *title = [self titleForState:self.state] ?: [self titleForState:UIControlStateNormal];
-    NSAttributedString *attrTitle = [self attributedTitleForState:self.state] ?: [self attributedTitleForState:UIControlStateNormal];
-    CGFloat maxWidth = self.bounds.size.width;
-    if (self.titleLabel.preferredMaxLayoutWidth > 0) {
-        maxWidth = self.titleLabel.preferredMaxLayoutWidth;
-    } else if (self.titleLabel.numberOfLines == 1) {
-        maxWidth = CGFLOAT_MAX;
-    }else if(self.titleLabel.numberOfLines > 1) {
-        maxWidth = self.bounds.size.width - _layoutEdgeInsets.left - _layoutEdgeInsets.right;
-    }
-    if (attrTitle.length > 0) {
-        CGRect r = [attrTitle boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
-                                           options:NSStringDrawingUsesLineFragmentOrigin
-                                           context:nil];
-        _cachedTitleSize = CGSizeMake(ceil(r.size.width), ceil(r.size.height));
-    } else if (title.length > 0) {
-        UIFont *font = self.titleLabel.font ?: [UIFont systemFontOfSize:15];
-        NSDictionary *attrs = @{NSFontAttributeName: font};
-        CGRect r = [title boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
-                                       options:NSStringDrawingUsesLineFragmentOrigin
-                                    attributes:attrs
-                                       context:nil];
-        _cachedTitleSize = CGSizeMake(ceil(r.size.width), ceil(r.size.height));
-    } else {
-        _cachedTitleSize = CGSizeZero;
-    }
-}
-
-- (BOOL)_zl_hasImage {
-    return _cachedImageSize.width > 0 && _cachedImageSize.height > 0;
-}
-
-- (BOOL)_zl_hasTitle {
-    return _cachedTitleSize.width > 0 && _cachedTitleSize.height > 0;
-}
-
-- (CGFloat)_zl_actualSpacing {
-    return ([self _zl_hasImage] && [self _zl_hasTitle]) ? _layoutSpacing : 0;
-}
-
-#pragma mark - Intrinsic Content Size
-
-- (CGSize)intrinsicContentSize {
-    // 始终重新计算，避免标记被提前消费导致数据过期
-    [self _zl_doRecalculate];
-
-    CGSize imgSize = _cachedImageSize;
-    CGSize txtSize = _cachedTitleSize;
-    CGFloat sp = [self _zl_actualSpacing];
-    UIEdgeInsets insets = _layoutEdgeInsets;
-
-    CGFloat w, h;
-    if (_axis == ZLButtonAxisHorizontal) {
-        w = imgSize.width + sp + txtSize.width;
-        h = MAX(imgSize.height, txtSize.height);
-    } else {
-        w = MAX(imgSize.width, txtSize.width);
-        h = imgSize.height + sp + txtSize.height;
-    }
-
-    w += insets.left + insets.right;
-    h += insets.top + insets.bottom;
-
-    return CGSizeMake(ceil(w), ceil(h));
-}
-
-- (CGSize)sizeThatFits:(CGSize)size {
-    return [self intrinsicContentSize];
-}
 
 #pragma mark - layoutSubviews
 
@@ -544,87 +688,7 @@
     }
     
     if (self.isCircleClip) self.circle(self.isCircleClip);
-    // 始终重新计算，确保动态修改内容后布局正确
-    [self _zl_doRecalculate];
-    CGRect bounds = self.bounds;
-    UIEdgeInsets insets = [self _zl_effectiveInsets];
-    CGRect contentRect = CGRectMake(insets.left, insets.top,
-                                     MAX(0, bounds.size.width - insets.left - insets.right),
-                                     MAX(0, bounds.size.height - insets.top - insets.bottom));
-
-    CGSize imgSize = _cachedImageSize;
-    CGSize txtSize = _cachedTitleSize;
-    CGFloat sp = [self _zl_actualSpacing];
-
-    BOOL hasImg = [self _zl_hasImage];
-    BOOL hasTxt = [self _zl_hasTitle];
-    BOOL isRTL = [self _zl_isRTL];
-
-    UIImageView *imgView = self.imgView;
-    UILabel *lblView = self.lab;
-
-    if (!hasImg && !hasTxt) {
-        imgView.frame = CGRectZero;
-        lblView.frame = CGRectZero;
-        [self callLayoutSubviewBlock];
-        return;
-    }
-
-    if (!hasImg) {
-        imgView.frame = CGRectZero;
-        CGRect f = [self _zl_centeredRect:txtSize inRect:contentRect];
-        f.origin.x += [self _zl_flipH:_titleOffset.horizontal];
-        f.origin.y += _titleOffset.vertical;
-        lblView.frame = f;
-        [self callLayoutSubviewBlock];
-        return;
-    }
-    if (!hasTxt) {
-        lblView.frame = CGRectZero;
-        CGRect f = [self _zl_centeredRect:imgSize inRect:contentRect];
-        f.origin.x += [self _zl_flipH:_imageOffset.horizontal];
-        f.origin.y += _imageOffset.vertical;
-        imgView.frame = f;
-        [self callLayoutSubviewBlock];
-        return;
-    }
-
-    // 两个元素都有
-    UIView *firstView, *secondView;
-    CGSize firstSize, secondSize;
-
-    if (_layoutOrder == ZLButtonOrderImageFirst) {
-        firstView = imgView;  firstSize = imgSize;
-        secondView = lblView; secondSize = txtSize;
-    } else {
-        firstView = lblView;  firstSize = txtSize;
-        secondView = imgView; secondSize = imgSize;
-    }
-
-    if (_axis == ZLButtonAxisHorizontal) {
-        if (isRTL) {
-            // RTL: 翻转顺序，first 在右，second 在左
-            [self _zl_layoutH_first:secondView fs:secondSize second:firstView ss:firstSize sp:sp rect:contentRect];
-        } else {
-            [self _zl_layoutH_first:firstView fs:firstSize second:secondView ss:secondSize sp:sp rect:contentRect];
-        }
-    } else {
-        [self _zl_layoutV_first:firstView fs:firstSize second:secondView ss:secondSize sp:sp rect:contentRect];
-    }
-
-    // 应用偏移量（RTL 下翻转水平偏移）
-    if (_imageOffset.horizontal != 0 || _imageOffset.vertical != 0) {
-        CGRect f = imgView.frame;
-        f.origin.x += [self _zl_flipH:_imageOffset.horizontal];
-        f.origin.y += _imageOffset.vertical;
-        imgView.frame = f;
-    }
-    if (_titleOffset.horizontal != 0 || _titleOffset.vertical != 0) {
-        CGRect f = lblView.frame;
-        f.origin.x += [self _zl_flipH:_titleOffset.horizontal];
-        f.origin.y += _titleOffset.vertical;
-        lblView.frame = f;
-    }
+    
     [self callLayoutSubviewBlock];
 }
 - (void)callLayoutSubviewBlock {
@@ -634,69 +698,6 @@
     }
 }
 // Remove the old adjustImageOffset / adjustTitleOffset methods — inlined above
-
-#pragma mark - Horizontal Layout
-
-- (void)_zl_layoutH_first:(UIView *)first fs:(CGSize)fs second:(UIView *)second ss:(CGSize)ss sp:(CGFloat)sp rect:(CGRect)rect {
-    CGFloat totalW = fs.width + sp + ss.width;
-    CGFloat actualSp = sp;
-    CGFloat startX;
-
-    if (_flexibleSpacing) {
-        actualSp = MAX(sp, rect.size.width - fs.width - ss.width);
-        startX = rect.origin.x;
-    } else {
-        startX = rect.origin.x + (rect.size.width - totalW) / 2.0;
-    }
-
-    CGFloat firstY  = [self _zl_alignedOrigin:fs.height container:rect.size.height offset:rect.origin.y];
-    CGFloat secondY = [self _zl_alignedOrigin:ss.height container:rect.size.height offset:rect.origin.y];
-
-    first.frame  = CGRectMake(startX, firstY, fs.width, fs.height);
-    second.frame = CGRectMake(startX + fs.width + actualSp, secondY, ss.width, ss.height);
-}
-
-#pragma mark - Vertical Layout
-
-- (void)_zl_layoutV_first:(UIView *)first fs:(CGSize)fs second:(UIView *)second ss:(CGSize)ss sp:(CGFloat)sp rect:(CGRect)rect {
-    CGFloat totalH = fs.height + sp + ss.height;
-    CGFloat actualSp = sp;
-    CGFloat startY;
-
-    if (_flexibleSpacing) {
-        actualSp = MAX(sp, rect.size.height - fs.height - ss.height);
-        startY = rect.origin.y;
-    } else {
-        startY = rect.origin.y + (rect.size.height - totalH) / 2.0;
-    }
-
-    CGFloat firstX  = [self _zl_alignedOrigin:fs.width container:rect.size.width offset:rect.origin.x];
-    CGFloat secondX = [self _zl_alignedOrigin:ss.width container:rect.size.width offset:rect.origin.x];
-
-    first.frame  = CGRectMake(firstX, startY, fs.width, fs.height);
-    second.frame = CGRectMake(secondX, startY + fs.height + actualSp, ss.width, ss.height);
-}
-
-#pragma mark - Helpers
-
-- (CGFloat)_zl_alignedOrigin:(CGFloat)itemLen container:(CGFloat)containerLen offset:(CGFloat)offset {
-    ZLButtonContentAlignment alignment = [self _zl_effectiveAlignment];
-    switch (alignment) {
-        case ZLButtonContentAlignmentStart:
-            return offset;
-        case ZLButtonContentAlignmentEnd:
-            return offset + containerLen - itemLen;
-        case ZLButtonContentAlignmentCenter:
-        default:
-            return offset + (containerLen - itemLen) / 2.0;
-    }
-}
-
-- (CGRect)_zl_centeredRect:(CGSize)size inRect:(CGRect)rect {
-    return CGRectMake(rect.origin.x + (rect.size.width - size.width) / 2.0,
-                      rect.origin.y + (rect.size.height - size.height) / 2.0,
-                      size.width, size.height);
-}
 
 
 - (ZLButton * _Nonnull (^)(UIViewContentMode))imageMode {
@@ -769,6 +770,14 @@
         return self;
     };
 }
+- (BOOL)_zl_isRTL {
+    
+    if (@available(iOS 10.0, *)) {
+        return self.effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
+    }
+    return [UIApplication sharedApplication].userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
+}
+
 - (void)drawCornerRadii {
     if (UIEdgeInsetsEqualToEdgeInsets(self.cornerRadiiValue, UIEdgeInsetsZero)) {
         return;

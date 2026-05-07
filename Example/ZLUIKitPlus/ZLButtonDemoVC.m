@@ -35,24 +35,26 @@
             .titleColor(@"#333333")
             .spacing(8)
             .flexSpacing
-            .insets(20, 16, 20, 16)
-//            .inset(0, 0, 0, 0)
-            .corner(8)
+            .insets(5, 5, 5, 5)
+//            .corner(8)
             .bgColor(UIColor.orangeColor)
             .shColor(UIColor.redColor)
-            .addSubview(btn.zl_lab
-                        .z_square(4)
-                        .bgColor(UIColor.redColor)
-                        .z_top(10)
-                        .z_trailing(10)
-                        .circle(YES))
+//            .addSubview(btn.zl_lab
+//                        .z_square(4)
+//                        .bgColor(UIColor.redColor)
+//                        .z_top(10)
+//                        .z_trailing(10)
+//                        .circle(YES))
             .touchAction(^(ZLButton *b) {
                 NSLog(@"水平按钮点击");
             });
+      
         btn.horizontalAlign = ZLButtonAlignCenter;
         btn.verticalAlign = ZLButtonAlignCenter;
         [content addSubview:btn];
         btn.KFC.top(y).leading(20);
+        
+        
         y += 60;
 //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //            btn.select(YES);
@@ -106,7 +108,7 @@
             .insets(10, 16, 10, 16).bgColor(@"#FFF3E0").corner(8);
         [content addSubview:btn];
         btn.KFC.top(y).leading(20).trailing(20);
-        btn.z_height(44);
+        btn.height(44);
         y += 60;
     }
     
@@ -192,7 +194,7 @@
         
         ZLButton *btn = ZLBtnV;
         btn.image(@"分享").imageSize(24, 24).bgColor(@"#E3F2FD")
-            .circle(YES).z_square(60);
+            .circle(YES).square(60);
         [content addSubview:btn];
         btn.KFC.top(y).leading(20);
         y += 80;
@@ -210,7 +212,7 @@
             .insets(12, 20, 12, 20).corner(8).masksToBounds(YES);
         [content addSubview:btn];
         btn.KFC.top(y).leading(20);
-        btn.z_size(200, 60);
+        btn.size(200, 60);
         y += 80;
     }
     

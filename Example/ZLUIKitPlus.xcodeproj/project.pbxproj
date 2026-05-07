@@ -36,6 +36,8 @@
 		8475419A2F9B60C80011DC56 /* ZLTagListViewDemoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 847541972F9B60C80011DC56 /* ZLTagListViewDemoVC.m */; };
 		8475419B2F9B60C80011DC56 /* ZLPairViewDemoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 847541952F9B60C80011DC56 /* ZLPairViewDemoVC.m */; };
 		8475419C2F9B60C80011DC56 /* ZLLabelDemoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 847541932F9B60C80011DC56 /* ZLLabelDemoVC.m */; };
+		84E8B1312FAC45B800CD394A /* ZLShadowCornerDemoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E8B12E2FAC45B800CD394A /* ZLShadowCornerDemoVC.m */; };
+		84E8B1322FAC45B800CD394A /* ZLShadowCornerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E8B1302FAC45B800CD394A /* ZLShadowCornerView.m */; };
 		84E99C652FA4AB420048BD1D /* ZLSpacingGuide.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E99C642FA4AB420048BD1D /* ZLSpacingGuide.m */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 /* End PBXBuildFile section */
@@ -101,6 +103,10 @@
 		847541952F9B60C80011DC56 /* ZLPairViewDemoVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLPairViewDemoVC.m; sourceTree = "<group>"; };
 		847541962F9B60C80011DC56 /* ZLTagListViewDemoVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLTagListViewDemoVC.h; sourceTree = "<group>"; };
 		847541972F9B60C80011DC56 /* ZLTagListViewDemoVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLTagListViewDemoVC.m; sourceTree = "<group>"; };
+		84E8B12D2FAC45B800CD394A /* ZLShadowCornerDemoVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLShadowCornerDemoVC.h; sourceTree = "<group>"; };
+		84E8B12E2FAC45B800CD394A /* ZLShadowCornerDemoVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLShadowCornerDemoVC.m; sourceTree = "<group>"; };
+		84E8B12F2FAC45B800CD394A /* ZLShadowCornerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLShadowCornerView.h; sourceTree = "<group>"; };
+		84E8B1302FAC45B800CD394A /* ZLShadowCornerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLShadowCornerView.m; sourceTree = "<group>"; };
 		84E99C632FA4AB420048BD1D /* ZLSpacingGuide.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLSpacingGuide.h; sourceTree = "<group>"; };
 		84E99C642FA4AB420048BD1D /* ZLSpacingGuide.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLSpacingGuide.m; sourceTree = "<group>"; };
 		85F4B8346B22B8B5ACFFBD82 /* ZLUIKitPlus.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ZLUIKitPlus.podspec; path = ../ZLUIKitPlus.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -174,6 +180,10 @@
 		6003F593195388D20070C39A /* Example for ZLUIKitPlus */ = {
 			isa = PBXGroup;
 			children = (
+				84E8B12D2FAC45B800CD394A /* ZLShadowCornerDemoVC.h */,
+				84E8B12E2FAC45B800CD394A /* ZLShadowCornerDemoVC.m */,
+				84E8B12F2FAC45B800CD394A /* ZLShadowCornerView.h */,
+				84E8B1302FAC45B800CD394A /* ZLShadowCornerView.m */,
 				6003F59C195388D20070C39A /* ZLAppDelegate.h */,
 				6003F59D195388D20070C39A /* ZLAppDelegate.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
@@ -469,6 +479,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				847541982F9B60C80011DC56 /* ZLImageViewDemoVC.m in Sources */,
+				84E8B1312FAC45B800CD394A /* ZLShadowCornerDemoVC.m in Sources */,
+				84E8B1322FAC45B800CD394A /* ZLShadowCornerView.m in Sources */,
 				62507C292F9D043200397C32 /* ZLDoubleView.m in Sources */,
 				847541992F9B60C80011DC56 /* ZLButtonDemoVC.m in Sources */,
 				62507C7C2FA8BC5700397C32 /* ZLConstraintsCfg.m in Sources */,

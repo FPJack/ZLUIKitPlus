@@ -424,6 +424,23 @@
     }
     return _gradLayer;
 }
+- (ZLButton * _Nonnull (^)(NSArray * _Nonnull))gradColors {
+    return ^(NSArray *colors) {
+        NSMutableArray *cgColors = NSMutableArray.array;
+        for (id color in colors) {
+            UIColor *c = ZLColorFromObj(color);
+            if (c) [cgColors addObject:(id)c.CGColor];
+        }
+        return self;
+    };
+}
+- (ZLButton * _Nonnull (^)(CGPoint, CGPoint))gradDirection {
+    return ^(CGPoint start, CGPoint end) {
+        self.gradLayer.startPoint = start;
+        self.gradLayer.endPoint = end;
+        return self;
+    };
+}
 - (void)_zl_setupDefaults {
     _axis = ZLButtonAxisHorizontal;
     _layoutOrder = ZLButtonOrderImageFirst;
@@ -557,6 +574,16 @@
     return ^(CGFloat size) {
         self.layoutTitleFont = [UIFont systemFontOfSize:size];
         return self;
+    };
+}
+- (ZLButton * _Nonnull (^)(CGFloat, id _Nonnull))systemFontColor {
+    return ^(CGFloat size, id color) {
+        return self.systemFont(size).titleColor(color);
+    };
+}
+- (ZLButton * _Nonnull (^)(CGFloat, id _Nonnull))mediumFontColor {
+    return ^(CGFloat size, id color) {
+        return self.mediumFont(size).titleColor(color);
     };
 }
 - (ZLButton * _Nonnull (^)(CGFloat))mediumFont {
@@ -737,6 +764,23 @@
     NSLayoutConstraint *bottomCons = [self constraintWithIdentifier:kInsetBottomId];
     if (bottomCons) bottomCons.constant = layoutEdgeInsets.bottom;
     [self setNeedsUpdateConstraints];
+}
+
+- (void)setTitleSize:(CGSize)titleSize {
+    if (CGSizeEqualToSize(titleSize, self.titleLabel.intrinsicContentSize)) return;
+    _titleSize = titleSize;
+    [NSLayoutConstraint deactivateConstraints:self.titleLabel.constraints];
+    self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+        [self.titleLabel.widthAnchor constraintEqualToConstant:titleSize.width],
+        [self.titleLabel.heightAnchor constraintEqualToConstant:titleSize.height]
+    ]];
+}
+- (ZLButton * _Nonnull (^)(CGFloat, CGFloat))titSize {
+    return ^(CGFloat width, CGFloat height) {
+        self.titleSize = CGSizeMake(width, height);
+        return self;
+    };
 }
 - (void)setLayoutImageSize:(CGSize)layoutImageSize {
     if (CGSizeEqualToSize(layoutImageSize, _layoutImageSize)) return;
@@ -1060,91 +1104,41 @@
         return self;
     };
 }
-
 - (void)dealloc
 {
     if (self.deallocBlock) self.deallocBlock(self);
 }
-
-- (ZLButton * _Nonnull (^)(CGFloat))z_centerX {
-    return ^(CGFloat centerX) {
-        self.KFC.centerX(centerX);
-        return self;
-    };
-}
-- (ZLButton * _Nonnull (^)(CGFloat))z_centerY {
-    return ^(CGFloat centerY) {
-        self.KFC.centerY(centerY);
-        return self;
-    };
-}
-- (ZLButton * _Nonnull (^)(void))z_center {
-    return ^() {
-        self.KFC.center();
-        return self;
-    };
-}
-- (ZLButton * _Nonnull (^)(CGFloat, CGFloat))z_centerOffset {
-    return ^(CGFloat offsetX, CGFloat offsetY) {
-        self.KFC.centerOffset(offsetX, offsetY);
-        return self;
-    };
-}
-- (ZLButton * _Nonnull (^)(CGFloat))z_top {
-    return ^(CGFloat top) {
-        self.KFC.top(top);
-        return self;
-    };
-}
-- (ZLButton * _Nonnull (^)(CGFloat))z_leading {
-    return ^(CGFloat leading) {
-        self.KFC.leading(leading);
-        return self;
-    };
-}
-- (ZLButton * _Nonnull (^)(CGFloat))z_bottom {
-    return ^(CGFloat bottom) {
-        self.KFC.bottom(bottom);
-        return self;
-    };
-}
-- (ZLButton * _Nonnull (^)(CGFloat))z_trailing {
-    return ^(CGFloat trailing) {
-        self.KFC.trailing(trailing);
-        return self;
-    };
-}
-- (ZLButton * _Nonnull (^)(CGFloat))z_height {
+- (ZLButton * _Nonnull (^)(CGFloat))height {
     return ^(CGFloat height) {
         self.KFC.height(height);
         return self;
     };
 }
-- (ZLButton * _Nonnull (^)(CGFloat))z_width {
+- (ZLButton * _Nonnull (^)(CGFloat))width {
     return ^(CGFloat width) {
         self.KFC.width(width);
         return self;
     };
 }
-- (ZLButton * _Nonnull (^)(CGFloat, CGFloat))z_size {
+- (ZLButton * _Nonnull (^)(CGFloat, CGFloat))size {
     return ^(CGFloat width, CGFloat height) {
         self.KFC.size(width, height);
         return self;
     };
 }
-- (ZLButton * _Nonnull (^)(CGFloat))z_square {
+- (ZLButton * _Nonnull (^)(CGFloat))square {
     return ^(CGFloat side) {
         self.KFC.square(side);
         return self;
     };
 }
-- (ZLButton * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))z_edge {
+- (ZLButton * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))edge {
     return ^(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing) {
         self.KFC.edge(top, leading, bottom, trailing);
         return self;
     };
 }
-- (ZLButton * _Nonnull (^)(void))z_edgesZero {
+- (ZLButton * _Nonnull (^)(void))edgesZero {
     return ^() {
         self.KFC.edgesZero();
         return self;

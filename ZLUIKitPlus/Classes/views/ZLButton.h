@@ -24,12 +24,12 @@ typedef NS_ENUM(NSUInteger, ZLButtonOrder) {
     ZLButtonOrderTitleFirst,     // 文字在前（左/上）
 };
 
-/// 内容在按钮内的对齐方式（交叉轴）
+/// 内容在按钮内水平垂直的对齐方式
 typedef NS_ENUM(NSUInteger, ZLButtonAlign) {
     ZLButtonAlignCenter = 0, // 居中
-    ZLButtonAlignStart,      // 起始对齐（左/上）
-    ZLButtonAlignEnd,        // 末尾对齐（右/下）
-    ZLButtonAlignFill,       // 填充对齐，拉伸内容占满交叉轴
+    ZLButtonAlignStart,      // 起始对齐
+    ZLButtonAlignEnd,        // 末尾对齐
+    ZLButtonAlignFill,       // 填充对齐
 };
 
 struct GMStartEndInsets {
@@ -43,7 +43,6 @@ NS_INLINE GMStartEndInsets GMStartEndInsetsMake(CGFloat start, CGFloat end) {
     insets.end = end;
     return insets;
 }
-
 /**
  * ZLButton - 继承 UIButton，支持自定义图文布局
  *
@@ -97,7 +96,6 @@ NS_INLINE GMStartEndInsets GMStartEndInsetsMake(CGFloat start, CGFloat end) {
 /// 防止按钮被频繁点击，单位秒，默认0不限制
 @property (nonatomic, readonly) ZLButton* (^debounce)(NSTimeInterval interval);
 
-
 /// 图文间距，默认 4
 @property (nonatomic, assign) CGFloat layoutSpacing;
 
@@ -115,6 +113,9 @@ NS_INLINE GMStartEndInsets GMStartEndInsetsMake(CGFloat start, CGFloat end) {
 @property (nonatomic, copy,readonly) ZLButton* (^hInset)(CGFloat leading,CGFloat trailing);
 @property (nonatomic, copy,readonly) ZLButton* (^vInset)(CGFloat top,CGFloat bottom);
 
+///文字内容size
+@property (nonatomic, assign) CGSize titleSize;
+@property (nonatomic, copy,readonly) ZLButton* (^titSize)(CGFloat width,CGFloat height);
 
 /// 图片固定大小，默认 CGSizeZero 表示使用图片自身大小
 @property (nonatomic, assign) CGSize layoutImageSize;
@@ -137,12 +138,19 @@ NS_INLINE GMStartEndInsets GMStartEndInsetsMake(CGFloat start, CGFloat end) {
 /// 便捷设置字体
 @property (nonatomic, strong, nullable) UIFont *layoutTitleFont;
 @property (nonatomic, copy,readonly) ZLButton* (^systemFont)(CGFloat fontSize);// layoutTitleFont 的别名，便捷设置
+
+@property (readonly) ZLButton* (^systemFontColor)(CGFloat fontSize,id color);
+
+@property (readonly) ZLButton* (^mediumFontColor)(CGFloat fontSize,id color);
+
+
 @property (nonatomic, copy,readonly) ZLButton* (^mediumFont)(CGFloat fontSize);// layoutTitleFont 的别名，便捷设置
 @property (nonatomic, copy,readonly) ZLButton* (^semiboldFont)(CGFloat fontSize);// layoutTitleFont 的别名，便捷设置
 @property (nonatomic, copy,readonly) ZLButton* (^boldFont)(CGFloat fontSize);// layoutTitleFont 的别名，便捷设置
 
 /// 便捷设置字体颜色（设置 Normal 状态）
 @property (nonatomic, strong, nullable) UIColor *layoutTitleColor;
+
 @property (nonatomic, copy,readonly) ZLButton* (^titleColor)(id color);// layoutTitleColor 的别名，便捷设置 UIColor 或 UIColorHex
 ///设置选中文字颜色
 @property (nonatomic, copy, readonly) ZLButton* (^selectTitleColor)(id color);
@@ -216,6 +224,11 @@ NS_INLINE GMStartEndInsets GMStartEndInsetsMake(CGFloat start, CGFloat end) {
 ///渐变层，外部可直接访问进行配置，例如设置渐变颜色、方向
 @property (nonatomic,strong)CAGradientLayer *gradLayer;
 
+///渐变颜色
+@property (nonatomic, readonly) ZLButton* (^gradColors)(NSArray *colors);
+///渐变方向，传入起点和终点坐标，范围0~1
+@property (nonatomic, readonly) ZLButton* (^gradDirection)(CGPoint startPoint, CGPoint endPoint);
+
 ///赋值当前对象到一个指针上
 /// 例如：ZLButton *btn;
 ///  ZLButton.new.assignToPtr(&btn);
@@ -231,47 +244,25 @@ NS_INLINE GMStartEndInsets GMStartEndInsetsMake(CGFloat start, CGFloat end) {
 ///立即触发block回调，适用于需要在初始化时立即配置样式的场景
 @property (nonatomic,readonly) ZLButton* (^then)(void (^)(ZLButton * button));
 
-
-
 ///布局相关
-
-@property (nonatomic,  readonly) ZLButton* (^z_centerX)(CGFloat x);
-
-@property (nonatomic,  readonly) ZLButton* (^z_centerY)(CGFloat y);
-
-@property (nonatomic,  readonly) ZLButton* (^z_center)(void);
-
-@property (nonatomic,  readonly) ZLButton* (^z_centerOffset)(CGFloat x,CGFloat y);
-
-@property (nonatomic,  readonly) ZLButton* (^z_top)(CGFloat top);
-
-@property (nonatomic,  readonly) ZLButton* (^z_leading)(CGFloat leading);
-
-@property (nonatomic,  readonly) ZLButton* (^z_bottom)(CGFloat bottom);
-
-@property (nonatomic,  readonly) ZLButton* (^z_trailing)(CGFloat trailling);
-
 ///设置高度
-@property (nonatomic, copy, readonly) ZLButton* (^z_height)(CGFloat height);
+@property (nonatomic, copy, readonly) ZLButton* (^height)(CGFloat height);
 ///设置宽度
-@property (nonatomic, copy, readonly) ZLButton* (^z_width)(CGFloat width);
+@property (nonatomic, copy, readonly) ZLButton* (^width)(CGFloat width);
 ///同时设置宽高
-@property (nonatomic, copy, readonly) ZLButton* (^z_size)(CGFloat width,CGFloat height);
+@property (nonatomic, copy, readonly) ZLButton* (^size)(CGFloat width,CGFloat height);
 ///设置宽高相等
-@property (nonatomic, copy, readonly) ZLButton* (^z_square)(CGFloat wh);
+@property (nonatomic, copy, readonly) ZLButton* (^square)(CGFloat wh);
 ///贴紧父视图四边(参数布局)
-@property (nonatomic, copy, readonly) ZLButton* (^z_edge)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
+@property (nonatomic, copy, readonly) ZLButton* (^edge)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
  // ⭐高频
 ///贴紧父视图四边布局
-@property (nonatomic, copy, readonly) ZLButton* (^z_edgesZero)(void);
+@property (nonatomic, copy, readonly) ZLButton* (^edgesZero)(void);
 ///添加到父视图，参数是父视图
 @property (nonatomic, copy, readonly) ZLButton* (^addTo)(UIView *superview);
 ///添加到父视图 并且贴紧父视图四边布局，参数是父视图
 @property (nonatomic, copy, readonly) ZLButton* (^addToFull)(UIView *superview);
-
 @property (nonatomic, copy, readonly) ZLButton *(^addSubview)(UIView *subview);
-
-
 @end
 
 NS_ASSUME_NONNULL_END

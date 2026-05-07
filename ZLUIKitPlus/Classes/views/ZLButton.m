@@ -26,6 +26,8 @@
 @property (nonatomic,copy)void (^activeStyleBlock)(ZLButton *);
 @property (nonatomic,copy)void (^inactiveStyleBlock)(ZLButton *);
 @property (nonatomic,strong)UILayoutGuide *middelGuide;
+@property (nonatomic,strong)UILayoutGuide *startGuide;
+@property (nonatomic,strong)UILayoutGuide *endGuide;
 @property (nonatomic,strong)NSMutableArray *customContraints;
 ///图片和文字展示顺序的拼接字段
 @property (nonatomic,copy)NSString *orderKey;
@@ -51,9 +53,26 @@
 - (UILayoutGuide *)middelGuide {
     if (!_middelGuide) {
         _middelGuide = [[UILayoutGuide alloc] init];
+            _middelGuide.identifier = @"middle-guide";
         [self addLayoutGuide:_middelGuide];
     }
     return _middelGuide;
+}
+- (UILayoutGuide *)startGuide {
+    if (!_startGuide) {
+        _startGuide = [[UILayoutGuide alloc] init];
+        _startGuide.identifier = @"start-guide";
+        [self addLayoutGuide:_startGuide];
+    }
+    return _startGuide;
+}
+- (UILayoutGuide *)endGuide {
+    if (!_endGuide) {
+        _endGuide = [[UILayoutGuide alloc] init];
+        _endGuide.identifier = @"end-guide";
+        [self addLayoutGuide:_endGuide];
+    }
+    return _endGuide;
 }
 - (void)updateConstraints {
     [super updateConstraints];
@@ -118,14 +137,12 @@
     
     [NSLayoutConstraint deactivateConstraints:self.customContraints];
     [self.customContraints removeAllObjects];
-    nextXAnchor = arr.firstObject.leadingAnchor;
-    nextYAnchor = arr.firstObject.topAnchor;
+    nextXAnchor = self.leadingAnchor;
+    nextYAnchor = self.topAnchor;
 
     NSLayoutConstraint *cons;
     NSInteger count = arr.count;
     UIEdgeInsets insets = [self _zl_effectiveInsets];
-    CGFloat imgOffSet = 0;
-    CGFloat titleOffset = 0;
     CGFloat space = self.layoutSpacing;
     if (count == 0) {
         cons = [self.widthAnchor constraintEqualToConstant: MAX(0, insets.left + insets.right)];
@@ -133,16 +150,28 @@
         cons = [self.heightAnchor constraintEqualToConstant:MAX(insets.top + insets.bottom, 0)];
         [self.customContraints addObject:cons];
     }
-    
+   
+ 
     for (int i = 0 ; i < count; i ++) {
         UIView *view = arr[i];
-//        CGFloat offset = [view isEqual:self.lab] ? titleOffset : imgOffSet;
         CGFloat startSpacing = [view isEqual:self.lab] ? self.titleInsets.start : self.imageInsets.start;
         CGFloat endSpacing = [view isEqual:self.lab] ? self.titleInsets.end : self.imageInsets.end;
-
         if (self.axis == ZLButtonAxisHorizontal) {
             if (i == 0) {
-                cons = [nextXAnchor constraintEqualToAnchor:self.leadingAnchor constant:insets.left];
+                switch (self.horizontalAlign) {
+                    case ZLButtonAlignCenter:
+                        cons = [self.startGuide.leadingAnchor constraintEqualToAnchor:nextXAnchor constant:0];
+                        nextXAnchor = self.startGuide.trailingAnchor;
+                        [self.customContraints addObject:cons];
+                    case ZLButtonAlignStart:
+                    case ZLButtonAlignFill:
+                    cons = [view.leadingAnchor constraintEqualToAnchor:nextXAnchor constant:insets.left];
+                        break;
+                   
+                    default:
+                        cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:nextXAnchor constant:insets.left];
+                        break;
+                }
                 cons.identifier = kInsetLeadingId;
                 [self.customContraints addObject:cons];
                 nextXAnchor = view.trailingAnchor;
@@ -156,23 +185,40 @@
                 cons.identifier = kSpacingId;
                 [self.customContraints addObject:cons];
                 nextXAnchor = view.trailingAnchor;
+
             }
             
             if (i  == count - 1) {
-                cons = [self.trailingAnchor constraintEqualToAnchor:nextXAnchor constant:insets.right];
+                switch (self.horizontalAlign) {
+                    case ZLButtonAlignCenter:
+                        cons = [self.endGuide.leadingAnchor constraintEqualToAnchor:nextXAnchor];
+                        nextXAnchor = self.endGuide.trailingAnchor;
+                        [self.customContraints addObject:cons];
+                        cons = [self.startGuide.widthAnchor constraintEqualToAnchor:self.endGuide.widthAnchor];
+                        [self.customContraints addObject:cons];
+                    case ZLButtonAlignEnd:
+                    case ZLButtonAlignFill:
+                        cons = [self.trailingAnchor constraintEqualToAnchor:nextXAnchor constant:insets.right];
+                        break;
+                    default:
+                        cons = [self.trailingAnchor constraintGreaterThanOrEqualToAnchor:nextXAnchor constant:insets.right];
+                        break;
+                }
                 cons.identifier = kInsetTrailingId;
                 [self.customContraints addObject:cons];
             }
             
-            switch (self.layoutContentAlignment) {
-                case ZLButtonContentAlignmentStart:
+            
+            
+            switch (self.verticalAlign) {
+                case ZLButtonAlignStart:
                     cons = [view.topAnchor constraintEqualToAnchor:self.topAnchor constant:insets.top + startSpacing];
                     [self.customContraints addObject:cons];
                     
                     cons = [view.bottomAnchor constraintLessThanOrEqualToAnchor:self.bottomAnchor constant:-insets.bottom - endSpacing];
                     [self.customContraints addObject:cons];
                     break;
-                 case ZLButtonContentAlignmentCenter:
+                 case ZLButtonAlignCenter:
                     
                     cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:self.topAnchor constant:insets.top + startSpacing];
                     [self.customContraints addObject:cons];
@@ -186,7 +232,7 @@
                     [self.customContraints addObject:cons];
                     
                     break;
-                 case ZLButtonContentAlignmentEnd:
+                 case ZLButtonAlignEnd:
                     
                     cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:self.topAnchor constant:insets.top + startSpacing];
                     [self.customContraints addObject:cons];
@@ -194,12 +240,31 @@
                     cons = [self.bottomAnchor constraintEqualToAnchor:view.bottomAnchor constant:insets.bottom + endSpacing];
                     [self.customContraints addObject:cons];
                         break;
+                case ZLButtonAlignFill:
+                   cons = [view.topAnchor constraintEqualToAnchor:self.topAnchor constant:insets.top + startSpacing];
+                   [self.customContraints addObject:cons];
+                   
+                   cons = [self.bottomAnchor constraintEqualToAnchor:view.bottomAnchor constant:insets.bottom + endSpacing];
+                   [self.customContraints addObject:cons];
+                       break;
                 default:
                     break;
             }
         }else {
             if (i == 0) {
-                cons = [nextYAnchor constraintEqualToAnchor:self.topAnchor constant:insets.top];
+                switch (self.verticalAlign) {
+                    case ZLButtonAlignCenter:
+                        cons = [self.startGuide.topAnchor constraintEqualToAnchor:nextYAnchor];
+                        nextYAnchor = self.startGuide.bottomAnchor;
+                        [self.customContraints addObject:cons];
+                    case ZLButtonAlignStart:
+                    case ZLButtonAlignFill:
+                        cons = [view.topAnchor constraintEqualToAnchor:nextYAnchor constant:insets.top];
+                        break;
+                    default:
+                        cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:nextYAnchor constant:insets.top];
+                        break;
+                }
                 cons.identifier = kInsetTopId;
                 [self.customContraints addObject:cons];
                 nextYAnchor = view.bottomAnchor;
@@ -214,15 +279,30 @@
                 cons.identifier = kSpacingId;
                 [self.customContraints addObject:cons];
                 nextYAnchor = view.bottomAnchor;
+                
             }
             if (i  == count - 1) {
-                cons = [self.bottomAnchor constraintEqualToAnchor:nextYAnchor constant:insets.bottom];
+                switch (self.verticalAlign) {
+                    case ZLButtonAlignCenter:
+                        cons = [self.endGuide.topAnchor constraintEqualToAnchor:nextYAnchor];
+                        nextYAnchor = self.endGuide.bottomAnchor;
+                        [self.customContraints addObject:cons];
+                        cons = [self.startGuide.heightAnchor constraintEqualToAnchor:self.endGuide.heightAnchor];
+                        [self.customContraints addObject:cons];
+                    case ZLButtonAlignEnd:
+                    case ZLButtonAlignFill:
+                        cons = [self.bottomAnchor constraintEqualToAnchor:nextYAnchor constant:insets.bottom];
+                        break;
+                    default:
+                        cons = [self.bottomAnchor constraintGreaterThanOrEqualToAnchor:nextYAnchor constant:insets.bottom];
+                        break;
+                }
                 cons.identifier = kInsetBottomId;
                 [self.customContraints addObject:cons];
             }
             
-            switch (self.layoutContentAlignment) {
-                case ZLButtonContentAlignmentStart:
+            switch (self.horizontalAlign) {
+                case ZLButtonAlignStart:
                     cons = [view.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:insets.left + startSpacing];
                     [self.customContraints addObject:cons];
                     
@@ -230,7 +310,7 @@
                     [self.customContraints addObject:cons];
                     
                     break;
-                case ZLButtonContentAlignmentCenter:
+                case ZLButtonAlignCenter:
                     cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.leadingAnchor constant:insets.left + startSpacing];
                     [self.customContraints addObject:cons];
                     cons = [self.trailingAnchor constraintGreaterThanOrEqualToAnchor:view.trailingAnchor constant:insets.right + endSpacing];
@@ -242,12 +322,19 @@
                     [self.customContraints addObject:cons];
                     break;
 
-                case ZLButtonContentAlignmentEnd:
+                case ZLButtonAlignEnd:
                     cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.leadingAnchor constant:insets.left + startSpacing];
                     [self.customContraints addObject:cons];
                     cons = [self.trailingAnchor constraintEqualToAnchor:view.trailingAnchor constant:insets.right + endSpacing];
                     [self.customContraints addObject:cons];
                         break;
+                case ZLButtonAlignFill:
+                    cons = [view.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:insets.left + startSpacing];
+                   [self.customContraints addObject:cons];
+                   
+                    cons = [self.trailingAnchor constraintEqualToAnchor:view.trailingAnchor constant:insets.right + endSpacing];
+                   [self.customContraints addObject:cons];
+                       break;
                     
                 default:
                     break;
@@ -258,13 +345,16 @@
     [self.customContraints enumerateObjectsUsingBlock:^(NSLayoutConstraint*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         obj.priority = UILayoutPriorityRequired - 1;
     }];
+
+
     [NSLayoutConstraint activateConstraints:self.customContraints];
 }
 ///重新生成orderKey
 - (NSString *)generateOrderKeyWithStr:(NSString *)str {
     NSString *orderKey = str ?: @"";
     orderKey = [orderKey stringByAppendingFormat:@"%ld", self.axis];
-    orderKey = [orderKey stringByAppendingFormat:@"%ld", self.layoutContentAlignment];
+    orderKey = [orderKey stringByAppendingFormat:@"%ld", self.verticalAlign];
+    orderKey = [orderKey stringByAppendingFormat:@"%ld", self.horizontalAlign];
     orderKey = [orderKey stringByAppendingFormat:@"%d", self.flexibleSpacing];
     UIEdgeInsets insets = [self _zl_effectiveInsets];
     if (self.axis == ZLButtonAxisHorizontal) {
@@ -298,11 +388,11 @@
     [self saveView:view];
 }
 - (void)saveView:(UIView *)view {
-    if ([self.titleLabel isEqual:view]) {
+    if ([view isKindOfClass:UILabel.class] && [self.titleLabel isEqual:view]) {
         self.lab = (UILabel*)view;
         self.lab.translatesAutoresizingMaskIntoConstraints = NO;
     }
-    if ([self.imageView isEqual:view]) {
+    if ([view isKindOfClass:UIImageView.class] && [self.imageView isEqual:view]) {
         self.imgView = (UIImageView *)view;
         self.imgView.translatesAutoresizingMaskIntoConstraints = NO;
     }
@@ -337,14 +427,64 @@
 - (void)_zl_setupDefaults {
     _axis = ZLButtonAxisHorizontal;
     _layoutOrder = ZLButtonOrderImageFirst;
-    _layoutContentAlignment = ZLButtonContentAlignmentCenter;
     _layoutSpacing = 4;
     _flexibleSpacing = NO;
     _layoutEdgeInsets = UIEdgeInsetsZero;
     _layoutImageSize = CGSizeZero;
     _imageOffset = UIOffsetZero;
     _titleOffset = UIOffsetZero;
+    _horizontalAlign = ZLButtonAlignCenter;
+    _verticalAlign = ZLButtonAlignCenter;
     [self setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
+}
+- (void)setVerticalAlign:(ZLButtonAlign)verticalAlign {
+    if (_verticalAlign != verticalAlign) {
+        _verticalAlign = verticalAlign;
+        [self setNeedsUpdateConstraints];
+    }
+}
+- (void)setHorizontalAlign:(ZLButtonAlign)horizontalAlign {
+    if (_horizontalAlign != horizontalAlign) {
+        _horizontalAlign = horizontalAlign;
+        [self setNeedsUpdateConstraints];
+    }
+}
+- (instancetype)vAlignCenter {
+    self.verticalAlign = ZLButtonAlignCenter;
+    return self;
+}
+- (instancetype)vAlignStart {
+    self.verticalAlign = ZLButtonAlignStart;
+    return self;
+}
+- (instancetype)vAlignEnd {
+    self.verticalAlign = ZLButtonAlignEnd;
+    return self;
+}
+- (instancetype)vAlignFill {
+    self.verticalAlign = ZLButtonAlignFill;
+    return self;
+
+}
+- (instancetype)hAlignCenter {
+    self.horizontalAlign = ZLButtonAlignCenter;
+    return self;
+
+}
+- (instancetype)hAlignStart {
+    self.horizontalAlign = ZLButtonAlignStart;
+    return self;
+
+}
+- (instancetype)hAlignEnd {
+    self.horizontalAlign = ZLButtonAlignEnd;
+    return self;
+
+}
+- (instancetype)hAlignFill {
+    self.horizontalAlign = ZLButtonAlignFill;
+    return self;
+
 }
 
 #pragma mark - Convenience Setters
@@ -513,23 +653,7 @@
     self.layoutOrder = ZLButtonOrderTitleFirst;
     return self;
 }
-- (void)setLayoutContentAlignment:(ZLButtonContentAlignment)layoutContentAlignment {
-    if (_layoutContentAlignment != layoutContentAlignment) { _layoutContentAlignment = layoutContentAlignment;
-        [self setNeedsUpdateConstraints];
-    }
-}
-- (instancetype)alignCenter {
-    self.layoutContentAlignment = ZLButtonContentAlignmentCenter;
-    return self;
-}
-- (instancetype)alignStart {
-    self.layoutContentAlignment = ZLButtonContentAlignmentStart;
-    return self;
-}
-- (instancetype)alignEnd {
-    self.layoutContentAlignment = ZLButtonContentAlignmentEnd;
-    return self;
-}
+
 - (ZLButton * _Nonnull (^)(BOOL))imageTouchOnly {
     return ^(BOOL imageOnly) {
         self.imgTouchOnly = imageOnly;

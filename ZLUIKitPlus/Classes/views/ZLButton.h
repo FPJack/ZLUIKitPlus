@@ -25,10 +25,11 @@ typedef NS_ENUM(NSUInteger, ZLButtonOrder) {
 };
 
 /// 内容在按钮内的对齐方式（交叉轴）
-typedef NS_ENUM(NSUInteger, ZLButtonContentAlignment) {
-    ZLButtonContentAlignmentCenter = 0, // 居中
-    ZLButtonContentAlignmentStart,      // 起始对齐（左/上）
-    ZLButtonContentAlignmentEnd,        // 末尾对齐（右/下）
+typedef NS_ENUM(NSUInteger, ZLButtonAlign) {
+    ZLButtonAlignCenter = 0, // 居中
+    ZLButtonAlignStart,      // 起始对齐（左/上）
+    ZLButtonAlignEnd,        // 末尾对齐（右/下）
+    ZLButtonAlignFill,       // 填充对齐，拉伸内容占满交叉轴
 };
 
 struct GMStartEndInsets {
@@ -76,12 +77,17 @@ NS_INLINE GMStartEndInsets GMStartEndInsetsMake(CGFloat start, CGFloat end) {
 - (instancetype)imageFirst; // 便捷方法，设置 layoutOrder = ImageFirst
 - (instancetype)titleFirst; // 便捷方法，设置 layoutOrder = TitleFirst
 
-/// 内容对齐方式（在交叉轴上），默认 Center
-@property (nonatomic, assign) ZLButtonContentAlignment layoutContentAlignment;
-- (instancetype)alignCenter; // 便捷方法，设置 layoutContentAlignment = Center
-- (instancetype)alignStart; // 便捷方法，设置 layoutContentAlignment = Start
-- (instancetype)alignEnd; // 便捷方法，设置 layoutContentAlignment
+@property (nonatomic, assign) ZLButtonAlign verticalAlign;
+- (instancetype)vAlignCenter;
+- (instancetype)vAlignStart;
+- (instancetype)vAlignEnd;
+- (instancetype)vAlignFill;
 
+@property (nonatomic, assign) ZLButtonAlign horizontalAlign;
+- (instancetype)hAlignCenter;
+- (instancetype)hAlignStart;
+- (instancetype)hAlignEnd;
+- (instancetype)hAlignFill;
 
 ///只接受图片点击
 @property (nonatomic, assign,readonly) ZLButton* (^imageTouchOnly)(BOOL imageTouchOnly);

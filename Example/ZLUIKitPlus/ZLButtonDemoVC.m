@@ -30,6 +30,7 @@
             .systemFont(15)
             .titleFirst
             .alignCenter
+            .vertical
             .titleColor(@"#333333")
             .spacing(8)
             .flexSpacing
@@ -48,12 +49,16 @@
             .touchAction(^(ZLButton *b) {
                 NSLog(@"水平按钮点击");
             });
+        btn.horizontalAlign = ZLButtonAlignCenter;
+        btn.verticalAlign = ZLButtonAlignStart;
         [content addSubview:btn];
-        btn.KFC.top(y).leading(20);
+        btn.KFC.top(y).leading(20).width(300).height(300);
         y += 60;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            btn.spacing(30).inset(10, 10, 10, 10);
-        });
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            btn.horizontalAlign = ZLButtonAlignStart;
+//            btn.verticalAlign = ZLButtonAlignCenter;
+//            btn.axis = ZLButtonAxisHorizontal;
+//        });
     }
     return;
     // 2. 垂直按钮（图上文下）

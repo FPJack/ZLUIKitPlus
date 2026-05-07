@@ -26,17 +26,17 @@
         
         ZLButton *btn = ZLBtnH;
         btn.image(@"魔法棒")
+            .selectImage(@"猫狗通用-分离焦虑")
             .title(@"水平按钮")
+//            .selectTitle(@"已选中水平按钮水平按钮")
             .systemFont(15)
             .titleFirst
-            .alignCenter
             .vertical
             .titleColor(@"#333333")
             .spacing(8)
             .flexSpacing
-            .inset(20, 16, 20, 16)
+            .insets(20, 16, 20, 16)
 //            .inset(0, 0, 0, 0)
-
             .corner(8)
             .bgColor(UIColor.orangeColor)
             .shColor(UIColor.redColor)
@@ -50,17 +50,15 @@
                 NSLog(@"水平按钮点击");
             });
         btn.horizontalAlign = ZLButtonAlignCenter;
-        btn.verticalAlign = ZLButtonAlignStart;
+        btn.verticalAlign = ZLButtonAlignCenter;
         [content addSubview:btn];
-        btn.KFC.top(y).leading(20).width(300).height(300);
+        btn.KFC.top(y).leading(20);
         y += 60;
 //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            btn.horizontalAlign = ZLButtonAlignStart;
-//            btn.verticalAlign = ZLButtonAlignCenter;
-//            btn.axis = ZLButtonAxisHorizontal;
+//            btn.select(YES);
 //        });
     }
-    return;
+    
     // 2. 垂直按钮（图上文下）
     {
         UILabel *tip = [self tipLabel:@"2. 垂直按钮(图上文下)" y:y];
@@ -69,7 +67,7 @@
         
         ZLButton *btn = ZLBtnV;
         btn.image(@"魔法棒").imageSize(40, 40).title(@"垂直按钮").systemFont(13)
-            .titleColor(@"#666666").spacing(6).inset(12, 16, 12, 16)
+            .titleColor(@"#666666").spacing(6).insets(12, 16, 12, 16)
             .corner(12).bgColor(@"#E8F5E9");
         [content addSubview:btn];
         btn.KFC.top(y).leading(20);
@@ -89,7 +87,7 @@
             .mediumFont(15)
             .titleColor(UIColor.whiteColor)
             .spacing(6)
-            .inset(15, 25, 15, 25)
+            .insets(15, 25, 15, 25)
             .corner(20)
             .bgColor(@"#4A90D9");
         [content addSubview:btn];
@@ -104,8 +102,8 @@
         y += 30;
         
         ZLButton *btn = ZLBtnH.flexSpacing;
-        btn.image(@"分享").title(@"弹性间距").systemFont(15).titleColor(@"#333333")
-            .inset(10, 16, 10, 16).bgColor(@"#FFF3E0").corner(8);
+        btn.image(@"分享").hAlignFill.title(@"弹性间距").systemFont(15).titleColor(@"#333333")
+            .insets(10, 16, 10, 16).bgColor(@"#FFF3E0").corner(8);
         [content addSubview:btn];
         btn.KFC.top(y).leading(20).trailing(20);
         btn.z_height(44);
@@ -122,7 +120,7 @@
         btn.image(@"赞").selectImage(@"魔法棒").title(@"点击选中").selectTitle(@"已选中")
             .titleColor(@"#999999").selectTitleColor(@"#FF5722")
             .imageSize(24, 24).systemFont(14).spacing(6)
-            .inset(8, 16, 8, 16).corner(8).bgColor(@"#FAFAFA")
+            .insets(8, 16, 8, 16).corner(8).bgColor(@"#FAFAFA")
             .border(1, @"#E0E0E0")
             .touchAction(^(ZLButton *b) {
                 b.select(!b.isSelected);
@@ -140,7 +138,7 @@
         
         ZLButton *btn = ZLBtnH;
         btn.title(@"防抖按钮").semiboldFont(16).titleColor(UIColor.whiteColor)
-            .inset(12, 24, 12, 24).corner(22).bgColor(@"#FF5722")
+            .insets(12, 24, 12, 24).corner(22).bgColor(@"#FF5722")
             .debounce(2.0)
             .shColor(@"#FF5722").shOffset(0, 4).shOpacity(0.3).shRadius(8)
             .masksToBounds(NO)
@@ -161,7 +159,7 @@
         __block ZLButton *ref;
         ZLButton *btn = ZLBtnH;
         btn.toPtr(&ref).title(@"不可用状态").systemFont(15)
-            .inset(10, 20, 10, 20).corner(8)
+            .insets(10, 20, 10, 20).corner(8)
             .activeStyle(^(ZLButton *b) {
                 b.bgColor(@"#4CAF50").titleColor(UIColor.whiteColor);
                 b.layoutTitle = @"可用状态";
@@ -177,7 +175,7 @@
         // 切换按钮
         ZLButton *toggleBtn = ZLBtnH;
         toggleBtn.title(@"切换").systemFont(13).titleColor(@"#4A90D9")
-            .inset(8, 12, 8, 12).corner(6).border(1, @"#4A90D9")
+            .insets(8, 12, 8, 12).corner(6).border(1, @"#4A90D9")
             .touchAction(^(ZLButton *b) {
                 ref.userActive(!ref.isUserInteractionEnabled);
             });
@@ -209,7 +207,7 @@
         ZLButton *btn = ZLBtnH;
         btn.bgImage(@"猫狗通用-分离焦虑").bgImageAspectFill
             .title(@"背景图片按钮").boldFont(16).titleColor(UIColor.whiteColor)
-            .inset(12, 20, 12, 20).corner(8).masksToBounds(YES);
+            .insets(12, 20, 12, 20).corner(8).masksToBounds(YES);
         [content addSubview:btn];
         btn.KFC.top(y).leading(20);
         btn.z_size(200, 60);
@@ -225,7 +223,7 @@
         ZLButton *btn = ZLBtnH;
         btn.image(@"赞").imageSize(20, 20).title(@"扩大点击").systemFont(13)
             .titleColor(@"#333333").spacing(4).bgColor(@"#FFF9C4").corner(6)
-            .inset(6, 12, 6, 12)
+            .insets(6, 12, 6, 12)
             .touchAreaEdge(10, 10, 10, 10)
             .touchAction(^(ZLButton *b) {
                 NSLog(@"扩大区域被点击");

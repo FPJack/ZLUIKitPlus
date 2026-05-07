@@ -111,7 +111,7 @@ NS_INLINE GMStartEndInsets GMStartEndInsetsMake(CGFloat start, CGFloat end) {
 
 /// 内边距，默认 UIEdgeInsetsZero
 @property (nonatomic, assign) UIEdgeInsets layoutEdgeInsets;
-@property (nonatomic, copy,readonly) ZLButton* (^inset)(CGFloat top,CGFloat leading,CGFloat bottom,CGFloat trailing);// layoutEdgeInsets 的别名，便捷设置
+@property (nonatomic, copy,readonly) ZLButton* (^insets)(CGFloat top,CGFloat leading,CGFloat bottom,CGFloat trailing);// layoutEdgeInsets 的别名，便捷设置
 @property (nonatomic, copy,readonly) ZLButton* (^hInset)(CGFloat leading,CGFloat trailing);
 @property (nonatomic, copy,readonly) ZLButton* (^vInset)(CGFloat top,CGFloat bottom);
 
@@ -153,18 +153,12 @@ NS_INLINE GMStartEndInsets GMStartEndInsetsMake(CGFloat start, CGFloat end) {
 ///设置背景色
 @property (nonatomic, copy,readonly) ZLButton* (^bgColor)(id color);// 便捷设置背景色，支持 UIColor 或 UIColorHex
 
-/// 图片偏移量（在布局计算完成后额外偏移），正值向右/下，负值向左/上 ，纯视觉偏移，不影响 intrinsicContentSize
-@property (nonatomic, assign) UIOffset imageOffset;
 
 ///图片start end间距
 @property (nonatomic, assign) GMStartEndInsets imageInsets;
+@property (nonatomic, readonly)ZLButton* (^imgInsets)(CGFloat start, CGFloat end);
 @property (nonatomic, assign) GMStartEndInsets titleInsets;
-
-@property (nonatomic, copy, readonly) ZLButton* (^imgOffset)(CGFloat horizontal, CGFloat vertical);
-
-/// 文字偏移量（在布局计算完成后额外偏移），正值向右/下，负值向左/上，纯视觉偏移，不影响 intrinsicContentSize
-@property (nonatomic, assign) UIOffset titleOffset;
-@property (nonatomic, copy, readonly) ZLButton* (^titOffset)(CGFloat horizontal, CGFloat vertical);
+@property (nonatomic, readonly)ZLButton* (^titInsets)(CGFloat start, CGFloat end);
 
 /// 便捷设置点击事件，支持链式调用
 @property (nonatomic,copy,readonly)ZLButton* (^touchAction)(void (^action)(ZLButton * button));
@@ -221,7 +215,6 @@ NS_INLINE GMStartEndInsets GMStartEndInsetsMake(CGFloat start, CGFloat end) {
 @property (nonatomic,readonly) ZLButton* (^masksToBounds)(BOOL masksToBounds);
 ///渐变层，外部可直接访问进行配置，例如设置渐变颜色、方向
 @property (nonatomic,strong)CAGradientLayer *gradLayer;
-
 
 ///赋值当前对象到一个指针上
 /// 例如：ZLButton *btn;

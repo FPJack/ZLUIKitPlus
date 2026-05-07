@@ -431,8 +431,7 @@
     _flexibleSpacing = NO;
     _layoutEdgeInsets = UIEdgeInsetsZero;
     _layoutImageSize = CGSizeZero;
-    _imageOffset = UIOffsetZero;
-    _titleOffset = UIOffsetZero;
+ 
     _horizontalAlign = ZLButtonAlignCenter;
     _verticalAlign = ZLButtonAlignCenter;
     [self setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
@@ -510,7 +509,6 @@
 - (ZLButton * _Nonnull (^)(id _Nonnull))selectImage {
     return ^(id img) {
         [self setImage:[self imageWithObj:img] forState:UIControlStateSelected];
-
         return self;
     };
 }
@@ -709,7 +707,7 @@
     self.flexibleSpacing = YES;
     return self;
 }
-- (ZLButton * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))inset {
+- (ZLButton * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))insets {
     return ^(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing) {
         self.layoutEdgeInsets = UIEdgeInsetsMake(top, leading, bottom, trailing);
         return self;
@@ -741,10 +739,14 @@
     [self setNeedsUpdateConstraints];
 }
 - (void)setLayoutImageSize:(CGSize)layoutImageSize {
+    if (CGSizeEqualToSize(layoutImageSize, _layoutImageSize)) return;
     _layoutImageSize = layoutImageSize;
-//    [self.imgView.widthAnchor constraintEqualToConstant:layoutImageSize.width];
-//    [self.imgView.heightAnchor constraintEqualToConstant:layoutImageSize.height];
-    [self setNeedsUpdateConstraints];
+    [NSLayoutConstraint deactivateConstraints:self.imageView.constraints];
+    self.imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+        [self.imageView.widthAnchor constraintEqualToConstant:layoutImageSize.width],
+        [self.imageView.heightAnchor constraintEqualToConstant:layoutImageSize.height]
+    ]];
 }
 - (ZLButton * _Nonnull (^)(CGFloat, CGFloat))imageSize {
     return ^(CGFloat width, CGFloat height) {
@@ -755,38 +757,27 @@
 - (void)setImageInsets:(GMStartEndInsets)imageInsets {
     _imageInsets = imageInsets;
     [self setNeedsUpdateConstraints];
-    
+}
+- (ZLButton * _Nonnull (^)(CGFloat, CGFloat))imgInsets {
+    return ^(CGFloat start, CGFloat end) {
+        self.imageInsets = GMStartEndInsetsMake(start, end);
+        return self;
+    };
 }
 - (void)setTitleInsets:(GMStartEndInsets)titleInsets {
     _titleInsets = titleInsets;
     [self setNeedsUpdateConstraints];
 }
-
-- (void)setImageOffset:(UIOffset)imageOffset {
-    _imageOffset = imageOffset;
-    [self invalidateIntrinsicContentSize];
-    [self setNeedsLayout];
-}
-
-- (ZLButton * _Nonnull (^)(CGFloat, CGFloat))imgOffset {
-    return ^(CGFloat horizontal, CGFloat vertical) {
-        self.imageOffset = UIOffsetMake(horizontal, vertical);
+- (ZLButton * _Nonnull (^)(CGFloat, CGFloat))titInsets {
+    return ^(CGFloat start, CGFloat end) {
+        self.titleInsets = GMStartEndInsetsMake(start, end);
         return self;
     };
 }
 
-- (void)setTitleOffset:(UIOffset)titleOffset {
-    _titleOffset = titleOffset;
-    [self invalidateIntrinsicContentSize];
-    [self setNeedsLayout];
-}
 
-- (ZLButton * _Nonnull (^)(CGFloat, CGFloat))titOffset {
-    return ^(CGFloat horizontal, CGFloat vertical) {
-        self.titleOffset = UIOffsetMake(horizontal, vertical);
-        return self;
-    };
-}
+
+
 - (ZLButton * _Nonnull (^)(void (^ _Nonnull)(ZLButton *)))touchAction {
     return ^(void (^action)(ZLButton *)) {
         [self addTarget:self action:@selector(_zl_handleTouch) forControlEvents:UIControlEventTouchUpInside];

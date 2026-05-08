@@ -20,7 +20,6 @@
 @interface ZLButton ()
 @property (nonatomic,weak)UILabel *lab;
 @property (nonatomic,weak)UIImageView *imgView;
-@property (nonatomic,assign)UIEdgeInsets cornerRadiiValue;
 @property (nonatomic,assign)BOOL imgTouchOnly;
 @property (nonatomic,assign)UIEdgeInsets touchAreaEdgeInsets;
 @property (nonatomic,assign)CGFloat tapInerval;
@@ -866,7 +865,6 @@
     }
 }
 - (void)callLayoutSubviewBlock {
-    [self drawCornerRadii];
     if (self.layoutBlock) {
         self.layoutBlock(self);
     }
@@ -951,38 +949,6 @@
     return [UIApplication sharedApplication].userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
 }
 
-- (void)drawCornerRadii {
-    if (UIEdgeInsetsEqualToEdgeInsets(self.cornerRadiiValue, UIEdgeInsetsZero)) {
-        return;
-    }
-    CGFloat topLeft, topRight, bottomLeft, bottomRight;
-    if ([self _zl_isRTL]) {
-        topLeft = self.cornerRadiiValue.left;      // original topRight
-        topRight = self.cornerRadiiValue.top;       // original topLeft
-        bottomLeft = self.cornerRadiiValue.right;   // original bottomRight
-        bottomRight = self.cornerRadiiValue.bottom;  // original bottomLeft
-    } else {
-        topLeft = self.cornerRadiiValue.top;
-        topRight = self.cornerRadiiValue.left;
-        bottomLeft = self.cornerRadiiValue.bottom;
-        bottomRight = self.cornerRadiiValue.right;
-    }
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    CGSize size = self.bounds.size;
-    [path moveToPoint:CGPointMake(0, topLeft)];
-    [path addQuadCurveToPoint:CGPointMake(topLeft, 0) controlPoint :CGPointMake(0, 0)];
-    [path addLineToPoint:CGPointMake(size.width - topRight, 0)];
-    [path addQuadCurveToPoint:CGPointMake(size.width, topRight) controlPoint:CGPointMake(size.width, 0)];
-    [path addLineToPoint:CGPointMake(size.width, size.height - bottomRight)];
-    [path addQuadCurveToPoint:CGPointMake(size.width - bottomRight, size.height) controlPoint:CGPointMake(size.width, size.height)];
-    [path addLineToPoint:CGPointMake(bottomLeft, size.height)];
-    [path addQuadCurveToPoint:CGPointMake(0, size.height - bottomLeft) controlPoint:CGPointMake(0, size.height)];
-    [path closePath];
-    CAShapeLayer *maskLayer = [CAShapeLayer layer];
-    maskLayer.frame = self.bounds;
-    maskLayer.path = path.CGPath;
-    self.layer.mask = maskLayer;
-}
 - (ZLButton * _Nonnull (^)(BOOL))circle {
     return ^ZLButton*(BOOL clip) {
         self.zl_decorator.circle = @(clip);

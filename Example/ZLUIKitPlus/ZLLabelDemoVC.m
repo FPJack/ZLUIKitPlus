@@ -65,11 +65,10 @@
     // 6. 高亮文本切换
     {
         ZLLabel *lab = ZLLab;
-        lab.txt(@"6. 点击切换高亮").hlTxt(@"高亮状态文本").systemFont(15)
-            .color(@"#333333").hlColor(@"#FF5722")
+        lab.txt(@"6. 点击切换高亮").systemFont(15)
+            .color(@"#333333")
             .bgColor(@"#FFF9C4").insets(8, 16, 8, 16).corner(6)
             .tapAction(^(ZLLabel *l) {
-                l.highlight(!l.isHighlighted);
             });
         lab.KFC.addTo(self.view).top(y).leading(20);
         y += 50;

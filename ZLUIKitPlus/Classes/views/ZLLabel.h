@@ -20,12 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readonly) ZLLabel*  (^color)(id color);
 
-@property (readonly) ZLLabel*  (^hlTxt)(NSString* text);
-
-@property (readonly) ZLLabel*  (^hlColor)(id color);
-
-@property (readonly) ZLLabel*  (^highlight)(BOOL highlighted);
-
 @property (readonly) ZLLabel*  (^circle)(BOOL idCircle);
 
 @property (readonly) ZLLabel*  (^textAlign)(NSTextAlignment align);
@@ -83,36 +77,19 @@ NS_ASSUME_NONNULL_BEGIN
 ///立即触发block回调，适用于需要在初始化时立即配置样式的场景
 @property (readonly) ZLLabel* (^then)(void (^)(ZLLabel * label));
 
-
-@property (  readonly) ZLLabel* (^z_centerX)(CGFloat x);
-
-@property (  readonly) ZLLabel* (^z_centerY)(CGFloat y);
-
-@property (  readonly) ZLLabel* (^z_center)(void);
-
-@property (  readonly) ZLLabel* (^z_centerOffset)(CGFloat x,CGFloat y);
-
-@property (  readonly) ZLLabel* (^z_top)(CGFloat top);
-
-@property (  readonly) ZLLabel* (^z_leading)(CGFloat leading);
-
-@property (  readonly) ZLLabel* (^z_bottom)(CGFloat bottom);
-
-@property (  readonly) ZLLabel* (^z_trailing)(CGFloat trailling);
-
 ///设置高度
-@property ( copy, readonly) ZLLabel* (^z_height)(CGFloat height);
+@property ( copy, readonly) ZLLabel* (^height)(CGFloat height);
 ///设置宽度
-@property ( copy, readonly) ZLLabel* (^z_width)(CGFloat width);
+@property ( copy, readonly) ZLLabel* (^width)(CGFloat width);
 ///同时设置宽高
-@property ( copy, readonly) ZLLabel* (^z_size)(CGFloat width,CGFloat height);
+@property ( copy, readonly) ZLLabel* (^size)(CGFloat width,CGFloat height);
 ///设置宽高相等
-@property ( copy, readonly) ZLLabel* (^z_square)(CGFloat wh);
+@property ( copy, readonly) ZLLabel* (^square)(CGFloat wh);
 ///贴紧父视图四边(参数布局)
-@property ( copy, readonly) ZLLabel* (^z_edge)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
+@property ( copy, readonly) ZLLabel* (^edge)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
  // ⭐高频
 ///贴紧父视图四边布局
-@property ( copy, readonly) ZLLabel* (^z_edgesZero)(void);
+@property ( copy, readonly) ZLLabel* (^edgesZero)(void);
 ///添加到父视图，参数是父视图
 @property (nonatomic, copy, readonly) ZLLabel* (^addTo)(UIView *superview);
 ///添加到父视图 并且贴紧父视图四边布局，参数是父视图

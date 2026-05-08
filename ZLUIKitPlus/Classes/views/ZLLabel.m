@@ -3,15 +3,21 @@
 #import "ZLButton.h"
 #import "ZLImageView.h"
 #import "ZLUI.h"
-
+#import "ZLViewDecorator.h"
 @interface ZLLabel ()
-@property (nonatomic,copy)NSString *_txt;
-@property (nonatomic,copy)UIColor *_txtColor;
-@property (nonatomic,copy)NSString *_hilightedTxt;
+
 @property (nonatomic,assign)UIEdgeInsets cornerRadiiValue;
 @property (nonatomic,copy)NSNumber* isCircle;
+@property (nonatomic,strong) ZLViewDecorator    *zl_decorator;
+
 @end
 @implementation ZLLabel
+- (ZLViewDecorator *)zl_decorator {
+    if (!_zl_decorator) {
+        _zl_decorator = [[ZLViewDecorator alloc] initWithView:self];
+    }
+    return _zl_decorator;
+}
 - (void)setEdgeInsets:(UIEdgeInsets)edgeInsets {
     _insetTop = edgeInsets.top;
     _insetLeading = edgeInsets.left;
@@ -92,7 +98,6 @@
 }
 - (ZLLabel * _Nonnull (^)(NSString * _Nonnull))txt {
     return ^(NSString *txt) {
-        self._txt = txt;
         self.text = txt;
         return self;
     };
@@ -134,32 +139,12 @@
 }
 - (ZLLabel * _Nonnull (^)(id _Nonnull))color {
     return ^(id color) {
-        self._txtColor =  self.textColor;
         self.textColor = ZLColorFromObj(color);
         return self;
     };
 }
 
-- (ZLLabel * _Nonnull (^)(NSString * _Nonnull))hlTxt {
-    return ^(NSString *hilightedTxt) {
-        self._hilightedTxt = hilightedTxt;
-        return self;
-    };
-}
 
-- (ZLLabel * _Nonnull (^)(id _Nonnull))hlColor {
-    return ^(id color) {
-        self.highlightedTextColor = ZLColorFromObj(color);
-        return self;
-    };
-}
-
-- (ZLLabel * _Nonnull (^)(BOOL))highlight {
-    return ^(BOOL highlight) {
-        self.highlighted = highlight;
-        return self;
-    };
-}
 
 - (ZLLabel * _Nonnull (^)(CGFloat))txtMaxWidth {
     return ^(CGFloat maxWidth) {
@@ -385,85 +370,38 @@
 
 
 
-- (ZLLabel * _Nonnull (^)(CGFloat))z_centerX {
-    return ^(CGFloat centerX) {
-        self.KFC.centerX(centerX);
-        return self;
-    };
-}
-- (ZLLabel * _Nonnull (^)(CGFloat))z_centerY {
-    return ^(CGFloat centerY) {
-        self.KFC.centerY(centerY);
-        return self;
-    };
-}
-- (ZLLabel * _Nonnull (^)(void))z_center {
-    return ^() {
-        self.KFC.center();
-        return self;
-    };
-}
-- (ZLLabel * _Nonnull (^)(CGFloat, CGFloat))z_centerOffset {
-    return ^(CGFloat offsetX, CGFloat offsetY) {
-        self.KFC.centerOffset(offsetX, offsetY);
-        return self;
-    };
-}
-- (ZLLabel * _Nonnull (^)(CGFloat))z_top {
-    return ^(CGFloat top) {
-        self.KFC.top(top);
-        return self;
-    };
-}
-- (ZLLabel * _Nonnull (^)(CGFloat))z_leading {
-    return ^(CGFloat leading) {
-        self.KFC.leading(leading);
-        return self;
-    };
-}
-- (ZLLabel * _Nonnull (^)(CGFloat))z_bottom {
-    return ^(CGFloat bottom) {
-        self.KFC.bottom(bottom);
-        return self;
-    };
-}
-- (ZLLabel * _Nonnull (^)(CGFloat))z_trailing {
-    return ^(CGFloat trailing) {
-        self.KFC.trailing(trailing);
-        return self;
-    };
-}
-- (ZLLabel * _Nonnull (^)(CGFloat))z_height {
+
+- (ZLLabel * _Nonnull (^)(CGFloat))height {
     return ^(CGFloat height) {
         self.KFC.height(height);
         return self;
     };
 }
-- (ZLLabel * _Nonnull (^)(CGFloat))z_width {
+- (ZLLabel * _Nonnull (^)(CGFloat))width {
     return ^(CGFloat width) {
         self.KFC.width(width);
         return self;
     };
 }
-- (ZLLabel * _Nonnull (^)(CGFloat, CGFloat))z_size {
+- (ZLLabel * _Nonnull (^)(CGFloat, CGFloat))size {
     return ^(CGFloat width, CGFloat height) {
         self.KFC.size(width, height);
         return self;
     };
 }
-- (ZLLabel * _Nonnull (^)(CGFloat))z_square {
+- (ZLLabel * _Nonnull (^)(CGFloat))square {
     return ^(CGFloat side) {
         self.KFC.square(side);
         return self;
     };
 }
-- (ZLLabel * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))z_edge {
+- (ZLLabel * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))edge {
     return ^(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing) {
         self.KFC.edge(top, leading, bottom, trailing);
         return self;
     };
 }
-- (ZLLabel * _Nonnull (^)(void))z_edgesZero {
+- (ZLLabel * _Nonnull (^)(void))edgesZero {
     return ^() {
         self.KFC.edgesZero();
         return self;

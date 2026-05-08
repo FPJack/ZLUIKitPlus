@@ -859,9 +859,6 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    /// 确保渐变层在最底层且尺寸正确
-    
-    
     [self callLayoutSubviewBlock];
     
     if (_zl_decorator) {

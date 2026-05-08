@@ -33,7 +33,7 @@
     _bottomRightRadius = -1;
 
     // 阴影默认值
-    _shadowColor   = UIColor.blackColor;
+    _shadowColor   = nil;
     _shadowOpacity = 0.15;
     _shadowRadius  = 6;
     _shadowOffset  = CGSizeMake(0, 2);
@@ -170,14 +170,14 @@
         [self.view.layer insertSublayer:_gradLayer atIndex:0];
     }
     
-      
-
     // 2. 阴影（shadowPath 贴合圆角路径，无需 masksToBounds）
-    view.layer.shadowColor   = _shadowColor.CGColor;
-    view.layer.shadowOpacity = _shadowOpacity;
-    view.layer.shadowRadius  = _shadowRadius;
-    view.layer.shadowOffset  = _shadowOffset;
-    view.layer.shadowPath    = path.CGPath;
+    if (_shadowColor) {
+        view.layer.shadowColor   = _shadowColor.CGColor;
+        view.layer.shadowOpacity = _shadowOpacity;
+        view.layer.shadowRadius  = _shadowRadius;
+        view.layer.shadowOffset  = _shadowOffset;
+        view.layer.shadowPath    = path.CGPath;
+    }
     [view.layer insertSublayer:_backgroundShapeLayer atIndex:0];
 }
 - (void)setViewBgColor:(UIColor *)color {

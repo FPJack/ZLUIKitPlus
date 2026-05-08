@@ -106,7 +106,9 @@
         
         ZLButton *btn = ZLBtnH.flexSpacing;
         btn.image(@"分享").hAlignFill.title(@"弹性间距").systemFont(15).titleColor(@"#333333")
-            .insets(10, 16, 10, 16).bgColor(@"#FFF3E0").corner(8);
+            .insets(10, 16, 10, 16)
+            .bgColor(@"#FFF3E0")
+            .corner(8);
         [content addSubview:btn];
         btn.KFC.top(y).leading(20).trailing(20);
         btn.height(44);

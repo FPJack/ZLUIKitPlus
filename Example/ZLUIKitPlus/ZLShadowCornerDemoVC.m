@@ -4,7 +4,7 @@
 #import "ZLViewDecorator.h"
 
 // 内部辅助：带圆角阴影的卡片 View，持有 ZLShadowCornerView 配置对象
-@interface ZLShadowCardView : UIView
+@interface ZLShadowCardView : UIButton
 @property (nonatomic, strong) ZLViewDecorator *cfg;
 @end
 @implementation ZLShadowCardView

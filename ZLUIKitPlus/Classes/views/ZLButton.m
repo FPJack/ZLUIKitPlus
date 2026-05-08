@@ -20,7 +20,6 @@
 @interface ZLButton ()
 @property (nonatomic,weak)UILabel *lab;
 @property (nonatomic,weak)UIImageView *imgView;
-@property (nonatomic,copy)NSNumber* isCircleClip;
 @property (nonatomic,assign)UIEdgeInsets cornerRadiiValue;
 @property (nonatomic,assign)BOOL imgTouchOnly;
 @property (nonatomic,assign)UIEdgeInsets touchAreaEdgeInsets;
@@ -425,29 +424,17 @@
     if (self) [self _zl_setupDefaults];
     return self;
 }
-- (CAGradientLayer *)gradLayer {
-    if (!_gradLayer) {
-        CAGradientLayer *layer = [CAGradientLayer layer];
-        layer.startPoint = CGPointMake(0, 0); //左上
-        layer.endPoint = CGPointMake(1, 1); // 右下
-        _gradLayer = layer;
-    }
-    return _gradLayer;
-}
+
 - (ZLButton * _Nonnull (^)(NSArray * _Nonnull))gradColors {
     return ^(NSArray *colors) {
-        NSMutableArray *cgColors = NSMutableArray.array;
-        for (id color in colors) {
-            UIColor *c = ZLColorFromObj(color);
-            if (c) [cgColors addObject:(id)c.CGColor];
-        }
+        self.zl_decorator.gradColors = colors;
         return self;
     };
 }
 - (ZLButton * _Nonnull (^)(CGPoint, CGPoint))gradDirection {
     return ^(CGPoint start, CGPoint end) {
-        self.gradLayer.startPoint = start;
-        self.gradLayer.endPoint = end;
+        self.zl_decorator.gradStartPoint = start;
+        self.zl_decorator.gradEndPoint = end;
         return self;
     };
 }
@@ -856,34 +843,30 @@
 
 #pragma mark - layoutSubviews
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
-    if (_zl_decorator) {
+    if (_zl_decorator && !_zl_decorator.viewBgColorByDecorator) {
         _zl_decorator.fillColor = backgroundColor;
-        [super setBackgroundColor:UIColor.clearColor];
     }else {
         [super setBackgroundColor:backgroundColor];
     }
 }
-//- (UIColor *)backgroundColor {
-//    return _zl_decorator ? _zl_decorator.fillColor : [super backgroundColor];
-//}
+- (UIColor *)backgroundColor {
+    if (_zl_decorator) {
+        return _zl_decorator.fillColor ?: [super backgroundColor];
+    }else {
+        return [super backgroundColor];
+    }
+}
 - (void)layoutSubviews {
     [super layoutSubviews];
     
     /// 确保渐变层在最底层且尺寸正确
-    if (_gradLayer
-        && !CGRectEqualToRect(self.bounds, CGRectZero)
-        && !CGRectEqualToRect(self.bounds, self.gradLayer.bounds)) {
-        [self.layer insertSublayer:self.gradLayer atIndex:0];
-        self.gradLayer.frame = self.bounds;
-    }
+    
+    
+    [self callLayoutSubviewBlock];
     
     if (_zl_decorator) {
         [_zl_decorator update];
     }
-    
-    if (self.isCircleClip) self.circle(self.isCircleClip);
-    
-    [self callLayoutSubviewBlock];
 }
 - (void)callLayoutSubviewBlock {
     [self drawCornerRadii];
@@ -1005,7 +988,7 @@
 }
 - (ZLButton * _Nonnull (^)(BOOL))circle {
     return ^ZLButton*(BOOL clip) {
-        self.isCircleClip = @(clip);
+        self.zl_decorator.circle = @(clip);
         return self;
     };
 }
@@ -1044,7 +1027,7 @@
 - (ZLButton*  _Nonnull (^)(CGFloat, CGFloat))shOffset {
     return ^ZLButton* (CGFloat width, CGFloat height) {
         self.zl_decorator.shadowOffset = CGSizeMake(width, height);
-        return self.shRadius(6);
+        return self;
     };
 }
 
@@ -1052,7 +1035,7 @@
 - (ZLButton*  _Nonnull (^)(CGFloat))shRadius {
     return ^ZLButton* (CGFloat radius) {
         self.zl_decorator.shadowRadius = radius;
-        return self.shOpacity(0.2);
+        return self;
     };
 }
 

@@ -36,9 +36,10 @@
             .spacing(8)
             .flexSpacing
             .insets(5, 5, 5, 5)
-//            .corner(8)
-            .bgColor(UIColor.whiteColor)
+            .corner(8)
             .shColor(UIColor.blackColor)
+            .bgColor(UIColor.whiteColor)
+            .gradColors(@[UIColor.redColor,UIColor.blueColor])
 //            .addSubview(btn.zl_lab
 //                        .z_square(4)
 //                        .bgColor(UIColor.redColor)
@@ -48,6 +49,7 @@
             .touchAction(^(ZLButton *b) {
                 NSLog(@"水平按钮点击");
             });
+       
       
         btn.horizontalAlign = ZLButtonAlignCenter;
         btn.verticalAlign = ZLButtonAlignCenter;
@@ -60,7 +62,6 @@
 //            btn.select(YES);
 //        });
     }
-    return;
     // 2. 垂直按钮（图上文下）
     {
         UILabel *tip = [self tipLabel:@"2. 垂直按钮(图上文下)" y:y];

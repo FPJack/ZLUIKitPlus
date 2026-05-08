@@ -200,7 +200,7 @@ NS_INLINE GMStartEndInsets GMStartEndInsetsMake(CGFloat start, CGFloat end) {
 @property (nonatomic, copy, readonly) ZLButton* (^cornerRadii)(CGFloat topLeft, CGFloat topRight, CGFloat bottomLeft, CGFloat bottomRight);
 
 ///设置是否圆形裁剪
-@property (nonatomic, copy, readonly) ZLButton* (^circle)(BOOL circleClip);
+@property (nonatomic, copy, readonly) ZLButton* (^circle)(BOOL circle);
 
 ///设置图片圆角
 @property (nonatomic, copy, readonly) ZLButton* (^imageCorner)(CGFloat radius);
@@ -221,8 +221,6 @@ NS_INLINE GMStartEndInsets GMStartEndInsetsMake(CGFloat start, CGFloat end) {
 @property (nonatomic,readonly) ZLButton* (^shRadius)(CGFloat radius);
 
 @property (nonatomic,readonly) ZLButton* (^masksToBounds)(BOOL masksToBounds);
-///渐变层，外部可直接访问进行配置，例如设置渐变颜色、方向
-@property (nonatomic,strong)CAGradientLayer *gradLayer;
 
 ///渐变颜色
 @property (nonatomic, readonly) ZLButton* (^gradColors)(NSArray *colors);

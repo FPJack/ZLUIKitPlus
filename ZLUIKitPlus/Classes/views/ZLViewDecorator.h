@@ -8,19 +8,31 @@ NS_ASSUME_NONNULL_BEGIN
 ///   1. shadowCfg.view = self（绑定目标 view）
 ///   2. 在 view 的 layoutSubviews 末尾调用 [shadowCfg update]
 @interface ZLViewDecorator : NSObject
+
+
+@property (nonatomic,copy)NSArray *gradColors;
+@property (nonatomic,assign)CGPoint gradStartPoint;
+@property (nonatomic,assign)CGPoint gradEndPoint;
+
+
 - (instancetype)initWithView:(UIView *)view;
-
-
-
 // MARK: - 圆角
 
 /// 统一设置四个角（优先级低于单独设置）
 @property (nonatomic, assign) CGFloat cornerRadius;
+
+
+@property (nonatomic, copy) NSNumber* circle; // 是否圆形裁剪（设置为YES时自动计算半径为宽高较小值的一半）
+
+
 /// 单独设置每个角（>= 0 时覆盖 cornerRadius）
 @property (nonatomic, assign) CGFloat topLeftRadius;
 @property (nonatomic, assign) CGFloat topRightRadius;
 @property (nonatomic, assign) CGFloat bottomLeftRadius;
 @property (nonatomic, assign) CGFloat bottomRightRadius;
+
+///是否是decorator内部设置view的背景色
+@property (nonatomic, assign) BOOL viewBgColorByDecorator;
 
 // MARK: - 阴影
 

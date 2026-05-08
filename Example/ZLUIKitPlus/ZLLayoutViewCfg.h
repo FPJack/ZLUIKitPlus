@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign)CGFloat minSpacing;
 @property (nonatomic,assign)CGFloat maxSpacing;
 @property (nonatomic,assign)BOOL    isFlexSpace; ///ZlJustifyFill 才会有效
-@property (nonatomic,assign)NSInteger flex;  // 弹性权重（横向=宽度比例，纵向=高度比例）
+@property (nonatomic,assign)NSInteger flex;  //弹性权重（横向=宽度比例，纵向=高度比例）
 @property (nonatomic,assign)ZLAlign alignSelf;
 @end
 

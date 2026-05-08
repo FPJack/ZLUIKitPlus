@@ -373,9 +373,9 @@
                 UILabel *label = UILabel.new;
     
                 label.text = @"UILabelUIUILabelUILabelLabel";
-                label.numberOfLines = 0;
+                label.numberOfLines = 1;
                 label.backgroundColor = UIColor.orangeColor;
-                [label setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh - 1 forAxis:UILayoutConstraintAxisHorizontal];
+//                [label setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh - 1 forAxis:UILayoutConstraintAxisHorizontal];
                 //[stackview addArrangedSubview:label];
                 {
                     UIButton *btn = [ZLButton buttonWithType:UIButtonTypeCustom];
@@ -389,22 +389,22 @@
 //                        make.edges.mas_equalTo(0);
 //                    }];
     
-                    [stackview addArrangedSubview:btn layout:^(ZLLayoutViewCfg * _Nonnull viewCfg) {
+                    [stackview addArrangedSubview:label layout:^(UIView *view, ZLLayoutViewCfg * _Nonnull viewCfg) {
                        
 //                         viewCfg.spacing = 20;
 //                        viewCfg.flex = 1;
 //                        viewCfg.isFlexSpace = YES;
                     }];
-                    [stackview addArrangedSubview:UISwitch.new layout:^(ZLLayoutViewCfg * _Nonnull viewCfg) {
-                      
-                        viewCfg.maxSpacing = 50;
+                    [stackview addArrangedSubview:UISwitch.new layout:^(UIView *view, ZLLayoutViewCfg * _Nonnull viewCfg) {
+
+                        viewCfg.minSpacing = 50;
 //                        viewCfg.flex = 1;
 //                        viewCfg.isFlexSpace = YES;
                     }];
                     
-                    [stackview addArrangedSubview:UISwitch.new layout:^(ZLLayoutViewCfg * _Nonnull viewCfg) {
-                       
-                        viewCfg.maxSpacing = 50;
+                    [stackview addArrangedSubview:UISwitch.new layout:^(UIView *view, ZLLayoutViewCfg * _Nonnull viewCfg) {
+
+                        viewCfg.minSpacing = 50;
 //                        viewCfg.flex = 1;
 //                        viewCfg.isFlexSpace = YES;
                     }];

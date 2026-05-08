@@ -45,6 +45,7 @@
 - (BOOL)horizontal {
     return self.stackView.horizontal;
 }
+
 - (void)removeAllSpacing {
     [self.stackEdgeInsets  removeEdgeInsets];
     [[self.stackView.layoutGuides filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(UILayoutGuide*  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
@@ -188,9 +189,6 @@
                         [self.constraints addObject:cons];
                     }
                 }
-                
-                
-                
             }
                 break;
            
@@ -386,7 +384,6 @@
                     if (cfg.spacing) {
                         cons = [spacingGuide.heightAnchor constraintEqualToConstant:spacing];
                         cons.cfg.type = ZLLayoutConTypeSpacing;
-                        cons.cfg.view = view;
                         [self.constraints addObject:cons];
                     }
                     if (cfg.minSpacing) {
@@ -401,6 +398,7 @@
                         cons.cfg.view = view;
                         [self.constraints addObject:cons];
                     }
+                    
                 }
             }
                 break;

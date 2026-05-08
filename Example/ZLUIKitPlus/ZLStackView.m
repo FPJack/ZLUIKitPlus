@@ -88,9 +88,9 @@
         [self setNeedsUpdateConstraints];
     }
 }
-- (void)addArrangedSubview:(UIView *)view layout:(void(^)(ZLLayoutViewCfg *viewCfg))config{
+- (void)addArrangedSubview:(UIView *)view layout:(void(^)(__kindof UIView *view, ZLLayoutViewCfg *viewCfg))config{
     [self addArrangedSubview:view];
-    if (config) config(view.zl_layoutCfg);
+    if (config) config(view,view.zl_layoutCfg);
 }
 - (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)stackIndex {
     if ([view isKindOfClass:UIView.class]) {
@@ -125,6 +125,12 @@
     self.markedDirty = YES;
     [self setNeedsUpdateConstraints];
 }
+- (NSArray<NSLayoutConstraint *> *)filterConstraintWithBlock:(BOOL(^)(NSLayoutConstraint *constraint))block {
+    return [self.layoutManager.constraints filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSLayoutConstraint*  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        if (block) return block(evaluatedObject);
+        return NO;
+    }]];
+}
 - (void)setCustomSpacing:(CGFloat)spacing afterView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
     if (![arrangedSubview isKindOfClass:UIView.class]) return;
@@ -133,19 +139,54 @@
     viewCfg.spacing = spacing;
     if (arrangedSubview.hidden) return;
     if (self.layoutManager.constraints.count == 0) return;
-    NSArray<NSLayoutConstraint *> * arr = [self.layoutManager.constraints filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSLayoutConstraint*  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-        ZLConstraintsCfg *cfg = evaluatedObject.cfg;
-        if ([cfg.view isEqual:arrangedSubview] && cfg.type == ZLLayoutConTypeSpacing
-            ) {
-            return YES;
-        }
-        return NO;
-    }]];
+    NSArray<NSLayoutConstraint *> * arr = [self filterConstraintWithBlock:^BOOL(NSLayoutConstraint *constraint) {
+        ZLConstraintsCfg *cfg = constraint.cfg;
+        return [cfg.view isEqual:arrangedSubview] && cfg.type == ZLLayoutConTypeSpacing;
+    }];
     if (arr.count == 0) {
         self.markedDirty = YES;
         [self setNeedsUpdateConstraints];
     }else {
         arr.firstObject.constant = MAX(0, spacing);
+    }
+}
+- (void)setCustomMinSpacing:(CGFloat)minSpacing afterView:(UIView *)arrangedSubview {
+    if (![self.arrangedViews containsObject:arrangedSubview]) return;
+    if (![arrangedSubview isKindOfClass:UIView.class]) return;
+    ZLLayoutViewCfg *viewCfg = arrangedSubview.zl_layoutCfg;
+    if (viewCfg.minSpacing == minSpacing) return;
+    viewCfg.minSpacing = minSpacing;
+    if (arrangedSubview.hidden) return;
+    if (self.layoutManager.constraints.count == 0) return;
+    NSArray<NSLayoutConstraint *> * arr = [self filterConstraintWithBlock:^BOOL(NSLayoutConstraint *constraint) {
+        ZLConstraintsCfg *cfg = constraint.cfg;
+        return [cfg.view isEqual:arrangedSubview] && cfg.type == ZLLayoutConTypeMinSpacing;
+    }];
+    if (arr.count > 0) {
+        arr.firstObject.constant = MAX(0, minSpacing);
+    }else {
+        self.markedDirty = YES;
+        [self setNeedsUpdateConstraints];
+    }
+}
+
+- (void)setCustomMaxSpacing:(CGFloat)maxSpacing afterView:(UIView *)arrangedSubview {
+    if (![self.arrangedViews containsObject:arrangedSubview]) return;
+    if (![arrangedSubview isKindOfClass:UIView.class]) return;
+    ZLLayoutViewCfg *viewCfg = arrangedSubview.zl_layoutCfg;
+    if (viewCfg.maxSpacing == maxSpacing) return;
+    viewCfg.maxSpacing = maxSpacing;
+    if (arrangedSubview.hidden) return;
+    if (self.layoutManager.constraints.count == 0) return;
+    NSArray<NSLayoutConstraint *> * arr = [self filterConstraintWithBlock:^BOOL(NSLayoutConstraint *constraint) {
+        ZLConstraintsCfg *cfg = constraint.cfg;
+        return [cfg.view isEqual:arrangedSubview] && cfg.type == ZLLayoutConTypeMaxSpacing;
+    }];
+    if (arr.count > 0) {
+        arr.firstObject.constant = MAX(0, maxSpacing);
+    }else {
+        self.markedDirty = YES;
+        [self setNeedsUpdateConstraints];
     }
 }
 - (void)setFlex:(NSInteger)flex forView:(UIView *)arrangedSubview{

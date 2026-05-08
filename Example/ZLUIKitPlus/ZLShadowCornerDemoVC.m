@@ -1,16 +1,16 @@
 #import "ZLShadowCornerDemoVC.h"
 #import "ZLShadowCornerView.h"
 #import <Masonry/Masonry.h>
+#import "ZLViewDecorator.h"
 
 // 内部辅助：带圆角阴影的卡片 View，持有 ZLShadowCornerView 配置对象
 @interface ZLShadowCardView : UIView
-@property (nonatomic, strong) ZLShadowCornerView *cfg;
+@property (nonatomic, strong) ZLViewDecorator *cfg;
 @end
 @implementation ZLShadowCardView
 - (instancetype)init {
     self = [super init];
-    _cfg = ZLShadowCornerView.new;
-    _cfg.view = self;
+    _cfg = [[ZLViewDecorator alloc] initWithView:self];
     return self;
 }
 - (void)layoutSubviews {
@@ -63,7 +63,6 @@
         }];
         [self addLabel:@"统一圆角 16pt" to:v]; y += 110;
     }
-
     // --------------------------------------------------
     // 2. 每个角不同圆角 + 阴影
     // --------------------------------------------------
@@ -95,7 +94,7 @@
         ZLShadowCardView *v = ZLShadowCardView.new;
         v.backgroundColor = [UIColor colorWithRed:0.98 green:0.36 blue:0.35 alpha:1];
         v.cfg.corners(8, 8, 30, 30);
-        v.cfg.shadow([UIColor colorWithRed:0.98 green:0.36 blue:0.35 alpha:1], 0.45, 12, CGSizeMake(0, 6));
+        v.cfg.shadow(UIColor.redColor, 0.45, 12, CGSizeMake(0, 6));
         [content addSubview:v];
         [v mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(y); make.leading.mas_equalTo(left);
@@ -110,13 +109,13 @@
     [self addTip:@"4. 仅顶部圆角 (TL=20 TR=20 BL=0 BR=0)" y:y content:content]; y += 30;
     {
         ZLShadowCardView *v = ZLShadowCardView.new;
-        v.backgroundColor       = [UIColor colorWithRed:0.30 green:0.69 blue:0.31 alpha:1];
+        v.backgroundColor       = [UIColor redColor];
         v.cfg.topLeftRadius     = 20;
         v.cfg.topRightRadius    = 20;
         v.cfg.bottomLeftRadius  = 0;
         v.cfg.bottomRightRadius = 0;
         v.cfg.shadowColor       = UIColor.blackColor;
-        v.cfg.shadowOpacity     = 0.12;
+        v.cfg.shadowOpacity     = 1;
         v.cfg.shadowRadius      = 6;
         v.cfg.shadowOffset      = CGSizeMake(0, -2);
         [content addSubview:v];
@@ -138,7 +137,7 @@
         v.cfg.topRightRadius    = 20;
         v.cfg.bottomLeftRadius  = 20;
         v.cfg.bottomRightRadius = 20;
-        v.cfg.shadowOpacity     = 0;
+        v.cfg.shadowOpacity     = 1;
         [content addSubview:v];
         [v mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(y); make.leading.mas_equalTo(left);

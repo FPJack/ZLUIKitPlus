@@ -18,6 +18,7 @@
 #import "ZLPairView.h"
 #import "ZLStateView.h"
 #import "ZLTagListView.h"
+#import "ZLViewDecorator.h"
 #import "ZLUIKitPlus.h"
 
 FOUNDATION_EXPORT double ZLUIKitPlusVersionNumber;

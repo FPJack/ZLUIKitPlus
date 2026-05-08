@@ -37,8 +37,8 @@
             .flexSpacing
             .insets(5, 5, 5, 5)
 //            .corner(8)
-            .bgColor(UIColor.orangeColor)
-            .shColor(UIColor.redColor)
+            .bgColor(UIColor.whiteColor)
+            .shColor(UIColor.blackColor)
 //            .addSubview(btn.zl_lab
 //                        .z_square(4)
 //                        .bgColor(UIColor.redColor)
@@ -60,7 +60,7 @@
 //            btn.select(YES);
 //        });
     }
-    
+    return;
     // 2. 垂直按钮（图上文下）
     {
         UILabel *tip = [self tipLabel:@"2. 垂直按钮(图上文下)" y:y];

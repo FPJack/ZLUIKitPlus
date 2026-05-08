@@ -30,7 +30,7 @@
 @end
 @implementation ZLLayoutViewCfg
 @synthesize alignSelf = _alignSelf;
-@synthesize behindSpacing = _behindSpacing;
+@synthesize spacing = _spacing;
 - (void)setAlignSelf:(ZLAlign)alignSelf {
     self.isSetAlign = YES;
     if (alignSelf == _alignSelf) return;
@@ -40,15 +40,19 @@
 - (ZLAlign)alignSelf {
     return self.isSetAlign ? _alignSelf : self.stackView.alignment;
 }
-- (void)setBehindSpacing:(CGFloat)behindSpacing {
-    if (behindSpacing == _behindSpacing) return;
-    _behindSpacing = behindSpacing;
+
+
+- (void)setSpacing:(CGFloat)spacing {
+    if (spacing == _spacing) return;
+    _spacing = spacing;
     [self setStackViewNeedsUpdateConstraints];
 }
-- (CGFloat)behindSpacing {
-    if (_behindSpacing > 0) return _behindSpacing;
+- (CGFloat)spacing {
+    if (_spacing > 0) return _spacing;
     return self.stackView.spacing;
 }
+
+
 - (void)setStartSpacing:(CGFloat)startSpacing {
     if (startSpacing == _startSpacing) return;
     _startSpacing = startSpacing;

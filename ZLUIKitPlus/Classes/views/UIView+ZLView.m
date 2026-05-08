@@ -41,4 +41,5 @@
 kPropertyGetterImplementation(ZLLabel, zl_lab)
 kPropertyGetterImplementation(ZLImageView, zl_imgView)
 kPropertyGetterImplementation(ZLButton, zl_btn)
+
 @end

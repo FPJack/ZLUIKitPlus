@@ -17,6 +17,8 @@ typedef NS_ENUM(NSInteger, ZLLayoutConType) {
     ZLLayoutConTypeLeading,
     ZLLayoutConTypeTrailing,
     ZLLayoutConTypeSpacing,
+    ZLLayoutConTypeMinSpacing,
+    ZLLayoutConTypeMaxSpacing,
 };
 
 @interface ZLConstraintsCfg : NSObject

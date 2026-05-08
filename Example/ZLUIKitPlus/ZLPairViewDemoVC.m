@@ -349,9 +349,9 @@
         sk.tag = 999;
         sk.horizontal = YES;
         sk.alignment = ZLAlignCenter;
-        sk.justify = ZLJustifyCenter;
+        sk.justify = ZlJustifyFill;
         sk.spacing = 10;
-        sk.insets = UIEdgeInsetsMake(20, 20, 20, 20);
+//        sk.insets = UIEdgeInsetsMake(20, 20, 20, 20);
         sk.backgroundColor = UIColor.grayColor;
        
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -368,7 +368,7 @@
                 stackview.backgroundColor = UIColor.redColor;
                 stackview.horizontal = YES;
                 stackview.alignment = ZLAlignCenter;
-                stackview.justify = ZLJustifyCenter;
+                stackview.justify = ZlJustifyFill;
                 stackview.spacing = 0;
                 UILabel *label = UILabel.new;
     
@@ -380,9 +380,9 @@
                 {
                     UIButton *btn = [ZLButton buttonWithType:UIButtonTypeCustom];
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        btn.zl_layoutCfg.behindSpacing = 20;
+                        btn.zl_layoutCfg.spacing = 20;
                     });
-                    [btn setTitle:@"UILabelUIUILabelUIUILabelUIUILabelUILabelLabelUILabelUIUILabelUILabelLabelLabelLabel" forState:UIControlStateNormal];
+                    [btn setTitle:@"label" forState:UIControlStateNormal];
                     [btn.titleLabel setNumberOfLines:0];
 //                    [btn setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh - 1 forAxis:UILayoutConstraintAxisHorizontal];
 //                    [btn.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -390,17 +390,35 @@
 //                    }];
     
                     [stackview addArrangedSubview:btn layout:^(ZLLayoutViewCfg * _Nonnull viewCfg) {
-                        viewCfg.startSpacing = 20;
-                        viewCfg.endSpacing = 30;
-                        viewCfg.behindSpacing = 50;
-                        viewCfg.flex = 1;
-                        viewCfg.isFlexSpace = YES;
+                       
+//                         viewCfg.spacing = 20;
+//                        viewCfg.flex = 1;
+//                        viewCfg.isFlexSpace = YES;
+                    }];
+                    [stackview addArrangedSubview:UISwitch.new layout:^(ZLLayoutViewCfg * _Nonnull viewCfg) {
+                      
+                        viewCfg.maxSpacing = 50;
+//                        viewCfg.flex = 1;
+//                        viewCfg.isFlexSpace = YES;
+                    }];
+                    
+                    [stackview addArrangedSubview:UISwitch.new layout:^(ZLLayoutViewCfg * _Nonnull viewCfg) {
+                       
+                        viewCfg.maxSpacing = 50;
+//                        viewCfg.flex = 1;
+//                        viewCfg.isFlexSpace = YES;
                     }];
                     
                 }
-                UISwitch *sw = UISwitch.new;
-//                [stackview addArrangedSubview:sw];
                 [stackview addArrangedSubview:UISwitch.new];
+                [self.view addSubview:stackview];
+                [stackview mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.center.mas_equalTo(self.view);
+                    make.height.mas_equalTo(400);
+                    make.width.mas_equalTo(350);
+        
+                }];
+                return;
                 [sk  addArrangedSubview:stackview];
             }
         
@@ -408,7 +426,7 @@
             [sk mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.center.mas_equalTo(self.view);
                 make.height.mas_equalTo(400);
-                make.width.mas_equalTo(200);
+                make.width.mas_equalTo(350);
     
             }];
             return;

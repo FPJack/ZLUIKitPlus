@@ -74,7 +74,7 @@
         //添加垂直约束
         CGFloat startSpacing = cfg.startSpacing;
         CGFloat endSpacing = cfg.endSpacing;
-        CGFloat behindSpacing = cfg.behindSpacing;
+        CGFloat spacing = cfg.spacing;
         switch (cfg.alignSelf) {
             case ZLAlignStart:
             {
@@ -161,19 +161,35 @@
             case ZLJustifyCenter:
                 
             {
-                if (behindSpacing > 0.0 && i < count - 1 ) {//添加间距
-                    if (self.justify != ZlJustifyFill || !cfg.isFlexSpace) {
-                        ZLLayoutGuide *spacingGuide = ZLLayoutGuide.new;
-                        spacingGuide.stackView = self.stackView;
-                        cons = [spacingGuide.leadingAnchor constraintEqualToAnchor:nextAnchor];
-                        [self.constraints addObject:cons];
-                        nextAnchor = spacingGuide.trailingAnchor;
-                        cons = [spacingGuide.widthAnchor constraintEqualToConstant:behindSpacing];
+                if (i == count - 1) break;
+                if (cfg.spacing > 0 || cfg.minSpacing > 0 || cfg.maxSpacing > 0) {
+                    ZLLayoutGuide *spacingGuide = ZLLayoutGuide.new;
+                    spacingGuide.stackView = self.stackView;
+                    cons = [spacingGuide.leadingAnchor constraintEqualToAnchor:nextAnchor];
+                    [self.constraints addObject:cons];
+                    nextAnchor = spacingGuide.trailingAnchor;
+
+                    if (cfg.spacing) {
+                        cons = [spacingGuide.widthAnchor constraintEqualToConstant:spacing];
                         cons.cfg.type = ZLLayoutConTypeSpacing;
                         cons.cfg.view = view;
                         [self.constraints addObject:cons];
                     }
+                    if (cfg.minSpacing) {
+                        cons = [spacingGuide.widthAnchor constraintGreaterThanOrEqualToConstant:cfg.minSpacing];
+                        cons.cfg.type = ZLLayoutConTypeMinSpacing;
+                        cons.cfg.view = view;
+                        [self.constraints addObject:cons];
+                    }
+                    if (cfg.maxSpacing) {
+                        cons = [spacingGuide.widthAnchor constraintLessThanOrEqualToConstant:cfg.maxSpacing];
+                        cons.cfg.type = ZLLayoutConTypeMaxSpacing;
+                        cons.cfg.view = view;
+                        [self.constraints addObject:cons];
+                    }
                 }
+                
+                
                 
             }
                 break;
@@ -271,7 +287,7 @@
         //添加垂直约束
         CGFloat startSpacing = cfg.startSpacing;
         CGFloat endSpacing = cfg.endSpacing;
-        CGFloat behindSpacing = cfg.behindSpacing;
+        CGFloat spacing = cfg.spacing;
         switch (cfg.alignSelf) {
             case ZLAlignStart:
             {
@@ -356,23 +372,36 @@
             case ZLJustifyStart:
             case ZlJustifyEnd:
             case ZLJustifyCenter:
-                
             {
-                if (behindSpacing > 0.0 && i < count - 1 ) {//添加间距
-                    if (self.justify != ZlJustifyFill || !cfg.isFlexSpace) {
-                        ZLLayoutGuide *spacingGuide = ZLLayoutGuide.new;
-                        spacingGuide.stackView = self.stackView;
-                        cons = [spacingGuide.topAnchor constraintEqualToAnchor:nextAnchor];
-                        [self.constraints addObject:cons];
-                        nextAnchor = spacingGuide.bottomAnchor;
-                        cons = [spacingGuide.heightAnchor constraintEqualToConstant:behindSpacing];
+                if (i == count - 1) break;
+                if (cfg.spacing > 0 ||
+                    cfg.minSpacing > 0 ||
+                    cfg.maxSpacing > 0) {
+                    ZLLayoutGuide *spacingGuide = ZLLayoutGuide.new;
+                    spacingGuide.stackView = self.stackView;
+                    cons = [spacingGuide.topAnchor constraintEqualToAnchor:nextAnchor];
+                    [self.constraints addObject:cons];
+                    nextAnchor = spacingGuide.bottomAnchor;
+
+                    if (cfg.spacing) {
+                        cons = [spacingGuide.heightAnchor constraintEqualToConstant:spacing];
                         cons.cfg.type = ZLLayoutConTypeSpacing;
                         cons.cfg.view = view;
                         [self.constraints addObject:cons];
                     }
-
+                    if (cfg.minSpacing) {
+                        cons = [spacingGuide.heightAnchor constraintGreaterThanOrEqualToConstant:cfg.minSpacing];
+                        cons.cfg.type = ZLLayoutConTypeMinSpacing;
+                        cons.cfg.view = view;
+                        [self.constraints addObject:cons];
+                    }
+                    if (cfg.maxSpacing) {
+                        cons = [spacingGuide.heightAnchor constraintLessThanOrEqualToConstant:cfg.maxSpacing];
+                        cons.cfg.type = ZLLayoutConTypeMaxSpacing;
+                        cons.cfg.view = view;
+                        [self.constraints addObject:cons];
+                    }
                 }
-                
             }
                 break;
            

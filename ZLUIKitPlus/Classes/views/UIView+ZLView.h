@@ -6,6 +6,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ZLViewDecorator.h"
+
 #import "ZLPairView.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -33,6 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property ( readonly) ZLImgLabelView     *zl_pairImgLab;
 @property ( readonly) ZLImgButtonView    *zl_pairImgBtn;
 @property ( readonly) ZLButtonImgView    *zl_pairBtnImg;
+
 
 @end
 

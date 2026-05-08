@@ -129,8 +129,8 @@
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
     if (![arrangedSubview isKindOfClass:UIView.class]) return;
     ZLLayoutViewCfg *viewCfg = arrangedSubview.zl_layoutCfg;
-    if (viewCfg.behindSpacing == spacing) return;
-    viewCfg.behindSpacing = spacing;
+    if (viewCfg.spacing == spacing) return;
+    viewCfg.spacing = spacing;
     if (arrangedSubview.hidden) return;
     if (self.layoutManager.constraints.count == 0) return;
     NSArray<NSLayoutConstraint *> * arr = [self.layoutManager.constraints filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSLayoutConstraint*  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {

@@ -8,6 +8,8 @@
 #import "ZLButton.h"
 #import "ZLUI.h"
 #import <objc/runtime.h>
+#import "ZLViewDecorator.h"
+
 #define kInsetLeadingId @"kInsetLeadingId"
 #define kInsetTrailingId @"kInsetTrailingId"
 #define kInsetTopId @"kInsetTopId"
@@ -31,10 +33,18 @@
 @property (nonatomic,strong)NSMutableArray *customContraints;
 ///图片和文字展示顺序的拼接字段
 @property (nonatomic,copy)NSString *orderKey;
+
+@property (nonatomic,strong) ZLViewDecorator    *zl_decorator;
+
 @end
 
 @implementation ZLButton
-
+- (ZLViewDecorator *)zl_decorator {
+    if (!_zl_decorator) {
+        _zl_decorator = [[ZLViewDecorator alloc] initWithView:self];
+    }
+    return _zl_decorator;
+}
 - (UIEdgeInsets)_zl_effectiveInsets {
     UIEdgeInsets insets = _layoutEdgeInsets;
     if ([self _zl_isRTL]) {
@@ -845,7 +855,17 @@
 
 
 #pragma mark - layoutSubviews
-
+- (void)setBackgroundColor:(UIColor *)backgroundColor {
+    if (_zl_decorator) {
+        _zl_decorator.fillColor = backgroundColor;
+        [super setBackgroundColor:UIColor.clearColor];
+    }else {
+        [super setBackgroundColor:backgroundColor];
+    }
+}
+//- (UIColor *)backgroundColor {
+//    return _zl_decorator ? _zl_decorator.fillColor : [super backgroundColor];
+//}
 - (void)layoutSubviews {
     [super layoutSubviews];
     
@@ -855,6 +875,10 @@
         && !CGRectEqualToRect(self.bounds, self.gradLayer.bounds)) {
         [self.layer insertSublayer:self.gradLayer atIndex:0];
         self.gradLayer.frame = self.bounds;
+    }
+    
+    if (_zl_decorator) {
+        [_zl_decorator update];
     }
     
     if (self.isCircleClip) self.circle(self.isCircleClip);
@@ -929,14 +953,13 @@
 }
 - (ZLButton * _Nonnull (^)(CGFloat))corner {
     return ^ZLButton*(CGFloat radius){
-        self.layer.cornerRadius = radius;
-        self.layer.masksToBounds = radius > 0;
+        self.zl_decorator.cornerRadius = radius;
         return self;
     };
 }
 - (ZLButton * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))cornerRadii {
     return ^ZLButton*(CGFloat topLeft, CGFloat topRight, CGFloat bottomLeft, CGFloat bottomRight){
-        self.cornerRadiiValue = UIEdgeInsetsMake(topLeft, topRight, bottomLeft, bottomRight);
+        self.zl_decorator.corners(topLeft,topRight,bottomLeft,bottomRight);
         return self;
     };
 }
@@ -983,14 +1006,6 @@
 - (ZLButton * _Nonnull (^)(BOOL))circle {
     return ^ZLButton*(BOOL clip) {
         self.isCircleClip = @(clip);
-        if (clip) {
-            CGFloat minSide = MIN(self.bounds.size.width, self.bounds.size.height);
-            self.layer.cornerRadius = minSide / 2.0;
-            self.layer.masksToBounds = YES;
-        } else {
-            self.layer.cornerRadius = 0;
-            self.layer.masksToBounds = NO;
-        }
         return self;
     };
 }
@@ -1020,7 +1035,7 @@
 }
 - (ZLButton*  _Nonnull (^)(id _Nonnull))shColor {
     return ^ZLButton* (id color) {
-        self.layer.shadowColor = ZLColorFromObj(color).CGColor;
+        self.zl_decorator.shadowColor = ZLColorFromObj(color);
         return self.shOffset(0,2);
     };
 }
@@ -1028,7 +1043,7 @@
 
 - (ZLButton*  _Nonnull (^)(CGFloat, CGFloat))shOffset {
     return ^ZLButton* (CGFloat width, CGFloat height) {
-        self.layer.shadowOffset = CGSizeMake(width, height);
+        self.zl_decorator.shadowOffset = CGSizeMake(width, height);
         return self.shRadius(6);
     };
 }
@@ -1036,14 +1051,14 @@
 
 - (ZLButton*  _Nonnull (^)(CGFloat))shRadius {
     return ^ZLButton* (CGFloat radius) {
-        self.layer.shadowRadius = radius;
+        self.zl_decorator.shadowRadius = radius;
         return self.shOpacity(0.2);
     };
 }
 
 - (ZLButton*  _Nonnull (^)(CGFloat))shOpacity {
     return ^ZLButton* (CGFloat opacity) {
-        self.layer.shadowOpacity = opacity;
+        self.zl_decorator.shadowOpacity = opacity;
         return self.masksToBounds(NO);
     };
 }

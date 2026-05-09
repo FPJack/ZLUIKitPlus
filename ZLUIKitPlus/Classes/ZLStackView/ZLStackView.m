@@ -77,6 +77,7 @@
 - (void)setInsets:(UIEdgeInsets)insets {
     if (UIEdgeInsetsEqualToEdgeInsets(insets, _insets)) return;
     _insets = insets;
+    self.markedDirty = YES;
     [self setNeedsUpdateConstraints];
 }
 - (void)setAxis:(ZLStackViewAxis)axis {
@@ -112,6 +113,7 @@
         [self.allViews addObject:view];
         if (view.hidden) return;
         [self.arrangedViews addObject:view];
+        [self adjustLabelCompression:view];
         view.translatesAutoresizingMaskIntoConstraints = NO;
         [self addSubview:view];
         self.markedDirty = YES;
@@ -121,14 +123,25 @@
 - (void)addArrangedSubview:(UIView *)view layout:(void(^)(__kindof UIView *view, ZLLayoutViewCfg *viewCfg))config{
     [self addArrangedSubview:view];
     if (config) config(view,view.zl_layoutCfg);
+    
 }
 - (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)stackIndex {
     if ([view isKindOfClass:UIView.class]) {
         if ([self.allViews containsObject:view]) return;
         [self.allViews insertObject:view atIndex:stackIndex];
+        [self adjustLabelCompression:view];
         if (view.hidden) return;
         self.markedDirty = YES;
         [self setNeedsUpdateConstraints];
+    }
+}
+///防止换行的时候挤出右边下面的view
+- (void)adjustLabelCompression:(UIView*)view {
+    if (![view isKindOfClass:UILabel.class]) return;
+    UILayoutConstraintAxis axis = self.axis == ZLStackViewAxisHorizontal ? UILayoutConstraintAxisHorizontal : UILayoutConstraintAxisVertical;
+    UILayoutPriority priorit = [view contentCompressionResistancePriorityForAxis:axis];
+    if (priorit == UILayoutPriorityDefaultHigh) {
+        [view setContentCompressionResistancePriority:priorit - 0.1 forAxis:axis];
     }
 }
 - (void)refreshArrangedSubviews {

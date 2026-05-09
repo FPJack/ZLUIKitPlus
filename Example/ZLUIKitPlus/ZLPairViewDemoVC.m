@@ -55,8 +55,32 @@
         .justifyStart
         .space(20)
         .vInset(100, 20)
+        .bgColor(UIColor.orangeColor)
         .addToFull(self.view)
         .assignToPtr(&stackView);
+    
+    {
+        ZLStackView *sk;
+        ZLStackView
+        .horizontal
+        .alignStart
+        .alignEndSpacingFor(UILabel.new, 2)
+        .width(200)
+        .bgColor(UIColor.redColor)
+        .add(UISwitch.new)
+        .addLayout(UILabel.new, ^(__kindof UILabel * _Nonnull view, ZLLayoutViewCfg * _Nonnull viewCfg) {
+            view.numberOfLines  = 0;
+            view.text = @"viewviewvviewviewviewviewviewviewviewviewiewviewviewviewviewview";
+            viewCfg.startSpacing  = 10;
+            viewCfg.endSpacing = 20;
+        })
+        .add(UISwitch.new)
+        .assignToPtr(&sk);
+        
+        
+        stackView
+            .add(sk);
+    }
     
     // 1. ZLPairLabelView 水平(两个Label)
     {

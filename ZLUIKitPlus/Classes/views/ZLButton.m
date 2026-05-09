@@ -90,7 +90,12 @@
     NSArray *filterConstraints = [self.constraints filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSLayoutConstraint * _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
         BOOL res2 = [self.customContraints containsObject:evaluatedObject];
         if (res2) return NO;
-        BOOL res1 = evaluatedObject.firstItem == self || evaluatedObject.secondItem == self;
+        
+        BOOL res1 = evaluatedObject.firstItem == self.lab ||
+        evaluatedObject.secondItem == self.lab ||
+        evaluatedObject.firstItem  == self.imgView ||
+        evaluatedObject.secondItem  == self.imgView;
+        
         if (res1) {
             if (evaluatedObject.firstAttribute == NSLayoutAttributeWidth ||
                 evaluatedObject.firstAttribute == NSLayoutAttributeHeight ||

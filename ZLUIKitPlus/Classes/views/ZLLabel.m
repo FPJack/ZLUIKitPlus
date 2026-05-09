@@ -310,9 +310,9 @@
     };
 }
 - (void)drawCornerRadii {
-//    if (UIEdgeInsetsEqualToEdgeInsets(self.cornerRadiiValue, UIEdgeInsetsZero)) {
-//        return;
-//    }
+    if (UIEdgeInsetsEqualToEdgeInsets(self.cornerRadiiValue, UIEdgeInsetsZero) && !_zl_decorator.circle) {
+        return;
+    }
     CGFloat topLeft, topRight, bottomLeft, bottomRight;
     if ([self _zl_isRTL]) {
         topLeft = self.cornerRadiiValue.left;      // original topRight

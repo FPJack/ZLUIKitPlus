@@ -87,6 +87,7 @@
             .bgColor(UIColor.orangeColor)
             .insets(10, 20, 10, 20)
             .corner(5)
+            
             .border(1, @"#4A90D9");
         
         lab.KFC.addTo(self.view).top(y).leading(20);

@@ -10,6 +10,7 @@
 @property (nonatomic,strong)CAShapeLayer *lineLayer;
 @end
 @implementation ZLLabel
+
 - (ZLViewDecorator *)zl_decorator {
     if (!_zl_decorator) {
         _zl_decorator = [[ZLViewDecorator alloc] initWithView:self];
@@ -309,9 +310,9 @@
     };
 }
 - (void)drawCornerRadii {
-    if (UIEdgeInsetsEqualToEdgeInsets(self.cornerRadiiValue, UIEdgeInsetsZero)) {
-        return;
-    }
+//    if (UIEdgeInsetsEqualToEdgeInsets(self.cornerRadiiValue, UIEdgeInsetsZero)) {
+//        return;
+//    }
     CGFloat topLeft, topRight, bottomLeft, bottomRight;
     if ([self _zl_isRTL]) {
         topLeft = self.cornerRadiiValue.left;      // original topRight
@@ -323,6 +324,15 @@
         topRight = self.cornerRadiiValue.left;
         bottomLeft = self.cornerRadiiValue.bottom;
         bottomRight = self.cornerRadiiValue.right;
+    }
+    if (_zl_decorator.circle){
+        if (_zl_decorator.circle.boolValue) {
+            CGFloat radius = MIN(self.bounds.size.width, self.bounds.size.height) / 2;
+            topLeft = topRight = bottomLeft = bottomRight = radius;
+        }
+    }
+    if (topLeft < 0 && topRight < 0 && bottomLeft < 0 && bottomRight < 0) {
+        return;
     }
     UIBezierPath *path = [UIBezierPath bezierPath];
     CGSize size = self.bounds.size;
@@ -348,6 +358,7 @@
 
 - (ZLLabel * _Nonnull (^)(BOOL))circle {
     return ^ZLLabel*(BOOL clip) {
+        self.zl_decorator.circle = @(clip);
         return self;
     };
 }

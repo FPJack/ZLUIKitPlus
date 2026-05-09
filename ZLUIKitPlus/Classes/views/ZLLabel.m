@@ -6,6 +6,7 @@
 #import "ZLViewDecorator.h"
 @interface ZLLabel ()
 @property (nonatomic,strong) ZLViewDecorator    *zl_decorator;
+@property (nonatomic,assign)UIEdgeInsets cornerRadiiValue;
 @end
 @implementation ZLLabel
 - (ZLViewDecorator *)zl_decorator {
@@ -265,19 +266,7 @@
     self.textAlignment = NSTextAlignmentRight;
     return self;
 }
-- (ZLLabel * _Nonnull (^)(NSArray * _Nonnull))gradColors {
-    return ^(NSArray *colors) {
-        self.zl_decorator.gradColors = colors;
-        return self;
-    };
-}
-- (ZLLabel * _Nonnull (^)(CGPoint, CGPoint))gradDirection {
-    return ^(CGPoint start, CGPoint end) {
-        self.zl_decorator.gradStartPoint = start;
-        self.zl_decorator.gradEndPoint = end;
-        return self;
-    };
-}
+
 - (ZLLabel* (^)(id ))borderColor {
     return  ^ZLLabel*(id color){
         self.layer.borderColor = ZLColorFromObj(color).CGColor;
@@ -298,73 +287,61 @@
     };
 }
 
-- (void)setBackgroundColor:(UIColor *)backgroundColor {
-    if (_zl_decorator && !_zl_decorator.viewBgColorByDecorator) {
-        _zl_decorator.fillColor = backgroundColor;
-    }else {
-        [super setBackgroundColor:backgroundColor];
-    }
-}
-- (UIColor *)backgroundColor {
-    if (_zl_decorator) {
-        return _zl_decorator.fillColor ?: [super backgroundColor];
-    }else {
-        return [super backgroundColor];
-    }
-}
 
 - (ZLLabel * _Nonnull (^)(CGFloat))corner {
     return ^ZLLabel*(CGFloat radius){
-        self.zl_decorator.cornerRadius = radius;
-        return self;
+        return self.cornerRadii(radius, radius, radius, radius);
     };
 }
 - (ZLLabel * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))cornerRadii {
     return ^ZLLabel*(CGFloat topLeft, CGFloat topRight, CGFloat bottomLeft, CGFloat bottomRight){
-        self.zl_decorator.corners(topLeft,topRight,bottomLeft,bottomRight);
+        self.cornerRadiiValue = UIEdgeInsetsMake(topLeft, topRight, bottomLeft, bottomRight);
         return self;
     };
+}
+- (void)drawCornerRadii {
+    if (UIEdgeInsetsEqualToEdgeInsets(self.cornerRadiiValue, UIEdgeInsetsZero)) {
+        return;
+    }
+    CGFloat topLeft, topRight, bottomLeft, bottomRight;
+    if ([self _zl_isRTL]) {
+        topLeft = self.cornerRadiiValue.left;      // original topRight
+        topRight = self.cornerRadiiValue.top;       // original topLeft
+        bottomLeft = self.cornerRadiiValue.right;   // original bottomRight
+        bottomRight = self.cornerRadiiValue.bottom;  // original bottomLeft
+    } else {
+        topLeft = self.cornerRadiiValue.top;
+        topRight = self.cornerRadiiValue.left;
+        bottomLeft = self.cornerRadiiValue.bottom;
+        bottomRight = self.cornerRadiiValue.right;
+    }
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    CGSize size = self.bounds.size;
+    [path moveToPoint:CGPointMake(0, topLeft)];
+    [path addQuadCurveToPoint:CGPointMake(topLeft, 0) controlPoint :CGPointMake(0, 0)];
+    [path addLineToPoint:CGPointMake(size.width - topRight, 0)];
+    [path addQuadCurveToPoint:CGPointMake(size.width, topRight) controlPoint:CGPointMake(size.width, 0)];
+    [path addLineToPoint:CGPointMake(size.width, size.height - bottomRight)];
+    [path addQuadCurveToPoint:CGPointMake(size.width - bottomRight, size.height) controlPoint:CGPointMake(size.width, size.height)];
+    [path addLineToPoint:CGPointMake(bottomLeft, size.height)];
+    [path addQuadCurveToPoint:CGPointMake(0, size.height - bottomLeft) controlPoint:CGPointMake(0, size.height)];
+    [path closePath];
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = self.bounds;
+    maskLayer.path = path.CGPath;
+    self.layer.mask = maskLayer;
 }
 
 
 - (ZLLabel * _Nonnull (^)(BOOL))circle {
     return ^ZLLabel*(BOOL clip) {
-        self.zl_decorator.circle = @(clip);
         return self;
     };
 }
 
 
 
-- (ZLLabel*  _Nonnull (^)(id _Nonnull))shColor {
-    return ^ZLLabel* (id color) {
-        self.zl_decorator.shadowColor = ZLColorFromObj(color);
-        return self;
-    };
-}
 
-
-- (ZLLabel*  _Nonnull (^)(CGFloat, CGFloat))shOffset {
-    return ^ZLLabel* (CGFloat width, CGFloat height) {
-        self.zl_decorator.shadowOffset = CGSizeMake(width, height);
-        return self;
-    };
-}
-
-
-- (ZLLabel*  _Nonnull (^)(CGFloat))shRadius {
-    return ^ZLLabel* (CGFloat radius) {
-        self.zl_decorator.shadowRadius = radius;
-        return self;
-    };
-}
-
-- (ZLLabel*  _Nonnull (^)(CGFloat))shOpacity {
-    return ^ZLLabel* (CGFloat opacity) {
-        self.zl_decorator.shadowOpacity = opacity;
-        return self.masksToBounds(NO);
-    };
-}
 - (ZLLabel * _Nonnull (^)(BOOL))masksToBounds {
     return ^ZLLabel* (BOOL masks) {
         self.layer.masksToBounds = masks;
@@ -391,12 +368,8 @@
 }
 - (void)layoutSubviews {
     [super layoutSubviews];
-   
-    if (_zl_decorator) [_zl_decorator update];
-    
+    [self drawCornerRadii];
 }
-
-
 
 
 - (ZLLabel * _Nonnull (^)(CGFloat))height {

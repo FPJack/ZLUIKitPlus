@@ -15,12 +15,14 @@
         ZLLabel *lab = ZLLab;
         lab.txt(@"1. 基础文本 systemFont(16)")
             .systemFont(16)
-        
+            .corner(8)
+           
             .color(@"#333333");
+        lab.backgroundColor = UIColor.orangeColor;
         lab.KFC.addTo(self.view).top(y).leading(20);
         y += 40;
     }
-    return;
+//    return;
     // 2. mediumFont + 颜色hex
     {
         ZLLabel *lab = ZLLab;
@@ -28,7 +30,7 @@
         lab.KFC.addTo(self.view).top(y).leading(20);
         y += 40;
     }
-    return;
+//    return;
 
     // 3. semiboldFont + boldFont
     {
@@ -39,7 +41,8 @@
         y += 40;
         
         ZLLabel *lab2 = ZLLab;
-        lab2.txt(@"   boldFont(20)").shColor(UIColor.redColor).corner(10).boldFont(20).color(@"#4CAF50");
+        lab2.txt(@"   boldFont(20)")
+            .corner(10).boldFont(20).color(@"#4CAF50");
         lab2.KFC.addTo(self.view).top(y).leading(20);
         y += 40;
     }
@@ -68,7 +71,8 @@
         ZLLabel *lab = ZLLab;
         lab.txt(@"6. 点击切换高亮").systemFont(15)
             .color(@"#333333")
-            .bgColor(@"#FFF9C4").insets(8, 16, 8, 16).corner(6)
+            .bgColor(@"#FFF9C4").insets(8, 16, 8, 16)
+            .corner(6)
             .tapAction(^(ZLLabel *l) {
             });
         lab.KFC.addTo(self.view).top(y).leading(20);
@@ -82,12 +86,8 @@
             .mediumFontColor(14, @"#333333")
             .bgColor(UIColor.orangeColor)
             .insets(10, 20, 10, 20)
-            .corner(12)
-            .border(1, @"#4A90D9")
-            .shColor(@"#000000")
-            .shOffset(0, 2)
-            .shOpacity(0.15)
-            .shRadius(6);
+            .corner(5)
+            .border(1, @"#4A90D9");
         lab.KFC.addTo(self.view).top(y).leading(20);
         y += 60;
     }

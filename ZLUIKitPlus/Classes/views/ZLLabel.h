@@ -75,22 +75,10 @@ NS_ASSUME_NONNULL_BEGIN
 ///通过block设置属性文本，支持链式调用
 @property ( readonly) ZLLabel* (^attributeTxtBK)(NSAttributedString* (^attributeStrBlock)(ZLLabel *label));
 
-///渐变颜色
-@property (nonatomic, readonly) ZLLabel* (^gradColors)(NSArray *colors);
-///渐变方向，传入起点和终点坐标，范围0~1
-@property (nonatomic, readonly) ZLLabel* (^gradDirection)(CGPoint startPoint, CGPoint endPoint);
-
 ///UIColor or #333333
 @property (readonly) ZLLabel* (^borderColor)(id);
 @property (readonly) ZLLabel* (^borderWidth)(CGFloat);
 @property (readonly) ZLLabel* (^border)(CGFloat width,id color);
-@property (readonly) ZLLabel* (^shColor)(id color);
-//默认 （0,2）
-@property (readonly) ZLLabel* (^shOffset)(CGFloat width,CGFloat height);
-//默认0.2
-@property (readonly) ZLLabel* (^shOpacity)(CGFloat opacity);
-//默认6
-@property (readonly) ZLLabel* (^shRadius)(CGFloat radius);
 
 @property (readonly) ZLLabel* (^masksToBounds)(BOOL masksToBounds);
 

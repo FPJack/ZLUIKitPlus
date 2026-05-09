@@ -26,6 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 统一设置四个角（优先级低于单独设置）
 @property (nonatomic, assign) CGFloat cornerRadius;
+@property (nonatomic, assign) CGFloat borderWidth;
+@property (nonatomic, strong, nullable) id borderColor;
+
 
 
 @property (nonatomic, copy) NSNumber* circle; // 是否圆形裁剪（设置为YES时自动计算半径为宽高较小值的一半）

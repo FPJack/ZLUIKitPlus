@@ -71,7 +71,7 @@
         ZLButton *btn = ZLBtnV;
         btn.image(@"魔法棒").imageSize(40, 40).title(@"垂直按钮").systemFont(13)
             .titleColor(@"#666666").spacing(6).insets(12, 16, 12, 16)
-            .corner(12).bgColor(@"#E8F5E9");
+            .bgColor(@"#E8F5E9");
         [content addSubview:btn];
         btn.KFC.top(y).leading(20);
         y += 100;
@@ -91,8 +91,12 @@
             .titleColor(UIColor.whiteColor)
             .spacing(6)
             .insets(15, 25, 15, 25)
-            .corner(20)
+            .shColor(UIColor.blackColor)
+            .shOpacity(1)
+            .cornerRadii(5, 10, 15, 20)
+            .border(1, UIColor.orangeColor)
             .bgColor(@"#4A90D9");
+       
         [content addSubview:btn];
         btn.KFC.top(y).leading(20);
         y += 60;
@@ -107,6 +111,7 @@
         ZLButton *btn = ZLBtnH.flexSpacing;
         btn.image(@"分享").hAlignFill.title(@"弹性间距").systemFont(15).titleColor(@"#333333")
             .insets(10, 16, 10, 16)
+            .shColor(UIColor.redColor)
             .bgColor(@"#FFF3E0")
             .corner(8);
         [content addSubview:btn];

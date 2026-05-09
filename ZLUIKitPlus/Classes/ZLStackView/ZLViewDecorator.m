@@ -151,6 +151,9 @@
 // MARK: - 手动触发更新（view 的 layoutSubviews 里调用，或属性变化后调用）
 
 - (void)update {
+    if ([self.view isKindOfClass:UILabel.class]) {
+        return;
+    }
     UIView *view = _view;
     if (!view) return;
 
@@ -208,6 +211,13 @@
         view.layer.shadowOffset  = _shadowOffset;
         view.layer.shadowPath    = path.CGPath;
     }
+   
+    if (self.borderWidth > 0) {
+        _backgroundShapeLayer.lineWidth = self.borderWidth;
+    }
+    if (self.borderColor) {
+        _backgroundShapeLayer.strokeColor = ZLColorFromObj(self.borderColor).CGColor;
+    }
     [view.layer insertSublayer:_backgroundShapeLayer atIndex:0];
 }
 - (void)setViewBgColor:(UIColor *)color {
@@ -254,60 +264,75 @@
 }
 
 // MARK: - Setters
+- (void)setNeedsUpdate {
+    if (self.needsUpdate) return;
+    self.needsUpdate = YES;
+    [self.view setNeedsLayout];
+}
+- (void)setBorderColor:(id)borderColor {
+    if ([_borderColor isEqual:borderColor]) return;
+    _borderColor = borderColor;
+    [self setNeedsUpdate];
+}
+- (void)setBorderWidth:(CGFloat)borderWidth {
+    if (_borderWidth == borderWidth) return;
+    _borderWidth = borderWidth;
+    [self setNeedsUpdate];
 
+}
 - (void)setCornerRadius:(CGFloat)v      {
     if (_cornerRadius == v) return;
     _cornerRadius = v;
-    self.needsUpdate = YES;
-    [self.view setNeedsLayout];
+    [self setNeedsUpdate];
+
 }
 - (void)setTopLeftRadius:(CGFloat)v     {
     if (_topLeftRadius == v) return;
     _topLeftRadius = v;
-    self.needsUpdate = YES;
-    [self.view setNeedsLayout];
+    [self setNeedsUpdate];
+
 }
 - (void)setTopRightRadius:(CGFloat)v    {
     if (_topRightRadius == v) return;
     _topRightRadius = v;
-    self.needsUpdate = YES;
-    [self.view setNeedsLayout];
+    [self setNeedsUpdate];
+
 }
 - (void)setBottomLeftRadius:(CGFloat)v  {
     if (_bottomLeftRadius == v) return;
     _bottomLeftRadius = v;
-    self.needsUpdate = YES;
-    [self.view setNeedsLayout];
+    [self setNeedsUpdate];
+
 }
 - (void)setBottomRightRadius:(CGFloat)v {
     if (_bottomRightRadius == v) return;
     _bottomRightRadius = v;
-    self.needsUpdate = YES;
-    [self.view setNeedsLayout];
+    [self setNeedsUpdate];
+
 }
 - (void)setShadowColor:(UIColor *)v     {
     if ([_shadowColor isEqual:v]) return;
     _shadowColor = v;
-    self.needsUpdate = YES;
-    [self.view setNeedsLayout];
+    [self setNeedsUpdate];
+
 }
 - (void)setShadowOpacity:(CGFloat)v     {
     if (_shadowOpacity == v) return;
     _shadowOpacity = v;
-    self.needsUpdate = YES;
-    [self.view setNeedsLayout];
+    [self setNeedsUpdate];
+
 }
 - (void)setShadowRadius:(CGFloat)v      {
     if (_shadowRadius == v) return;
     _shadowRadius = v;
-    self.needsUpdate = YES;
-    [self.view setNeedsLayout];
+    [self setNeedsUpdate];
+
 }
 - (void)setShadowOffset:(CGSize)v       {
     if (CGSizeEqualToSize(_shadowOffset, v)) return;
     _shadowOffset = v;
-    self.needsUpdate = YES;
-    [self.view setNeedsLayout];
+    [self setNeedsUpdate];
+
 }
 
 // MARK: - 链式 API

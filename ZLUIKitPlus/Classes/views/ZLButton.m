@@ -987,13 +987,13 @@
 }
 - (ZLButton* (^)(id ))borderColor {
     return  ^ZLButton*(id color){
-        self.layer.borderColor = ZLColorFromObj(color).CGColor;
+        self.zl_decorator.borderColor = color;
         return self;
     };
 }
 - (ZLButton* (^)(CGFloat ))borderWidth {
     return  ^ZLButton*(CGFloat width){
-        self.layer.borderWidth = width;
+        self.zl_decorator.borderWidth = width;
         return self;
     };
 }

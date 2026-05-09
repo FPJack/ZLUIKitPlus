@@ -506,13 +506,13 @@
 
 - (id (^)(id ))borderColor {
     return  ^ZLBaseStackView*(id color){
-        self.layer.borderColor = ZLColorFromObj(color).CGColor;
+        self.zl_decorator.borderColor = color;
         return self;
     };
 }
 - (id (^)(CGFloat ))borderWidth {
     return  ^ZLBaseStackView*(CGFloat width){
-        self.layer.borderWidth = width;
+        self.zl_decorator.borderWidth = width;
         return self;
     };
 }

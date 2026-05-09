@@ -7,6 +7,7 @@
 @interface ZLLabel ()
 @property (nonatomic,strong) ZLViewDecorator    *zl_decorator;
 @property (nonatomic,assign)UIEdgeInsets cornerRadiiValue;
+@property (nonatomic,strong)CAShapeLayer *lineLayer;
 @end
 @implementation ZLLabel
 - (ZLViewDecorator *)zl_decorator {
@@ -14,6 +15,15 @@
         _zl_decorator = [[ZLViewDecorator alloc] initWithView:self];
     }
     return _zl_decorator;
+}
+- (CAShapeLayer *)lineLayer {
+    if (!_lineLayer) {
+        _lineLayer = [CAShapeLayer layer];
+        _lineLayer.frame = self.bounds;
+        _lineLayer.fillColor = UIColor.clearColor.CGColor;
+        [self.layer addSublayer:_lineLayer];
+    }
+    return _lineLayer;
 }
 - (void)setEdgeInsets:(UIEdgeInsets)edgeInsets {
     _insetTop = edgeInsets.top;
@@ -269,21 +279,20 @@
 
 - (ZLLabel* (^)(id ))borderColor {
     return  ^ZLLabel*(id color){
-        self.layer.borderColor = ZLColorFromObj(color).CGColor;
+        
+        self.lineLayer.strokeColor = ZLColorFromObj(color).CGColor;
         return self;
     };
 }
 - (ZLLabel* (^)(CGFloat ))borderWidth {
     return  ^ZLLabel*(CGFloat width){
-        self.layer.borderWidth = width;
+        self.lineLayer.lineWidth = width;
         return self;
     };
 }
 - (ZLLabel * _Nonnull (^)(CGFloat,id _Nonnull))border {
     return ^ZLLabel* (CGFloat width,id color) {
-        self.layer.borderColor = ZLColorFromObj(color).CGColor;
-        self.layer.borderWidth = width;
-        return self;
+        return self.borderColor(color).borderWidth(width);
     };
 }
 
@@ -329,6 +338,10 @@
     CAShapeLayer *maskLayer = [CAShapeLayer layer];
     maskLayer.frame = self.bounds;
     maskLayer.path = path.CGPath;
+    if (_lineLayer) {
+        _lineLayer.frame = self.bounds;
+        _lineLayer.path = path.CGPath;
+    }
     self.layer.mask = maskLayer;
 }
 

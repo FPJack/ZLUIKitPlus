@@ -88,6 +88,7 @@
             .insets(10, 20, 10, 20)
             .corner(5)
             .border(1, @"#4A90D9");
+        
         lab.KFC.addTo(self.view).top(y).leading(20);
         y += 60;
     }
@@ -133,6 +134,7 @@
         ZLLabel *lab = ZLLab;
         lab.txt(@"10. 不同方向圆角").systemFont(14).color(UIColor.whiteColor)
             .insets(10, 16, 10, 16).bgColor(@"#9C27B0")
+            .border(2, UIColor.orangeColor)
             .cornerRadii(16, 0, 0, 16);
         lab.KFC.addTo(self.view).top(y).leading(20);
         y += 50;

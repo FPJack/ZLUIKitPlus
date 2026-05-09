@@ -361,13 +361,13 @@
         return self;
     };
 }
-- (id _Nonnull (^)(CGFloat, CGFloat))insetHor {
+- (id _Nonnull (^)(CGFloat, CGFloat))hInset {
     return ^(CGFloat l, CGFloat t){
         self.insets = UIEdgeInsetsMake(self.insets.top, l, self.insets.bottom, t);
         return self;
     };
 }
-- (id _Nonnull (^)(CGFloat, CGFloat))insetVer {
+- (id _Nonnull (^)(CGFloat, CGFloat))vInset {
     return ^(CGFloat t, CGFloat b){
         self.insets = UIEdgeInsetsMake(t, self.insets.left, b, self.insets.right);
         return self;

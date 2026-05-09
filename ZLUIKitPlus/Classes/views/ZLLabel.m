@@ -5,11 +5,7 @@
 #import "ZLUI.h"
 #import "ZLViewDecorator.h"
 @interface ZLLabel ()
-
-@property (nonatomic,assign)UIEdgeInsets cornerRadiiValue;
-@property (nonatomic,copy)NSNumber* isCircle;
 @property (nonatomic,strong) ZLViewDecorator    *zl_decorator;
-
 @end
 @implementation ZLLabel
 - (ZLViewDecorator *)zl_decorator {
@@ -114,6 +110,11 @@
         return self.systemFont(fontSize).color(color);
     };
 }
+- (ZLLabel * _Nonnull (^)(NSString * _Nonnull, CGFloat, id _Nonnull))systemTextFontColor {
+    return ^(NSString *txt, CGFloat fontSize, id color) {
+        return self.txt(txt).systemFont(fontSize).color(color);
+    };
+}
 - (ZLLabel * _Nonnull (^)(CGFloat))mediumFont {
     return ^(CGFloat fontSize) {
         self.font = [UIFont systemFontOfSize:fontSize weight:UIFontWeightMedium];
@@ -123,6 +124,11 @@
 - (ZLLabel * _Nonnull (^)(CGFloat, id _Nonnull))mediumFontColor {
     return ^(CGFloat fontSize, id color) {
         return self.mediumFont(fontSize).color(color);
+    };
+}
+- (ZLLabel * _Nonnull (^)(NSString * _Nonnull, CGFloat, id _Nonnull))mediumTextFontColor {
+    return ^(NSString *txt, CGFloat fontSize, id color) {
+        return self.txt(txt).mediumFont(fontSize).color(color);
     };
 }
 - (ZLLabel * _Nonnull (^)(CGFloat))semiboldFont {
@@ -170,41 +176,62 @@
         return self;
     };
 }
-
-- (void)set_select:(BOOL)_select {
-    _select = _select;
-}
 - (ZLLabel * _Nonnull (^)(CGFloat))alphaValue {
     return ^(CGFloat alpha) {
         self.alpha = alpha;
         return self;
     };
 }
-- (ZLLabel * _Nonnull (^)(BOOL))userInteraction {
-    return ^(BOOL userInteraction) {
-        self.userInteractionEnabled = userInteraction;
+
+- (ZLLabel * _Nonnull (^)(BOOL))userActive {
+    return ^(BOOL enabled) {
+        self.userInteractionEnabled = enabled;
         return self;
     };
 }
-- (ZLLabel * _Nonnull (^)(CGFloat))corner {
-    return ^(CGFloat corner) {
-        self.layer.cornerRadius = corner;
-        self.layer.masksToBounds = corner > 0;
+- (ZLLabel* (^)(void (^ _Nonnull)(ZLLabel * _Nonnull)))activeStyle {
+    return ^(void (^block)(ZLLabel *)) {
+        self.zl_decorator.activeStyleBlock = block;
+        if (self.userInteractionEnabled) if (block) block(self);
         return self;
     };
 }
+- (void)setSelected:(BOOL)selected {
+    _selected = selected;
+    self.zl_decorator.selected = selected;
+}
+- (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled {
+    [super setUserInteractionEnabled:userInteractionEnabled];
+//    self.zl_decorator.active = userInteractionEnabled;
+}
+- (ZLLabel * _Nonnull (^)(BOOL))select {
+    return ^(BOOL selected) {
+        self.selected = selected;
+        return self;
+    };
+}
+- (ZLLabel * _Nonnull (^)(void (^ _Nonnull)(ZLLabel * _Nonnull)))selectStyle {
+    return ^(void (^block)(ZLLabel *)) {
+            self.zl_decorator.selectStyleBlock = block;
+        if (self.selected) if (block) block(self);
+        return self;
+    };
+}
+- (ZLLabel* (^)(void (^ _Nonnull)(ZLLabel * _Nonnull)))inactiveStyle {
+    return ^(void (^block)(ZLLabel *)) {
+        self.zl_decorator.inactiveStyleBlock = block;
+        if (!self.userInteractionEnabled) if (block) block(self);
+        return self;
+    };
+}
+
 - (BOOL)_zl_isRTL {
     if (@available(iOS 10.0, *)) {
         return self.effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
     }
     return [UIApplication sharedApplication].userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
 }
-- (ZLLabel * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))cornerRadii {
-    return ^ZLLabel*(CGFloat topLeft, CGFloat topRight, CGFloat bottomLeft, CGFloat bottomRight){
-        self.cornerRadiiValue = UIEdgeInsetsMake(topLeft, topRight, bottomLeft, bottomRight);
-        return self;
-    };
-}
+
 - (ZLLabel * _Nonnull (^)(NSAttributedString * _Nonnull))attributeTxt {
     return ^(NSAttributedString *attributeTxt) {
         self.attributedText = attributeTxt;
@@ -219,45 +246,7 @@
         return self;
     };
 }
-- (void)drawCornerRadii {
-    if (UIEdgeInsetsEqualToEdgeInsets(self.cornerRadiiValue, UIEdgeInsetsZero)) {
-        return;
-    }
-    CGFloat topLeft, topRight, bottomLeft, bottomRight;
-    if ([self _zl_isRTL]) {
-        topLeft = self.cornerRadiiValue.left;      // original topRight
-        topRight = self.cornerRadiiValue.top;       // original topLeft
-        bottomLeft = self.cornerRadiiValue.right;   // original bottomRight
-        bottomRight = self.cornerRadiiValue.bottom;  // original bottomLeft
-    } else {
-        topLeft = self.cornerRadiiValue.top;
-        topRight = self.cornerRadiiValue.left;
-        bottomLeft = self.cornerRadiiValue.bottom;
-        bottomRight = self.cornerRadiiValue.right;
-    }
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    CGSize size = self.bounds.size;
-    [path moveToPoint:CGPointMake(0, topLeft)];
-    [path addQuadCurveToPoint:CGPointMake(topLeft, 0) controlPoint :CGPointMake(0, 0)];
-    [path addLineToPoint:CGPointMake(size.width - topRight, 0)];
-    [path addQuadCurveToPoint:CGPointMake(size.width, topRight) controlPoint:CGPointMake(size.width, 0)];
-    [path addLineToPoint:CGPointMake(size.width, size.height - bottomRight)];
-    [path addQuadCurveToPoint:CGPointMake(size.width - bottomRight, size.height) controlPoint:CGPointMake(size.width, size.height)];
-    [path addLineToPoint:CGPointMake(bottomLeft, size.height)];
-    [path addQuadCurveToPoint:CGPointMake(0, size.height - bottomLeft) controlPoint:CGPointMake(0, size.height)];
-    [path closePath];
-    CAShapeLayer *maskLayer = [CAShapeLayer layer];
-    maskLayer.frame = self.bounds;
-    maskLayer.path = path.CGPath;
-    self.layer.mask = maskLayer;
-}
-- (ZLLabel * _Nonnull (^)(BOOL))circle {
-    return ^(BOOL circle) {
-        self.isCircle = @(YES);
-        [self updateCircel];
-        return self;
-    };
-}
+
 - (ZLLabel * _Nonnull (^)(NSTextAlignment))textAlign {
     return ^(NSTextAlignment textAlign) {
         self.textAlignment = textAlign;
@@ -276,19 +265,19 @@
     self.textAlignment = NSTextAlignmentRight;
     return self;
 }
-- (void)updateCircel {
-    if (self.isCircle) {
-        if (self.isCircle.boolValue) {
-            CGFloat minSide = MIN(self.bounds.size.width, self.bounds.size.height);
-            self.layer.cornerRadius = minSide / 2;
-            self.layer.masksToBounds = YES;
-        }else {
-            self.layer.cornerRadius = 0;
-            self.layer.masksToBounds = NO;
-        }
-    }
+- (ZLLabel * _Nonnull (^)(NSArray * _Nonnull))gradColors {
+    return ^(NSArray *colors) {
+        self.zl_decorator.gradColors = colors;
+        return self;
+    };
 }
-
+- (ZLLabel * _Nonnull (^)(CGPoint, CGPoint))gradDirection {
+    return ^(CGPoint start, CGPoint end) {
+        self.zl_decorator.gradStartPoint = start;
+        self.zl_decorator.gradEndPoint = end;
+        return self;
+    };
+}
 - (ZLLabel* (^)(id ))borderColor {
     return  ^ZLLabel*(id color){
         self.layer.borderColor = ZLColorFromObj(color).CGColor;
@@ -309,36 +298,74 @@
     };
 }
 
+- (void)setBackgroundColor:(UIColor *)backgroundColor {
+    if (_zl_decorator && !_zl_decorator.viewBgColorByDecorator) {
+        _zl_decorator.fillColor = backgroundColor;
+    }else {
+        [super setBackgroundColor:backgroundColor];
+    }
+}
+- (UIColor *)backgroundColor {
+    if (_zl_decorator) {
+        return _zl_decorator.fillColor ?: [super backgroundColor];
+    }else {
+        return [super backgroundColor];
+    }
+}
+
+- (ZLLabel * _Nonnull (^)(CGFloat))corner {
+    return ^ZLLabel*(CGFloat radius){
+        self.zl_decorator.cornerRadius = radius;
+        return self;
+    };
+}
+- (ZLLabel * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))cornerRadii {
+    return ^ZLLabel*(CGFloat topLeft, CGFloat topRight, CGFloat bottomLeft, CGFloat bottomRight){
+        self.zl_decorator.corners(topLeft,topRight,bottomLeft,bottomRight);
+        return self;
+    };
+}
+
+
+- (ZLLabel * _Nonnull (^)(BOOL))circle {
+    return ^ZLLabel*(BOOL clip) {
+        self.zl_decorator.circle = @(clip);
+        return self;
+    };
+}
+
+
+
 - (ZLLabel*  _Nonnull (^)(id _Nonnull))shColor {
     return ^ZLLabel* (id color) {
-        self.layer.shadowColor = ZLColorFromObj(color).CGColor;
-        return self.shOffset(0,2);
+        self.zl_decorator.shadowColor = ZLColorFromObj(color);
+        return self;
     };
 }
 
 
 - (ZLLabel*  _Nonnull (^)(CGFloat, CGFloat))shOffset {
     return ^ZLLabel* (CGFloat width, CGFloat height) {
-        self.layer.shadowOffset = CGSizeMake(width, height);
-        return self.shRadius(6);
+        self.zl_decorator.shadowOffset = CGSizeMake(width, height);
+        return self;
     };
 }
 
 
 - (ZLLabel*  _Nonnull (^)(CGFloat))shRadius {
     return ^ZLLabel* (CGFloat radius) {
-        self.layer.shadowRadius = radius;
-        return self.shOpacity(0.2);
+        self.zl_decorator.shadowRadius = radius;
+        return self;
     };
 }
 
 - (ZLLabel*  _Nonnull (^)(CGFloat))shOpacity {
     return ^ZLLabel* (CGFloat opacity) {
-        self.layer.shadowOpacity = opacity;
+        self.zl_decorator.shadowOpacity = opacity;
         return self.masksToBounds(NO);
     };
 }
-- (ZLLabel*  _Nonnull (^)(BOOL))masksToBounds {
+- (ZLLabel * _Nonnull (^)(BOOL))masksToBounds {
     return ^ZLLabel* (BOOL masks) {
         self.layer.masksToBounds = masks;
         return self;
@@ -350,7 +377,7 @@
     };
 }
 
-- (ZLLabel * _Nonnull (^)(ZLLabel * _Nullable __autoreleasing * _Nullable))toPtr {
+- (ZLLabel * _Nonnull (^)(ZLLabel * _Nullable __autoreleasing * _Nullable))assignToPtr {
     return ^id(ZLLabel **ptr) {
         if (ptr) *ptr = self;
         return self;
@@ -364,8 +391,9 @@
 }
 - (void)layoutSubviews {
     [super layoutSubviews];
-    [self drawCornerRadii];
-    [self updateCircel];
+   
+    if (_zl_decorator) [_zl_decorator update];
+    
 }
 
 

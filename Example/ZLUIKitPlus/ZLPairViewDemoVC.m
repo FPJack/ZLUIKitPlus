@@ -54,7 +54,7 @@
         .vertical
         .justifyStart
         .space(20)
-        .insetVer(100, 20)
+        .vInset(100, 20)
         .addToFull(self.view)
         .assignToPtr(&stackView);
     
@@ -71,7 +71,8 @@
         pair.horizontal
             .minSpace(10)
             .alignStart
-            .firstStartSpace(20)
+            .vInset(10, 10)
+            .firstStartSpace(5)
             .shColor(UIColor.redColor)
             .thenFirst(^(ZLLabel *first) {
                 first.txt(@"标题:").boldFont(15).color(@"#333333");

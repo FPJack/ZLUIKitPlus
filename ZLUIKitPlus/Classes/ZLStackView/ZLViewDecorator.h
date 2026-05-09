@@ -9,6 +9,12 @@ NS_ASSUME_NONNULL_BEGIN
 ///   2. 在 view 的 layoutSubviews 末尾调用 [shadowCfg update]
 @interface ZLViewDecorator : NSObject
 
+@property (nonatomic,assign)BOOL selected;
+@property (nonatomic,assign)BOOL active;
+@property (nonatomic,copy)void (^activeStyleBlock)(id );
+@property (nonatomic,copy)void (^inactiveStyleBlock)(id );
+@property (nonatomic,copy)void (^selectStyleBlock)(id );
+
 
 @property (nonatomic,copy)NSArray *gradColors;
 @property (nonatomic,assign)CGPoint gradStartPoint;

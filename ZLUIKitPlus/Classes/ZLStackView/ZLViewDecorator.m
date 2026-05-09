@@ -51,6 +51,36 @@
     }
     return _gradLayer;
 }
+- (void)setSelected:(BOOL)selected {
+    _selected = selected;
+    if (selected) {
+        if (self.selectStyleBlock) {
+            self.selectStyleBlock(self.view);
+        }
+    }else {
+        if (self.active) {
+            if (self.activeStyleBlock) {
+                self.activeStyleBlock(self.view);
+            }
+        }else {
+            if (self.inactiveStyleBlock) {
+                self.inactiveStyleBlock(self.view);
+            }
+        }
+    }
+}
+- (void)setActive:(BOOL)active {
+    _active = active;
+    if (active) {
+        if (self.activeStyleBlock) {
+            self.activeStyleBlock(self.view);
+        }
+    }else {
+        if (self.inactiveStyleBlock) {
+            self.inactiveStyleBlock(self.view);
+        }
+    }
+}
 - (void)setGradColors:(NSArray *)gradColors {
     
     if (!gradColors || gradColors.count == 0) {

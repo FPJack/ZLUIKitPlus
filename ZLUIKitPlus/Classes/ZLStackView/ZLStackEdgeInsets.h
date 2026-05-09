@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-@class ZLStackView,ZLLayoutGuide;
+@class ZLBaseStackView,ZLLayoutGuide;
 NS_ASSUME_NONNULL_BEGIN
 @interface ZLStackEdgeInsets : NSObject
-@property (nonatomic,weak)ZLStackView *stackView;
+@property (nonatomic,weak)ZLBaseStackView *stackView;
 @property (nonatomic,readonly)NSLayoutXAxisAnchor *leadingAnchor;
 @property (nonatomic,readonly)NSLayoutXAxisAnchor *trailingAnchor;
 @property (nonatomic,readonly)NSLayoutYAxisAnchor *topAnchor;

@@ -15,11 +15,12 @@
         ZLLabel *lab = ZLLab;
         lab.txt(@"1. 基础文本 systemFont(16)")
             .systemFont(16)
+        
             .color(@"#333333");
         lab.KFC.addTo(self.view).top(y).leading(20);
         y += 40;
     }
-    
+    return;
     // 2. mediumFont + 颜色hex
     {
         ZLLabel *lab = ZLLab;
@@ -27,7 +28,8 @@
         lab.KFC.addTo(self.view).top(y).leading(20);
         y += 40;
     }
-    
+    return;
+
     // 3. semiboldFont + boldFont
     {
         ZLLabel *lab = ZLLab;
@@ -37,11 +39,10 @@
         y += 40;
         
         ZLLabel *lab2 = ZLLab;
-        lab2.txt(@"   boldFont(20)").boldFont(20).color(@"#4CAF50");
+        lab2.txt(@"   boldFont(20)").shColor(UIColor.redColor).corner(10).boldFont(20).color(@"#4CAF50");
         lab2.KFC.addTo(self.view).top(y).leading(20);
         y += 40;
     }
-    
     // 4. 内边距(insets)
     {
         ZLLabel *lab = ZLLab;

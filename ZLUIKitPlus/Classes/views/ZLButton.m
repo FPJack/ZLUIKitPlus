@@ -23,8 +23,6 @@
 @property (nonatomic,assign)BOOL imgTouchOnly;
 @property (nonatomic,assign)UIEdgeInsets touchAreaEdgeInsets;
 @property (nonatomic,assign)CGFloat tapInerval;
-@property (nonatomic,copy)void (^activeStyleBlock)(ZLButton *);
-@property (nonatomic,copy)void (^inactiveStyleBlock)(ZLButton *);
 @property (nonatomic,strong)UILayoutGuide *middelGuide;
 @property (nonatomic,strong)UILayoutGuide *startGuide;
 @property (nonatomic,strong)UILayoutGuide *endGuide;
@@ -577,9 +575,19 @@
         return self.systemFont(size).titleColor(color);
     };
 }
+- (ZLButton * _Nonnull (^)(NSString * _Nonnull, CGFloat, id _Nonnull))systemTitleFontColor {
+    return ^(NSString *title, CGFloat size, id color) {
+        return self.title(title).systemFont(size).titleColor(color);
+    };
+}
 - (ZLButton * _Nonnull (^)(CGFloat, id _Nonnull))mediumFontColor {
     return ^(CGFloat size, id color) {
         return self.mediumFont(size).titleColor(color);
+    };
+}
+- (ZLButton * _Nonnull (^)(NSString * _Nonnull, CGFloat, id _Nonnull))mediumTitleFontColor {
+    return ^(NSString *title, CGFloat size, id color) {
+        return self.title(title).mediumFont(size).titleColor(color);
     };
 }
 - (ZLButton * _Nonnull (^)(CGFloat))mediumFont {
@@ -927,11 +935,6 @@
 - (ZLButton * _Nonnull (^)(BOOL))userActive {
     return ^(BOOL enabled) {
         self.userInteractionEnabled = enabled;
-        if (enabled) {
-            if (self.activeStyleBlock) self.activeStyleBlock(self);
-        }else  {
-            if (self.inactiveStyleBlock) self.inactiveStyleBlock(self);
-        }
         return self;
     };
 }
@@ -940,6 +943,14 @@
         self.selected = selected;
         return self;
     };
+}
+- (void)setSelected:(BOOL)selected {
+    [super setSelected:selected];
+    self.zl_decorator.selected = selected;
+}
+- (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled {
+    [super setUserInteractionEnabled:userInteractionEnabled];
+    self.zl_decorator.active = userInteractionEnabled;
 }
 - (ZLButton * _Nonnull (^)(CGFloat))corner {
     return ^ZLButton*(CGFloat radius){
@@ -1059,14 +1070,21 @@
 }
 - (ZLButton* (^)(void (^ _Nonnull)(ZLButton * _Nonnull)))activeStyle {
     return ^(void (^block)(ZLButton *)) {
-        self.activeStyleBlock = block;
+        self.zl_decorator.activeStyleBlock = block;
         if (self.userInteractionEnabled) if (block) block(self);
+        return self;
+    };
+}
+- (ZLButton * _Nonnull (^)(void (^ _Nonnull)(ZLButton * _Nonnull)))selectStyle {
+    return ^(void (^block)(ZLButton *)) {
+            self.zl_decorator.selectStyleBlock = block;
+        if (self.selected) if (block) block(self);
         return self;
     };
 }
 - (ZLButton* (^)(void (^ _Nonnull)(ZLButton * _Nonnull)))inactiveStyle {
     return ^(void (^block)(ZLButton *)) {
-        self.inactiveStyleBlock = block;
+        self.zl_decorator.inactiveStyleBlock = block;
         if (!self.userInteractionEnabled) if (block) block(self);
         return self;
     };

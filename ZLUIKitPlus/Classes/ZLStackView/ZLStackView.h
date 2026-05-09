@@ -70,9 +70,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)justifySpaceEvenly;
 @property(nonatomic,readonly)ObjectType (^inset)(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing);
 ///水平方向的间距
-@property(nonatomic,readonly)ObjectType (^insetHor)(CGFloat leading, CGFloat trailing);
+@property(nonatomic,readonly)ObjectType (^hInset)(CGFloat leading, CGFloat trailing);
 ///垂直方向的间距
-@property(nonatomic,readonly)ObjectType (^insetVer)(CGFloat top, CGFloat bottom);
+@property(nonatomic,readonly)ObjectType (^vInset)(CGFloat top, CGFloat bottom);
 @property (nonatomic,readonly)ObjectType (^space)(CGFloat spacing);
 
 @property (nonatomic,readonly)ObjectType (^insertSpace)(CGFloat spacing);

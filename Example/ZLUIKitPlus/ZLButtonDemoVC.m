@@ -163,7 +163,7 @@
         
         __block ZLButton *ref;
         ZLButton *btn = ZLBtnH;
-        btn.toPtr(&ref).title(@"不可用状态").systemFont(15)
+        btn.assignToPtr(&ref).title(@"不可用状态").systemFont(15)
             .insets(10, 20, 10, 20).corner(8)
             .activeStyle(^(ZLButton *b) {
                 b.bgColor(@"#4CAF50").titleColor(UIColor.whiteColor);

@@ -9,78 +9,118 @@
 #import "ZLImageView.h"
 #import "ZLLabel.h"
 #import "ZLButton.h"
+#import "ZLLayoutGuide.h"
+#import "ZLStackView.h"
 
 NS_ASSUME_NONNULL_BEGIN
-typedef NS_ENUM(NSInteger, ZLAlign) {
-    ZLAlignStart,
-    ZLAlignCenter,
-    ZLAlignEnd
-};
-typedef NS_ENUM(NSInteger, ZLJustify) {
-   ZlJustifyFill,
-   ZlJustifyFillEqually,
-   ZLJustifyStart,
-   ZLJustifyCenter,
-   ZlJustifyEnd,
-};
+
 @class ZLPairView;
 ///firstView和secondView的组合视图，firstView和secondView分别是两个view，firstView在secondView的左边或者上边，取决于horizontal属性
 @interface ZLPairView<__covariant ObjectType,
                         __covariant FirstView : UIView *,
-                        __covariant SecondView: UIView* > : UIView
+                        __covariant SecondView: UIView* > : ZLBaseStackView<ObjectType>
+
 ///firstView在secondView的左边或者上边，取决于horizontal属性
 @property (nonatomic, strong,readonly) FirstView  first;
+
 ///seondView在firstView的右边或者下边，取决于horizontal属性
 @property (nonatomic, strong,readonly) SecondView second;
-/// 间距，默认4
-@property (nonatomic, readonly) ObjectType (^spacing)(CGFloat spacing);
 
-///是否可弹性空间 主轴方向为ZlJustifyFill 的时候可以设置可弹性空间，默认NO
-@property (nonatomic, readonly) ObjectType (^flexibleSpacing)(BOOL flexible);
-
-/// 水平排列还是垂直排列，默认水平排列
-@property (nonatomic, readonly) ObjectType (^horizontal)(BOOL horizontal);
-/// 纵轴（交叉轴）对齐，默认 center
-@property (nonatomic, readonly) ObjectType (^align)(ZLAlign alignment);
-/// 水平轴（主轴）对齐，默认 fill
-@property (nonatomic, readonly) ObjectType (^hJustify)(ZLJustify justify);
-/// 纵轴（交叉轴）对齐，默认 fill
-@property (nonatomic, readonly) ObjectType (^vJustify)(ZLJustify justify);
-
-///相对于justify 边距
-@property (nonatomic, readonly) ObjectType (^marge)(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing);
-///marge上叠加边距
-@property (nonatomic, readonly) ObjectType (^insets)(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing);
 /// 对象初始化后会保证调用一次，回调参数是当前对象，方便外部链式调用配置方法
 @property (nonatomic,readonly) ObjectType (^then)(void (^)(ObjectType  pairView));
+
 ///配置第一个view
 @property (nonatomic,readonly) ObjectType (^thenFirst)(void(^)(FirstView  first));
+
 ///配置第二个view
 @property (nonatomic,readonly) ObjectType (^thenSecond)(void(^)(SecondView second));
 
-///渐变层，外部可直接访问进行配置，例如设置渐变颜色、方向
-@property (nonatomic,strong,readonly)CAGradientLayer *gradLayer;
-///设置圆角
-@property (nonatomic, copy, readonly) ObjectType (^corner)(CGFloat radius);
-
-@property (nonatomic,readonly) ObjectType (^tapAction)(void(^)(__kindof ZLPairView *view));
-
-
-
-
-
-
-///添加到父视图，参数是父视图
-@property (nonatomic, copy, readonly) ObjectType (^addTo)(UIView *superview);
-///添加到父视图 并且贴紧父视图四边布局，参数是父视图
-@property (nonatomic, copy, readonly) ObjectType (^addToFull)(UIView *superview);
-///返回包裹好的一个view返回
-@property (nonatomic, copy, readonly) UIView *(^wrapEdges)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
-
 /// 子类必须重写，创建主视图
 - (FirstView)makeFirstView;
+
 /// 子类必须重写，创建次视图
 - (SecondView)makeSecondView;
+
+
+@property (nonatomic,readonly)ObjectType (^minSpace)(CGFloat spacing);
+
+@property (nonatomic,readonly)ObjectType (^maxSpace)(CGFloat spacing);
+
+@property (nonatomic,readonly)ObjectType (^flexSpace)(BOOL flexible);
+
+@property (nonatomic,readonly)ObjectType (^firstStartSpace)(CGFloat spacing);
+
+@property (nonatomic,readonly)ObjectType (^firstEndSpace)(CGFloat spacing);
+
+@property (nonatomic,readonly)ObjectType (^secondStartSpace)(CGFloat spacing);
+
+@property (nonatomic,readonly)ObjectType (^secondEndSpace)(CGFloat spacing);
+
+
+
+
+
+
+@property (nonatomic,readonly)ZLStackView * (^insertSpace)(CGFloat spacing) NS_UNAVAILABLE;
+@property (nonatomic,readonly)ZLStackView * (^insertMinSpace)(CGFloat spacing)NS_UNAVAILABLE;
+@property (nonatomic,readonly)ZLStackView * (^insertMaxSpace)(CGFloat spacing)NS_UNAVAILABLE;
+@property (nonatomic,readonly)ZLStackView * (^insertFlexSpace)(BOOL flexible)NS_UNAVAILABLE;
+@property (nonatomic, readonly)ZLStackView * (^add)(UIView *view) NS_UNAVAILABLE;
+@property (nonatomic, readonly)ZLStackView * (^addLayout)(
+    UIView *view,
+    void(^)(__kindof UIView *view, ZLLayoutViewCfg *viewCfg)
+)NS_UNAVAILABLE;
+@property (nonatomic, readonly)ZLStackView * (^spacingAfter)(UIView *arrangedSubview,CGFloat spacing)
+NS_UNAVAILABLE;
+@property (nonatomic, readonly)ZLStackView * (^minSpacingAfter)(UIView *arrangedSubview,CGFloat minSpacing)
+NS_UNAVAILABLE;
+@property (nonatomic, readonly)ZLStackView * (^maxSpacingAfter)(UIView *arrangedSubview,CGFloat maxSpacing)
+NS_UNAVAILABLE;
+@property (nonatomic, readonly)ZLStackView * (^flexFor)(UIView *arrangedSubview,NSInteger flex)
+NS_UNAVAILABLE;
+@property (nonatomic, readonly)ZLStackView * (^flexSpacingAfter)(UIView *arrangedSubview,BOOL flexible)
+NS_UNAVAILABLE;
+@property (nonatomic, readonly)ZLStackView * (^alignFor)(UIView *arrangedSubview,ZLAlign alignment)
+NS_UNAVAILABLE;
+@property (nonatomic, readonly)ZLStackView * (^alignStartSpacingFor)(UIView *arrangedSubview,CGFloat spacing)
+NS_UNAVAILABLE;
+@property (nonatomic, readonly)ZLStackView * (^alignEndSpacingFor)(UIView *arrangedSubview,CGFloat spacing)
+NS_UNAVAILABLE;
+///水平排列还是垂直排列，默认水平排列 默认水平排列
+@property (nonatomic,assign)ZLStackViewAxis axis NS_UNAVAILABLE;
+///纵轴对齐方式
+@property (nonatomic,assign)ZLAlign alignment NS_UNAVAILABLE;
+///主轴对齐方式
+@property (nonatomic,assign)ZLJustify justifyContent NS_UNAVAILABLE;
+///内边距
+@property(nonatomic,assign)UIEdgeInsets insets NS_UNAVAILABLE;
+@property(nonatomic,strong) NSMutableArray<__kindof UIView *> *arrangedViews NS_UNAVAILABLE;
+@property (nonatomic,assign)CGFloat spacing NS_UNAVAILABLE;
+/// 添加view到stackView，默认添加到最后
+- (void)addArrangedSubview:(UIView *)view NS_UNAVAILABLE;
+///添加view并且配置view的布局属性
+- (void)addArrangedSubview:(UIView *)view layout:(void(^)(__kindof UIView *view, ZLLayoutViewCfg *viewCfg))config NS_UNAVAILABLE;
+///在某个位置插入view
+- (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)stackIndex NS_UNAVAILABLE;
+/// 移除view
+- (void)removeArrangedSubview:(UIView *)view NS_UNAVAILABLE;
+///设置view在主轴方向的间距
+- (void)setCustomSpacing:(CGFloat)spacing afterView:(UIView *)arrangedSubview NS_UNAVAILABLE;
+/// 设置view在主轴方向的最小间距
+- (void)setCustomMinSpacing:(CGFloat)minSpacing afterView:(UIView *)arrangedSubview NS_UNAVAILABLE;
+///设置view在主轴方向的最大间距
+- (void)setCustomMaxSpacing:(CGFloat)maxSpacing afterView:(UIView *)arrangedSubview NS_UNAVAILABLE;
+///设置view在主轴方向的权重
+- (void)setFlex:(NSInteger)flex forView:(UIView *)arrangedSubview NS_UNAVAILABLE;
+///在某个view后面设置是否弹性空间 只有justify  ==  ZLJustifyFill 才会有效
+- (void)setFlexibleSpacing:(BOOL)flexible afterView:(UIView *)arrangedSubview NS_UNAVAILABLE;
+///设置view的alignment，优先级高于stackView的alignment
+- (void)setAlignment:(ZLAlign)alignment forView:(UIView *)arrangedSubview NS_UNAVAILABLE;
+///设置view的alignment方向start间距
+- (void)setAlignmentStartSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview NS_UNAVAILABLE;
+///设置view的alignment方向end间距
+- (void)setAlignmentEndSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview NS_UNAVAILABLE;
+
 @end
 
 @class ZLPairLabelView,ZLPairImageView
@@ -116,4 +156,7 @@ typedef NS_ENUM(NSInteger, ZLJustify) {
 @interface ZLButtonImgView : ZLPairView<ZLButtonImgView *,ZLButton *,ZLImageView *>
 
 @end
+
+
+
 NS_ASSUME_NONNULL_END

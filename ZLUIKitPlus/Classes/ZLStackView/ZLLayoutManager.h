@@ -10,9 +10,9 @@
 #import "ZLLayoutGuide.h"
 
 NS_ASSUME_NONNULL_BEGIN
-@class ZLStackView;
+@class ZLBaseStackView;
 @interface ZLLayoutManager : NSObject
-@property (nonatomic,weak)ZLStackView *stackView;
+@property (nonatomic,weak)ZLBaseStackView *stackView;
 @property (nonatomic,strong,readonly)NSMutableArray<NSLayoutConstraint *> *constraints;
 - (void)removeAllSpacing;
 - (void)addHorizontalLayoutConstraints;

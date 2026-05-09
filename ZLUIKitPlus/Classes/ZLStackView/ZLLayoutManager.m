@@ -37,13 +37,13 @@
     return self.stackView.arrangedViews;
 }
 - (ZLJustify)justify {
-    return self.stackView.justify;
+    return self.stackView.justifyContent;
 }
 - (ZLAlign)align {
     return self.stackView.alignment;
 }
 - (BOOL)horizontal {
-    return self.stackView.horizontal;
+    return self.stackView.axis == ZLStackViewAxisHorizontal;
 }
 
 - (void)removeAllSpacing {
@@ -69,7 +69,7 @@
     for (int i = 0; i < count; i ++) {
         UIView *view = self.views[i];
         ZLLayoutViewCfg *cfg = view.zl_layoutCfg;
-        if (cfg.flex > 0 && self.justify != ZlJustifyFillEqually) {
+        if (cfg.flex > 0 && self.justify != ZLJustifyFillEqually) {
             [flexViews addObject:view];
         }
         //添加垂直约束
@@ -124,7 +124,7 @@
         
         CGFloat leadingMarge = i == 0 ? inset.left : 0;
         
-        if (self.stackView.justify == ZlJustifyEnd && i == 0) {
+        if (self.stackView.justifyContent == ZLJustifyEnd && i == 0) {
             cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:nextAnchor constant:leadingMarge];
         }else {
             cons = [view.leadingAnchor constraintEqualToAnchor:nextAnchor constant:leadingMarge];
@@ -132,7 +132,7 @@
         nextAnchor = view.trailingAnchor;
         [self.constraints addObject:cons];
         switch (self.justify) {
-            case ZlJustifyFillEqually:
+            case ZLJustifyFillEqually:
             {
                 if (viewWidthDim) {//设置每个view宽度相等
                     cons = [view.widthAnchor constraintEqualToAnchor:viewWidthDim];
@@ -140,7 +140,7 @@
                 }
                 viewWidthDim = view.widthAnchor;
             }
-            case ZlJustifyFill:
+            case ZLJustifyFill:
                 if (cfg.isFlexSpace) {
                     ZLLayoutGuide *spacingGuide = ZLLayoutGuide.new;
                     spacingGuide.stackView = self.stackView;
@@ -158,7 +158,7 @@
                     flexWidthDim  = spacingGuide.widthAnchor;
                 }
             case ZLJustifyStart:
-            case ZlJustifyEnd:
+            case ZLJustifyEnd:
             case ZLJustifyCenter:
                 
             {
@@ -192,9 +192,9 @@
             }
                 break;
            
-            case ZlJustifySpaceBetween:
-            case ZlJustifySpaceAround:
-            case ZlJustifySpaceEvenly:
+            case ZLJustifySpaceBetween:
+            case ZLJustifySpaceAround:
+            case ZLJustifySpaceEvenly:
             {
                 if (i < count - 1) {
                     ZLLayoutGuide *spacingGuide = ZLLayoutGuide.new;
@@ -230,9 +230,9 @@
         NSLayoutDimension *guideLeadingDim = widthAnchors.firstObject;
         cons = [guideLeadingDim constraintEqualToAnchor:widthAnchors.lastObject];
         [self.constraints addObject:cons];
-        if (self.justify == ZlJustifySpaceAround) {
+        if (self.justify == ZLJustifySpaceAround) {
              cons = [guideLeadingDim constraintEqualToAnchor:widthDim multiplier:0.5];
-        }else if (self.justify == ZlJustifySpaceEvenly) {
+        }else if (self.justify == ZLJustifySpaceEvenly) {
             cons = [guideLeadingDim constraintEqualToAnchor:widthDim];
         }
         [self.constraints addObject:cons];
@@ -279,7 +279,7 @@
     for (int i = 0; i < count; i ++) {
         UIView *view = self.views[i];
         ZLLayoutViewCfg *cfg = view.zl_layoutCfg;
-        if (cfg.flex > 0 && self.justify != ZlJustifyFillEqually) {
+        if (cfg.flex > 0 && self.justify != ZLJustifyFillEqually) {
             [flexViews addObject:view];
         }
         //添加垂直约束
@@ -334,7 +334,7 @@
         
         CGFloat topMarge = i == 0 ? inset.top : 0;
         
-        if (self.stackView.justify == ZlJustifyEnd && i == 0) {
+        if (self.stackView.justifyContent == ZLJustifyEnd && i == 0) {
             cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:nextAnchor constant:topMarge];
         }else {
             cons = [view.topAnchor constraintEqualToAnchor:nextAnchor constant:topMarge];
@@ -342,7 +342,7 @@
         nextAnchor = view.bottomAnchor;
         [self.constraints addObject:cons];
         switch (self.justify) {
-            case ZlJustifyFillEqually:
+            case ZLJustifyFillEqually:
             {
                 if (viewheightDim) {//设置每个view宽度相等
                     cons = [view.heightAnchor constraintEqualToAnchor:viewheightDim];
@@ -350,7 +350,7 @@
                 }
                 viewheightDim = view.heightAnchor;
             }
-            case ZlJustifyFill:
+            case ZLJustifyFill:
                 if (cfg.isFlexSpace) {
                     ZLLayoutGuide *spacingGuide = ZLLayoutGuide.new;
                     spacingGuide.stackView = self.stackView;
@@ -368,7 +368,7 @@
                     flexHeightDim  = spacingGuide.heightAnchor;
                 }
             case ZLJustifyStart:
-            case ZlJustifyEnd:
+            case ZLJustifyEnd:
             case ZLJustifyCenter:
             {
                 if (i == count - 1) break;
@@ -403,9 +403,9 @@
             }
                 break;
            
-            case ZlJustifySpaceBetween:
-            case ZlJustifySpaceAround:
-            case ZlJustifySpaceEvenly:
+            case ZLJustifySpaceBetween:
+            case ZLJustifySpaceAround:
+            case ZLJustifySpaceEvenly:
             {
                 if (i < count - 1) {
                     ZLLayoutGuide *spacingGuide = ZLLayoutGuide.new;
@@ -440,9 +440,9 @@
         NSLayoutDimension *guideLeadingDim = self.stackEdgeInsets.heightAnchors.firstObject;
         cons = [guideLeadingDim constraintEqualToAnchor:heightAnchors.lastObject];
         [self.constraints addObject:cons];
-        if (self.justify == ZlJustifySpaceAround) {
+        if (self.justify == ZLJustifySpaceAround) {
              cons = [guideLeadingDim constraintEqualToAnchor:heightDim multiplier:0.5];
-        }else if (self.justify == ZlJustifySpaceEvenly) {
+        }else if (self.justify == ZLJustifySpaceEvenly) {
             cons = [guideLeadingDim constraintEqualToAnchor:heightDim];
         }
         [self.constraints addObject:cons];

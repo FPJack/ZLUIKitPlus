@@ -1,0 +1,162 @@
+//
+//  ZLStackView.h
+//  ZLUIKitPlus_Example
+//
+//  Created by Qiuxia Cui on 2026/4/25.
+//  Copyright © 2026 fanpeng. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "ZLLayoutGuide.h"
+#import "ZLLayoutViewCfg.h"
+NS_ASSUME_NONNULL_BEGIN
+@class ZLStackView;
+
+@interface ZLBaseStackView<__covariant ObjectType> : UIView
+///水平排列还是垂直排列，默认水平排列 默认水平排列
+@property (nonatomic,assign)ZLStackViewAxis axis;
+///纵轴对齐方式
+@property (nonatomic,assign)ZLAlign alignment;
+///主轴对齐方式
+@property (nonatomic,assign)ZLJustify justifyContent;
+///内边距
+@property(nonatomic,assign)UIEdgeInsets insets;
+@property(nonatomic,strong) NSMutableArray<__kindof UIView *> *arrangedViews;
+@property (nonatomic,assign)CGFloat spacing;
+/// 添加view到stackView，默认添加到最后
+- (void)addArrangedSubview:(UIView *)view;
+///添加view并且配置view的布局属性
+- (void)addArrangedSubview:(UIView *)view layout:(void(^)(__kindof UIView *view, ZLLayoutViewCfg *viewCfg))config;
+///在某个位置插入view
+- (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)stackIndex;
+/// 移除view
+- (void)removeArrangedSubview:(UIView *)view;
+///设置view在主轴方向的间距
+- (void)setCustomSpacing:(CGFloat)spacing afterView:(UIView *)arrangedSubview;
+/// 设置view在主轴方向的最小间距
+- (void)setCustomMinSpacing:(CGFloat)minSpacing afterView:(UIView *)arrangedSubview;
+///设置view在主轴方向的最大间距
+- (void)setCustomMaxSpacing:(CGFloat)maxSpacing afterView:(UIView *)arrangedSubview;
+///设置view在主轴方向的权重
+- (void)setFlex:(NSInteger)flex forView:(UIView *)arrangedSubview;
+///在某个view后面设置是否弹性空间 只有justify  ==  ZLJustifyFill 才会有效
+- (void)setFlexibleSpacing:(BOOL)flexible afterView:(UIView *)arrangedSubview;
+///设置view的alignment，优先级高于stackView的alignment
+- (void)setAlignment:(ZLAlign)alignment forView:(UIView *)arrangedSubview;
+///设置view的alignment方向start间距
+- (void)setAlignmentStartSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview;
+///设置view的alignment方向end间距
+- (void)setAlignmentEndSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview;
+
+
+
+
+/// 链式API
++ (instancetype)horizontal;
++ (instancetype)vertical;
+- (instancetype)horizontal;
+- (instancetype)vertical;
+- (instancetype)alignStart;
+- (instancetype)alignCenter;
+- (instancetype)alignEnd;
+- (instancetype)alignFill;
+- (instancetype)justifyStart;
+- (instancetype)justifyCenter;
+- (instancetype)justifyEnd;
+- (instancetype)justifyFill;
+- (instancetype)justifyFillEqually;
+- (instancetype)justifySpaceBetween;
+- (instancetype)justifySpaceAround;
+- (instancetype)justifySpaceEvenly;
+@property(nonatomic,readonly)ObjectType (^inset)(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing);
+///水平方向的间距
+@property(nonatomic,readonly)ObjectType (^insetHor)(CGFloat leading, CGFloat trailing);
+///垂直方向的间距
+@property(nonatomic,readonly)ObjectType (^insetVer)(CGFloat top, CGFloat bottom);
+@property (nonatomic,readonly)ObjectType (^space)(CGFloat spacing);
+
+@property (nonatomic,readonly)ObjectType (^insertSpace)(CGFloat spacing);
+@property (nonatomic,readonly)ObjectType (^insertMinSpace)(CGFloat spacing);
+@property (nonatomic,readonly)ObjectType (^insertMaxSpace)(CGFloat spacing);
+@property (nonatomic,readonly)ObjectType (^insertFlexSpace)(BOOL flexible);
+
+@property (nonatomic, readonly)ObjectType (^add)(UIView *view);
+@property (nonatomic, readonly)ObjectType (^addLayout)(
+    UIView *view,
+    void(^)(__kindof UIView *view, ZLLayoutViewCfg *viewCfg)
+);
+@property (nonatomic, readonly)ObjectType (^spacingAfter)(UIView *arrangedSubview,CGFloat spacing);
+@property (nonatomic, readonly)ObjectType (^minSpacingAfter)(UIView *arrangedSubview,CGFloat minSpacing);
+@property (nonatomic, readonly)ObjectType (^maxSpacingAfter)(UIView *arrangedSubview,CGFloat maxSpacing);
+@property (nonatomic, readonly)ObjectType (^flexFor)(UIView *arrangedSubview,NSInteger flex);
+@property (nonatomic, readonly)ObjectType (^flexSpacingAfter)(UIView *arrangedSubview,BOOL flexible);
+@property (nonatomic, readonly)ObjectType (^alignFor)(UIView *arrangedSubview,ZLAlign alignment);
+@property (nonatomic, readonly)ObjectType (^alignStartSpacingFor)(UIView *arrangedSubview,CGFloat spacing);
+@property (nonatomic, readonly)ObjectType (^alignEndSpacingFor)(UIView *arrangedSubview,CGFloat spacing);
+///赋值当前对象到一个指针上
+/// 例如：ZLButton *btn;
+///  ZLButton.new.assignToPtr(&btn);
+@property (nonatomic, copy, readonly) ObjectType (^assignToPtr)(ZLBaseStackView *_Nullable* _Nullable buttonPtr);
+@property (nonatomic, copy,readonly) ObjectType (^bgColor)(id color);// 便捷设置背景色，支持 UIColor 或 UIColorHex
+
+
+///设置圆角
+@property (nonatomic, copy, readonly) ObjectType (^corner)(CGFloat radius);
+
+///设置4个方向的圆角，传入不同的值
+@property (nonatomic, copy, readonly) ObjectType (^cornerRadii)(CGFloat topLeft, CGFloat topRight, CGFloat bottomLeft, CGFloat bottomRight);
+
+///设置是否圆形裁剪
+@property (nonatomic, copy, readonly) ObjectType (^circle)(BOOL circle);
+
+
+///UIColor or #333333
+@property (nonatomic,readonly) ObjectType (^borderColor)(id);
+
+@property (nonatomic,readonly) ObjectType (^borderWidth)(CGFloat);
+
+@property (nonatomic,readonly) ObjectType (^border)(CGFloat width,id color);
+
+@property (nonatomic,readonly) ObjectType (^shColor)(id color);
+//默认 （0,2）
+@property (nonatomic,readonly) ObjectType (^shOffset)(CGFloat width,CGFloat height);
+//默认0.2
+@property (nonatomic,readonly) ObjectType (^shOpacity)(CGFloat opacity);
+//默认6
+@property (nonatomic,readonly) ObjectType (^shRadius)(CGFloat radius);
+
+@property (nonatomic,readonly) ObjectType (^masksToBounds)(BOOL masksToBounds);
+
+///渐变颜色
+@property (nonatomic, readonly) ObjectType (^gradColors)(NSArray *colors);
+///渐变方向，传入起点和终点坐标，范围0~1
+@property (nonatomic, readonly) ObjectType (^gradDirection)(CGPoint startPoint, CGPoint endPoint);
+
+
+///布局相关
+///设置高度
+@property (nonatomic, copy, readonly) ObjectType (^height)(CGFloat height);
+///设置宽度
+@property (nonatomic, copy, readonly) ObjectType (^width)(CGFloat width);
+///同时设置宽高
+@property (nonatomic, copy, readonly) ObjectType (^size)(CGFloat width,CGFloat height);
+///设置宽高相等
+@property (nonatomic, copy, readonly) ObjectType (^square)(CGFloat wh);
+///贴紧父视图四边(参数布局)
+@property (nonatomic, copy, readonly) ObjectType (^edge)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
+ // ⭐高频
+///贴紧父视图四边布局
+@property (nonatomic, copy, readonly) ObjectType (^edgesZero)(void);
+///添加到父视图，参数是父视图
+@property (nonatomic, copy, readonly) ObjectType (^addTo)(UIView *superview);
+///添加到父视图 并且贴紧父视图四边布局，参数是父视图
+@property (nonatomic, copy, readonly) ObjectType (^addToFull)(UIView *superview);
+@property (nonatomic, copy, readonly) ObjectType(^addSubview)(UIView *subview);
+@end
+
+///按钮不会跟随文字撑开 titleLabel需要和button加相等高度约束
+@interface ZLStackView : ZLBaseStackView<ZLStackView *>
+
+@end
+
+NS_ASSUME_NONNULL_END

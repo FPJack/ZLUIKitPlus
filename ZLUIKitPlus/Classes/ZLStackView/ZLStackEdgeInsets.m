@@ -33,10 +33,10 @@
 @end
 @implementation ZLStackEdgeInsets
 - (NSLayoutXAxisAnchor *)leadingAnchor {
-    switch (self.stackView.justify) {
+    switch (self.stackView.justifyContent) {
         case ZLJustifyCenter:
-        case ZlJustifySpaceAround:
-        case ZlJustifySpaceEvenly:
+        case ZLJustifySpaceAround:
+        case ZLJustifySpaceEvenly:
         {
             return self.leadingGuide.trailingAnchor;
         }
@@ -48,10 +48,10 @@
 }
 
 - (NSLayoutXAxisAnchor *)trailingAnchor {
-    switch (self.stackView.justify) {
+    switch (self.stackView.justifyContent) {
         case ZLJustifyCenter:
-        case ZlJustifySpaceAround:
-        case ZlJustifySpaceEvenly:
+        case ZLJustifySpaceAround:
+        case ZLJustifySpaceEvenly:
         {
             return self.trailingGuide.leadingAnchor;
         }
@@ -63,10 +63,10 @@
 }
 
 - (NSLayoutYAxisAnchor *)topAnchor {
-    switch (self.stackView.justify) {
+    switch (self.stackView.justifyContent) {
         case ZLJustifyCenter:
-        case ZlJustifySpaceAround:
-        case ZlJustifySpaceEvenly:
+        case ZLJustifySpaceAround:
+        case ZLJustifySpaceEvenly:
         {
             return self.topGuide.bottomAnchor;
         }
@@ -77,10 +77,10 @@
     return self.stackView.topAnchor;
 }
 - (NSLayoutYAxisAnchor *)bottomAnchor {
-    switch (self.stackView.justify) {
+    switch (self.stackView.justifyContent) {
         case ZLJustifyCenter:
-        case ZlJustifySpaceAround:
-        case ZlJustifySpaceEvenly:
+        case ZLJustifySpaceAround:
+        case ZLJustifySpaceEvenly:
         {
             return self.bottomGuide.topAnchor;
         }

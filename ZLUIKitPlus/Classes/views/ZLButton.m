@@ -781,7 +781,19 @@
 - (void)setLayoutImageSize:(CGSize)layoutImageSize {
     if (CGSizeEqualToSize(layoutImageSize, _layoutImageSize)) return;
     _layoutImageSize = layoutImageSize;
-    [NSLayoutConstraint deactivateConstraints:self.imageView.constraints];
+    ///删除imageView的宽高约束
+   NSArray *deleteCons = [self.imageView.constraints filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        NSLayoutConstraint *cons = (NSLayoutConstraint *)evaluatedObject;
+        if (cons.firstItem == self.imageView ||
+            cons.secondItem == self.imageView) {
+            if (cons.firstAttribute == NSLayoutAttributeWidth || cons.firstAttribute == NSLayoutAttributeHeight ||
+                cons.secondAttribute == NSLayoutAttributeWidth || cons.secondAttribute == NSLayoutAttributeHeight) {
+                return YES;
+            }
+        }
+        return NO;
+    }]];
+    [NSLayoutConstraint deactivateConstraints:deleteCons];
     self.imageView.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:@[
         [self.imageView.widthAnchor constraintEqualToConstant:layoutImageSize.width],
@@ -1015,7 +1027,7 @@
     };
 }
 
-- (ZLButton * _Nonnull (^)(ZLButton * _Nullable __autoreleasing * _Nullable))toPtr {
+- (ZLButton * _Nonnull (^)(ZLButton * _Nullable __autoreleasing * _Nullable))assignToPtr {
     return ^ZLButton*(ZLButton **ptr){
         if (ptr) *ptr = self;
         return self;

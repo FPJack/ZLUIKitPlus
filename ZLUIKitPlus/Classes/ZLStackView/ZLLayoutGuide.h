@@ -9,6 +9,13 @@
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
+typedef NS_ENUM(NSUInteger, ZLStackViewAxis) {
+    ZLStackViewAxisHorizontal = 0,  // 水平排列
+    ZLStackViewAxisVertical,        // 垂直排列
+};
+
+
 typedef NS_ENUM(NSInteger, ZLAlign) {
     ZLAlignCenter,
     ZLAlignStart,
@@ -16,14 +23,14 @@ typedef NS_ENUM(NSInteger, ZLAlign) {
     ZLAlignFill,
 };
 typedef NS_ENUM(NSInteger, ZLJustify) {
-   ZlJustifyFill,
-   ZlJustifyFillEqually,
+   ZLJustifyFill,
+   ZLJustifyFillEqually,
    ZLJustifyStart,
    ZLJustifyCenter,
-   ZlJustifyEnd,
-   ZlJustifySpaceBetween,//两边没有间距，中间相等
-   ZlJustifySpaceAround,//两边是中间一半
-   ZlJustifySpaceEvenly,//所有间距都相等
+   ZLJustifyEnd,
+   ZLJustifySpaceBetween,//两边没有间距，中间相等
+   ZLJustifySpaceAround,//两边是中间一半
+   ZLJustifySpaceEvenly,//所有间距都相等
 };
 
 @interface ZLLayoutGuide : UILayoutGuide

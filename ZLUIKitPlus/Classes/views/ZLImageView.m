@@ -52,6 +52,13 @@
         return self;
     };
 }
+- (ZLImageView * _Nonnull (^)(BOOL))circle {
+    return ^(BOOL isCircle) {
+        self.isCircle = @(isCircle);
+        [self setNeedsLayout];
+        return self;
+    };
+}
 - (ZLImageView * _Nonnull (^)(CACornerMask))corners {
     return ^(CACornerMask corners) {
         self.layer.maskedCorners = (CACornerMask)corners;

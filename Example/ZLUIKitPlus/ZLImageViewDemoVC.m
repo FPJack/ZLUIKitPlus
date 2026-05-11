@@ -23,9 +23,9 @@
         .img(@"魔法棒")
         .aspectFit
         .addTo(self.view)
-        .z_top(120)
-        .z_leading(20)
-        .z_square(80);
+        .top(120)
+        .leading(20)
+        .square(80);
         y += 100;
     }
     
@@ -102,7 +102,7 @@
         
         __block ZLImageView *ref;
         ZLImageView *imgView = ZLImageView.new;
-        imgView.toPtr(&ref).then(^(ZLImageView *iv) {
+        imgView.assignToPtr(&ref).then(^(ZLImageView *iv) {
             iv.img(@"分享").aspectFit.bgColor(@"#E8F5E9").corner(8);
         });
         [self.view addSubview:imgView];

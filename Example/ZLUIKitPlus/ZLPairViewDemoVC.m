@@ -3,7 +3,7 @@
 #import <Masonry/Masonry.h>
 #import "ZLStackView.h"
 #import "ZLButton.h"
-#import "ZLLayoutViewCfg.h"
+#import "ZLLayoutViewFlex.h"
 
 @interface SwitchA: UISwitch
 @end
@@ -68,7 +68,7 @@
         .width(200)
         .bgColor(UIColor.redColor)
         .add(UISwitch.new)
-        .addLayout(UILabel.new, ^(__kindof UILabel * _Nonnull view, ZLLayoutViewCfg * _Nonnull viewCfg) {
+        .addLayout(UILabel.new, ^(__kindof UILabel * _Nonnull view, ZLLayoutViewFlex * _Nonnull viewCfg) {
             view.numberOfLines  = 0;
             view.text = @"viewviewvviewviewviewviewviewviewviewviewiewviewviewviewviewview";
             viewCfg.startSpacing  = 10;

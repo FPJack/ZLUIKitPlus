@@ -73,6 +73,7 @@
             .titleColor(@"#666666").spacing(6).insets(12, 16, 12, 16)
             .bgColor(@"#E8F5E9");
         [content addSubview:btn];
+        
         btn.KFC.top(y).leading(20);
         y += 100;
     }

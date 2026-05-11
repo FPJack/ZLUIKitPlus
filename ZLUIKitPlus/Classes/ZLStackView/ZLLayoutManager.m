@@ -8,7 +8,7 @@
 
 #import "ZLLayoutManager.h"
 #import "ZLStackView.h"
-#import "ZLLayoutViewCfg.h"
+#import "ZLLayoutViewFlex.h"
 #import "ZLStackEdgeInsets.h"
 #import "ZLConstraintsCfg.h"
 @interface ZLLayoutManager()
@@ -68,8 +68,8 @@
     NSMutableArray<UIView *> *flexViews = NSMutableArray.array;
     for (int i = 0; i < count; i ++) {
         UIView *view = self.views[i];
-        ZLLayoutViewCfg *cfg = view.zl_layoutCfg;
-        if (cfg.flex > 0 && self.justify != ZLJustifyFillEqually) {
+        ZLLayoutViewFlex *cfg = view.zl_flex;
+        if (cfg.flexValue > 0 && self.justify != ZLJustifyFillEqually) {
             [flexViews addObject:view];
         }
         //添加垂直约束
@@ -253,13 +253,13 @@
     
     //设置宽度的相对权重
     NSLayoutDimension *firstWidthDim = flexViews.firstObject.widthAnchor;
-    CGFloat firstFlex = flexViews.firstObject.zl_layoutCfg.flex;
+    CGFloat firstFlex = flexViews.firstObject.zl_flex.flexValue;
     for (int i = 0; i < flexViews.count; i ++) {
         UIView *view = flexViews[i];
         [view setContentHuggingPriority:UILayoutPriorityDefaultLow - 1 forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh - 1 forAxis:UILayoutConstraintAxisHorizontal];
         if (i > 0) {
-          cons = [view.widthAnchor constraintEqualToAnchor:firstWidthDim multiplier:view.zl_layoutCfg.flex / firstFlex];
+          cons = [view.widthAnchor constraintEqualToAnchor:firstWidthDim multiplier:view.zl_flex.flexValue / firstFlex];
           [self.constraints addObject:cons];
         }
     }
@@ -278,8 +278,8 @@
 
     for (int i = 0; i < count; i ++) {
         UIView *view = self.views[i];
-        ZLLayoutViewCfg *cfg = view.zl_layoutCfg;
-        if (cfg.flex > 0 && self.justify != ZLJustifyFillEqually) {
+        ZLLayoutViewFlex *cfg = view.zl_flex;
+        if (cfg.flexValue > 0 && self.justify != ZLJustifyFillEqually) {
             [flexViews addObject:view];
         }
         //添加垂直约束
@@ -463,13 +463,13 @@
     
     //设置高度的相对权重
     NSLayoutDimension *firstHeightDim = flexViews.firstObject.heightAnchor;
-    CGFloat firstFlex = flexViews.firstObject.zl_layoutCfg.flex;
+    CGFloat firstFlex = flexViews.firstObject.zl_flex.flexValue;
     for (int i = 0; i < flexViews.count; i ++) {
         UIView *view = flexViews[i];
         [view setContentHuggingPriority:UILayoutPriorityDefaultLow - 1 forAxis:UILayoutConstraintAxisVertical];
         [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh - 1 forAxis:UILayoutConstraintAxisVertical];
         if (i > 0) {
-          cons = [view.heightAnchor constraintEqualToAnchor:firstHeightDim multiplier:view.zl_layoutCfg.flex / firstFlex];
+          cons = [view.heightAnchor constraintEqualToAnchor:firstHeightDim multiplier:view.zl_flex.flexValue / firstFlex];
           [self.constraints addObject:cons];
         }
     }

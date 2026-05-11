@@ -22,7 +22,7 @@
 #import "ZLConstraintsCfg.h"
 #import "ZLLayoutGuide.h"
 #import "ZLLayoutManager.h"
-#import "ZLLayoutViewCfg.h"
+#import "ZLLayoutViewFlex.h"
 #import "ZLStackEdgeInsets.h"
 #import "ZLStackView.h"
 #import "ZLViewDecorator.h"

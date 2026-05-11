@@ -70,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly)ZLStackView * (^add)(UIView *view) NS_UNAVAILABLE;
 @property (nonatomic, readonly)ZLStackView * (^addLayout)(
     UIView *view,
-    void(^)(__kindof UIView *view, ZLLayoutViewCfg *viewCfg)
+    void(^)(__kindof UIView *view, ZLLayoutViewFlex *viewCfg)
 )NS_UNAVAILABLE;
 @property (nonatomic, readonly)ZLStackView * (^spacingAfter)(UIView *arrangedSubview,CGFloat spacing)
 NS_UNAVAILABLE;
@@ -101,7 +101,7 @@ NS_UNAVAILABLE;
 /// 添加view到stackView，默认添加到最后
 - (void)addArrangedSubview:(UIView *)view NS_UNAVAILABLE;
 ///添加view并且配置view的布局属性
-- (void)addArrangedSubview:(UIView *)view layout:(void(^)(__kindof UIView *view, ZLLayoutViewCfg *viewCfg))config NS_UNAVAILABLE;
+- (void)addArrangedSubview:(UIView *)view layout:(void(^)(__kindof UIView *view, ZLLayoutViewFlex *viewCfg))config NS_UNAVAILABLE;
 ///在某个位置插入view
 - (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)stackIndex NS_UNAVAILABLE;
 /// 移除view

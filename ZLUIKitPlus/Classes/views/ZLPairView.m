@@ -57,55 +57,55 @@
 
 - (id  _Nonnull (^)(CGFloat))minSpace {
     return ^(CGFloat spacing){
-        self.first.zl_layoutCfg.minSpacing = spacing;
+        self.first.zl_flex.minSpacing = spacing;
         return self;
     };
 }
 - (id  _Nonnull (^)(CGFloat))maxSpace {
     return ^(CGFloat spacing){
-        self.first.zl_layoutCfg.maxSpacing = spacing;
+        self.first.zl_flex.maxSpacing = spacing;
         return self;
     };
 }
 - (id  _Nonnull (^)(BOOL))flexSpace {
     return ^(BOOL flexible){
-        self.first.zl_layoutCfg.isFlexSpace = flexible;
+        self.first.zl_flex.isFlexSpace = flexible;
         return self;
     };
 }
 - (id  _Nonnull (^)(CGFloat))firstStartSpace {
     return ^(CGFloat spacing){
-        self.first.zl_layoutCfg.startSpacing = spacing;
+        self.first.zl_flex.startSpacing = spacing;
         return self;
     };
 }
 - (id  _Nonnull (^)(CGFloat))firstEndSpace {
     return ^(CGFloat spacing){
-        self.first.zl_layoutCfg.endSpacing = spacing;
+        self.first.zl_flex.endSpacing = spacing;
         return self;
     };
 }
 - (id  _Nonnull (^)(CGFloat))secondStartSpace {
     return ^(CGFloat spacing){
-        self.second.zl_layoutCfg.startSpacing = spacing;
+        self.second.zl_flex.startSpacing = spacing;
         return self;
     };
 }
 - (id  _Nonnull (^)(CGFloat))secondEndSpace {
     return ^(CGFloat spacing){
-        self.second.zl_layoutCfg.endSpacing = spacing;
+        self.second.zl_flex.endSpacing = spacing;
         return self;
     };
 }
 - (id  _Nonnull (^)(NSInteger))firstFlex {
     return ^(NSInteger flex){
-        self.first.zl_layoutCfg.flex = flex;
+        self.first.zl_flex.flexValue = flex;
         return self;
     };
 }
 - (id  _Nonnull (^)(NSInteger))secondFlex {
     return ^(NSInteger flex){
-        self.second.zl_layoutCfg.flex = flex;
+        self.second.zl_flex.flexValue = flex;
         return self;
     };
 }

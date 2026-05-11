@@ -1,26 +1,26 @@
 //
-//  ZLLayoutViewCfg.m
+//  ZLLayoutViewFlex.m
 //  ZLUIKitPlus_Example
 //
 //  Created by Qiuxia Cui on 2026/5/4.
 //  Copyright © 2026 fanpeng. All rights reserved.
 //
 
-#import "ZLLayoutViewCfg.h"
+#import "ZLLayoutViewFlex.h"
 #import "ZLStackView.h"
 #import <objc/runtime.h>
 
-@implementation UIView (ZLView)
-- (ZLLayoutViewCfg *)zl_layoutCfg {
-    ZLLayoutViewCfg *cfg = objc_getAssociatedObject(self, _cmd);
+@implementation UIView (Flex)
+- (ZLLayoutViewFlex *)zl_flex {
+    ZLLayoutViewFlex *cfg = objc_getAssociatedObject(self, _cmd);
     if (!cfg) {
-        cfg = ZLLayoutViewCfg.new;
+        cfg = ZLLayoutViewFlex.new;
         objc_setAssociatedObject(self, _cmd, cfg, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return cfg;
 }
 @end
-@interface ZLLayoutViewCfg()
+@interface ZLLayoutViewFlex()
 ///是否设置对齐方式
 @property (nonatomic,assign)BOOL isSetAlign;
 ///记录已kvo
@@ -28,7 +28,7 @@
 @property (nonatomic,weak)ZLStackView *stackView;
 @property (nonatomic,weak)UIView *view;
 @end
-@implementation ZLLayoutViewCfg
+@implementation ZLLayoutViewFlex
 @synthesize alignSelf = _alignSelf;
 @synthesize spacing = _spacing;
 - (void)setAlignSelf:(ZLAlign)alignSelf {
@@ -63,9 +63,10 @@
     _isFlexSpace = isFlexSpace;
     [self setStackViewNeedsUpdateConstraints];
 }
-- (void)setFlex:(NSInteger)flex {
-    if (flex == _flex) return;
-    _flex = flex;
+
+- (void)setFlexValue:(NSInteger)flexValue {
+    if (flexValue == _flexValue) return;
+    _flexValue = flexValue;
     [self setStackViewNeedsUpdateConstraints];
 }
 - (void)setView:(UIView *)view {
@@ -95,5 +96,48 @@
     if (self.isKVOAdded) {
         [self.view removeObserver:self forKeyPath:@"hidden"];
     }
+}
+
+- (ZLLayoutViewFlex * _Nonnull (^)(CGFloat))start {
+    return ^(CGFloat spacing) {
+        self.startSpacing = spacing;
+        return self;
+    };
+}
+- (ZLLayoutViewFlex * _Nonnull (^)(CGFloat))end {
+    return ^(CGFloat spacing) {
+        self.endSpacing = spacing;
+        return self;
+    };
+}
+- (ZLLayoutViewFlex * _Nonnull (^)(CGFloat))minSpace {
+    return ^(CGFloat spacing) {
+        self.minSpacing = spacing;
+        return self;
+    };
+}
+- (ZLLayoutViewFlex * _Nonnull (^)(CGFloat))maxSpace {
+    return ^(CGFloat spacing) {
+        self.maxSpacing = spacing;
+        return self;
+    };
+}
+- (ZLLayoutViewFlex * _Nonnull (^)(NSInteger))flex {
+    return ^(NSInteger flexValue) {
+        self.flexValue = flexValue;
+        return self;
+    };
+}
+- (ZLLayoutViewFlex * _Nonnull (^)(BOOL))flexSpace {
+    return ^(BOOL isFlexSpace) {
+        self.isFlexSpace = isFlexSpace;
+        return self;
+    };
+}
+- (ZLLayoutViewFlex * _Nonnull (^)(ZLAlign))align {
+    return ^(ZLAlign align) {
+        self.alignSelf = align;
+        return self;
+    };
 }
 @end

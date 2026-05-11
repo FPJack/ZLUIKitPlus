@@ -55,7 +55,7 @@
         .justifyStart
         .space(20)
         .vInset(100, 20)
-        .bgColor(UIColor.orangeColor)
+        
         .addToFull(self.view)
         .assignToPtr(&stackView);
     
@@ -80,6 +80,19 @@
         
         stackView
             .add(sk);
+    }
+    
+    {
+        ZLView *view;
+        ZLView.new
+            .assignToPtr(&view)
+            .square(100)
+            .cornerRadii(10, 15, 20, 30)
+            .gradColors(@[UIColor.redColor, UIColor.blueColor])
+            .bgColor(UIColor.orangeColor)
+            .shColor(UIColor.blackColor)
+            .shRadius(8);        
+        stackView.add(view);
     }
     
     // 1. ZLPairLabelView 水平(两个Label)

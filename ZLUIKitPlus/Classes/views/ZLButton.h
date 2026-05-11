@@ -241,8 +241,10 @@ NS_INLINE GMStartEndInsets GMStartEndInsetsMake(CGFloat start, CGFloat end) {
 @property (nonatomic, copy,readonly) ZLButton* (^activeStyle)(void (^)(ZLButton * button));
 ///选中样式
 @property (nonatomic, copy,readonly) ZLButton* (^selectStyle)(void (^)(ZLButton * button));
+
 ///不可点击情况下配置userActive(NO) 触发回调
 @property (nonatomic, copy,readonly) ZLButton* (^inactiveStyle)(void (^)(ZLButton * button));
+
 ///立即触发block回调，适用于需要在初始化时立即配置样式的场景
 @property (nonatomic,readonly) ZLButton* (^then)(void (^)(ZLButton * button));
 

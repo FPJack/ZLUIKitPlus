@@ -44,8 +44,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property(readonly)ZLFlexItem *(^minSpace)(CGFloat spacing);
 @property(readonly)ZLFlexItem *(^maxSpace)(CGFloat spacing);
 @property(readonly)ZLFlexItem *(^flexSpace)(BOOL isFlex);
-@property(readonly)ZLFlexItem *(^align)(ZLAlign align);
 @property(readonly)ZLFlexItem *(^flex)(NSInteger flex);
+@property(readonly)ZLFlexItem *(^align)(ZLAlign align);
+- (instancetype)alignStart;
+- (instancetype)alignEnd;
+- (instancetype)alignCenter;
+- (instancetype)alignFill;
 @end
 
 NS_ASSUME_NONNULL_END

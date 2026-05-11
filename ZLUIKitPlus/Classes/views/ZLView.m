@@ -19,7 +19,6 @@
 @property (nonatomic, copy) UIColor* bgColorValue;
 @property (nonatomic,copy)void (^activeStyleBlock)(id );
 @property (nonatomic,copy)void (^inactiveStyleBlock)(id );
-@property (nonatomic,copy)void (^selectStyleBlock)(id );
 @end
 @implementation ZLView
 - (CAShapeLayer *)backgroundShapeLayer {
@@ -33,6 +32,7 @@
         CAGradientLayer *layer = [CAGradientLayer layer];
         layer.startPoint = CGPointMake(0, 0); //左上
         layer.endPoint = CGPointMake(1, 1); // 右下
+        [self backgroundShapeLayer];
         _gradLayer = layer;
     }
     return _gradLayer;
@@ -60,13 +60,17 @@
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
     self.bgColorValue = backgroundColor;
-    self.backgroundShapeLayer.fillColor = backgroundColor.CGColor;
+    if (_backgroundShapeLayer) {
+        self.backgroundShapeLayer.fillColor = backgroundColor.CGColor;
+    }else {
+        [super setBackgroundColor:backgroundColor];
+    }
 }
 - (UIColor *)backgroundColor {
     return self.bgColorValue ?: [super backgroundColor];
 }
 - (BOOL)needsUpdate {
-    if (!CGRectEqualToRect(self.bounds, self.backgroundShapeLayer.bounds)) {
+    if (_backgroundShapeLayer && !CGRectEqualToRect(self.bounds, _backgroundShapeLayer.bounds)) {
         return YES;
     }
     return _needsUpdate;
@@ -77,7 +81,7 @@
 }
 - (void)update {
     CGRect bounds = self.bounds;
-    if (CGRectIsEmpty(bounds)) return;
+    if (CGRectIsEmpty(bounds) || !_backgroundShapeLayer) return;
     if (!self.needsUpdate) return;
     self.needsUpdate = NO;
     CGFloat topLeft, topRight, bottomLeft, bottomRight;
@@ -262,6 +266,7 @@
         self.layer.shadowRadius = 8;
         self.layer.shadowOffset = CGSizeMake(0, 2);
         self.layer.masksToBounds = NO;
+        [self backgroundShapeLayer];
         return self;
     };
 }
@@ -436,15 +441,9 @@
 @end
 @interface ZLWrapperView()
 @property (nonatomic, weak,readwrite) UIView *contentView;
-@property (nonatomic, strong)NSArray *constraintsArr;
+@property (nonatomic, copy)NSArray *constraintsArr;
 @end
 @implementation ZLWrapperView
-- (NSArray *)constraintsArr {
-    if (!_constraintsArr) {
-        _constraintsArr = NSArray.array;
-    }
-    return _constraintsArr;
-}
 + (instancetype)wrapWithView:(UIView *)view {
     ZLWrapperView *wrap = [[ZLWrapperView alloc] initWithFrame:view.frame];
     wrap.contentView = view;

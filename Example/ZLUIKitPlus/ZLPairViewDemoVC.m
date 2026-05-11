@@ -91,6 +91,8 @@
             .gradColors(@[UIColor.redColor, UIColor.blueColor])
             .bgColor(UIColor.orangeColor)
             .shColor(UIColor.blackColor)
+            .shOpacity(1)
+            .border(2, UIColor.greenColor)
             .shRadius(8)
         .zl_wrapView
         .insetsZero

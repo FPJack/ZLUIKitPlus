@@ -140,4 +140,20 @@
         return self;
     };
 }
+- (instancetype)alignStart {
+    self.alignSelf = ZLAlignStart;
+    return self;
+}
+- (instancetype)alignEnd {
+    self.alignSelf = ZLAlignEnd;
+    return self;
+}
+- (instancetype)alignCenter {
+    self.alignSelf = ZLAlignCenter;
+    return self;
+}
+- (instancetype)alignFill {
+    self.alignSelf = ZLAlignFill;
+    return self;
+}
 @end

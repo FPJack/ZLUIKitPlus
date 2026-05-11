@@ -10,6 +10,8 @@
 #import "ZLUI.h"
 @interface ZLImageView()
 @property (nonatomic,copy)NSNumber* isCircle;
+@property CGFloat cornerRadius;
+
 @end
 @implementation ZLImageView
 - (ZLImageView * _Nonnull (^)(id _Nonnull))img {
@@ -46,27 +48,25 @@
     return ^(CGFloat corner) {
         self.layer.cornerRadius = corner;
         self.layer.masksToBounds = corner > 0;
+        self.cornerRadius = corner;
         return self;
     };
 }
-- (ZLImageView * _Nonnull (^)(BOOL))circle {
-    return ^(BOOL circle) {
-        self.isCircle = @(YES);
-        [self updateCircel];
+- (ZLImageView * _Nonnull (^)(CACornerMask))corners {
+    return ^(CACornerMask corners) {
+        self.layer.maskedCorners = (CACornerMask)corners;
         return self;
     };
 }
 - (void)updateCircel {
+    CGFloat corner = self.cornerRadius;
     if (self.isCircle) {
         if (self.isCircle.boolValue) {
-            CGFloat minSide = MIN(self.bounds.size.width, self.bounds.size.height);
-            self.layer.cornerRadius = minSide / 2;
-            self.layer.masksToBounds = YES;
-        }else {
-            self.layer.cornerRadius = 0;
-            self.layer.masksToBounds = NO;
+            corner = MIN(self.bounds.size.width, self.bounds.size.height) / 2.0;
         }
     }
+    self.layer.cornerRadius = corner;
+    self.layer.masksToBounds = YES;
 }
 - (ZLImageView * _Nonnull (^)(CGFloat, id _Nonnull))border {
     return ^(CGFloat width, id color) {
@@ -121,7 +121,7 @@
     };
 }
 
-- (ZLImageView * _Nonnull (^)(ZLImageView * _Nullable __autoreleasing * _Nullable))toPtr {
+- (ZLImageView * _Nonnull (^)(ZLImageView * _Nullable __autoreleasing * _Nullable))assignToPtr {
     return ^(ZLImageView **ptr) {
         if (ptr) *ptr = self;
         return self;
@@ -139,94 +139,87 @@
     [super layoutSubviews];
     [self updateCircel];
 }
+- (ZLImageView * _Nonnull (^)(CGFloat))centerX {
+    return ^(CGFloat centerX){
+         self.KFC.centerX(centerX);
+        return self;
+    };
+}
+- (ZLImageView * _Nonnull (^)(CGFloat))centerY {
+    return ^(CGFloat centerY){
+         self.KFC.centerY(centerY);
+         return self;
+    };
+}
 
-
-
-- (ZLImageView * _Nonnull (^)(CGFloat))z_centerX {
-    return ^(CGFloat centerX) {
-        self.KFC.centerX(centerX);
+- (ZLImageView * _Nonnull (^)(CGFloat, CGFloat))centerOffset {
+    return ^(CGFloat centerX, CGFloat centerY){
+        self.centerX(centerX);
+        self.centerY(centerY);
         return self;
     };
 }
-- (ZLImageView * _Nonnull (^)(CGFloat))z_centerY {
-    return ^(CGFloat centerY) {
-        self.KFC.centerY(centerY);
-        return self;
-    };
-}
-- (ZLImageView * _Nonnull (^)(void))z_center {
-    return ^() {
-        self.KFC.center();
-        return self;
-    };
-}
-- (ZLImageView * _Nonnull (^)(CGFloat, CGFloat))z_centerOffset {
-    return ^(CGFloat offsetX, CGFloat offsetY) {
-        self.KFC.centerOffset(offsetX, offsetY);
-        return self;
-    };
-}
-- (ZLImageView * _Nonnull (^)(CGFloat))z_top {
-    return ^(CGFloat top) {
+- (ZLImageView * _Nonnull (^)(CGFloat))top {
+    return ^(CGFloat top){
         self.KFC.top(top);
         return self;
     };
 }
-- (ZLImageView * _Nonnull (^)(CGFloat))z_leading {
-    return ^(CGFloat leading) {
+- (ZLImageView * _Nonnull (^)(CGFloat))leading {
+    return ^(CGFloat leading){
         self.KFC.leading(leading);
         return self;
     };
 }
-- (ZLImageView * _Nonnull (^)(CGFloat))z_bottom {
-    return ^(CGFloat bottom) {
+- (ZLImageView * _Nonnull (^)(CGFloat))bottom {
+    return ^(CGFloat bottom){
         self.KFC.bottom(bottom);
         return self;
     };
 }
-- (ZLImageView * _Nonnull (^)(CGFloat))z_trailing {
-    return ^(CGFloat trailing) {
-        self.KFC.trailing(trailing);
+- (ZLImageView * _Nonnull (^)(CGFloat))trailing {
+    return ^(CGFloat trailling){
+        self.KFC.trailing(trailling);
         return self;
     };
 }
-- (ZLImageView * _Nonnull (^)(CGFloat))z_height {
+- (ZLImageView * _Nonnull (^)(CGFloat))height {
     return ^(CGFloat height) {
         self.KFC.height(height);
         return self;
     };
 }
-- (ZLImageView * _Nonnull (^)(CGFloat))z_width {
+- (ZLImageView * _Nonnull (^)(CGFloat))width {
     return ^(CGFloat width) {
         self.KFC.width(width);
         return self;
     };
 }
-- (ZLImageView * _Nonnull (^)(CGFloat, CGFloat))z_size {
+- (ZLImageView * _Nonnull (^)(CGFloat, CGFloat))size {
     return ^(CGFloat width, CGFloat height) {
         self.KFC.size(width, height);
         return self;
     };
 }
-- (ZLImageView * _Nonnull (^)(CGFloat))z_square {
+- (ZLImageView * _Nonnull (^)(CGFloat))square {
     return ^(CGFloat side) {
         self.KFC.square(side);
         return self;
     };
 }
-- (ZLImageView * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))z_edge {
+- (ZLImageView * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))edge {
     return ^(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing) {
         self.KFC.edge(top, leading, bottom, trailing);
         return self;
     };
 }
-- (ZLImageView * _Nonnull (^)(void))z_edgesZero {
+- (ZLImageView * _Nonnull (^)(void))edgesZero {
     return ^() {
         self.KFC.edgesZero();
         return self;
     };
 }
-- (ZLImageView* _Nonnull (^)(UIView * _Nonnull))addTo {
+- (ZLImageView * _Nonnull (^)(UIView * _Nonnull))addTo {
     return ^(UIView *superview){
         if ([superview isKindOfClass:UIView.class]) {
             [superview addSubview:self];
@@ -235,7 +228,7 @@
     };
 }
 
-- (ZLImageView* _Nonnull (^)(UIView * _Nonnull))addToFull {
+- (ZLImageView * _Nonnull (^)(UIView * _Nonnull))addToFull {
     return ^(UIView *superview){
         if ([superview isKindOfClass:UIView.class]) {
             [superview addSubview:self];
@@ -244,5 +237,14 @@
         return self;
     };
 }
+- (ZLImageView * _Nonnull (^)(UIView * _Nonnull))addSubview {
+    return ^(UIView *subview){
+        if ([subview isKindOfClass:UIView.class]) {
+            [self addSubview:subview];
+        }
+        return self;
+    };
+}
+
 
 @end

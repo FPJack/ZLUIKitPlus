@@ -42,21 +42,23 @@ NS_ASSUME_NONNULL_BEGIN
 - (SecondView)makeSecondView;
 
 
-@property (nonatomic,readonly)ObjectType (^minSpace)(CGFloat spacing);
+@property (readonly)ObjectType (^minSpace)(CGFloat spacing);
 
-@property (nonatomic,readonly)ObjectType (^maxSpace)(CGFloat spacing);
+@property (readonly)ObjectType (^maxSpace)(CGFloat spacing);
 
-@property (nonatomic,readonly)ObjectType (^flexSpace)(BOOL flexible);
+@property (readonly)ObjectType (^flexSpace)(BOOL flexible);
 
-@property (nonatomic,readonly)ObjectType (^firstStartSpace)(CGFloat spacing);
+@property (readonly)ObjectType (^firstStartSpace)(CGFloat spacing);
 
-@property (nonatomic,readonly)ObjectType (^firstEndSpace)(CGFloat spacing);
+@property (readonly)ObjectType (^firstEndSpace)(CGFloat spacing);
 
-@property (nonatomic,readonly)ObjectType (^secondStartSpace)(CGFloat spacing);
+@property (readonly)ObjectType (^secondStartSpace)(CGFloat spacing);
 
-@property (nonatomic,readonly)ObjectType (^secondEndSpace)(CGFloat spacing);
+@property (readonly)ObjectType (^secondEndSpace)(CGFloat spacing);
 
+@property (readonly)ObjectType (^firstFlex)(NSInteger flex);
 
+@property (readonly)ObjectType (^secondFlex)(NSInteger flex);
 
 
 
@@ -125,7 +127,10 @@ NS_UNAVAILABLE;
 
 @class ZLPairLabelView,ZLPairImageView
 ,ZLPairButtonView,ZLImgLabelView
-,ZLImgButtonView,ZLButtonImgView;
+,ZLImgButtonView,ZLButtonImgView
+,ZLButtonLabView,ZLLabelImgView
+,ZLLabButtonView,ZLButtonStackView,
+ZLPairStackView,ZLStackViewButton;
 
 ///两个Label的组合视图，firstView和secondView分别是两个Label，
 @interface ZLPairLabelView : ZLPairView<ZLPairLabelView *,ZLLabel *,ZLLabel *>
@@ -156,7 +161,29 @@ NS_UNAVAILABLE;
 @interface ZLButtonImgView : ZLPairView<ZLButtonImgView *,ZLButton *,ZLImageView *>
 
 @end
+///Button和Label的组合视图，firstView是Button，secondView是Label
+@interface ZLButtonLabView : ZLPairView<ZLButtonLabView *,ZLButton *,ZLLabel *>
 
+@end
+/// Label和ImageView的组合视图，firstView是Label，secondView是ImageView
+@interface ZLLabelImgView : ZLPairView<ZLLabelImgView *,ZLLabel *,ZLImageView *>
+
+@end
+/// Label和Button的组合视图，firstView是Label，secondView是Button
+@interface ZLLabButtonView : ZLPairView<ZLLabButtonView *,ZLLabel *,ZLButton *>
+@end
+
+/// Button和StackView的组合视图，firstView是Button，secondView是StackView
+@interface ZLButtonStackView : ZLPairView<ZLButtonStackView *,ZLButton *,ZLStackView *>
+@end
+
+/// StackView和Button的组合视图，firstView是StackView，secondView是Button 
+@interface ZLStackViewButton : ZLPairView<ZLStackViewButton *,ZLStackView *,ZLButton *>
+@end
+
+/// 两个StackView的组合视图，firstView和secondView分别是两个StackView，
+@interface ZLPairStackView : ZLPairView<ZLPairStackView *,ZLStackView *,ZLStackView *>
+@end
 
 
 NS_ASSUME_NONNULL_END

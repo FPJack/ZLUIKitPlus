@@ -16,57 +16,68 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) ZLImageView* (^highlight)(BOOL highlighted);
 @property (nonatomic, copy, readonly) ZLImageView* (^mode)(UIViewContentMode mode);
 - (instancetype)aspectFill;
+
 - (instancetype)aspectFit;
+
 @property (nonatomic, copy, readonly) ZLImageView* (^corner)(CGFloat radius);
+@property (nonatomic, copy, readonly) ZLImageView* (^corners)(CACornerMask corners);
+
 @property (nonatomic, copy, readonly) ZLImageView* (^circle)(BOOL isCircel);
+
 @property (nonatomic, copy, readonly) ZLImageView* (^border)(CGFloat width, id _Nullable color);
 @property (nonatomic, copy, readonly) ZLImageView* (^bgColor)(id _Nullable color);
 @property (nonatomic, copy, readonly) ZLImageView* (^visibility)(BOOL visible);
+
 @property (nonatomic, copy, readonly) ZLImageView* (^alphaValue)(CGFloat alpha);
+
 @property (nonatomic, copy, readonly) ZLImageView* (^url)(id _Nullable url,id _Nullable placeholder);
 
-@property (nonatomic, copy, readonly) ZLImageView* (^tapAction)(void(^)(ZLImageView *imgView));
+@property (nonatomic, copy, readonly) ZLImageView* (^assignToPtr)(ZLImageView *_Nullable* _Nullable ptr);
 
-///立即触发block回调，适用于需要在初始化时立即配置样式的场景
-@property (nonatomic,readonly) ZLImageView* (^then)(void (^)(ZLImageView * lab));
-@property (nonatomic, copy, readonly) ZLImageView* (^toPtr)(ZLImageView *_Nullable* _Nullable ptr);
+///布局相关
+@property (readonly) ZLImageView* (^centerX)(CGFloat x);
 
+@property (readonly) ZLImageView* (^centerY)(CGFloat y);
 
+@property (readonly) ZLImageView* (^centerOffset)(CGFloat x,CGFloat y);
 
-@property (nonatomic,  readonly) ZLImageView* (^z_centerX)(CGFloat x);
+@property (readonly) ZLImageView* (^top)(CGFloat top);
 
-@property (nonatomic,  readonly) ZLImageView* (^z_centerY)(CGFloat y);
+@property (readonly) ZLImageView* (^leading)(CGFloat leading);
 
-@property (nonatomic,  readonly) ZLImageView* (^z_center)(void);
+@property (readonly) ZLImageView* (^bottom)(CGFloat bottom);
 
-@property (nonatomic,  readonly) ZLImageView* (^z_centerOffset)(CGFloat x,CGFloat y);
-
-@property (nonatomic,  readonly) ZLImageView* (^z_top)(CGFloat top);
-
-@property (nonatomic,  readonly) ZLImageView* (^z_leading)(CGFloat leading);
-
-@property (nonatomic,  readonly) ZLImageView* (^z_bottom)(CGFloat bottom);
-
-@property (nonatomic,  readonly) ZLImageView* (^z_trailing)(CGFloat trailling);
-
+@property (readonly) ZLImageView* (^trailing)(CGFloat trailling);
 ///设置高度
-@property (nonatomic, copy, readonly) ZLImageView* (^z_height)(CGFloat height);
+@property (readonly) ZLImageView* (^height)(CGFloat height);
 ///设置宽度
-@property (nonatomic, copy, readonly) ZLImageView* (^z_width)(CGFloat width);
+@property (readonly) ZLImageView* (^width)(CGFloat width);
 ///同时设置宽高
-@property (nonatomic, copy, readonly) ZLImageView* (^z_size)(CGFloat width,CGFloat height);
+@property (readonly) ZLImageView* (^size)(CGFloat width,CGFloat height);
 ///设置宽高相等
-@property (nonatomic, copy, readonly) ZLImageView* (^z_square)(CGFloat wh);
+@property (readonly) ZLImageView* (^square)(CGFloat wh);
 ///贴紧父视图四边(参数布局)
-@property (nonatomic, copy, readonly) ZLImageView* (^z_edge)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
+@property (readonly) ZLImageView* (^edge)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
  // ⭐高频
 ///贴紧父视图四边布局
-@property (nonatomic, copy, readonly) ZLImageView* (^z_edgesZero)(void);
-
+@property (readonly) ZLImageView* (^edgesZero)(void);
 ///添加到父视图，参数是父视图
-@property (nonatomic, copy, readonly) ZLImageView* (^addTo)(UIView *superview);
+@property (readonly) ZLImageView* (^addTo)(UIView *superview);
+
 ///添加到父视图 并且贴紧父视图四边布局，参数是父视图
-@property (nonatomic, copy, readonly) ZLImageView* (^addToFull)(UIView *superview);
+@property (readonly) ZLImageView* (^addToFull)(UIView *superview);
+
+@property (readonly) ZLImageView*(^addSubview)(UIView *subview);
+///可点击情况下进行相应配置 userActive(YES) 触发回调
+@property (readonly) ZLImageView* (^activeStyle)(void (^)(ZLImageView* view));
+///不可点击情况下配置userActive(NO) 触发回调
+@property (readonly) ZLImageView* (^inactiveStyle)(void (^)(ZLImageView* view));
+
+///立即触发block回调，适用于需要在初始化时立即配置样式的场景
+@property (readonly) ZLImageView* (^then)(void (^)(ZLImageView* view));
+///点击事件
+@property (readonly) ZLImageView* (^tapAction)(void(^)(ZLImageView*view));
+
 @end
 
 

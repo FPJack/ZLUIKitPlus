@@ -13,6 +13,7 @@
 #import "ZLPairView.h"
 #import "ZLTagListView.h"
 #import <objc/runtime.h>
+#import "ZLView.h"
 
 
 #define kPropertyGetterImplementation(type, propertyName) \
@@ -21,15 +22,13 @@
     type *view = [self.propertyObjs objectForKey:key]; \
     if (!view) { \
         view = [[type alloc] init]; \
-        [self addSubview:view]; \
+        [self addSubview:view];   \
         [self.propertyObjs setObject:view forKey:key]; \
     } \
     return view; \
 }
 
 @implementation UIView (ZLView)
-
-
 - (NSMutableDictionary *)propertyObjs {
     NSMutableDictionary *midc = objc_getAssociatedObject(self, _cmd);
     if (!midc) {
@@ -41,5 +40,36 @@
 kPropertyGetterImplementation(ZLLabel, zl_lab)
 kPropertyGetterImplementation(ZLImageView, zl_imgView)
 kPropertyGetterImplementation(ZLButton, zl_btn)
+kPropertyGetterImplementation(ZLStackView, zl_stackView)
 
+kPropertyGetterImplementation(ZLButton, zl_altBtn)
+kPropertyGetterImplementation(ZLLabel, zl_altLab)
+kPropertyGetterImplementation(ZLImageView, zl_altImgView)
+kPropertyGetterImplementation(ZLStackView, zl_altStackView)
+
+kPropertyGetterImplementation(ZLButton, zl_extraBtn)
+kPropertyGetterImplementation(ZLLabel, zl_extraLab)
+kPropertyGetterImplementation(ZLImageView, zl_extraImgView)
+kPropertyGetterImplementation(ZLStackView, zl_extraStackView)
+
+kPropertyGetterImplementation(ZLPairLabelView, zl_pairLab)
+kPropertyGetterImplementation(ZLPairImageView, zl_pairImg)
+kPropertyGetterImplementation(ZLPairButtonView, zl_pairBtn)
+kPropertyGetterImplementation(ZLPairStackView, zl_pairStackView)
+
+kPropertyGetterImplementation(ZLImgLabelView, zl_imgViewLab)
+kPropertyGetterImplementation(ZLImgButtonView, zl_imgViewBtn)
+kPropertyGetterImplementation(ZLButtonImgView, zl_btnImgView)
+kPropertyGetterImplementation(ZLButtonLabView, zl_btnLabel)
+kPropertyGetterImplementation(ZLLabButtonView, zl_labelBtn)
+kPropertyGetterImplementation(ZLLabelImgView, zl_labImgView)
+
+- (ZLWrapperView *)zl_wrapView {
+    ZLWrapperView *wrap = self.propertyObjs[NSStringFromSelector(_cmd)];
+    if (!wrap) {
+        wrap = [ZLWrapperView wrapWithView:self];
+        [self.propertyObjs setObject:wrap forKey:NSStringFromSelector(_cmd)];
+    }
+    return wrap;
+}
 @end

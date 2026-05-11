@@ -11,41 +11,15 @@
 #import "ZLLayoutViewCfg.h"
 #import "ZLConstraintsCfg.h"
 #import "ZLUI.h"
-#import "ZLViewDecorator.h"
 @interface ZLBaseStackView()
 @property (nonatomic,strong)ZLLayoutManager *layoutManager;
 @property(nonatomic,strong) NSMutableArray<__kindof UIView *> *allViews;
 @property (nonatomic,assign)BOOL markedDirty;
-@property (nonatomic,strong) ZLViewDecorator    *zl_decorator;
 @end
 
 @implementation ZLBaseStackView
-- (ZLViewDecorator *)zl_decorator {
-    if (!_zl_decorator) {
-        _zl_decorator = [[ZLViewDecorator alloc] initWithView:self];
-    }
-    return _zl_decorator;
-}
-- (void)setBackgroundColor:(UIColor *)backgroundColor {
-    if (_zl_decorator && !_zl_decorator.viewBgColorByDecorator) {
-        _zl_decorator.fillColor = backgroundColor;
-    }else {
-        [super setBackgroundColor:backgroundColor];
-    }
-}
-- (UIColor *)backgroundColor {
-    if (_zl_decorator) {
-        return _zl_decorator.fillColor ?: [super backgroundColor];
-    }else {
-        return [super backgroundColor];
-    }
-}
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    if (_zl_decorator) {
-        [_zl_decorator update];
-    }
-}
+
+
 - (ZLLayoutManager *)layoutManager {
     if (!_layoutManager) {
         _layoutManager = [[ZLLayoutManager alloc] init];
@@ -483,6 +457,30 @@
         return self;
     };
 }
+- (id  _Nonnull (^)(void (^ _Nonnull)(ZLBaseStackView * _Nonnull)))tapAction {
+    return ^(void (^action)(ZLBaseStackView *stackView)){
+        self.KFC.tapAction(action);
+        return self;
+    };
+}
+- (id  _Nonnull (^)(BOOL))visibility {
+    return ^ZLBaseStackView* (BOOL visible) {
+        self.hidden = !visible;
+        return self;
+    };
+}
+- (id  _Nonnull (^)(CGFloat))alphaValue {
+    return ^ZLBaseStackView* (CGFloat alpha) {
+        self.alpha = alpha;
+        return self;
+    };
+}
+- (id  _Nonnull (^)(BOOL))userActive {
+    return ^ZLBaseStackView* (BOOL userInteraction) {
+        self.userInteractionEnabled = userInteraction;
+        return self;
+    };
+}
 - (id _Nonnull (^)(id _Nonnull))bgColor {
     return ^(id color) {
         self.backgroundColor = ZLColorFromObj(color);
@@ -492,13 +490,14 @@
 
 - (id _Nonnull (^)(CGFloat))corner {
     return ^ZLBaseStackView*(CGFloat radius){
-        self.zl_decorator.cornerRadius = radius;
+        self.layer.cornerRadius = radius;
+        self.layer.masksToBounds = radius > 0;
         return self;
     };
 }
-- (id _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))cornerRadii {
-    return ^ZLBaseStackView*(CGFloat topLeft, CGFloat topRight, CGFloat bottomLeft, CGFloat bottomRight){
-        self.zl_decorator.corners(topLeft,topRight,bottomLeft,bottomRight);
+- (id  _Nonnull (^)(CACornerMask))corners {
+    return ^ZLBaseStackView* (CACornerMask corners) {
+        self.layer.maskedCorners = corners;
         return self;
     };
 }
@@ -510,22 +509,17 @@
     return [UIApplication sharedApplication].userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
 }
 
-- (id _Nonnull (^)(BOOL))circle {
-    return ^ZLBaseStackView*(BOOL clip) {
-        self.zl_decorator.circle = @(clip);
-        return self;
-    };
-}
+
 
 - (id (^)(id ))borderColor {
     return  ^ZLBaseStackView*(id color){
-        self.zl_decorator.borderColor = color;
+        self.layer.borderColor = ZLColorFromObj(color).CGColor;
         return self;
     };
 }
 - (id (^)(CGFloat ))borderWidth {
     return  ^ZLBaseStackView*(CGFloat width){
-        self.zl_decorator.borderWidth = width;
+        self.layer.borderWidth = width;
         return self;
     };
 }
@@ -538,15 +532,19 @@
 }
 - (id  _Nonnull (^)(id _Nonnull))shColor {
     return ^ZLBaseStackView* (id color) {
-        self.zl_decorator.shadowColor = ZLColorFromObj(color);
-        return self.shOffset(0,2);
+        self.layer.shadowColor = ZLColorFromObj(color).CGColor;
+        self.layer.shadowOpacity = 0.2;
+        self.layer.shadowRadius = 8;
+        self.layer.shadowOffset = CGSizeMake(0, 2);
+        self.layer.masksToBounds = NO;
+        return self;
     };
 }
 
 
 - (id  _Nonnull (^)(CGFloat, CGFloat))shOffset {
     return ^ZLBaseStackView* (CGFloat width, CGFloat height) {
-        self.zl_decorator.shadowOffset = CGSizeMake(width, height);
+        self.layer.shadowOffset = CGSizeMake(width, height);
         return self;
     };
 }
@@ -554,14 +552,14 @@
 
 - (id  _Nonnull (^)(CGFloat))shRadius {
     return ^ZLBaseStackView* (CGFloat radius) {
-        self.zl_decorator.shadowRadius = radius;
+        self.layer.shadowRadius = radius;
         return self;
     };
 }
 
 - (id  _Nonnull (^)(CGFloat))shOpacity {
     return ^ZLBaseStackView* (CGFloat opacity) {
-        self.zl_decorator.shadowOpacity = opacity;
+        self.layer.shadowOpacity = opacity;
         return self.masksToBounds(NO);
     };
 }
@@ -571,7 +569,50 @@
         return self;
     };
 }
+- (id _Nonnull (^)(CGFloat))centerX {
+    return ^(CGFloat centerX){
+         self.KFC.centerX(centerX);
+        return self;
+    };
+}
+- (id _Nonnull (^)(CGFloat))centerY {
+    return ^(CGFloat centerY){
+         self.KFC.centerY(centerY);
+         return self;
+    };
+}
 
+- (id _Nonnull (^)(CGFloat, CGFloat))centerOffset {
+    return ^(CGFloat centerX, CGFloat centerY){
+        self.centerX(centerX);
+        self.centerY(centerY);
+        return self;
+    };
+}
+- (id _Nonnull (^)(CGFloat))top {
+    return ^(CGFloat top){
+        self.KFC.top(top);
+        return self;
+    };
+}
+- (id _Nonnull (^)(CGFloat))leading {
+    return ^(CGFloat leading){
+        self.KFC.leading(leading);
+        return self;
+    };
+}
+- (id _Nonnull (^)(CGFloat))bottom {
+    return ^(CGFloat bottom){
+        self.KFC.bottom(bottom);
+        return self;
+    };
+}
+- (id _Nonnull (^)(CGFloat))trailing {
+    return ^(CGFloat trailling){
+        self.KFC.trailing(trailling);
+        return self;
+    };
+}
 - (id _Nonnull (^)(CGFloat))height {
     return ^(CGFloat height) {
         self.KFC.height(height);

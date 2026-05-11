@@ -85,13 +85,17 @@
     {
         ZLView *view;
         ZLView.new
-            .assignToPtr(&view)
+//            .assignToPtr(&view)
             .square(100)
             .cornerRadii(10, 15, 20, 30)
             .gradColors(@[UIColor.redColor, UIColor.blueColor])
             .bgColor(UIColor.orangeColor)
             .shColor(UIColor.blackColor)
-            .shRadius(8);        
+            .shRadius(8)
+        .zl_wrapView
+        .insetsZero
+        .bgColor(UIColor.orangeColor)
+        .assignToPtr(&view);
         stackView.add(view);
     }
     

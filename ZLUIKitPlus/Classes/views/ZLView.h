@@ -81,16 +81,32 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) ZLView * (^edgesZero)(void);
 ///添加到父视图，参数是父视图
 @property (readonly) ZLView * (^addTo)(UIView *superview);
+
 ///添加到父视图 并且贴紧父视图四边布局，参数是父视图
 @property (readonly) ZLView * (^addToFull)(UIView *superview);
+
 @property (readonly) ZLView *(^addSubview)(UIView *subview);
 ///可点击情况下进行相应配置 userActive(YES) 触发回调
 @property (readonly) ZLView* (^activeStyle)(void (^)(ZLView * view));
 ///不可点击情况下配置userActive(NO) 触发回调
 @property (readonly) ZLView* (^inactiveStyle)(void (^)(ZLView * view));
 
+///立即触发block回调，适用于需要在初始化时立即配置样式的场景
+@property (readonly) ZLView* (^then)(void (^)(ZLView * view));
+///点击事件
 @property (readonly) ZLView* (^tapAction)(void(^)(ZLView *view));
 
 @end
+
+
+@interface ZLWrapperView : ZLView
+@property (nonatomic, weak,readonly) UIView *contentView;
+@property (readonly)ZLWrapperView *(^insets)(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing);
++ (instancetype)wrapWithView:(UIView *)view;
+- (instancetype)insetsZero;
+@end
+
+
+
 
 NS_ASSUME_NONNULL_END

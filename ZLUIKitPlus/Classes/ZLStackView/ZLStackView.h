@@ -50,7 +50,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 
-
 /// 链式API
 + (instancetype)horizontal;
 + (instancetype)vertical;
@@ -68,6 +67,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)justifySpaceBetween;
 - (instancetype)justifySpaceAround;
 - (instancetype)justifySpaceEvenly;
+
+
 @property(nonatomic,readonly)ObjectType (^inset)(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing);
 ///水平方向的间距
 @property(nonatomic,readonly)ObjectType (^hInset)(CGFloat leading, CGFloat trailing);
@@ -97,19 +98,23 @@ NS_ASSUME_NONNULL_BEGIN
 /// 例如：ZLButton *btn;
 ///  ZLButton.new.assignToPtr(&btn);
 @property (nonatomic, copy, readonly) ObjectType (^assignToPtr)(ZLBaseStackView *_Nullable* _Nullable buttonPtr);
-@property (nonatomic, copy,readonly) ObjectType (^bgColor)(id color);// 便捷设置背景色，支持 UIColor 或 UIColorHex
 
+///点击事件
+@property (readonly) ObjectType (^tapAction)(void(^)(ZLBaseStackView *view));
+///设置hidden
+@property (readonly) ObjectType (^visibility)(BOOL visible);
+///设置alpha
+@property (readonly) ObjectType (^alphaValue)(CGFloat alpha);
+
+///设置userinteractionEnabled 会触发activeStyle 或者 inactiveStyle 回调
+@property (nonatomic, copy, readonly) ObjectType (^userActive)(BOOL userInteractionEnabled);
+
+@property (nonatomic, copy,readonly) ObjectType (^bgColor)(id color);// 便捷设置背景色，支持 UIColor 或 UIColorHex
 
 ///设置圆角
 @property (nonatomic, copy, readonly) ObjectType (^corner)(CGFloat radius);
-
-///设置4个方向的圆角，传入不同的值
-@property (nonatomic, copy, readonly) ObjectType (^cornerRadii)(CGFloat topLeft, CGFloat topRight, CGFloat bottomLeft, CGFloat bottomRight);
-
-///设置是否圆形裁剪
-@property (nonatomic, copy, readonly) ObjectType (^circle)(BOOL circle);
-
-
+///设置哪个方向圆角 CACornerMask
+@property (nonatomic, copy, readonly) ObjectType (^corners)(CACornerMask corners);
 ///UIColor or #333333
 @property (nonatomic,readonly) ObjectType (^borderColor)(id);
 
@@ -127,31 +132,38 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,readonly) ObjectType (^masksToBounds)(BOOL masksToBounds);
 
-///渐变颜色
-@property (nonatomic, readonly) ObjectType (^gradColors)(NSArray *colors);
-///渐变方向，传入起点和终点坐标，范围0~1
-@property (nonatomic, readonly) ObjectType (^gradDirection)(CGPoint startPoint, CGPoint endPoint);
-
-
 ///布局相关
+@property (readonly) ObjectType (^centerX)(CGFloat x);
+
+@property (readonly) ObjectType (^centerY)(CGFloat y);
+
+@property (readonly) ObjectType (^centerOffset)(CGFloat x,CGFloat y);
+
+@property (readonly) ObjectType (^top)(CGFloat top);
+
+@property (readonly) ObjectType (^leading)(CGFloat leading);
+
+@property (readonly) ObjectType (^bottom)(CGFloat bottom);
+
+@property (readonly) ObjectType (^trailing)(CGFloat trailling);
 ///设置高度
-@property (nonatomic, copy, readonly) ObjectType (^height)(CGFloat height);
+@property (readonly) ObjectType (^height)(CGFloat height);
 ///设置宽度
-@property (nonatomic, copy, readonly) ObjectType (^width)(CGFloat width);
+@property (readonly) ObjectType (^width)(CGFloat width);
 ///同时设置宽高
-@property (nonatomic, copy, readonly) ObjectType (^size)(CGFloat width,CGFloat height);
+@property (readonly) ObjectType (^size)(CGFloat width,CGFloat height);
 ///设置宽高相等
-@property (nonatomic, copy, readonly) ObjectType (^square)(CGFloat wh);
+@property (readonly) ObjectType (^square)(CGFloat wh);
 ///贴紧父视图四边(参数布局)
-@property (nonatomic, copy, readonly) ObjectType (^edge)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
+@property (readonly) ObjectType (^edge)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
  // ⭐高频
 ///贴紧父视图四边布局
-@property (nonatomic, copy, readonly) ObjectType (^edgesZero)(void);
+@property (readonly) ObjectType (^edgesZero)(void);
 ///添加到父视图，参数是父视图
-@property (nonatomic, copy, readonly) ObjectType (^addTo)(UIView *superview);
+@property (readonly) ObjectType (^addTo)(UIView *superview);
 ///添加到父视图 并且贴紧父视图四边布局，参数是父视图
-@property (nonatomic, copy, readonly) ObjectType (^addToFull)(UIView *superview);
-@property (nonatomic, copy, readonly) ObjectType(^addSubview)(UIView *subview);
+@property (readonly) ObjectType (^addToFull)(UIView *superview);
+@property (readonly) ObjectType(^addSubview)(UIView *subview);
 @end
 
 ///按钮不会跟随文字撑开 titleLabel需要和button加相等高度约束

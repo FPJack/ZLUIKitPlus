@@ -108,22 +108,5 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
-@class ZLButton,ZLImageView;
 
-@interface UIView (ZLView)
-//主
-@property ( readonly) ZLButton    *zl_btn;
-@property ( readonly) ZLLabel     *zl_lab;
-@property ( readonly) ZLImageView *zl_imgView;
-//第二组
-@property ( readonly) ZLButton    *zl_altBtn;
-@property ( readonly) ZLLabel     *zl_altLab;
-@property ( readonly) ZLImageView *zl_altImgView;
-//第三组
-@property ( readonly) ZLButton    *zl_extraBtn;
-@property ( readonly) ZLLabel     *zl_extraLab;
-@property ( readonly) ZLImageView *zl_extraImgView;
-
-
-@end
 NS_ASSUME_NONNULL_END

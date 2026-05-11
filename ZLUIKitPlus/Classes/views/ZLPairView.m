@@ -97,6 +97,18 @@
         return self;
     };
 }
+- (id  _Nonnull (^)(NSInteger))firstFlex {
+    return ^(NSInteger flex){
+        self.first.zl_layoutCfg.flex = flex;
+        return self;
+    };
+}
+- (id  _Nonnull (^)(NSInteger))secondFlex {
+    return ^(NSInteger flex){
+        self.second.zl_layoutCfg.flex = flex;
+        return self;
+    };
+}
 @end
 
 @implementation ZLPairLabelView
@@ -151,5 +163,57 @@
     return ZLImageView.new;
 }
 @end
+@implementation ZLButtonLabView
+- (UIView *)makeFirstView {
+    return ZLButton.horizontal;
+}
+- (UIView *)makeSecondView {
+    return [[ZLLabel alloc] init];
+}
+@end
+
+@implementation ZLLabelImgView
+- (UIView *)makeFirstView {
+    return [[ZLLabel alloc] init];
+}
+- (UIView *)makeSecondView {
+    return [[ZLImageView alloc] init];
+}
+@end
+
+@implementation ZLLabButtonView
+- (UIView *)makeFirstView {
+    return [[ZLLabel alloc] init];
+}
+- (UIView *)makeSecondView {
+    return [ZLButton horizontal];
+}
+@end
+
+@implementation ZLButtonStackView
+- (UIView *)makeFirstView {
+    return [ZLButton horizontal];
+}
+- (UIView *)makeSecondView {
+    return [ZLStackView vertical];
+}
+@end
+@implementation ZLStackViewButton
+- (UIView *)makeFirstView {
+    return [ZLStackView vertical];
+}
+- (UIView *)makeSecondView {
+    return [ZLButton horizontal];
+}
+@end
 
 
+
+@implementation ZLPairStackView
+- (UIView *)makeFirstView {
+    return [ZLStackView horizontal];
+}
+- (UIView *)makeSecondView {
+    return [ZLStackView horizontal];
+}
+@end

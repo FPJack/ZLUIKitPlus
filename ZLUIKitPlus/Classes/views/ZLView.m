@@ -7,6 +7,7 @@
 
 #import "ZLView.h"
 #import "ZLUI.h"
+#import <objc/runtime.h>
 @interface ZLView()
 @property (nonatomic, strong) CAShapeLayer *backgroundShapeLayer;
 @property (nonatomic,strong)  CAGradientLayer *gradLayer;
@@ -20,7 +21,6 @@
 @property (nonatomic,copy)void (^activeStyleBlock)(id );
 @property (nonatomic,copy)void (^inactiveStyleBlock)(id );
 @property (nonatomic,copy)void (^selectStyleBlock)(id );
-
 @end
 @implementation ZLView
 - (CAShapeLayer *)backgroundShapeLayer {
@@ -414,6 +414,12 @@
         return self;
     };
 }
+- (ZLView * _Nonnull (^)(void (^ _Nonnull)(ZLView * _Nonnull)))then {
+    return ^(void (^block)(ZLView *)) {
+        if (block) block(self);
+        return self;
+    };
+}
 - (ZLView * _Nonnull (^)(void (^ _Nonnull)(ZLView * _Nonnull)))tapAction {
     return ^(void (^block)(ZLView *)) {
         self.KFC.tapAction(block);
@@ -421,3 +427,36 @@
     };
 }
 @end
+@interface ZLWrapperView()
+@property (nonatomic, weak,readwrite) UIView *contentView;
+@property (nonatomic, strong)NSArray *constraintsArr;
+@end
+@implementation ZLWrapperView
+- (NSArray *)constraintsArr {
+    if (!_constraintsArr) {
+        _constraintsArr = NSArray.array;
+    }
+    return _constraintsArr;
+}
++ (instancetype)wrapWithView:(UIView *)view {
+    ZLWrapperView *wrap = [[ZLWrapperView alloc] initWithFrame:view.frame];
+    wrap.contentView = view;
+    [wrap addSubview:view];
+    return wrap;
+}
+- (instancetype)insetsZero {
+    return self.insets(0, 0, 0, 0);
+}
+- (ZLWrapperView * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))insets {
+    return ^(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing) {
+        [NSLayoutConstraint deactivateConstraints:self.constraintsArr];
+        self.constraintsArr = @[[self.contentView.topAnchor constraintEqualToAnchor:self.topAnchor constant:top],
+                                [self.contentView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:leading],
+                                [self.contentView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-bottom],
+                                [self.contentView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-trailing]];
+        [NSLayoutConstraint activateConstraints:self.constraintsArr];
+        return self;
+    };
+}
+@end
+

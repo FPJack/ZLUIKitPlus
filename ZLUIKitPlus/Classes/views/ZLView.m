@@ -17,7 +17,6 @@
 @property (nonatomic, assign) CGFloat radiusValue;
 @property (nonatomic, copy) NSNumber* circleTag;
 @property (nonatomic, copy) UIColor* bgColorValue;
-@property (nonatomic, assign) BOOL viewBgColorByDecorator;
 @property (nonatomic,copy)void (^activeStyleBlock)(id );
 @property (nonatomic,copy)void (^inactiveStyleBlock)(id );
 @property (nonatomic,copy)void (^selectStyleBlock)(id );

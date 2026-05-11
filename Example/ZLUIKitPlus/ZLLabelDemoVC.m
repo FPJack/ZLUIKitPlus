@@ -101,8 +101,7 @@
             .boldFont(14)
             .color(UIColor.whiteColor)
             .textAlignCenter
-            .bgColor(@"#FF5722")
-            .circle(YES);
+            .bgColor(@"#FF5722");
         lab.KFC.addTo(self.view).top(y).leading(20).square(32);
         
         ZLLabel *desc = ZLLab;
@@ -136,7 +135,7 @@
         lab.txt(@"10. 不同方向圆角").systemFont(14).color(UIColor.whiteColor)
             .insets(10, 16, 10, 16).bgColor(@"#9C27B0")
             .border(2, UIColor.orangeColor)
-            .cornerRadii(16, 0, 0, 16);
+            .corner(10);
         lab.KFC.addTo(self.view).top(y).leading(20);
         y += 50;
     }

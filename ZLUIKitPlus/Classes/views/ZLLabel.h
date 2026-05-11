@@ -9,8 +9,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign)  CGFloat insetLeading;
 @property (nonatomic, assign)  CGFloat insetTrailing;
 @property (nonatomic, assign)  UIEdgeInsets edgeInsets;
-@property(nonatomic,assign) BOOL selected;  
-
 
 @property (readonly)ZLLabel *(^insets)(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing); // edgeInsets 设置
 
@@ -57,19 +55,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///不可点击情况下配置userActive(NO) 触发回调
 @property (readonly) ZLLabel* (^inactiveStyle)(void (^)(ZLLabel * label));
-///设置选中状态
-@property (readonly) ZLLabel* (^select)(BOOL select);
+
 ///选中样式
 @property (readonly) ZLLabel* (^selectStyle)(void (^)(ZLLabel * label));
 
 ///设置圆角
 @property ( readonly) ZLLabel* (^corner)(CGFloat radius);
+///设置每个角的圆角，参数依次是左上、右上、左下、右下，单独设置每个角（>= 0 时覆盖 cornerRadius）
+@property (readonly) ZLLabel* (^corners)(CACornerMask corners);
 
-@property (readonly) ZLLabel* (^circle)(BOOL circle);
-
-
-///设置4个方向的圆角，传入不同的值
-@property ( readonly) ZLLabel* (^cornerRadii)(CGFloat topLeft, CGFloat topRight, CGFloat bottomLeft, CGFloat bottomRight);
 ///设置属性文本
 @property ( readonly) ZLLabel* (^attributeTxt)(NSAttributedString *attributeStr);
 ///通过block设置属性文本，支持链式调用
@@ -77,7 +71,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///UIColor or #333333
 @property (readonly) ZLLabel* (^borderColor)(id);
+
 @property (readonly) ZLLabel* (^borderWidth)(CGFloat);
+
 @property (readonly) ZLLabel* (^border)(CGFloat width,id color);
 
 @property (readonly) ZLLabel* (^masksToBounds)(BOOL masksToBounds);

@@ -6,7 +6,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ZLViewDecorator.h"
 #import "ZLView.h"
 #import "ZLPairView.h"
 NS_ASSUME_NONNULL_BEGIN

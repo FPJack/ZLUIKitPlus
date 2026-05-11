@@ -675,9 +675,36 @@
         return self;
     };
 }
+- (UIScrollView *)wrapScrollView{
+    UIScrollView *scrollView = UIScrollView.new;
+    [scrollView addSubview:self];
+    self.translatesAutoresizingMaskIntoConstraints = NO;
+    self.KFC.edgesZero();
+    NSLayoutConstraint *axisLayout;
+    if (self.axis == ZLStackViewAxisHorizontal) {
+        axisLayout =  [self.heightAnchor constraintEqualToAnchor:scrollView.heightAnchor];
+        //（1）scrollView 的宽度 = stackView 宽度（低优先级）
+        NSLayoutConstraint *equalHeight =
+        [scrollView.widthAnchor constraintEqualToAnchor:self.widthAnchor];
+        equalHeight.priority = UILayoutPriorityDefaultLow;   // 低优先级
+        equalHeight.active = YES;
+    }else {
+        axisLayout =  [self.widthAnchor constraintEqualToAnchor:scrollView.widthAnchor];
+        //（1）scrollView 的高度 = stackView 高度（低优先级）
+        NSLayoutConstraint *equalHeight =
+            [scrollView.heightAnchor constraintEqualToAnchor:self.heightAnchor];
+        equalHeight.priority = UILayoutPriorityDefaultLow;   // 低优先级
+        equalHeight.active = YES;
+    }
+    axisLayout.active = YES;
+    return scrollView;
+}
 @end
 
 
 @implementation ZLStackView
 
 @end
+
+
+

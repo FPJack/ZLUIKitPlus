@@ -10,9 +10,10 @@
 #import "ZLLayoutGuide.h"
 #import "ZLFlexItem.h"
 NS_ASSUME_NONNULL_BEGIN
-@class ZLStackView;
+@class ZLStackView,ZLScrollStackView;
 
 @interface ZLBaseStackView<__covariant ObjectType> : UIView
+
 ///水平排列还是垂直排列，默认水平排列 默认水平排列
 @property (nonatomic,assign)ZLStackViewAxis axis;
 ///纵轴对齐方式
@@ -165,11 +166,19 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) ObjectType (^addToFull)(UIView *superview);
 
 @property (readonly) ObjectType (^addSubview)(UIView *subview);
+
+///包裹一个scrollview，解决scrollview里面放stackview高度不自适应以及内容宽高超出容器宽高滑动的问题
+- (UIScrollView *)wrapScrollView;
+
 @end
 
 ///按钮不会跟随文字撑开 titleLabel需要和button加相等高度约束
 @interface ZLStackView : ZLBaseStackView<ZLStackView *>
 
 @end
+
+
+
+
 
 NS_ASSUME_NONNULL_END

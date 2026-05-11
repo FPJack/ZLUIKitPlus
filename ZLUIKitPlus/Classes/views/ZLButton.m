@@ -8,7 +8,6 @@
 #import "ZLButton.h"
 #import "ZLUI.h"
 #import <objc/runtime.h>
-#import "ZLViewDecorator.h"
 
 #define kInsetLeadingId @"kInsetLeadingId"
 #define kInsetTrailingId @"kInsetTrailingId"

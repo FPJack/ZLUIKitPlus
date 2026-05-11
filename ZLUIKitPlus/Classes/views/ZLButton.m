@@ -30,17 +30,148 @@
 ///图片和文字展示顺序的拼接字段
 @property (nonatomic,copy)NSString *orderKey;
 
-@property (nonatomic,strong) ZLViewDecorator    *zl_decorator;
+
+
+@property (nonatomic, strong) CAShapeLayer *backgroundShapeLayer;
+@property (nonatomic,strong)  CAGradientLayer *gradLayer;
+///是否需要重绘
+@property (nonatomic, assign) BOOL needsUpdate;
+@property (nonatomic, assign)UIEdgeInsets cornerRadiiValue;
+@property (nonatomic, assign) CGFloat radiusValue;
+@property (nonatomic, copy) NSNumber* circleTag;
+@property (nonatomic, copy) UIColor* bgColorValue;
+@property (nonatomic,copy)void (^activeStyleBlock)(id );
+@property (nonatomic,copy)void (^inactiveStyleBlock)(id );
 
 @end
 
 @implementation ZLButton
-- (ZLViewDecorator *)zl_decorator {
-    if (!_zl_decorator) {
-        _zl_decorator = [[ZLViewDecorator alloc] initWithView:self];
+- (CAShapeLayer *)backgroundShapeLayer {
+    if (!_backgroundShapeLayer) {
+        _backgroundShapeLayer = [CAShapeLayer layer];
     }
-    return _zl_decorator;
+    return _backgroundShapeLayer;
 }
+- (CAGradientLayer *)gradLayer {
+    if (!_gradLayer) {
+        CAGradientLayer *layer = [CAGradientLayer layer];
+        layer.startPoint = CGPointMake(0, 0); //左上
+        layer.endPoint = CGPointMake(1, 1); // 右下
+        [self backgroundShapeLayer];
+        _gradLayer = layer;
+    }
+    return _gradLayer;
+}
+// MARK: - 贝塞尔路径
+
+- (UIBezierPath *)_bezierPathWithRect:(CGRect)rect
+                                   tl:(CGFloat)tl tr:(CGFloat)tr
+                                   bl:(CGFloat)bl br:(CGFloat)br {
+    CGFloat minX = CGRectGetMinX(rect), minY = CGRectGetMinY(rect);
+    CGFloat maxX = CGRectGetMaxX(rect), maxY = CGRectGetMaxY(rect);
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(minX + tl, minY)];
+    [path addLineToPoint:CGPointMake(maxX - tr, minY)];
+    [path addArcWithCenter:CGPointMake(maxX - tr, minY + tr) radius:tr startAngle:-M_PI_2 endAngle:0 clockwise:YES];
+    [path addLineToPoint:CGPointMake(maxX, maxY - br)];
+    [path addArcWithCenter:CGPointMake(maxX - br, maxY - br) radius:br startAngle:0 endAngle:M_PI_2 clockwise:YES];
+    [path addLineToPoint:CGPointMake(minX + bl, maxY)];
+    [path addArcWithCenter:CGPointMake(minX + bl, maxY - bl) radius:bl startAngle:M_PI_2 endAngle:M_PI clockwise:YES];
+    [path addLineToPoint:CGPointMake(minX, minY + tl)];
+    [path addArcWithCenter:CGPointMake(minX + tl, minY + tl) radius:tl startAngle:M_PI endAngle:-M_PI_2 clockwise:YES];
+    [path closePath];
+    return path;
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor {
+    self.bgColorValue = backgroundColor;
+    if (_backgroundShapeLayer) {
+        self.backgroundShapeLayer.fillColor = backgroundColor.CGColor;
+    }else {
+        [super setBackgroundColor:backgroundColor];
+    }
+}
+- (UIColor *)backgroundColor {
+    return self.bgColorValue ?: [super backgroundColor];
+}
+- (BOOL)needsUpdate {
+    if (_backgroundShapeLayer && !CGRectEqualToRect(self.bounds, _backgroundShapeLayer.bounds)) {
+        return YES;
+    }
+    return _needsUpdate;
+}
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self callLayoutSubviewBlock];
+    [self update];
+}
+- (void)update {
+    CGRect bounds = self.bounds;
+    if (CGRectIsEmpty(bounds) || !_backgroundShapeLayer) return;
+    if (!self.needsUpdate) return;
+    self.needsUpdate = NO;
+    CGFloat topLeft, topRight, bottomLeft, bottomRight;
+    if ([self _zl_isRTL]) {
+        topLeft = self.cornerRadiiValue.left;      // original topRight
+        topRight = self.cornerRadiiValue.top;       // original topLeft
+        bottomLeft = self.cornerRadiiValue.right;   // original bottomRight
+        bottomRight = self.cornerRadiiValue.bottom;  // original bottomLeft
+    } else {
+        topLeft = self.cornerRadiiValue.top;
+        topRight = self.cornerRadiiValue.left;
+        bottomLeft = self.cornerRadiiValue.bottom;
+        bottomRight = self.cornerRadiiValue.right;
+    }
+    
+    CGFloat tl = topLeft  >= 0 ? topLeft : _radiusValue;
+    CGFloat tr = topRight >= 0 ? topRight     : _radiusValue;
+    CGFloat bl = bottomLeft   >= 0 ? bottomLeft   : _radiusValue;
+    CGFloat br = bottomRight  >= 0 ? bottomRight  : _radiusValue;
+
+    if (self.circleTag){
+        if (self.circleTag.boolValue) {
+            tl = tr = bl = br = MIN(bounds.size.width, bounds.size.height) / 2;
+        }else {
+            tl = tr = bl = br = 0;
+        }
+    }
+    
+    UIBezierPath *path = [self _bezierPathWithRect:bounds tl:tl tr:tr bl:bl br:br];
+
+    // 1. 圆角背景色（sublayer 绘制，不影响 shadow）
+    _backgroundShapeLayer.frame     = bounds;
+    _backgroundShapeLayer.path      = path.CGPath;
+    // 同步背景色：若 view.backgroundColor 有值，迁移到 fillColor
+    UIColor *bgColor = self.bgColorValue;
+    if (bgColor) {
+        _backgroundShapeLayer.fillColor = bgColor.CGColor;
+        [super setBackgroundColor:UIColor.clearColor];
+    }else {
+        _backgroundShapeLayer.fillColor = UIColor.whiteColor.CGColor;
+    }
+    
+    if (_gradLayer) {
+        _gradLayer.frame = self.bounds;
+        CAShapeLayer *maskLayer = [CAShapeLayer layer];
+        maskLayer.frame = _gradLayer.bounds;
+        maskLayer.path = path.CGPath;
+         _gradLayer.mask = maskLayer;
+        [self.layer insertSublayer:_gradLayer atIndex:0];
+    }
+    
+    // 2. 阴影（shadowPath 贴合圆角路径，无需 masksToBounds）
+    if (self.layer.shadowColor) {
+        self.layer.shadowPath = path.CGPath;
+    }
+   
+    [self.layer insertSublayer:_backgroundShapeLayer atIndex:0];
+}
+- (void)setNeedLayoutIfNeed {
+    if (self.needsUpdate) return;
+    self.needsUpdate = YES;
+    [self setNeedsLayout];
+}
+
 - (UIEdgeInsets)_zl_effectiveInsets {
     UIEdgeInsets insets = _layoutEdgeInsets;
     if ([self _zl_isRTL]) {
@@ -429,14 +560,26 @@
 
 - (ZLButton * _Nonnull (^)(NSArray * _Nonnull))gradColors {
     return ^(NSArray *colors) {
-        self.zl_decorator.gradColors = colors;
+        NSMutableArray *cgColors = [NSMutableArray arrayWithCapacity:colors.count];
+        for (id color in colors) {
+            [cgColors addObject:(__bridge id)ZLColorFromObj(color).CGColor];
+        }
+        if (!(self -> _gradLayer)) {
+            self.gradLayer.colors = cgColors;
+            [self setNeedLayoutIfNeed];
+            return self;
+        }
+        self.gradLayer.colors = cgColors;
         return self;
     };
 }
 - (ZLButton * _Nonnull (^)(CGPoint, CGPoint))gradDirection {
     return ^(CGPoint start, CGPoint end) {
-        self.zl_decorator.gradStartPoint = start;
-        self.zl_decorator.gradEndPoint = end;
+        self.gradLayer.startPoint = start;
+        self.gradLayer.endPoint = end;
+        if (!(self -> _gradLayer)) {
+            [self setNeedLayoutIfNeed];
+        }
         return self;
     };
 }
@@ -866,29 +1009,8 @@
 
 
 #pragma mark - layoutSubviews
-- (void)setBackgroundColor:(UIColor *)backgroundColor {
-    if (_zl_decorator && !_zl_decorator.viewBgColorByDecorator) {
-        _zl_decorator.fillColor = backgroundColor;
-    }else {
-        [super setBackgroundColor:backgroundColor];
-    }
-}
-- (UIColor *)backgroundColor {
-    if (_zl_decorator) {
-        return _zl_decorator.fillColor ?: [super backgroundColor];
-    }else {
-        return [super backgroundColor];
-    }
-}
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    
-    [self callLayoutSubviewBlock];
-    
-    if (_zl_decorator) {
-        [_zl_decorator update];
-    }
-}
+
+
 - (void)callLayoutSubviewBlock {
     if (self.layoutBlock) {
         self.layoutBlock(self);
@@ -949,23 +1071,23 @@
         return self;
     };
 }
-- (void)setSelected:(BOOL)selected {
-    [super setSelected:selected];
-    self.zl_decorator.selected = selected;
-}
-- (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled {
-    [super setUserInteractionEnabled:userInteractionEnabled];
-    self.zl_decorator.active = userInteractionEnabled;
-}
+
 - (ZLButton * _Nonnull (^)(CGFloat))corner {
     return ^ZLButton*(CGFloat radius){
-        self.zl_decorator.cornerRadius = radius;
+        if (radius == self.radiusValue) return self;
+        self.radiusValue = radius;
+        [self setNeedLayoutIfNeed];
         return self;
     };
 }
 - (ZLButton * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))cornerRadii {
     return ^ZLButton*(CGFloat topLeft, CGFloat topRight, CGFloat bottomLeft, CGFloat bottomRight){
-        self.zl_decorator.corners(topLeft,topRight,bottomLeft,bottomRight);
+        UIEdgeInsets radii = UIEdgeInsetsMake(topLeft, topRight, bottomLeft, bottomRight);
+        if (UIEdgeInsetsEqualToEdgeInsets(radii, self.cornerRadiiValue)) {
+            return self;
+        }
+        self.cornerRadiiValue = UIEdgeInsetsMake(topLeft, topRight, bottomLeft, bottomRight);
+        [self setNeedLayoutIfNeed];
         return self;
     };
 }
@@ -979,7 +1101,7 @@
 
 - (ZLButton * _Nonnull (^)(BOOL))circle {
     return ^ZLButton*(BOOL clip) {
-        self.zl_decorator.circle = @(clip);
+        self.circleTag = @(clip);
         return self;
     };
 }
@@ -992,13 +1114,13 @@
 }
 - (ZLButton* (^)(id ))borderColor {
     return  ^ZLButton*(id color){
-        self.zl_decorator.borderColor = color;
+        self.backgroundShapeLayer.strokeColor = ZLColorFromObj(color).CGColor;
         return self;
     };
 }
 - (ZLButton* (^)(CGFloat ))borderWidth {
     return  ^ZLButton*(CGFloat width){
-        self.zl_decorator.borderWidth = width;
+        self.backgroundShapeLayer.lineWidth = width;
         return self;
     };
 }
@@ -1009,15 +1131,20 @@
 }
 - (ZLButton*  _Nonnull (^)(id _Nonnull))shColor {
     return ^ZLButton* (id color) {
-        self.zl_decorator.shadowColor = ZLColorFromObj(color);
-        return self.shOffset(0,2);
+        self.layer.shadowColor = ZLColorFromObj(color).CGColor;
+        self.layer.shadowOpacity = 0.2;
+        self.layer.shadowRadius = 8;
+        self.layer.shadowOffset = CGSizeMake(0, 2);
+        self.layer.masksToBounds = NO;
+        [self backgroundShapeLayer];
+        return self;
     };
 }
 
 
 - (ZLButton*  _Nonnull (^)(CGFloat, CGFloat))shOffset {
     return ^ZLButton* (CGFloat width, CGFloat height) {
-        self.zl_decorator.shadowOffset = CGSizeMake(width, height);
+        self.layer.shadowOffset = CGSizeMake(width, height);
         return self;
     };
 }
@@ -1025,14 +1152,14 @@
 
 - (ZLButton*  _Nonnull (^)(CGFloat))shRadius {
     return ^ZLButton* (CGFloat radius) {
-        self.zl_decorator.shadowRadius = radius;
+        self.layer.shadowRadius = radius;
         return self;
     };
 }
 
 - (ZLButton*  _Nonnull (^)(CGFloat))shOpacity {
     return ^ZLButton* (CGFloat opacity) {
-        self.zl_decorator.shadowOpacity = opacity;
+        self.layer.shadowOpacity = opacity;
         return self.masksToBounds(NO);
     };
 }
@@ -1075,21 +1202,15 @@
 }
 - (ZLButton* (^)(void (^ _Nonnull)(ZLButton * _Nonnull)))activeStyle {
     return ^(void (^block)(ZLButton *)) {
-        self.zl_decorator.activeStyleBlock = block;
+        self.activeStyleBlock = block;
         if (self.userInteractionEnabled) if (block) block(self);
         return self;
     };
 }
-- (ZLButton * _Nonnull (^)(void (^ _Nonnull)(ZLButton * _Nonnull)))selectStyle {
-    return ^(void (^block)(ZLButton *)) {
-            self.zl_decorator.selectStyleBlock = block;
-        if (self.selected) if (block) block(self);
-        return self;
-    };
-}
+
 - (ZLButton* (^)(void (^ _Nonnull)(ZLButton * _Nonnull)))inactiveStyle {
     return ^(void (^block)(ZLButton *)) {
-        self.zl_decorator.inactiveStyleBlock = block;
+        self.inactiveStyleBlock = block;
         if (!self.userInteractionEnabled) if (block) block(self);
         return self;
     };

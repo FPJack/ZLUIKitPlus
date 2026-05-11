@@ -843,7 +843,7 @@
 
 
 
-- (ZLButton * _Nonnull (^)(void (^ _Nonnull)(ZLButton *)))touchAction {
+- (ZLButton * _Nonnull (^)(void (^ _Nonnull)(ZLButton *)))tapAction {
     return ^(void (^action)(ZLButton *)) {
         [self addTarget:self action:@selector(_zl_handleTouch) forControlEvents:UIControlEventTouchUpInside];
         objc_setAssociatedObject(self, @selector(_zl_handleTouch), action, OBJC_ASSOCIATION_COPY_NONATOMIC);

@@ -46,7 +46,7 @@
 //                        .z_top(10)
 //                        .z_trailing(10)
 //                        .circle(YES))
-            .touchAction(^(ZLButton *b) {
+            .tapAction(^(ZLButton *b) {
                 NSLog(@"水平按钮点击");
             });
        
@@ -134,7 +134,7 @@
             .imageSize(24, 24).systemFont(14).spacing(6)
             .insets(8, 16, 8, 16).corner(8).bgColor(@"#FAFAFA")
             .border(1, @"#E0E0E0")
-            .touchAction(^(ZLButton *b) {
+            .tapAction(^(ZLButton *b) {
                 b.select(!b.isSelected);
             });
         [content addSubview:btn];
@@ -154,7 +154,7 @@
             .debounce(2.0)
             .shColor(@"#FF5722").shOffset(0, 4).shOpacity(0.3).shRadius(8)
             .masksToBounds(NO)
-            .touchAction(^(ZLButton *b) {
+            .tapAction(^(ZLButton *b) {
                 NSLog(@"防抖按钮点击");
             });
         [content addSubview:btn];
@@ -188,7 +188,7 @@
         ZLButton *toggleBtn = ZLBtnH;
         toggleBtn.title(@"切换").systemFont(13).titleColor(@"#4A90D9")
             .insets(8, 12, 8, 12).corner(6).border(1, @"#4A90D9")
-            .touchAction(^(ZLButton *b) {
+            .tapAction(^(ZLButton *b) {
                 ref.userActive(!ref.isUserInteractionEnabled);
             });
         [content addSubview:toggleBtn];
@@ -237,7 +237,7 @@
             .titleColor(@"#333333").spacing(4).bgColor(@"#FFF9C4").corner(6)
             .insets(6, 12, 6, 12)
             .touchAreaEdge(10, 10, 10, 10)
-            .touchAction(^(ZLButton *b) {
+            .tapAction(^(ZLButton *b) {
                 NSLog(@"扩大区域被点击");
             });
         [content addSubview:btn];

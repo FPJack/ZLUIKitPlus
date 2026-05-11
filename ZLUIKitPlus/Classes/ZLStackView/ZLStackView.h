@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 添加view到stackView，默认添加到最后
 - (void)addArrangedSubview:(UIView *)view;
 ///添加view并且配置view的布局属性
-- (void)addArrangedSubview:(UIView *)view layout:(void(^)(__kindof UIView *view, ZLLayoutViewFlex *viewCfg))config;
+- (void)addArrangedSubview:(UIView *)view layout:(void(^)(__kindof UIView *view, ZLLayoutViewFlex *flexItem))config;
 ///在某个位置插入view
 - (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)stackIndex;
 /// 移除view
@@ -84,7 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly)ObjectType (^add)(UIView *view);
 @property (nonatomic, readonly)ObjectType (^addLayout)(
     UIView *view,
-    void(^)(__kindof UIView *view, ZLLayoutViewFlex *viewCfg)
+    void(^)(__kindof UIView *view, ZLLayoutViewFlex *flexItem)
 );
 @property (nonatomic, readonly)ObjectType (^spacingAfter)(UIView *arrangedSubview,CGFloat spacing);
 @property (nonatomic, readonly)ObjectType (^minSpacingAfter)(UIView *arrangedSubview,CGFloat minSpacing);
@@ -163,7 +163,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) ObjectType (^addTo)(UIView *superview);
 ///添加到父视图 并且贴紧父视图四边布局，参数是父视图
 @property (readonly) ObjectType (^addToFull)(UIView *superview);
-@property (readonly) ObjectType(^addSubview)(UIView *subview);
+
+@property (readonly) ObjectType (^addSubview)(UIView *subview);
 @end
 
 ///按钮不会跟随文字撑开 titleLabel需要和button加相等高度约束

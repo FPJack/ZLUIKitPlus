@@ -86,8 +86,7 @@ static inline UIColor * _Nullable ZLColorFromObj(NSObject * _Nullable obj) {
 
 @property (nonatomic, copy, readonly) ZLUI *(^addSubview)(UIView *subview);
 
-///返回包裹好的一个view返回
-@property (nonatomic, copy, readonly) UIView *(^wrapEdges)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
+@property (nonatomic, copy, readonly) ZLUI *(^addSubviewLayout)(UIView *subview, void(^)(ZLUI *layout));
 
 @end
 

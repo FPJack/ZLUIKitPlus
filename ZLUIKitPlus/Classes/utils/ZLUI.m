@@ -213,11 +213,15 @@
         return self;
     };
 }
-- (UIView * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))wrapEdges {
-    return ^(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing){
-        UIView *view = UIView.new;
-        self.addTo(view).edge(top, leading, bottom, trailing);
-        return view;
+- (ZLUI * _Nonnull (^)(UIView * _Nonnull, void (^ _Nonnull)(ZLUI * _Nonnull)))addSubviewLayout {
+    return ^(UIView *subview, void (^layout)(ZLUI *layoutObj)) {
+        if ([subview isKindOfClass:UIView.class]) {
+            [self.view addSubview:subview];
+            if (layout) {
+                layout(subview.KFC);
+            }
+        }
+        return self;
     };
 }
 @end

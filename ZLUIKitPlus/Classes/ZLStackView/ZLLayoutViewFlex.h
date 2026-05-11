@@ -17,14 +17,23 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @interface ZLLayoutViewFlex : NSObject
+
 @property (nonatomic,assign)CGFloat startSpacing;
+
 @property (nonatomic,assign)CGFloat endSpacing;
+
 @property (nonatomic,assign)CGFloat spacing;
+
 @property (nonatomic,assign)CGFloat minSpacing;
+
 @property (nonatomic,assign)CGFloat maxSpacing;
+
 @property (nonatomic,assign)BOOL    isFlexSpace; ///ZLJustifyFill 才会有效
-//@property (nonatomic,assign)NSInteger flex;  //弹性权重（横向=宽度比例，纵向=高度比例）
-@property (nonatomic,assign)NSInteger flexValue;  //弹性权重（横向=宽度比例，纵向=高度比例）
+
+///弹性权重（横向=宽度比例，纵向=高度比例）
+@property (nonatomic,assign)NSInteger flexValue;
+
+//弹性权重（横向=宽度比例，纵向=高度比例）
 @property (nonatomic,assign)ZLAlign alignSelf;
 
 

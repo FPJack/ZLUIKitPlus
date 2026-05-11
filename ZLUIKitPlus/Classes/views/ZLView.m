@@ -399,7 +399,15 @@
         return self;
     };
 }
-
+- (ZLView * _Nonnull (^)(UIView * _Nonnull, void (^ _Nonnull)(ZLView * _Nonnull, __kindof UIView * _Nonnull)))addSubviewLayout {
+    return ^(UIView *subview, void (^block)(ZLView *, UIView *)) {
+        if ([subview isKindOfClass:UIView.class]) {
+            [self addSubview:subview];
+            if (block) block(self, subview);
+        }
+        return self;
+    };
+}
 - (ZLView* (^)(void (^ _Nonnull)(ZLView * _Nonnull)))activeStyle {
     return ^(void (^block)(ZLView *)) {
         self.activeStyleBlock = block;

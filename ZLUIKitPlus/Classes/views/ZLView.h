@@ -84,13 +84,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///添加到父视图 并且贴紧父视图四边布局，参数是父视图
 @property (readonly) ZLView * (^addToFull)(UIView *superview);
-
+///添加子视图，参数是子视图
 @property (readonly) ZLView *(^addSubview)(UIView *subview);
+///添加子视图并且对子视图进行布局配置，参数是子视图和布局配置回调，回调参数是当前view和子视图，使用者在回调里对view进行布局配置即可
+@property (readonly) ZLView *(^addSubviewLayout)(UIView *subview, void(^)(ZLView *view,__kindof UIView *subview));
 ///可点击情况下进行相应配置 userActive(YES) 触发回调
 @property (readonly) ZLView* (^activeStyle)(void (^)(ZLView * view));
 ///不可点击情况下配置userActive(NO) 触发回调
 @property (readonly) ZLView* (^inactiveStyle)(void (^)(ZLView * view));
-
 ///立即触发block回调，适用于需要在初始化时立即配置样式的场景
 @property (readonly) ZLView* (^then)(void (^)(ZLView * view));
 ///点击事件

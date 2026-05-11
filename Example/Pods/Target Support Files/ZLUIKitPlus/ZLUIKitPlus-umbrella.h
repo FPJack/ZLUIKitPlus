@@ -19,7 +19,7 @@
 #import "ZLStateView.h"
 #import "ZLTagListView.h"
 #import "ZLView.h"
-#import "ZLConstraintsItem.h"
+#import "ZLConstraintItem.h"
 #import "ZLLayoutGuide.h"
 #import "ZLFlexManager.h"
 #import "ZLFlexItem.h"

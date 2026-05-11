@@ -11,7 +11,7 @@
 		0AE1FFAA4390B36294D9A3C1E9A2D181 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26BC96F34E43FA0A3AE93B3C2C4595E5 /* XCTest.framework */; };
 		129550C37BED9C32579CDF53D4027184 /* ZLUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 53BB5930A3121D6D83988D921ADE450D /* ZLUI.m */; };
 		12C8FD3D06F867281B3C87497145DC65 /* FBSnapshotTestCase.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CEEB1F6C31B89937C80AD46D2ECA574 /* FBSnapshotTestCase.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		172772F968293BEE7D47221CD399AB0C /* ZLConstraintsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 071A5BB07DF823265274F813A4641ABA /* ZLConstraintsItem.m */; };
+		172772F968293BEE7D47221CD399AB0C /* ZLConstraintItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 071A5BB07DF823265274F813A4641ABA /* ZLConstraintItem.m */; };
 		1D1824D26D08499A578B8F67AD4FE581 /* ZLUIKitPlus-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C6EE4E4C59BE72EBF87E65FF615FBA1F /* ZLUIKitPlus-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		267AEE0BF1514767DD64B50559013EB3 /* FBSnapshotTestController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8AD9A6CFD4331B9A23C2F7983498CF3 /* FBSnapshotTestController.m */; };
 		2EA6E3B185E52D0213C4165BB4A95E2D /* ZLLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A5B36612397157BBA28AB99135AA36A /* ZLLabel.m */; };
@@ -58,7 +58,7 @@
 		9C09C03744FEED8B87AA8C1DEC0442B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 692D29656528FA94A71ECFB8FEB6DC0B /* Foundation.framework */; };
 		A014D3B07F969B61EBE1D74E5EA9C11C /* ZLView.h in Headers */ = {isa = PBXBuildFile; fileRef = BEAAE9F162CC0A5C043323B0BE5F4D6C /* ZLView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A221A87261497B2D693D7615E7C0A220 /* ZLFlexManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 04B17CF21168A94068B97B7FA8094B41 /* ZLFlexManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		ABE80B43C726C68A2D447394E31E32CB /* ZLConstraintsItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B4E2EC3DE99034D4A76332B94EEBE15 /* ZLConstraintsItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ABE80B43C726C68A2D447394E31E32CB /* ZLConstraintItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B4E2EC3DE99034D4A76332B94EEBE15 /* ZLConstraintItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AC84C50221AD3810D7CA446F8DD372C6 /* ZLStackView.h in Headers */ = {isa = PBXBuildFile; fileRef = E40BEF4FB9BE4F9E060FEDA84051E1FC /* ZLStackView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		ACCD017023303E02539FF4F449180245 /* Pods-ZLUIKitPlus_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 833DB4606990BCC1E1E20E5F6BBBFBB1 /* Pods-ZLUIKitPlus_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AE7B02645B8F769CA5F215EE8F7CC5B0 /* View+MASAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 602E46B1DC438E157FEFDB89FFC1FEE0 /* View+MASAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -142,7 +142,7 @@
 		056B9A9EA33D36D8C60BBCEF749521BA /* ZLUIKitPlus.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = ZLUIKitPlus.modulemap; sourceTree = "<group>"; };
 		05ED7991BE91B391C4F38B25354DEEB6 /* Masonry.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Masonry.h; path = Masonry/Masonry.h; sourceTree = "<group>"; };
 		0698703AB5589BFEDA32564A55793751 /* ZLImageView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ZLImageView.m; sourceTree = "<group>"; };
-		071A5BB07DF823265274F813A4641ABA /* ZLConstraintsItem.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ZLConstraintsItem.m; sourceTree = "<group>"; };
+		071A5BB07DF823265274F813A4641ABA /* ZLConstraintItem.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ZLConstraintItem.m; sourceTree = "<group>"; };
 		0B0A71045D2C733C3BD6340095E5E033 /* FBSnapshotTestCasePlatform.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSnapshotTestCasePlatform.m; path = FBSnapshotTestCase/FBSnapshotTestCasePlatform.m; sourceTree = "<group>"; };
 		0CC43CD4A19658EFB4B9DA82523C9B24 /* ZLUIKitPlus-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ZLUIKitPlus-prefix.pch"; sourceTree = "<group>"; };
 		0D85C3E6E50008C91B87CB4DB841D90A /* FBSnapshotTestCase-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "FBSnapshotTestCase-Info.plist"; sourceTree = "<group>"; };
@@ -200,7 +200,7 @@
 		75B839A35A2BFBEC3479FF1552F569BC /* FBSnapshotTestCase-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FBSnapshotTestCase-dummy.m"; sourceTree = "<group>"; };
 		7731683F4BFFF04ACBB3E9BA86F1B2BA /* FBSnapshotTestCase.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FBSnapshotTestCase.release.xcconfig; sourceTree = "<group>"; };
 		775B5BA62A91D1F05CE5051F5A77C646 /* ZLView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ZLView.m; sourceTree = "<group>"; };
-		7B4E2EC3DE99034D4A76332B94EEBE15 /* ZLConstraintsItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ZLConstraintsItem.h; sourceTree = "<group>"; };
+		7B4E2EC3DE99034D4A76332B94EEBE15 /* ZLConstraintItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ZLConstraintItem.h; sourceTree = "<group>"; };
 		7C7DED03DF79A4DF60092D398D679A7C /* ZLFlexManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ZLFlexManager.m; sourceTree = "<group>"; };
 		7E502E95D75F8DF19C71E7419515430D /* MASViewConstraint.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MASViewConstraint.m; path = Masonry/MASViewConstraint.m; sourceTree = "<group>"; };
 		80F667AB7ED1BAB6D811DB945B7FD038 /* ZLLabel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ZLLabel.h; sourceTree = "<group>"; };
@@ -350,8 +350,8 @@
 		30575550B910005D712763964073CF46 /* ZLStackView */ = {
 			isa = PBXGroup;
 			children = (
-				7B4E2EC3DE99034D4A76332B94EEBE15 /* ZLConstraintsItem.h */,
-				071A5BB07DF823265274F813A4641ABA /* ZLConstraintsItem.m */,
+				7B4E2EC3DE99034D4A76332B94EEBE15 /* ZLConstraintItem.h */,
+				071A5BB07DF823265274F813A4641ABA /* ZLConstraintItem.m */,
 				6C077F68A68D2C3CEE0D4ED3603DADB9 /* ZLLayoutGuide.h */,
 				6EBEABA83F44E013FC0981720ACF52A3 /* ZLLayoutGuide.m */,
 				04B17CF21168A94068B97B7FA8094B41 /* ZLFlexManager.h */,
@@ -663,7 +663,7 @@
 			files = (
 				F770A820F49524A583C34A6FDF04FE38 /* UIView+ZLView.h in Headers */,
 				FFC15FDA253D869D087017FA061BF53E /* ZLButton.h in Headers */,
-				ABE80B43C726C68A2D447394E31E32CB /* ZLConstraintsItem.h in Headers */,
+				ABE80B43C726C68A2D447394E31E32CB /* ZLConstraintItem.h in Headers */,
 				8853FF7EC019C325627414636A2DA344 /* ZLImageView.h in Headers */,
 				75F9C46ECFEF002508CDA7DA951CB361 /* ZLLabel.h in Headers */,
 				CFC03EDDEED95811393F07C20D8FB2F2 /* ZLLayoutGuide.h in Headers */,
@@ -863,7 +863,7 @@
 			files = (
 				FE2B43294DF83D1E29B53E48A5FCD8BC /* UIView+ZLView.m in Sources */,
 				B3D7B5B9A7D9C3E88B72525A8FAB4276 /* ZLButton.m in Sources */,
-				172772F968293BEE7D47221CD399AB0C /* ZLConstraintsItem.m in Sources */,
+				172772F968293BEE7D47221CD399AB0C /* ZLConstraintItem.m in Sources */,
 				D7DDBB7D018A11B7025175BE9C471DA3 /* ZLImageView.m in Sources */,
 				2EA6E3B185E52D0213C4165BB4A95E2D /* ZLLabel.m in Sources */,
 				4FF9FD784E239D6939F6C0247CEE7BB0 /* ZLLayoutGuide.m in Sources */,

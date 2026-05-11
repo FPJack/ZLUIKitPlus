@@ -1,20 +1,20 @@
 //
-//  ZLConstraintsItem.m
+//  ZLConstraintItem.m
 //  ZLUIKitPlus_Example
 //
 //  Created by Qiuxia Cui on 2026/5/4.
 //  Copyright © 2026 fanpeng. All rights reserved.
 //
 
-#import "ZLConstraintsItem.h"
+#import "ZLConstraintItem.h"
 #import <objc/runtime.h>
-@implementation ZLConstraintsItem
+@implementation ZLConstraintItem
 @end
 @implementation NSLayoutConstraint (item)
-- (ZLConstraintsItem *)item {
-    ZLConstraintsItem *item = objc_getAssociatedObject(self, _cmd);
+- (ZLConstraintItem *)item {
+    ZLConstraintItem *item = objc_getAssociatedObject(self, _cmd);
     if (!item) {
-        item = ZLConstraintsItem.new;
+        item = ZLConstraintItem.new;
         objc_setAssociatedObject(self, _cmd, item, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return item;

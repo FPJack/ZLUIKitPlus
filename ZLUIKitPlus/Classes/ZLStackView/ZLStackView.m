@@ -9,7 +9,7 @@
 #import "ZLStackView.h"
 #import "ZLFlexManager.h"
 #import "ZLFlexItem.h"
-#import "ZLConstraintsItem.h"
+#import "ZLConstraintItem.h"
 #import "ZLUI.h"
 @interface ZLBaseStackView()
 @property (nonatomic,strong)ZLFlexManager *layoutManager;
@@ -157,7 +157,7 @@
     if (arrangedSubview.hidden) return;
     if (self.layoutManager.constraints.count == 0) return;
     NSArray<NSLayoutConstraint *> * arr = [self filterConstraintWithBlock:^BOOL(NSLayoutConstraint *constraint) {
-        ZLConstraintsItem *cfg = constraint.item;
+        ZLConstraintItem *cfg = constraint.item;
         return [cfg.view isEqual:arrangedSubview] && cfg.type == ZLLayoutConTypeSpacing;
     }];
     if (arr.count == 0) {
@@ -176,7 +176,7 @@
     if (arrangedSubview.hidden) return;
     if (self.layoutManager.constraints.count == 0) return;
     NSArray<NSLayoutConstraint *> * arr = [self filterConstraintWithBlock:^BOOL(NSLayoutConstraint *constraint) {
-        ZLConstraintsItem *cfg = constraint.item;
+        ZLConstraintItem *cfg = constraint.item;
         return [cfg.view isEqual:arrangedSubview] && cfg.type == ZLLayoutConTypeMinSpacing;
     }];
     if (arr.count > 0) {
@@ -196,7 +196,7 @@
     if (arrangedSubview.hidden) return;
     if (self.layoutManager.constraints.count == 0) return;
     NSArray<NSLayoutConstraint *> * arr = [self filterConstraintWithBlock:^BOOL(NSLayoutConstraint *constraint) {
-        ZLConstraintsItem *cfg = constraint.item;
+        ZLConstraintItem *cfg = constraint.item;
         return [cfg.view isEqual:arrangedSubview] && cfg.type == ZLLayoutConTypeMaxSpacing;
     }];
     if (arr.count > 0) {

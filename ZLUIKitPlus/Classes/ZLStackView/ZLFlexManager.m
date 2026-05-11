@@ -10,7 +10,7 @@
 #import "ZLStackView.h"
 #import "ZLFlexItem.h"
 #import "ZLStackEdgeInsets.h"
-#import "ZLConstraintsItem.h"
+#import "ZLConstraintItem.h"
 @interface ZLFlexManager()
 @property (nonatomic,strong)ZLStackEdgeInsets *stackEdgeInsets;
 @property (nonatomic,strong,readwrite)NSMutableArray<NSLayoutConstraint *> *constraints;

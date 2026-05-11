@@ -85,15 +85,15 @@
         [cfg setValue:view forKey:@"view"];
         [cfg setValue:self forKey:@"stackView"];
         [self.allViews addObject:view];
+        [self addSubview:view];
         if (view.hidden) return;
-        [self.arrangedViews addObject:view];
         [self adjustLabelCompression:view];
         view.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:view];
         self.markedDirty = YES;
         [self setNeedsUpdateConstraints];
     }
 }
+
 - (void)addArrangedSubview:(UIView *)view layout:(void(^)(__kindof UIView *view, ZLFlexItem *viewCfg))config{
     [self addArrangedSubview:view];
     if (config) config(view,view.zl_flex);
@@ -102,6 +102,10 @@
 - (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)stackIndex {
     if ([view isKindOfClass:UIView.class]) {
         if ([self.allViews containsObject:view]) return;
+        [self addSubview:view];
+        ZLFlexItem *cfg = view.zl_flex;
+        [cfg setValue:view forKey:@"view"];
+        [cfg setValue:self forKey:@"stackView"];
         [self.allViews insertObject:view atIndex:stackIndex];
         [self adjustLabelCompression:view];
         if (view.hidden) return;
@@ -121,7 +125,12 @@
 - (void)refreshArrangedSubviews {
     [self.arrangedViews removeAllObjects];
     [self.allViews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (!obj.hidden) [self.arrangedViews addObject:obj];
+        if (!obj.hidden) {
+            [self.arrangedViews addObject:obj];
+        }
+        if ([obj.superview isEqual:self]) {
+            [self addSubview:obj];
+        }
     }];
 }
 - (void)removeArrangedSubview:(UIView *)view {
@@ -224,7 +233,7 @@
 }
 ///设置view的alignment方向start间距
 - (void)setAlignmentStartSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview {
-    if (![self.arrangedViews containsObject:arrangedSubview]) return;
+    if (![self.allViews containsObject:arrangedSubview]) return;
     ZLFlexItem *cfg = arrangedSubview.zl_flex;
     if (spacing == cfg.startSpacing) return;
     cfg.startSpacing = spacing;
@@ -233,7 +242,7 @@
 }
 ///设置view的alignment方向end间距
 - (void)setAlignmentEndSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview {
-    if (![self.arrangedViews containsObject:arrangedSubview]) return;
+    if (![self.allViews containsObject:arrangedSubview]) return;
     ZLFlexItem *cfg = arrangedSubview.zl_flex;
     if (cfg.endSpacing == spacing) return;
     cfg.endSpacing = spacing;

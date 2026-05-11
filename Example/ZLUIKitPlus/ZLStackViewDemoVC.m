@@ -66,7 +66,6 @@ static ZLStackView *sectionView(NSString *title) {
 
 
 @interface ZLStackViewDemoVC ()
-@property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) ZLStackView  *contentStack;
 @end
 
@@ -76,23 +75,20 @@ static ZLStackView *sectionView(NSString *title) {
     [super viewDidLoad];
     self.title = @"ZLStackView Demo";
     self.view.backgroundColor = [UIColor colorWithWhite:0.96 alpha:1];
-
-    _scrollView = UIScrollView.new;
-    _scrollView.alwaysBounceVertical = YES;
-    [self.view addSubview:_scrollView];
-    [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.mas_equalTo(0);
-    }];
-
-    _contentStack = ZLStackView.vertical;
-    _contentStack.spacing = 16;
-    _contentStack.insets = UIEdgeInsetsMake(16, 16, 16, 16);
-    [_scrollView addSubview:_contentStack];
-    [_contentStack mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.mas_equalTo(0);
-        make.width.mas_equalTo(self.view);
-    }];
-
+    
+    ZLStackView *view;
+    ZLStackView
+    .vertical
+    .assignToPtr(&view)
+    .space(16)
+    .vInset(16, 16)
+    .hInset(16, 16)
+    .wrapScrollView
+    .KFC
+    .addToFull(self.view);
+    
+    self.contentStack = view;
+    
     [self buildDemos];
 }
 
@@ -109,8 +105,7 @@ static ZLStackView *sectionView(NSString *title) {
     [self demo10_hiddenAutoLayout];
     [self demo11_addLayout];
     [self demo12_removeView];
-//    [self demo13_insertAtIndex];
-//    return;
+    [self demo13_insertAtIndex];
     [self demo14_tapAction];
     [self demo15_chainAPI];
     [self demo16_scrollStackView];
@@ -148,7 +143,7 @@ static ZLStackView *sectionView(NSString *title) {
 // ─────────────────────────────────────────
 - (void)demo02_justifyContent {
     ZLStackView *sec = sectionView(@"02. justifyContent 主轴对齐");
-//    sec.alignment = ZLAlignFill; // 纵轴居中
+    sec.alignment = ZLAlignFill; // 纵轴居中
     [_contentStack addArrangedSubview:sec];
     sec.KFC.width(200);
     NSArray *modes = @[
@@ -176,10 +171,10 @@ static ZLStackView *sectionView(NSString *title) {
             make.height.mas_equalTo(36);
         }];
         for (int i = 0; i < 3; i++) {
-            UILabel *b = colorBlock(@"●", randColor());
-            [b mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.mas_equalTo(36);
-            }];
+            UILabel *b = colorBlock(@"●●●●", randColor());
+//            [b mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.width.mas_equalTo(36);
+//            }];
             [row addArrangedSubview:b];
         }
         [sec addArrangedSubview:row];
@@ -212,7 +207,7 @@ static ZLStackView *sectionView(NSString *title) {
         row.spacing = 8;
         row.backgroundColor = [UIColor colorWithWhite:0.93 alpha:1];
         [row mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_equalTo(60);
+            make.height.mas_equalTo(80);
         }];
 
         NSArray *heights = @[@20, @36, @50];
@@ -220,7 +215,9 @@ static ZLStackView *sectionView(NSString *title) {
             UILabel *b = colorBlock(@"", randColor());
             [b mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.width.mas_equalTo(40);
-                make.height.mas_equalTo(h);
+                if ([item[1] integerValue] != ZLAlignFill) {
+                    make.height.mas_equalTo(h);
+                }
             }];
             [row addArrangedSubview:b];
         }

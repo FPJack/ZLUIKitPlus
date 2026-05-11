@@ -7,12 +7,12 @@
 //
 
 #import "ZLStackView.h"
-#import "ZLLayoutManager.h"
-#import "ZLLayoutViewFlex.h"
-#import "ZLConstraintsCfg.h"
+#import "ZLFlexManager.h"
+#import "ZLFlexItem.h"
+#import "ZLConstraintsItem.h"
 #import "ZLUI.h"
 @interface ZLBaseStackView()
-@property (nonatomic,strong)ZLLayoutManager *layoutManager;
+@property (nonatomic,strong)ZLFlexManager *layoutManager;
 @property(nonatomic,strong) NSMutableArray<__kindof UIView *> *allViews;
 @property (nonatomic,assign)BOOL markedDirty;
 @end
@@ -20,9 +20,9 @@
 @implementation ZLBaseStackView
 
 
-- (ZLLayoutManager *)layoutManager {
+- (ZLFlexManager *)layoutManager {
     if (!_layoutManager) {
-        _layoutManager = [[ZLLayoutManager alloc] init];
+        _layoutManager = [[ZLFlexManager alloc] init];
         _layoutManager.stackView = self;
     }
     return _layoutManager;
@@ -81,7 +81,7 @@
 - (void)addArrangedSubview:(UIView *)view{
     if ([view isKindOfClass:UIView.class]) {
         if ([self.allViews containsObject:view]) return;
-        ZLLayoutViewFlex *cfg = view.zl_flex;
+        ZLFlexItem *cfg = view.zl_flex;
         [cfg setValue:view forKey:@"view"];
         [cfg setValue:self forKey:@"stackView"];
         [self.allViews addObject:view];
@@ -94,7 +94,7 @@
         [self setNeedsUpdateConstraints];
     }
 }
-- (void)addArrangedSubview:(UIView *)view layout:(void(^)(__kindof UIView *view, ZLLayoutViewFlex *viewCfg))config{
+- (void)addArrangedSubview:(UIView *)view layout:(void(^)(__kindof UIView *view, ZLFlexItem *viewCfg))config{
     [self addArrangedSubview:view];
     if (config) config(view,view.zl_flex);
     
@@ -151,13 +151,13 @@
 - (void)setCustomSpacing:(CGFloat)spacing afterView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
     if (![arrangedSubview isKindOfClass:UIView.class]) return;
-    ZLLayoutViewFlex *viewCfg = arrangedSubview.zl_flex;
+    ZLFlexItem *viewCfg = arrangedSubview.zl_flex;
     if (viewCfg.spacing == spacing) return;
     viewCfg.spacing = spacing;
     if (arrangedSubview.hidden) return;
     if (self.layoutManager.constraints.count == 0) return;
     NSArray<NSLayoutConstraint *> * arr = [self filterConstraintWithBlock:^BOOL(NSLayoutConstraint *constraint) {
-        ZLConstraintsCfg *cfg = constraint.cfg;
+        ZLConstraintsItem *cfg = constraint.item;
         return [cfg.view isEqual:arrangedSubview] && cfg.type == ZLLayoutConTypeSpacing;
     }];
     if (arr.count == 0) {
@@ -170,13 +170,13 @@
 - (void)setCustomMinSpacing:(CGFloat)minSpacing afterView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
     if (![arrangedSubview isKindOfClass:UIView.class]) return;
-    ZLLayoutViewFlex *viewCfg = arrangedSubview.zl_flex;
+    ZLFlexItem *viewCfg = arrangedSubview.zl_flex;
     if (viewCfg.minSpacing == minSpacing) return;
     viewCfg.minSpacing = minSpacing;
     if (arrangedSubview.hidden) return;
     if (self.layoutManager.constraints.count == 0) return;
     NSArray<NSLayoutConstraint *> * arr = [self filterConstraintWithBlock:^BOOL(NSLayoutConstraint *constraint) {
-        ZLConstraintsCfg *cfg = constraint.cfg;
+        ZLConstraintsItem *cfg = constraint.item;
         return [cfg.view isEqual:arrangedSubview] && cfg.type == ZLLayoutConTypeMinSpacing;
     }];
     if (arr.count > 0) {
@@ -190,13 +190,13 @@
 - (void)setCustomMaxSpacing:(CGFloat)maxSpacing afterView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
     if (![arrangedSubview isKindOfClass:UIView.class]) return;
-    ZLLayoutViewFlex *viewCfg = arrangedSubview.zl_flex;
+    ZLFlexItem *viewCfg = arrangedSubview.zl_flex;
     if (viewCfg.maxSpacing == maxSpacing) return;
     viewCfg.maxSpacing = maxSpacing;
     if (arrangedSubview.hidden) return;
     if (self.layoutManager.constraints.count == 0) return;
     NSArray<NSLayoutConstraint *> * arr = [self filterConstraintWithBlock:^BOOL(NSLayoutConstraint *constraint) {
-        ZLConstraintsCfg *cfg = constraint.cfg;
+        ZLConstraintsItem *cfg = constraint.item;
         return [cfg.view isEqual:arrangedSubview] && cfg.type == ZLLayoutConTypeMaxSpacing;
     }];
     if (arr.count > 0) {
@@ -207,7 +207,7 @@
     }
 }
 - (void)setFlex:(NSInteger)flex forView:(UIView *)arrangedSubview{
-    ZLLayoutViewFlex *cfg = arrangedSubview.zl_flex;
+    ZLFlexItem *cfg = arrangedSubview.zl_flex;
     if (flex < 0 || cfg.flexValue == flex) return;
     cfg.flexValue = flex;
     self.markedDirty = YES;
@@ -216,7 +216,7 @@
 }
 - (void)setAlignment:(ZLAlign)alignment forView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
-    ZLLayoutViewFlex *cfg = arrangedSubview.zl_flex;
+    ZLFlexItem *cfg = arrangedSubview.zl_flex;
     if (alignment == cfg.alignSelf) return;
     cfg.alignSelf = alignment;
     self.markedDirty = YES;
@@ -225,7 +225,7 @@
 ///设置view的alignment方向start间距
 - (void)setAlignmentStartSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
-    ZLLayoutViewFlex *cfg = arrangedSubview.zl_flex;
+    ZLFlexItem *cfg = arrangedSubview.zl_flex;
     if (spacing == cfg.startSpacing) return;
     cfg.startSpacing = spacing;
     self.markedDirty = YES;
@@ -234,7 +234,7 @@
 ///设置view的alignment方向end间距
 - (void)setAlignmentEndSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview {
     if (![self.arrangedViews containsObject:arrangedSubview]) return;
-    ZLLayoutViewFlex *cfg = arrangedSubview.zl_flex;
+    ZLFlexItem *cfg = arrangedSubview.zl_flex;
     if (cfg.endSpacing == spacing) return;
     cfg.endSpacing = spacing;
     self.markedDirty = YES;
@@ -397,8 +397,8 @@
         return self;
     };
 }
-- (id _Nonnull (^)(UIView * _Nonnull, void (^ _Nonnull)(__kindof UIView * _Nonnull, ZLLayoutViewFlex * _Nonnull)))addLayout {
-    return ^(UIView *view, void (^config)(__kindof UIView *, ZLLayoutViewFlex *)){
+- (id _Nonnull (^)(UIView * _Nonnull, void (^ _Nonnull)(__kindof UIView * _Nonnull, ZLFlexItem * _Nonnull)))addLayout {
+    return ^(UIView *view, void (^config)(__kindof UIView *, ZLFlexItem *)){
         [self addArrangedSubview:view layout:config];
         return self;
     };

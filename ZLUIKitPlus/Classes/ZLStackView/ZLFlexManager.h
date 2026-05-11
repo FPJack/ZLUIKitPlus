@@ -1,5 +1,5 @@
 //
-//  ZLLayoutManager.h
+//  ZLFlexManager.h
 //  ZLUIKitPlus_Example
 //
 //  Created by Qiuxia Cui on 2026/5/4.
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 @class ZLBaseStackView;
-@interface ZLLayoutManager : NSObject
+@interface ZLFlexManager : NSObject
 @property (nonatomic,weak)ZLBaseStackView *stackView;
 @property (nonatomic,strong,readonly)NSMutableArray<NSLayoutConstraint *> *constraints;
 - (void)removeAllSpacing;

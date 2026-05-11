@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ZLLayoutGuide.h"
-#import "ZLLayoutViewFlex.h"
+#import "ZLFlexItem.h"
 NS_ASSUME_NONNULL_BEGIN
 @class ZLStackView;
 
@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 添加view到stackView，默认添加到最后
 - (void)addArrangedSubview:(UIView *)view;
 ///添加view并且配置view的布局属性
-- (void)addArrangedSubview:(UIView *)view layout:(void(^)(__kindof UIView *view, ZLLayoutViewFlex *flexItem))config;
+- (void)addArrangedSubview:(UIView *)view layout:(void(^)(__kindof UIView *view, ZLFlexItem *flexItem))config;
 ///在某个位置插入view
 - (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)stackIndex;
 /// 移除view
@@ -84,7 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly)ObjectType (^add)(UIView *view);
 @property (nonatomic, readonly)ObjectType (^addLayout)(
     UIView *view,
-    void(^)(__kindof UIView *view, ZLLayoutViewFlex *flexItem)
+    void(^)(__kindof UIView *view, ZLFlexItem *flexItem)
 );
 @property (nonatomic, readonly)ObjectType (^spacingAfter)(UIView *arrangedSubview,CGFloat spacing);
 @property (nonatomic, readonly)ObjectType (^minSpacingAfter)(UIView *arrangedSubview,CGFloat minSpacing);

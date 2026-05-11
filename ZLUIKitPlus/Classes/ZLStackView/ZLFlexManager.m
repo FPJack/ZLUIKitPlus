@@ -1,17 +1,17 @@
 //
-//  ZLLayoutManager.m
+//  ZLFlexManager.m
 //  ZLUIKitPlus_Example
 //
 //  Created by Qiuxia Cui on 2026/5/4.
 //  Copyright © 2026 fanpeng. All rights reserved.
 //
 
-#import "ZLLayoutManager.h"
+#import "ZLFlexManager.h"
 #import "ZLStackView.h"
-#import "ZLLayoutViewFlex.h"
+#import "ZLFlexItem.h"
 #import "ZLStackEdgeInsets.h"
-#import "ZLConstraintsCfg.h"
-@interface ZLLayoutManager()
+#import "ZLConstraintsItem.h"
+@interface ZLFlexManager()
 @property (nonatomic,strong)ZLStackEdgeInsets *stackEdgeInsets;
 @property (nonatomic,strong,readwrite)NSMutableArray<NSLayoutConstraint *> *constraints;
 @property (nonatomic,readonly)NSArray<UIView *> *views;
@@ -19,7 +19,7 @@
 @property (nonatomic,readonly)ZLAlign align;
 @property (nonatomic,readonly)BOOL horizontal;
 @end
-@implementation ZLLayoutManager
+@implementation ZLFlexManager
 - (ZLStackEdgeInsets *)stackEdgeInsets {
     if (!_stackEdgeInsets) {
         _stackEdgeInsets = [[ZLStackEdgeInsets alloc] init];
@@ -68,7 +68,7 @@
     NSMutableArray<UIView *> *flexViews = NSMutableArray.array;
     for (int i = 0; i < count; i ++) {
         UIView *view = self.views[i];
-        ZLLayoutViewFlex *cfg = view.zl_flex;
+        ZLFlexItem *cfg = view.zl_flex;
         if (cfg.flexValue > 0 && self.justify != ZLJustifyFillEqually) {
             [flexViews addObject:view];
         }
@@ -172,20 +172,20 @@
 
                     if (cfg.spacing) {
                         cons = [spacingGuide.widthAnchor constraintEqualToConstant:spacing];
-                        cons.cfg.type = ZLLayoutConTypeSpacing;
-                        cons.cfg.view = view;
+                        cons.item.type = ZLLayoutConTypeSpacing;
+                        cons.item.view = view;
                         [self.constraints addObject:cons];
                     }
                     if (cfg.minSpacing) {
                         cons = [spacingGuide.widthAnchor constraintGreaterThanOrEqualToConstant:cfg.minSpacing];
-                        cons.cfg.type = ZLLayoutConTypeMinSpacing;
-                        cons.cfg.view = view;
+                        cons.item.type = ZLLayoutConTypeMinSpacing;
+                        cons.item.view = view;
                         [self.constraints addObject:cons];
                     }
                     if (cfg.maxSpacing) {
                         cons = [spacingGuide.widthAnchor constraintLessThanOrEqualToConstant:cfg.maxSpacing];
-                        cons.cfg.type = ZLLayoutConTypeMaxSpacing;
-                        cons.cfg.view = view;
+                        cons.item.type = ZLLayoutConTypeMaxSpacing;
+                        cons.item.view = view;
                         [self.constraints addObject:cons];
                     }
                 }
@@ -278,7 +278,7 @@
 
     for (int i = 0; i < count; i ++) {
         UIView *view = self.views[i];
-        ZLLayoutViewFlex *cfg = view.zl_flex;
+        ZLFlexItem *cfg = view.zl_flex;
         if (cfg.flexValue > 0 && self.justify != ZLJustifyFillEqually) {
             [flexViews addObject:view];
         }
@@ -383,19 +383,19 @@
 
                     if (cfg.spacing) {
                         cons = [spacingGuide.heightAnchor constraintEqualToConstant:spacing];
-                        cons.cfg.type = ZLLayoutConTypeSpacing;
+                        cons.item.type = ZLLayoutConTypeSpacing;
                         [self.constraints addObject:cons];
                     }
                     if (cfg.minSpacing) {
                         cons = [spacingGuide.heightAnchor constraintGreaterThanOrEqualToConstant:cfg.minSpacing];
-                        cons.cfg.type = ZLLayoutConTypeMinSpacing;
-                        cons.cfg.view = view;
+                        cons.item.type = ZLLayoutConTypeMinSpacing;
+                        cons.item.view = view;
                         [self.constraints addObject:cons];
                     }
                     if (cfg.maxSpacing) {
                         cons = [spacingGuide.heightAnchor constraintLessThanOrEqualToConstant:cfg.maxSpacing];
-                        cons.cfg.type = ZLLayoutConTypeMaxSpacing;
-                        cons.cfg.view = view;
+                        cons.item.type = ZLLayoutConTypeMaxSpacing;
+                        cons.item.view = view;
                         [self.constraints addObject:cons];
                     }
                     

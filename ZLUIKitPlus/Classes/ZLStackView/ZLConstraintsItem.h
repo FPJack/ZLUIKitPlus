@@ -1,5 +1,5 @@
 //
-//  ZLConstraintsCfg.h
+//  ZLConstraintsItem.h
 //  ZLUIKitPlus_Example
 //
 //  Created by Qiuxia Cui on 2026/5/4.
@@ -21,13 +21,13 @@ typedef NS_ENUM(NSInteger, ZLLayoutConType) {
     ZLLayoutConTypeMaxSpacing,
 };
 
-@interface ZLConstraintsCfg : NSObject
+@interface ZLConstraintsItem : NSObject
 @property (nonatomic,assign)ZLLayoutConType type;
 @property (nonatomic,weak)UIView *view;
 @end
 
-@interface NSLayoutConstraint (Cfg)
-@property (nonatomic,readonly)ZLConstraintsCfg *cfg;
+@interface NSLayoutConstraint (item)
+@property (nonatomic,readonly)ZLConstraintsItem *item;
 @end
 
 

@@ -1,5 +1,5 @@
 //
-//  ZLLayoutViewFlex.h
+//  ZLFlexItem.h
 //  ZLUIKitPlus_Example
 //
 //  Created by Qiuxia Cui on 2026/5/4.
@@ -10,13 +10,13 @@
 #import "ZLLayoutGuide.h"
 NS_ASSUME_NONNULL_BEGIN
 @class ZLStackView;
-@class ZLLayoutViewFlex;
+@class ZLFlexItem;
 @interface UIView (Flex)
-@property (nonatomic,readonly)ZLLayoutViewFlex *zl_flex;
+@property (nonatomic,readonly)ZLFlexItem *zl_flex;
 @end
 
 
-@interface ZLLayoutViewFlex : NSObject
+@interface ZLFlexItem : NSObject
 
 @property (nonatomic,assign)CGFloat startSpacing;
 
@@ -38,14 +38,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 ///链式配置
-@property(readonly)ZLLayoutViewFlex *(^start)(CGFloat spacing);
-@property(readonly)ZLLayoutViewFlex *(^end)(CGFloat spacing);
-@property(readonly)ZLLayoutViewFlex *(^space)(CGFloat spacing);
-@property(readonly)ZLLayoutViewFlex *(^minSpace)(CGFloat spacing);
-@property(readonly)ZLLayoutViewFlex *(^maxSpace)(CGFloat spacing);
-@property(readonly)ZLLayoutViewFlex *(^flexSpace)(BOOL isFlex);
-@property(readonly)ZLLayoutViewFlex *(^align)(ZLAlign align);
-@property(readonly)ZLLayoutViewFlex *(^flex)(NSInteger flex);
+@property(readonly)ZLFlexItem *(^start)(CGFloat spacing);
+@property(readonly)ZLFlexItem *(^end)(CGFloat spacing);
+@property(readonly)ZLFlexItem *(^space)(CGFloat spacing);
+@property(readonly)ZLFlexItem *(^minSpace)(CGFloat spacing);
+@property(readonly)ZLFlexItem *(^maxSpace)(CGFloat spacing);
+@property(readonly)ZLFlexItem *(^flexSpace)(BOOL isFlex);
+@property(readonly)ZLFlexItem *(^align)(ZLAlign align);
+@property(readonly)ZLFlexItem *(^flex)(NSInteger flex);
 @end
 
 NS_ASSUME_NONNULL_END

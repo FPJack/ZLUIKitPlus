@@ -1,26 +1,26 @@
 //
-//  ZLLayoutViewFlex.m
+//  ZLFlexItem.m
 //  ZLUIKitPlus_Example
 //
 //  Created by Qiuxia Cui on 2026/5/4.
 //  Copyright © 2026 fanpeng. All rights reserved.
 //
 
-#import "ZLLayoutViewFlex.h"
+#import "ZLFlexItem.h"
 #import "ZLStackView.h"
 #import <objc/runtime.h>
 
 @implementation UIView (Flex)
-- (ZLLayoutViewFlex *)zl_flex {
-    ZLLayoutViewFlex *cfg = objc_getAssociatedObject(self, _cmd);
+- (ZLFlexItem *)zl_flex {
+    ZLFlexItem *cfg = objc_getAssociatedObject(self, _cmd);
     if (!cfg) {
-        cfg = ZLLayoutViewFlex.new;
+        cfg = ZLFlexItem.new;
         objc_setAssociatedObject(self, _cmd, cfg, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return cfg;
 }
 @end
-@interface ZLLayoutViewFlex()
+@interface ZLFlexItem()
 ///是否设置对齐方式
 @property (nonatomic,assign)BOOL isSetAlign;
 ///记录已kvo
@@ -28,7 +28,7 @@
 @property (nonatomic,weak)ZLStackView *stackView;
 @property (nonatomic,weak)UIView *view;
 @end
-@implementation ZLLayoutViewFlex
+@implementation ZLFlexItem
 @synthesize alignSelf = _alignSelf;
 @synthesize spacing = _spacing;
 - (void)setAlignSelf:(ZLAlign)alignSelf {
@@ -98,43 +98,43 @@
     }
 }
 
-- (ZLLayoutViewFlex * _Nonnull (^)(CGFloat))start {
+- (ZLFlexItem * _Nonnull (^)(CGFloat))start {
     return ^(CGFloat spacing) {
         self.startSpacing = spacing;
         return self;
     };
 }
-- (ZLLayoutViewFlex * _Nonnull (^)(CGFloat))end {
+- (ZLFlexItem * _Nonnull (^)(CGFloat))end {
     return ^(CGFloat spacing) {
         self.endSpacing = spacing;
         return self;
     };
 }
-- (ZLLayoutViewFlex * _Nonnull (^)(CGFloat))minSpace {
+- (ZLFlexItem * _Nonnull (^)(CGFloat))minSpace {
     return ^(CGFloat spacing) {
         self.minSpacing = spacing;
         return self;
     };
 }
-- (ZLLayoutViewFlex * _Nonnull (^)(CGFloat))maxSpace {
+- (ZLFlexItem * _Nonnull (^)(CGFloat))maxSpace {
     return ^(CGFloat spacing) {
         self.maxSpacing = spacing;
         return self;
     };
 }
-- (ZLLayoutViewFlex * _Nonnull (^)(NSInteger))flex {
+- (ZLFlexItem * _Nonnull (^)(NSInteger))flex {
     return ^(NSInteger flexValue) {
         self.flexValue = flexValue;
         return self;
     };
 }
-- (ZLLayoutViewFlex * _Nonnull (^)(BOOL))flexSpace {
+- (ZLFlexItem * _Nonnull (^)(BOOL))flexSpace {
     return ^(BOOL isFlexSpace) {
         self.isFlexSpace = isFlexSpace;
         return self;
     };
 }
-- (ZLLayoutViewFlex * _Nonnull (^)(ZLAlign))align {
+- (ZLFlexItem * _Nonnull (^)(ZLAlign))align {
     return ^(ZLAlign align) {
         self.alignSelf = align;
         return self;

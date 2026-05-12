@@ -33,7 +33,7 @@
     if (self) {
         self.markedDirty = YES;
         ///消除staview 宽度为0的时候 设置了内边距控制台报约束警告的问题
-        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
     }
     return self;
@@ -74,6 +74,9 @@
     _spacing = spacing;
     self.markedDirty = YES;
     [self setNeedsUpdateConstraints];
+}
+- (BOOL)translatesAutoresizingMaskIntoConstraints {
+    return NO;
 }
 - (void)addArrangedSubview:(UIView *)view{
     if ([view isKindOfClass:UIView.class]) {
@@ -408,50 +411,51 @@
         return self;
     };
 }
-- (id _Nonnull (^)(UIView * _Nonnull, CGFloat))spacingAfter {
-    return ^(UIView *view, CGFloat spacing){
+- (id _Nonnull (^)(CGFloat,UIView * _Nonnull))spacingAfter {
+    return ^(CGFloat spacing,UIView *view){
         [self setCustomSpacing:spacing afterView:view];
         return self;
     };
 }
-- (id _Nonnull (^)(UIView * _Nonnull, CGFloat))minSpacingAfter {
-    return ^(UIView *view, CGFloat spacing){
+
+- (id _Nonnull (^)(CGFloat,UIView * _Nonnull))minSpacingAfter {
+    return ^(CGFloat spacing,UIView *view){
         [self setCustomMinSpacing:spacing afterView:view];
         return self;
     };
 }
-- (id _Nonnull (^)(UIView * _Nonnull, CGFloat))maxSpacingAfter {
-    return ^(UIView *view, CGFloat spacing){
+- (id _Nonnull (^)(CGFloat,UIView * _Nonnull))maxSpacingAfter {
+    return ^(CGFloat spacing,UIView *view){
         [self setCustomMaxSpacing:spacing afterView:view];
         return self;
     };
 }
-- (id _Nonnull (^)(UIView * _Nonnull, NSInteger))flexFor {
-    return ^(UIView *view, NSInteger flex){
+- (id _Nonnull (^)(NSInteger,UIView * _Nonnull))flexFor {
+    return ^(NSInteger flex,UIView *view){
         [self setFlex:flex forView:view];
         return self;
     };
 }
-- (id _Nonnull (^)(UIView * _Nonnull, BOOL))flexSpacingAfter {
-    return ^(UIView *view, BOOL flexible){
+- (id _Nonnull (^)( BOOL,UIView * _Nonnull))flexSpacingAfter {
+    return ^(BOOL flexible,UIView *view){
         [self setFlexibleSpacing:flexible afterView:view];
         return self;
     };
 }
-- (id _Nonnull (^)(UIView * _Nonnull, ZLAlign))alignFor {
-    return ^(UIView *view, ZLAlign alignment){
+- (id _Nonnull (^)( ZLAlign,UIView * _Nonnull))alignFor {
+    return ^(ZLAlign alignment,UIView *view){
         [self setAlignment:alignment forView:view];
         return self;
     };
 }
-- (id _Nonnull (^)(UIView * _Nonnull, CGFloat))alignStartSpacingFor {
-    return ^(UIView *view, CGFloat spacing){
+- (id _Nonnull (^)( CGFloat,UIView * _Nonnull))alignStartSpacingFor {
+    return ^(CGFloat spacing,UIView *view){
         [self setAlignmentStartSpacing:spacing forView:view];
         return self;
     };
 }
-- (id _Nonnull (^)(UIView * _Nonnull, CGFloat))alignEndSpacingFor {
-    return ^(UIView *view, CGFloat spacing){
+- (id _Nonnull (^)( CGFloat,UIView * _Nonnull))alignEndSpacingFor {
+    return ^(CGFloat spacing,UIView *view){
         [self setAlignmentEndSpacing:spacing forView:view];
         return self;
     };

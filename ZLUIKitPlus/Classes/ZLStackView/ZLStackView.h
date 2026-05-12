@@ -87,14 +87,15 @@ NS_ASSUME_NONNULL_BEGIN
     UIView *view,
     void(^)(__kindof UIView *view, ZLFlexItem *flexItem)
 );
-@property (nonatomic, readonly)ObjectType (^spacingAfter)(UIView *arrangedSubview,CGFloat spacing);
-@property (nonatomic, readonly)ObjectType (^minSpacingAfter)(UIView *arrangedSubview,CGFloat minSpacing);
-@property (nonatomic, readonly)ObjectType (^maxSpacingAfter)(UIView *arrangedSubview,CGFloat maxSpacing);
-@property (nonatomic, readonly)ObjectType (^flexFor)(UIView *arrangedSubview,NSInteger flex);
-@property (nonatomic, readonly)ObjectType (^flexSpacingAfter)(UIView *arrangedSubview,BOOL flexible);
-@property (nonatomic, readonly)ObjectType (^alignFor)(UIView *arrangedSubview,ZLAlign alignment);
-@property (nonatomic, readonly)ObjectType (^alignStartSpacingFor)(UIView *arrangedSubview,CGFloat spacing);
-@property (nonatomic, readonly)ObjectType (^alignEndSpacingFor)(UIView *arrangedSubview,CGFloat spacing);
+@property (nonatomic, readonly)ObjectType (^spacingAfter)(CGFloat spacing,UIView *arrangedSubview);
+
+@property (nonatomic, readonly)ObjectType (^minSpacingAfter)(CGFloat minSpacing,UIView *arrangedSubview);
+@property (nonatomic, readonly)ObjectType (^maxSpacingAfter)(CGFloat maxSpacing,UIView *arrangedSubview);
+@property (nonatomic, readonly)ObjectType (^flexFor)(NSInteger flex,UIView *arrangedSubview);
+@property (nonatomic, readonly)ObjectType (^flexSpacingAfter)(BOOL flexible,UIView *arrangedSubview);
+@property (nonatomic, readonly)ObjectType (^alignFor)(ZLAlign alignment,UIView *arrangedSubview);
+@property (nonatomic, readonly)ObjectType (^alignStartSpacingFor)(CGFloat spacing,UIView *arrangedSubview);
+@property (nonatomic, readonly)ObjectType (^alignEndSpacingFor)(CGFloat spacing,UIView *arrangedSubview);
 ///赋值当前对象到一个指针上
 /// 例如：ZLButton *btn;
 ///  ZLButton.new.assignToPtr(&btn);
@@ -177,7 +178,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+///垂直排列的stackView
+#define VStackView ZLStackView.vertical
 
+///水平排列的stackView
+#define HStackView ZLStackView.horizontal
 
 
 

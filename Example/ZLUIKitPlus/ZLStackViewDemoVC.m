@@ -10,13 +10,11 @@
 #import "ZLStackView.h"
 #import "ZLUI.h"
 #import <objc/runtime.h>
-#import <Masonry/Masonry.h>
 
 // ─────────────────────────────────────────
-#pragma mark - 辅助宏
+#pragma mark - 辅助函数
 // ─────────────────────────────────────────
 
-/// 快速创建带文字的色块 label
 static UILabel *colorBlock(NSString *text, UIColor *color) {
     UILabel *l = UILabel.new;
     l.text = text;
@@ -46,16 +44,14 @@ static UIColor *randColor(void) {
     return colors[(idx++) % colors.count];
 }
 
-// 带标题的 section 容器
 static ZLStackView *sectionView(NSString *title) {
-    ZLStackView *s = ZLStackView.vertical;
-    s.insets = UIEdgeInsetsMake(12, 12, 12, 12);
-    s.spacing = 10;
-    s.layer.borderColor = [UIColor colorWithWhite:0.85 alpha:1].CGColor;
-    s.layer.borderWidth = 1;
-    s.layer.cornerRadius = 8;
-    s.layer.masksToBounds = YES;
-
+    ZLStackView *s = VStackView
+        .space(10)
+        .alignFill
+        .inset(12, 12, 12, 12)
+        .border(1, @"#DDDDDD")
+        .corner(8)
+        .masksToBounds(YES);
     UILabel *titleLab = UILabel.new;
     titleLab.text = title;
     titleLab.font = [UIFont boldSystemFontOfSize:13];
@@ -64,9 +60,8 @@ static ZLStackView *sectionView(NSString *title) {
     return s;
 }
 
-
 @interface ZLStackViewDemoVC ()
-@property (nonatomic, strong) ZLStackView  *contentStack;
+@property (nonatomic, strong) ZLStackView *contentStack;
 @end
 
 @implementation ZLStackViewDemoVC
@@ -75,43 +70,36 @@ static ZLStackView *sectionView(NSString *title) {
     [super viewDidLoad];
     self.title = @"ZLStackView Demo";
     self.view.backgroundColor = [UIColor colorWithWhite:0.96 alpha:1];
-    
-    ZLStackView *view;
-    ZLStackView
-    .vertical
-    .assignToPtr(&view)
-    .space(16)
-    .vInset(16, 16)
-    .hInset(16, 16)
-    .wrapScrollView
-    .KFC
-    .addToFull(self.view);
-    
-    self.contentStack = view;
-    
+
+    ZLStackView *stack;
+    ZLStackView.vertical.space(16).inset(16, 16, 16, 16)
+        .assignToPtr(&stack)
+        .wrapScrollView
+        .KFC
+        .addToFull(self.view);
+    self.contentStack = stack;
+
     [self buildDemos];
 }
 
 - (void)buildDemos {
-//    [self demo01_axisAndSpacing];
-//    [self demo02_justifyContent];
-//    [self demo03_alignment];
-//    [self demo04_insets];
-//    [self demo05_customSpacing];
-//    [self demo06_flexibleSpacing];
-    
-//    [self demo07_flex];
-//    [self demo08_alignSelf];
-//    [self demo09_alignStartEndSpacing];
-//    [self demo10_hiddenAutoLayout];
-//    [self demo11_addLayout];
-    
-//    [self demo12_removeView];
-//    [self demo13_insertAtIndex];
-//    [self demo14_tapAction];
-//    [self demo15_chainAPI];
-    [self demo16_scrollStackView];
-    [self demo17_wrapScrollView];
+    [self demo01_axisAndSpacing];
+    [self demo02_justifyContent];
+    [self demo03_alignment];
+    [self demo04_insets];
+    [self demo05_customSpacing];
+    [self demo06_flexibleSpacing];
+    [self demo07_flex];
+    [self demo08_alignSelf];
+    [self demo09_alignStartEndSpacing];
+    [self demo10_hiddenAutoLayout];
+    [self demo11_addLayout];
+    [self demo12_removeView];
+    [self demo13_insertAtIndex];
+    [self demo14_tapAction];
+    [self demo15_chainAPI];
+    [self demo16_wrapScrollViewHorizontal];
+    [self demo17_wrapScrollViewVertical];
     [self demo18_nestedStack];
 }
 
@@ -122,19 +110,18 @@ static ZLStackView *sectionView(NSString *title) {
     ZLStackView *sec = sectionView(@"01. axis 轴向 + spacing 间距");
     [_contentStack addArrangedSubview:sec];
 
-    // 水平
-    ZLStackView *h = ZLStackView.horizontal;
-    h.spacing = 8;
-    for (int i = 1; i <= 3; i++) {
-        [h addArrangedSubview:colorBlock([NSString stringWithFormat:@"H%d", i], randColor())];
+    ZLStackView *h = ZLStackView.horizontal.alignCenter.space(8);
+    for (int i = 1; i <= 4; i++) {
+        UILabel *l = colorBlock([NSString stringWithFormat:@"H%d", i], randColor());
+//        l.KFC.square(36);
+        [h addArrangedSubview:l];
     }
     [sec addArrangedSubview:h];
 
-    // 垂直
-    ZLStackView *v = ZLStackView.vertical;
-    v.spacing = 6;
+    ZLStackView *v = ZLStackView.vertical.alignStart.space(6);
     for (int i = 1; i <= 3; i++) {
         UILabel *l = colorBlock([NSString stringWithFormat:@"V%d", i], randColor());
+//        l.KFC.height(28);
         [v addArrangedSubview:l];
     }
     [sec addArrangedSubview:v];
@@ -145,39 +132,31 @@ static ZLStackView *sectionView(NSString *title) {
 // ─────────────────────────────────────────
 - (void)demo02_justifyContent {
     ZLStackView *sec = sectionView(@"02. justifyContent 主轴对齐");
-    sec.alignment = ZLAlignFill; // 纵轴居中
     [_contentStack addArrangedSubview:sec];
-    sec.KFC.width(200);
+
     NSArray *modes = @[
-        @[@"justifyStart",       @(ZLJustifyStart)],
-        @[@"justifyCenter",      @(ZLJustifyCenter)],
-        @[@"justifyEnd",         @(ZLJustifyEnd)],
-        @[@"justifyFill",        @(ZLJustifyFill)],
-        @[@"justifyFillEqually", @(ZLJustifyFillEqually)],
-        @[@"justifySpaceBetween",@(ZLJustifySpaceBetween)],
-        @[@"justifySpaceAround", @(ZLJustifySpaceAround)],
-        @[@"justifySpaceEvenly", @(ZLJustifySpaceEvenly)],
+        @[@"justifyStart",        @(ZLJustifyStart)],
+        @[@"justifyCenter",       @(ZLJustifyCenter)],
+        @[@"justifyEnd",          @(ZLJustifyEnd)],
+        @[@"justifyFill",         @(ZLJustifyFill)],
+        @[@"justifyFillEqually",  @(ZLJustifyFillEqually)],
+        @[@"justifySpaceBetween", @(ZLJustifySpaceBetween)],
+        @[@"justifySpaceAround",  @(ZLJustifySpaceAround)],
+        @[@"justifySpaceEvenly",  @(ZLJustifySpaceEvenly)],
     ];
 
     for (NSArray *item in modes) {
-        UILabel *nameLabel = UILabel.new;
-        nameLabel.text = item[0];
-        nameLabel.font = [UIFont systemFontOfSize:11];
-        nameLabel.textColor = [UIColor colorWithWhite:0.5 alpha:1];
-        [sec addArrangedSubview:nameLabel];
+        UILabel *name = UILabel.new;
+        name.text = item[0];
+        name.font = [UIFont systemFontOfSize:11];
+        name.textColor = [UIColor colorWithWhite:0.5 alpha:1];
+        [sec addArrangedSubview:name];
 
-        ZLStackView *row = ZLStackView.horizontal;
+        ZLStackView *row = ZLStackView.horizontal.alignFill.bgColor(@"#EFEFEF");
         row.justifyContent = [item[1] integerValue];
-        row.backgroundColor = [UIColor colorWithWhite:0.93 alpha:1];
-        [row mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_equalTo(36);
-        }];
+        row.KFC.height(36);
         for (int i = 0; i < 3; i++) {
-            UILabel *b = colorBlock(@"●●●●", randColor());
-//            [b mas_makeConstraints:^(MASConstraintMaker *make) {
-//                make.width.mas_equalTo(36);
-//            }];
-            [row addArrangedSubview:b];
+            [row addArrangedSubview:colorBlock(@"●●", randColor())];
         }
         [sec addArrangedSubview:row];
     }
@@ -204,23 +183,14 @@ static ZLStackView *sectionView(NSString *title) {
         name.textColor = [UIColor colorWithWhite:0.5 alpha:1];
         [sec addArrangedSubview:name];
 
-        ZLStackView *row = ZLStackView.horizontal;
+        ZLStackView *row = ZLStackView.horizontal.space(8).bgColor(@"#EFEFEF");
         row.alignment = [item[1] integerValue];
-        row.spacing = 8;
-        row.backgroundColor = [UIColor colorWithWhite:0.93 alpha:1];
-        [row mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_equalTo(80);
-        }];
-
-        NSArray *heights = @[@20, @36, @50];
-        for (NSNumber *h in heights) {
+        row.KFC.height(70);
+        NSArray *sizes = @[@20, @40, @60];
+        for (NSNumber *h in sizes) {
             UILabel *b = colorBlock(@"", randColor());
-            [b mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.mas_equalTo(40);
-                if ([item[1] integerValue] != ZLAlignFill) {
-                    make.height.mas_equalTo(h);
-                }
-            }];
+            b.KFC.width(36);
+            if ([item[1] integerValue] != ZLAlignFill) b.KFC.height(h.floatValue);
             [row addArrangedSubview:b];
         }
         [sec addArrangedSubview:row];
@@ -234,22 +204,13 @@ static ZLStackView *sectionView(NSString *title) {
     ZLStackView *sec = sectionView(@"04. insets 内边距");
     [_contentStack addArrangedSubview:sec];
 
-    ZLStackView *row = ZLStackView.horizontal;
-    row.spacing = 8;
-    // 用链式 API 设置内边距
-    row.inset(16, 20, 16, 20);
-    row.backgroundColor = [UIColor colorWithWhite:0.93 alpha:1];
+    ZLStackView *row = ZLStackView.horizontal.space(8).inset(16, 20, 16, 20).bgColor(@"#EFEFEF");
     for (int i = 0; i < 3; i++) {
         [row addArrangedSubview:colorBlock([NSString stringWithFormat:@"item%d", i+1], randColor())];
     }
     [sec addArrangedSubview:row];
 
-    // vInset hInset
-    ZLStackView *row2 = ZLStackView.horizontal;
-    row2.spacing = 8;
-    row2.vInset(8, 8);
-    row2.hInset(12, 12);
-    row2.backgroundColor = [UIColor colorWithWhite:0.88 alpha:1];
+    ZLStackView *row2 = ZLStackView.horizontal.space(8).vInset(8, 8).hInset(20, 20).bgColor(@"#E0E0E0");
     for (int i = 0; i < 3; i++) {
         [row2 addArrangedSubview:colorBlock([NSString stringWithFormat:@"v%d", i+1], randColor())];
     }
@@ -257,45 +218,31 @@ static ZLStackView *sectionView(NSString *title) {
 }
 
 // ─────────────────────────────────────────
-#pragma mark - Demo 05: customSpacing 自定义间距
+#pragma mark - Demo 05: customSpacing
 // ─────────────────────────────────────────
 - (void)demo05_customSpacing {
     ZLStackView *sec = sectionView(@"05. customSpacing / minSpacing / maxSpacing");
+    sec.alignment = ZLAlignCenter;
     [_contentStack addArrangedSubview:sec];
 
-    ZLStackView *row = ZLStackView.horizontal;
-    row.spacing = 4;
-
-    UILabel *a = colorBlock(@"A", randColor());
-    UILabel *b = colorBlock(@"B", randColor());
-    UILabel *c = colorBlock(@"C", randColor());
-    for (UILabel *l in @[a, b, c]) {
-        [l mas_makeConstraints:^(MASConstraintMaker *make) { make.width.mas_equalTo(40); }];
-        [row addArrangedSubview:l];
-    }
-    // A 后面固定 20pt
+    UILabel *a = colorBlock(@"A", randColor()); a.KFC.size(40, 32);
+    UILabel *b = colorBlock(@"B", randColor()); b.KFC.size(40, 32);
+    UILabel *c = colorBlock(@"C", randColor()); c.KFC.size(40, 32);
+    ZLStackView *row = ZLStackView.horizontal.space(4).alignCenter;
+    [row addArrangedSubview:a];
     [row setCustomSpacing:20 afterView:a];
-    // B 后面最小 10pt 最大 30pt（justifyFill 时生效）
-    [row setCustomMinSpacing:10 afterView:b];
+    [row addArrangedSubview:b];
+    [row setCustomMinSpacing:4 afterView:b];
     [row setCustomMaxSpacing:30 afterView:b];
-
+    [row addArrangedSubview:c];
     [sec addArrangedSubview:row];
 
-    // 链式写法
-    ZLStackView *row2 = ZLStackView.horizontal;
-    row2.spacing = 4;
-    UILabel *x = colorBlock(@"X", randColor());
-    UILabel *y = colorBlock(@"Y", randColor());
-    UILabel *z = colorBlock(@"Z", randColor());
-    for (UILabel *l in @[x, y, z]) {
-        [l mas_makeConstraints:^(MASConstraintMaker *make) { make.width.mas_equalTo(40); }];
-    }
-    row2
-        .add(x)
-        .spacingAfter(x, 24)   // X 后 24pt
-        .add(y)
-        .minSpacingAfter(y, 8) // Y 后最小 8pt
-        .maxSpacingAfter(y, 40)
+    UILabel *x = colorBlock(@"X", randColor()); x.KFC.size(40, 32);
+    UILabel *y = colorBlock(@"Y", randColor()); y.KFC.size(40, 32);
+    UILabel *z = colorBlock(@"Z", randColor()); z.KFC.size(40, 32);
+    ZLStackView *row2 = ZLStackView.horizontal.space(4).alignCenter
+        .add(x).spacingAfter(24,x)
+        .add(y).minSpacingAfter(4,y).maxSpacingAfter( 40,y)
         .add(z);
     [sec addArrangedSubview:row2];
 }
@@ -305,36 +252,24 @@ static ZLStackView *sectionView(NSString *title) {
 // ─────────────────────────────────────────
 - (void)demo06_flexibleSpacing {
     ZLStackView *sec = sectionView(@"06. flexibleSpacing 弹性间距（justifyFill 下）");
-    sec.alignment = ZLAlignFill; // 纵轴拉伸填满
     [_contentStack addArrangedSubview:sec];
-
-    ZLStackView *row = ZLStackView.horizontal;
-    row.justifyContent = ZLJustifyFill;
-    row.backgroundColor = [UIColor colorWithWhite:0.93 alpha:1];
 
     UILabel *left  = colorBlock(@"Left",  randColor());
     UILabel *mid   = colorBlock(@"Mid",   randColor());
     UILabel *right = colorBlock(@"Right", randColor());
-
+    ZLStackView *row = ZLStackView.horizontal.justifyFill.bgColor(@"#EFEFEF");
     [row addArrangedSubview:left];
-    // left 后面设置弹性间距，mid 和 right 会被推到末尾
     [row setFlexibleSpacing:YES afterView:left];
     [row addArrangedSubview:mid];
     [row addArrangedSubview:right];
     [sec addArrangedSubview:row];
 
-    // 链式写法
-    ZLStackView *row2 = ZLStackView.horizontal;
-    row2.justifyContent = ZLJustifyFill;
-    row2.backgroundColor = [UIColor colorWithWhite:0.88 alpha:1];
     UILabel *l1 = colorBlock(@"◀", randColor());
     UILabel *l2 = colorBlock(@"●", randColor());
     UILabel *l3 = colorBlock(@"▶", randColor());
-    row2
-        .add(l1)
-        .flexSpacingAfter(l1, YES) // l1 后弹性
-        .add(l2)
-        .flexSpacingAfter(l2, YES) // l2 后也弹性（两段等分）
+    ZLStackView *row2 = ZLStackView.horizontal.justifyFill.bgColor(@"#E0E0E0")
+        .add(l1).flexSpacingAfter(YES,l1)
+        .add(l2).flexSpacingAfter(YES,l2)
         .add(l3);
     [sec addArrangedSubview:row2];
 }
@@ -346,63 +281,42 @@ static ZLStackView *sectionView(NSString *title) {
     ZLStackView *sec = sectionView(@"07. flex 权重（类似 flexbox flex:N）");
     [_contentStack addArrangedSubview:sec];
 
-    ZLStackView *row = ZLStackView.horizontal;
-    row.justifyContent = ZLJustifyFill;
-    row.spacing = 4;
-
-    UILabel *a = colorBlock(@"flex:1", randColor());
-    UILabel *b = colorBlock(@"flex:2", randColor());
-    UILabel *c = colorBlock(@"flex:1", randColor());
-    [row addArrangedSubview:a];
-    [row addArrangedSubview:b];
-    [row addArrangedSubview:c];
-    [row setFlex:1 forView:a];
-    [row setFlex:2 forView:b]; // b 是 a/c 的两倍宽
-    [row setFlex:1 forView:c];
+    UILabel *a = colorBlock(@"flex:1", randColor()); a.KFC.height(36);
+    UILabel *b = colorBlock(@"flex:2", randColor()); b.KFC.height(36);
+    UILabel *c = colorBlock(@"flex:1", randColor()); c.KFC.height(36);
+    ZLStackView *row = ZLStackView.horizontal.justifyFill.space(4);
+    [row addArrangedSubview:a]; [row setFlex:1 forView:a];
+    [row addArrangedSubview:b]; [row setFlex:2 forView:b];
+    [row addArrangedSubview:c]; [row setFlex:1 forView:c];
     [sec addArrangedSubview:row];
 
-    // 链式
-    ZLStackView *row2 = ZLStackView.horizontal;
-    row2.justifyContent = ZLJustifyFill;
-    row2.spacing = 4;
-    UILabel *x = colorBlock(@"1", randColor());
-    UILabel *y = colorBlock(@"3", randColor());
-    UILabel *z = colorBlock(@"1", randColor());
-    row2
-        .add(x).flexFor(x, 1)
-        .add(y).flexFor(y, 3)
-        .add(z).flexFor(z, 1);
+    UILabel *x = colorBlock(@"1", randColor()); x.KFC.height(36);
+    UILabel *y = colorBlock(@"3", randColor()); y.KFC.height(36);
+    UILabel *z = colorBlock(@"1", randColor()); z.KFC.height(36);
+    ZLStackView *row2 = ZLStackView.horizontal.justifyFill.space(4)
+        .add(x).flexFor(1,x)
+        .add(y).flexFor(3,y)
+        .add(z).flexFor(1,z);
     [sec addArrangedSubview:row2];
 }
 
 // ─────────────────────────────────────────
-#pragma mark - Demo 08: alignSelf 单个 view 对齐
+#pragma mark - Demo 08: alignSelf
 // ─────────────────────────────────────────
 - (void)demo08_alignSelf {
     ZLStackView *sec = sectionView(@"08. alignSelf 单个 view 覆盖纵轴对齐");
     [_contentStack addArrangedSubview:sec];
 
-    ZLStackView *row = ZLStackView.horizontal;
-    row.alignment = ZLAlignCenter; // 整体居中
-    row.spacing = 8;
-    row.backgroundColor = [UIColor colorWithWhite:0.93 alpha:1];
-    [row mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(70);
-    }];
-
-    UILabel *a = colorBlock(@"Start",  randColor());
-    UILabel *b = colorBlock(@"Center", randColor());
-    UILabel *c = colorBlock(@"End",    randColor());
-    UILabel *d = colorBlock(@"Fill",   randColor());
-    for (UILabel *l in @[a, b, c, d]) {
-        [l mas_makeConstraints:^(MASConstraintMaker *make) { make.width.mas_equalTo(50); }];
-        [row addArrangedSubview:l];
-    }
-    // 各自覆盖对齐方式
-    [row setAlignment:ZLAlignStart  forView:a];
-    [row setAlignment:ZLAlignCenter forView:b];
-    [row setAlignment:ZLAlignEnd    forView:c];
-    [row setAlignment:ZLAlignFill   forView:d];
+    ZLStackView *row = ZLStackView.horizontal.alignCenter.space(8).bgColor(@"#EFEFEF");
+    row.KFC.height(70);
+    UILabel *a = colorBlock(@"Start",  randColor()); a.KFC.width(52);
+    UILabel *b = colorBlock(@"Center", randColor()); b.KFC.width(52);
+    UILabel *c = colorBlock(@"End",    randColor()); c.KFC.width(52);
+    UILabel *d = colorBlock(@"Fill",   randColor()); d.KFC.width(52);
+    [row addArrangedSubview:a]; [row setAlignment:ZLAlignStart  forView:a];
+    [row addArrangedSubview:b]; [row setAlignment:ZLAlignCenter forView:b];
+    [row addArrangedSubview:c]; [row setAlignment:ZLAlignEnd    forView:c];
+    [row addArrangedSubview:d]; [row setAlignment:ZLAlignFill   forView:d];
     [sec addArrangedSubview:row];
 }
 
@@ -413,24 +327,13 @@ static ZLStackView *sectionView(NSString *title) {
     ZLStackView *sec = sectionView(@"09. alignmentStart/EndSpacing 纵轴方向偏移");
     [_contentStack addArrangedSubview:sec];
 
-    ZLStackView *row = ZLStackView.horizontal;
-    row.alignment = ZLAlignStart;
-    row.spacing = 8;
-    row.backgroundColor = [UIColor colorWithWhite:0.93 alpha:1];
-   
-    UILabel *a = colorBlock(@"A\nstartSpacing=10", randColor());
-    a.numberOfLines = 0;
-    UILabel *b = colorBlock(@"B\nendSpacing=50", randColor());
-    b.numberOfLines = 0;
-    UILabel *c = colorBlock(@"C\nnormal", randColor());
-    c.numberOfLines = 0;
-
-    for (UILabel *l in @[a, b, c]) {
-        [l mas_makeConstraints:^(MASConstraintMaker *make) { make.width.mas_equalTo(80); }];
-        [row addArrangedSubview:l];
-    }
-    [row setAlignmentStartSpacing:10 forView:a]; // a 距顶部 10pt
-    [row setAlignmentEndSpacing:50   forView:b]; // b 距底部 10pt
+    ZLStackView *row = ZLStackView.horizontal.alignStart.space(8).bgColor(@"#EFEFEF");
+    UILabel *a = colorBlock(@"A\nstart+10", randColor()); a.numberOfLines = 0; a.KFC.width(80);
+    UILabel *b = colorBlock(@"B\nend+30",   randColor()); b.numberOfLines = 0; b.KFC.width(80);
+    UILabel *c = colorBlock(@"C\nnormal",   randColor()); c.numberOfLines = 0; c.KFC.width(80);
+    [row addArrangedSubview:a]; [row setAlignmentStartSpacing:10 forView:a];
+    [row addArrangedSubview:b]; [row setAlignmentEndSpacing:30   forView:b];
+    [row addArrangedSubview:c];
     [sec addArrangedSubview:row];
 }
 
@@ -438,18 +341,14 @@ static ZLStackView *sectionView(NSString *title) {
 #pragma mark - Demo 10: hidden 自动重排
 // ─────────────────────────────────────────
 - (void)demo10_hiddenAutoLayout {
-    ZLStackView *sec = sectionView(@"10. hidden 自动重排（点击 B 切换显示）");
+    ZLStackView *sec = sectionView(@"10. hidden 自动重排（点击 B 切换）");
     [_contentStack addArrangedSubview:sec];
-    ZLStackView *row = ZLStackView.horizontal;
-    row.spacing = 8;
 
-    UILabel *a = colorBlock(@"A", randColor());
-    UILabel *b = colorBlock(@"B(tap)", randColor());
-    UILabel *c = colorBlock(@"C", randColor());
-    for (UILabel *l in @[a,b,c]) {
-        l.KFC.square(50);
-        [row addArrangedSubview:l];
-    }
+    ZLStackView *row = ZLStackView.horizontal.space(8);
+    UILabel *a = colorBlock(@"A", randColor()); a.KFC.square(50);
+    UILabel *b = colorBlock(@"B(tap)", randColor()); b.KFC.square(50);
+    UILabel *c = colorBlock(@"C", randColor()); c.KFC.square(50);
+    row.add(a).add(b).add(c);
 
     UILabel *tip = UILabel.new;
     tip.text = @"B 已隐藏，A C 自动补位";
@@ -460,45 +359,36 @@ static ZLStackView *sectionView(NSString *title) {
     b.userInteractionEnabled = YES;
     __weak typeof(b) weakB = b;
     __weak typeof(tip) weakTip = tip;
-
-    // 用 ZLStackView 的 tapAction 监听整行（演示 tapAction 用法）
-    // 此处直接对 b 用 UITapGestureRecognizer
-    UITapGestureRecognizer *tapGR = [UITapGestureRecognizer new];
-    __block void(^tapHandler)(void) = ^{
-        weakB.hidden = !weakB.hidden;
-        weakTip.hidden = !weakB.hidden;
-    };
-    objc_setAssociatedObject(tapGR, "handler", tapHandler, OBJC_ASSOCIATION_COPY_NONATOMIC);
-    [tapGR addTarget:self action:@selector(_onTapB:)];
-    [b addGestureRecognizer:tapGR];
+    UITapGestureRecognizer *gr = UITapGestureRecognizer.new;
+    void(^handler)(void) = ^{ weakB.hidden = !weakB.hidden; weakTip.hidden = !weakB.hidden; };
+    objc_setAssociatedObject(gr, "h", handler, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    [gr addTarget:self action:@selector(_onTapB:)];
+    [b addGestureRecognizer:gr];
 
     [sec addArrangedSubview:row];
     [sec addArrangedSubview:tip];
 }
-- (void)_doNothing {}
 - (void)_onTapB:(UITapGestureRecognizer *)gr {
-    void(^handler)(void) = objc_getAssociatedObject(gr, "handler");
-    if (handler) handler();
+    void(^h)(void) = objc_getAssociatedObject(gr, "h");
+    if (h) h();
 }
 
 // ─────────────────────────────────────────
 #pragma mark - Demo 11: addLayout block
 // ─────────────────────────────────────────
 - (void)demo11_addLayout {
-    ZLStackView *sec = sectionView(@"11. addArrangedSubview:layout: 添加时配置");
+    ZLStackView *sec = sectionView(@"11. addArrangedSubview:layout: 添加时配置 flexItem");
     [_contentStack addArrangedSubview:sec];
 
-    ZLStackView *row = ZLStackView.horizontal;
-    row.justifyContent = ZLJustifyFill;
-    row.spacing = 8;
-
-    NSArray *titles = @[@"配置flex:1", @"配置flex:2", @"配置flex:1"];
+    ZLStackView *row = ZLStackView.horizontal.justifyFill.space(8);
+    NSArray *titles = @[@"flex:1", @"flex:2", @"flex:1"];
     NSArray *flexes  = @[@1, @2, @1];
     for (int i = 0; i < 3; i++) {
         UILabel *l = colorBlock(titles[i], randColor());
+        l.KFC.height(36);
         NSInteger flex = [flexes[i] integerValue];
-        [row addArrangedSubview:l layout:^(__kindof UIView *view, ZLFlexItem *flexItem) {
-            flexItem.flexValue = flex;
+        [row addArrangedSubview:l layout:^(__kindof UIView *view, ZLFlexItem *item) {
+            item.flexValue = flex;
         }];
     }
     [sec addArrangedSubview:row];
@@ -508,19 +398,14 @@ static ZLStackView *sectionView(NSString *title) {
 #pragma mark - Demo 12: removeArrangedSubview
 // ─────────────────────────────────────────
 - (void)demo12_removeView {
-    ZLStackView *sec = sectionView(@"12. removeArrangedSubview 移除 view");
+    ZLStackView *sec = sectionView(@"12. removeArrangedSubview（0.8s 后移除 B）");
     [_contentStack addArrangedSubview:sec];
 
-    ZLStackView *row = ZLStackView.horizontal;
-    row.spacing = 8;
-    UILabel *a = colorBlock(@"A", randColor());
-    UILabel *b = colorBlock(@"B(将被移除)", randColor());
-    UILabel *c = colorBlock(@"C", randColor());
-    for (UILabel *l in @[a, b, c]) {
-        [l mas_makeConstraints:^(MASConstraintMaker *make) { make.width.mas_equalTo(60); make.height.mas_equalTo(36); }];
-        [row addArrangedSubview:l];
-    }
-    // 0.8s 后移除 B
+    UILabel *a = colorBlock(@"A", randColor()); a.KFC.size(60, 36);
+    UILabel *b = colorBlock(@"B(移除)", randColor()); b.KFC.size(80, 36);
+    UILabel *c = colorBlock(@"C", randColor()); c.KFC.size(60, 36);
+    ZLStackView *row = ZLStackView.horizontal.space(8).add(a).add(b).add(c);
+
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.8 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [row removeArrangedSubview:b];
     });
@@ -531,21 +416,16 @@ static ZLStackView *sectionView(NSString *title) {
 #pragma mark - Demo 13: insertArrangedSubview:atIndex:
 // ─────────────────────────────────────────
 - (void)demo13_insertAtIndex {
-    ZLStackView *sec = sectionView(@"13. insertArrangedSubview:atIndex: 插入");
+    ZLStackView *sec = sectionView(@"13. insertArrangedSubview:atIndex:（2s 后插入 B）");
     [_contentStack addArrangedSubview:sec];
 
-    ZLStackView *row = ZLStackView.horizontal;
-    row.spacing = 8;
-    UILabel *a = colorBlock(@"A", randColor());
-    UILabel *c = colorBlock(@"C", randColor());
-    for (UILabel *l in @[a, c]) {
-        [l mas_makeConstraints:^(MASConstraintMaker *make) { make.width.mas_equalTo(40); make.height.mas_equalTo(36); }];
-        [row addArrangedSubview:l];
-    }
-    // 0.8s 后在 index=1 插入 B
+    UILabel *a = colorBlock(@"A", randColor()); a.KFC.size(40, 36);
+    UILabel *c = colorBlock(@"C", randColor()); c.KFC.size(40, 36);
+    ZLStackView *row = ZLStackView.horizontal.space(8).add(a).add(c);
+
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         UILabel *b = colorBlock(@"B(插入)", randColor());
-        [b mas_makeConstraints:^(MASConstraintMaker *make) { make.width.mas_equalTo(60); make.height.mas_equalTo(36); }];
+        b.KFC.size(70, 36);
         [row insertArrangedSubview:b atIndex:1];
     });
     [sec addArrangedSubview:row];
@@ -564,19 +444,17 @@ static ZLStackView *sectionView(NSString *title) {
     result.textAlignment = NSTextAlignmentCenter;
     [sec addArrangedSubview:result];
 
-    ZLStackView *row = ZLStackView.horizontal;
-    row.spacing = 8;
-    row.insets = UIEdgeInsetsMake(12, 12, 12, 12);
-    row.backgroundColor = [UIColor colorWithRed:0.13 green:0.59 blue:0.95 alpha:1];
-    row.layer.cornerRadius = 8;
-    row.layer.masksToBounds = YES;
-    [row addArrangedSubview:colorBlock(@"点我", UIColor.whiteColor)];
-
     __weak typeof(result) weakResult = result;
-    row.tapAction(^(ZLBaseStackView *view) {
-        static int cnt = 0;
-        weakResult.text = [NSString stringWithFormat:@"点击了 %d 次", ++cnt];
-    });
+    ZLStackView *row = ZLStackView.horizontal.justifyCenter.alignCenter
+        .inset(12, 12, 12, 12)
+        .bgColor(@"#2196F3")
+        .corner(8)
+        .masksToBounds(YES)
+        .tapAction(^(ZLBaseStackView *v) {
+            static int cnt = 0;
+            weakResult.text = [NSString stringWithFormat:@"点击了 %d 次", ++cnt];
+        });
+    [row addArrangedSubview:colorBlock(@"点击我", UIColor.whiteColor)];
     [sec addArrangedSubview:row];
 }
 
@@ -584,89 +462,72 @@ static ZLStackView *sectionView(NSString *title) {
 #pragma mark - Demo 15: 链式 API 综合
 // ─────────────────────────────────────────
 - (void)demo15_chainAPI {
-    ZLStackView *sec = sectionView(@"15. 链式 API 综合：bgColor / corner / border / shadow / visibility / alphaValue");
+    ZLStackView *sec = sectionView(@"15. 链式 API 综合");
     [_contentStack addArrangedSubview:sec];
 
-    ZLStackView *row = [ZLStackView horizontal];
-    [row alignCenter];
-    [row justifyCenter];
-    row.space(10);
-    row.inset(12, 16, 12, 16);
-    row.bgColor(@"#4A90D9");
-    row.corner(12);
-    row.border(1, @"#FFFFFF");
-    row.shColor(@"#000000");
-    row.shOpacity(0.25);
-    row.shRadius(8);
-    row.shOffset(0, 4);
-
-    for (int i = 0; i < 3; i++) {
-        [row addArrangedSubview:colorBlock([NSString stringWithFormat:@"item%d", i+1], UIColor.whiteColor)];
+    // 圆角 + 边框 + 阴影
+    ZLStackView *row = ZLStackView.horizontal.justifyCenter.alignCenter
+        .space(10).inset(12, 16, 12, 16)
+        .bgColor(@"#4A90D9")
+        .corner(12)
+        .border(1, @"#FFFFFF")
+        .shColor(@"#000000").shOpacity(0.25).shRadius(8).shOffset(0, 4);
+    for (int i = 1; i <= 3; i++) {
+        UILabel *l = colorBlock([NSString stringWithFormat:@"item%d", i], UIColor.whiteColor);
+        l.KFC.height(30);
+        [row addArrangedSubview:l];
     }
     [sec addArrangedSubview:row];
 
-    // visibility / alphaValue
-    ZLStackView *row2 = ZLStackView.horizontal;
-    row2.spacing = 8;
-    UILabel *vis = colorBlock(@"visibility=YES", randColor());
-    UILabel *alp = colorBlock(@"alpha=0.4", randColor());
-    row2.add(vis).visibility(YES)
-        .add(alp).alphaValue(0.4);
+    // visibility + alphaValue
+    UILabel *vis = colorBlock(@"visibility=YES", randColor()); vis.KFC.height(32);
+    UILabel *alp = colorBlock(@"alpha=0.3", randColor());      alp.KFC.height(32);
+    ZLStackView *row2 = ZLStackView.horizontal.space(8)
+        .add(vis).visibility(YES)
+        .add(alp).alphaValue(0.3);
     [sec addArrangedSubview:row2];
+
+    // userActive=NO
+    ZLStackView *row3 = ZLStackView.horizontal.justifyCenter.alignCenter
+        .inset(8, 12, 8, 12).bgColor(@"#9E9E9E").corner(8).masksToBounds(YES)
+        .userActive(NO);
+    [row3 addArrangedSubview:colorBlock(@"userActive=NO（禁用交互）", UIColor.whiteColor)];
+    [sec addArrangedSubview:row3];
 }
 
 // ─────────────────────────────────────────
 #pragma mark - Demo 16: wrapScrollView 水平滚动
 // ─────────────────────────────────────────
-- (void)demo16_scrollStackView {
+- (void)demo16_wrapScrollViewHorizontal {
     ZLStackView *sec = sectionView(@"16. wrapScrollView 水平滚动");
     [_contentStack addArrangedSubview:sec];
 
-    // 水平 StackView 内容超出，用 wrapScrollView 包裹实现横向滚动
-    ZLStackView *hStack = ZLStackView.horizontal;
-    hStack.spacing = 8;
-    hStack.insets = UIEdgeInsetsMake(8, 8, 8, 8);
-    hStack.backgroundColor = [UIColor colorWithWhite:0.93 alpha:1];
-
+    ZLStackView *hStack = ZLStackView.horizontal.space(8).inset(8, 8, 8, 8).bgColor(@"#EFEFEF");
     for (int i = 1; i <= 12; i++) {
         UILabel *l = colorBlock([NSString stringWithFormat:@"item%d", i], randColor());
-        [l mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.mas_equalTo(60);
-            make.height.mas_equalTo(40);
-        }];
+        l.KFC.size(64, 40);
         [hStack addArrangedSubview:l];
     }
-
-    UIScrollView *hSv = [hStack wrapScrollView];
-    [hSv mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(56);
-    }];
-    [sec addArrangedSubview:hSv];
+    UIScrollView *sv = [hStack wrapScrollView];
+    sv.KFC.height(56);
+    [sec addArrangedSubview:sv];
 }
 
 // ─────────────────────────────────────────
 #pragma mark - Demo 17: wrapScrollView 垂直滚动
 // ─────────────────────────────────────────
-- (void)demo17_wrapScrollView {
+- (void)demo17_wrapScrollViewVertical {
     ZLStackView *sec = sectionView(@"17. wrapScrollView 垂直滚动");
     [_contentStack addArrangedSubview:sec];
 
-    ZLStackView *vStack = ZLStackView.vertical;
-    vStack.spacing = 6;
-    vStack.insets = UIEdgeInsetsMake(8, 8, 8, 8);
-
+    ZLStackView *vStack = ZLStackView.vertical.space(6).inset(8, 8, 8, 8);
     for (int i = 1; i <= 8; i++) {
-        UILabel *l = colorBlock([NSString stringWithFormat:@"row%d（内容超出容器可滚动）", i], randColor());
-        [l mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_equalTo(36);
-        }];
+        UILabel *l = colorBlock([NSString stringWithFormat:@"row%d（内容超出可滚动）", i], randColor());
+        l.KFC.height(36);
         [vStack addArrangedSubview:l];
     }
-
     UIScrollView *sv = [vStack wrapScrollView];
-    [sv mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(120); // 容器高度小于内容，产生滚动
-    }];
+    sv.KFC.height(120);
     [sec addArrangedSubview:sv];
 }
 
@@ -674,41 +535,37 @@ static ZLStackView *sectionView(NSString *title) {
 #pragma mark - Demo 18: 嵌套 StackView
 // ─────────────────────────────────────────
 - (void)demo18_nestedStack {
-    ZLStackView *sec = sectionView(@"18. 嵌套 StackView（水平嵌垂直）");
+    ZLStackView *sec = sectionView(@"18. 嵌套 StackView（水平嵌垂直，flex 分配宽度）");
+    
     [_contentStack addArrangedSubview:sec];
 
-    ZLStackView *hRow = ZLStackView.horizontal;
-    hRow.spacing = 8;
-    hRow.alignment = ZLAlignFill;
-
-    // 左侧垂直 stack
-    ZLStackView *left = ZLStackView.vertical;
-    left.spacing = 6;
-    left.insets = UIEdgeInsetsMake(8, 8, 8, 8);
-    left.backgroundColor = [UIColor colorWithWhite:0.93 alpha:1];
-    left.layer.cornerRadius = 6;
-    left.layer.masksToBounds = YES;
+    ZLStackView *left = VStackView
+        .space(6)
+        .inset(8, 8, 8, 8)
+        .bgColor(@"#EFEFEF")
+        .corner(6)
+        .masksToBounds(YES);
     for (int i = 0; i < 3; i++) {
-        [left addArrangedSubview:colorBlock([NSString stringWithFormat:@"L%d", i+1], randColor())];
+        UILabel *l = colorBlock([NSString stringWithFormat:@"L%d", i+1], randColor());
+        l.KFC.height(28);
+        [left addArrangedSubview:l];
     }
 
-    // 右侧垂直 stack（flex:2 占更多空间）
-    ZLStackView *right = ZLStackView.vertical;
-    right.spacing = 6;
-    right.insets = UIEdgeInsetsMake(8, 8, 8, 8);
-    right.backgroundColor = [UIColor colorWithWhite:0.90 alpha:1];
-    right.layer.cornerRadius = 6;
-    right.layer.masksToBounds = YES;
-    for (int i = 0; i < 2; i++) {
-        [right addArrangedSubview:colorBlock([NSString stringWithFormat:@"R%d", i+1], randColor())];
+    ZLStackView *right = VStackView
+        .space(6)
+        .inset(8, 8, 8, 8)
+        .bgColor(@"#E8E8E8")
+        .corner(6)
+        .masksToBounds(YES);
+    for (int i = 0; i < 3; i++) {
+        UILabel *l = colorBlock([NSString stringWithFormat:@"R%d", i+1], randColor());
+        l.KFC.height(28);
+        [right addArrangedSubview:l];
     }
 
-    [hRow addArrangedSubview:left];
-    [hRow addArrangedSubview:right];
-    hRow.justifyContent = ZLJustifyFill;
-    [hRow setFlex:1 forView:left];
-    [hRow setFlex:2 forView:right]; // 右侧是左侧宽度的 2 倍
-
+    ZLStackView *hRow = ZLStackView.horizontal.justifyFill.alignCenter.space(8)
+        .add(left).flexFor(1,left)
+        .add(right).flexFor(2,right);
     [sec addArrangedSubview:hRow];
 }
 

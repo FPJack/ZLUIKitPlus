@@ -64,7 +64,7 @@
         ZLStackView
         .horizontal
         .alignStart
-        .alignEndSpacingFor(UILabel.new, 2)
+        .alignEndSpacingFor( 2,UILabel.new)
         .width(200)
         .bgColor(UIColor.redColor)
         .add(UISwitch.new)

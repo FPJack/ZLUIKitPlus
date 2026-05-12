@@ -41,7 +41,12 @@
     NSAssert(NO, @"子类必须重写second方法返回对应类型的视图");
     return nil;
 }
-
+- (id  _Nonnull (^)(void (^ _Nonnull)(id _Nonnull)))then {
+    return ^(void (^block)(id)){
+        if (block) block(self);
+        return self;
+    };
+}
 - (id  _Nonnull (^)(void (^ _Nonnull)(UIView * _Nonnull)))thenFirst {
     return ^(void (^block)(UIView *)){
         if (block) block(self.first);

@@ -405,6 +405,25 @@
         return self;
     };
 }
+- (id  _Nonnull (^)(BOOL, UIView * _Nonnull))addViewIf {
+    return ^(BOOL condition, UIView *view){
+        if (condition) {
+            [self addArrangedSubview:view];
+        }
+        return self;
+    };
+}
+- (id  _Nonnull (^)(BOOL, UIView * _Nonnull (^ _Nonnull)(ZLBaseStackView * _Nonnull)))addViewMakeIf {
+    return ^(BOOL condition, UIView * _Nonnull (^make)(ZLBaseStackView *stackView)){
+        if (condition && make) {
+            UIView *view = make(self);
+            if (view) {
+                [self addArrangedSubview:view];
+            }
+        }
+        return self;
+    };
+}
 - (id  _Nonnull (^)(UIView * _Nonnull (^ _Nonnull)(ZLBaseStackView * _Nonnull)))addViewMake {
     return ^(UIView * _Nonnull (^make)(ZLBaseStackView *stackView)){
         if (make) {

@@ -11,6 +11,7 @@
 @property (nonatomic, strong,readwrite) UIView*  first;
 @property (nonatomic, strong,readwrite) UIView* second;
 - (void)addArrangedSubview:(UIView *)view;
+- (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)stackIndex;
 @end
 @implementation ZLPairView
 - (void)didMoveToSuperview {
@@ -21,7 +22,7 @@
 - (UIView *)first {
     if (!_first) {
         _first = [self makeFirstView];
-        [self addArrangedSubview:_first];
+        [self insertArrangedSubview:_first atIndex:0];
     }
     return _first;
 }

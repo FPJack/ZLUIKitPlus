@@ -22,9 +22,9 @@
 //    [contentStack addArrangedSubview:[self demo03_pairLabelSpacing]];
 //    [contentStack addArrangedSubview:[self demo04_pairLabelFlex]];
     
-    [contentStack addArrangedSubview:[self demo05_pairLabelAlignSpacing]];
-    return;
+//    [contentStack addArrangedSubview:[self demo05_pairLabelAlignSpacing]];
     [contentStack addArrangedSubview:[self demo06_pairImageView]];
+    return;
     [contentStack addArrangedSubview:[self demo07_pairButtonView]];
     [contentStack addArrangedSubview:[self demo08_imgLabelView]];
     [contentStack addArrangedSubview:[self demo09_imgButtonView]];
@@ -202,21 +202,24 @@
         .space(8)
         .bgColor(@"#FFF7E6")
         .corner(8)
+        .minSpace(20)
+        .flexSpace(YES)
         .masksToBounds(YES)
         .inset(0, 12, 0, 12)
         .secondStartSpace(18)
         .secondEndSpace(8);
-    p2.first
-        .txt(@"first")
-        .systemFont(13)
-        .color(@"#666666");
+   
     p2.second
         .txt(@"secondStartSpace(8)\nsecondEndSpace(8)")
         .systemFont(12)
         .color(@"#FA8C16")
         .lines(2)
-        .bgColor(@"#FFE7BA")
-        .insets(2, 4, 2, 4)
+        .bgColor(@"#FFE7BA");
+    p2.first
+        .txt(@"first")
+        .systemFont(13)
+        .color(@"#666666")
+        .insets(2, 4, 2, 4);
     ;
     [sec addArrangedSubview:p2];
 

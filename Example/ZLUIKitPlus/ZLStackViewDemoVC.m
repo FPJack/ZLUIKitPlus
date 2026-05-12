@@ -175,7 +175,6 @@ static ZLStackView *sectionView(NSString *title) {
         @[@"alignEnd",    @(ZLAlignEnd)],
         @[@"alignFill",   @(ZLAlignFill)],
     ];
-
     for (NSArray *item in aligns) {
         UILabel *name = UILabel.new;
         name.text = item[0];
@@ -183,7 +182,7 @@ static ZLStackView *sectionView(NSString *title) {
         name.textColor = [UIColor colorWithWhite:0.5 alpha:1];
         [sec addArrangedSubview:name];
 
-        ZLStackView *row = ZLStackView.horizontal.space(8).bgColor(@"#EFEFEF");
+        ZLStackView *row = ZLStackView.horizontal.space(8).bgColor(@"#EFEFEF").justifyCenter;
         row.alignment = [item[1] integerValue];
         row.KFC.height(70);
         NSArray *sizes = @[@20, @40, @60];

@@ -241,9 +241,9 @@ static ZLStackView *sectionView(NSString *title) {
     UILabel *y = colorBlock(@"Y", randColor()); y.KFC.size(40, 32);
     UILabel *z = colorBlock(@"Z", randColor()); z.KFC.size(40, 32);
     ZLStackView *row2 = ZLStackView.horizontal.space(4).alignCenter
-        .add(x).spacingAfter(24,x)
-        .add(y).minSpacingAfter(4,y).maxSpacingAfter( 40,y)
-        .add(z);
+        .addView(x).spacingAfter(24,x)
+        .addView(y).minSpacingAfter(4,y).maxSpacingAfter( 40,y)
+        .addView(z);
     [sec addArrangedSubview:row2];
 }
 
@@ -268,9 +268,9 @@ static ZLStackView *sectionView(NSString *title) {
     UILabel *l2 = colorBlock(@"●", randColor());
     UILabel *l3 = colorBlock(@"▶", randColor());
     ZLStackView *row2 = ZLStackView.horizontal.justifyFill.bgColor(@"#E0E0E0")
-        .add(l1).flexSpacingAfter(YES,l1)
-        .add(l2).flexSpacingAfter(YES,l2)
-        .add(l3);
+        .addView(l1).flexSpacingAfter(YES,l1)
+        .addView(l2).flexSpacingAfter(YES,l2)
+        .addView(l3);
     [sec addArrangedSubview:row2];
 }
 
@@ -294,9 +294,9 @@ static ZLStackView *sectionView(NSString *title) {
     UILabel *y = colorBlock(@"3", randColor()); y.KFC.height(36);
     UILabel *z = colorBlock(@"1", randColor()); z.KFC.height(36);
     ZLStackView *row2 = ZLStackView.horizontal.justifyFill.space(4)
-        .add(x).flexFor(1,x)
-        .add(y).flexFor(3,y)
-        .add(z).flexFor(1,z);
+        .addView(x).flexFor(1,x)
+        .addView(y).flexFor(3,y)
+        .addView(z).flexFor(1,z);
     [sec addArrangedSubview:row2];
 }
 
@@ -348,7 +348,7 @@ static ZLStackView *sectionView(NSString *title) {
     UILabel *a = colorBlock(@"A", randColor()); a.KFC.square(50);
     UILabel *b = colorBlock(@"B(tap)", randColor()); b.KFC.square(50);
     UILabel *c = colorBlock(@"C", randColor()); c.KFC.square(50);
-    row.add(a).add(b).add(c);
+    row.addView(a).addView(b).addView(c);
 
     UILabel *tip = UILabel.new;
     tip.text = @"B 已隐藏，A C 自动补位";
@@ -404,7 +404,7 @@ static ZLStackView *sectionView(NSString *title) {
     UILabel *a = colorBlock(@"A", randColor()); a.KFC.size(60, 36);
     UILabel *b = colorBlock(@"B(移除)", randColor()); b.KFC.size(80, 36);
     UILabel *c = colorBlock(@"C", randColor()); c.KFC.size(60, 36);
-    ZLStackView *row = ZLStackView.horizontal.space(8).add(a).add(b).add(c);
+    ZLStackView *row = ZLStackView.horizontal.space(8).addView(a).addView(b).addView(c);
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.8 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [row removeArrangedSubview:b];
@@ -421,7 +421,7 @@ static ZLStackView *sectionView(NSString *title) {
 
     UILabel *a = colorBlock(@"A", randColor()); a.KFC.size(40, 36);
     UILabel *c = colorBlock(@"C", randColor()); c.KFC.size(40, 36);
-    ZLStackView *row = ZLStackView.horizontal.space(8).add(a).add(c);
+    ZLStackView *row = ZLStackView.horizontal.space(8).addView(a).addView(c);
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         UILabel *b = colorBlock(@"B(插入)", randColor());
@@ -483,8 +483,8 @@ static ZLStackView *sectionView(NSString *title) {
     UILabel *vis = colorBlock(@"visibility=YES", randColor()); vis.KFC.height(32);
     UILabel *alp = colorBlock(@"alpha=0.3", randColor());      alp.KFC.height(32);
     ZLStackView *row2 = ZLStackView.horizontal.space(8)
-        .add(vis).visibility(YES)
-        .add(alp).alphaValue(0.3);
+        .addView(vis).visibility(YES)
+        .addView(alp).alphaValue(0.3);
     [sec addArrangedSubview:row2];
 
     // userActive=NO
@@ -564,8 +564,8 @@ static ZLStackView *sectionView(NSString *title) {
     }
 
     ZLStackView *hRow = ZLStackView.horizontal.justifyFill.alignCenter.space(8)
-        .add(left).flexFor(1,left)
-        .add(right).flexFor(2,right);
+        .addView(left).flexFor(1,left)
+        .addView(right).flexFor(2,right);
     [sec addArrangedSubview:hRow];
 }
 

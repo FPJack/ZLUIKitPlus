@@ -399,13 +399,24 @@
         return self;
     };
 }
-- (id _Nonnull (^)(UIView * _Nonnull))add {
+- (id _Nonnull (^)(UIView * _Nonnull))addView {
     return ^(UIView *view){
         [self addArrangedSubview:view];
         return self;
     };
 }
-- (id _Nonnull (^)(UIView * _Nonnull, void (^ _Nonnull)(__kindof UIView * _Nonnull, ZLFlexItem * _Nonnull)))addLayout {
+- (id  _Nonnull (^)(UIView * _Nonnull (^ _Nonnull)(ZLBaseStackView * _Nonnull)))addViewMake {
+    return ^(UIView * _Nonnull (^make)(ZLBaseStackView *stackView)){
+        if (make) {
+            UIView *view = make(self);
+            if (view) {
+                [self addArrangedSubview:view];
+            }
+        }
+        return self;
+    };
+}
+- (id _Nonnull (^)(UIView * _Nonnull, void (^ _Nonnull)(__kindof UIView * _Nonnull, ZLFlexItem * _Nonnull)))addViewLayout {
     return ^(UIView *view, void (^config)(__kindof UIView *, ZLFlexItem *)){
         [self addArrangedSubview:view layout:config];
         return self;

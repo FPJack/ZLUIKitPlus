@@ -67,19 +67,19 @@
         .alignEndSpacingFor( 2,UILabel.new)
         .width(200)
         .bgColor(UIColor.redColor)
-        .add(UISwitch.new)
-        .addLayout(UILabel.new, ^(__kindof UILabel * _Nonnull view, ZLFlexItem * _Nonnull viewCfg) {
+        .addView(UISwitch.new)
+        .addViewLayout(UILabel.new, ^(__kindof UILabel * _Nonnull view, ZLFlexItem * _Nonnull viewCfg) {
             view.numberOfLines  = 0;
             view.text = @"viewviewvviewviewviewviewviewviewviewviewiewviewviewviewviewview";
             viewCfg.startSpacing  = 10;
             viewCfg.endSpacing = 20;
         })
-        .add(UISwitch.new)
+        .addView(UISwitch.new)
         .assignToPtr(&sk);
         
         
         stackView
-            .add(sk);
+            .addView(sk);
     }
     
     {
@@ -98,14 +98,14 @@
         .insetsZero
         .bgColor(UIColor.orangeColor)
         .assignToPtr(&view);
-        stackView.add(view);
+        stackView.addView(view);
     }
     
     // 1. ZLPairLabelView 水平(两个Label)
     {
         ZLLabel *tip = ZLLab;
         tip.txt(@"1. PairLabelView 水平(两个Label)").systemFont(13).color(@"#999999");
-        stackView.add(tip);
+        stackView.addView(tip);
         
         ZLPairLabelView *pair = ZLPairLabelView.new;
         
@@ -124,7 +124,7 @@
                 second.txt(@"这是内容文本").systemFont(14).color(@"#666666");
             });
         pair.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1];
-        stackView.add(pair);
+        stackView.addView(pair);
 
     }
     
@@ -132,7 +132,7 @@
     {
         ZLLabel *tip = ZLLab;
         tip.txt(@"2. PairLabelView 垂直").systemFont(13).color(@"#999999");
-        stackView.add(tip);
+        stackView.addView(tip);
 
         
         ZLPairLabelView *pair = ZLPairLabelView.new;
@@ -145,7 +145,7 @@
                 second.txt(@"积分").systemFont(12).color(@"#999999");
             });
         pair.backgroundColor = [UIColor colorWithRed:1.0 green:0.95 blue:0.9 alpha:1];
-        stackView.add(pair);
+        stackView.addView(pair);
 
     }
     

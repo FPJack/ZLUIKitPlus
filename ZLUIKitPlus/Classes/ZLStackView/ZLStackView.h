@@ -82,12 +82,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,readonly)ObjectType (^insertMaxSpace)(CGFloat spacing);
 @property (nonatomic,readonly)ObjectType (^insertFlexSpace)(BOOL flexible);
 
-@property (nonatomic, readonly)ObjectType (^add)(UIView *view);
+@property (nonatomic, readonly)ObjectType (^addView)(UIView *view);
 
-@property (nonatomic, readonly)ObjectType (^addLayout)(
+@property (nonatomic, readonly)ObjectType (^addViewLayout)(
     UIView *view,
     void(^)(__kindof UIView *view, ZLFlexItem *flexItem)
 );
+
+@property (nonatomic, readonly)ObjectType (^addViewMake)(UIView *(^make)(ZLBaseStackView *stackView));
+
+
 @property (nonatomic, readonly)ObjectType (^spacingAfter)(CGFloat spacing,UIView *arrangedSubview);
 
 @property (nonatomic, readonly)ObjectType (^minSpacingAfter)(CGFloat minSpacing,UIView *arrangedSubview);

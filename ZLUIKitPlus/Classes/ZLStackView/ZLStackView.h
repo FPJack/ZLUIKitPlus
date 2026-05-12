@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign)ZLJustify justifyContent;
 ///内边距
 @property(nonatomic,assign)UIEdgeInsets insets;
-@property(nonatomic,strong) NSMutableArray<__kindof UIView *> *arrangedViews;
+@property(nonatomic,copy,readonly) NSArray<__kindof UIView *> *arrangedViews;
 @property (nonatomic,assign)CGFloat spacing;
 /// 添加view到stackView，默认添加到最后
 - (void)addArrangedSubview:(UIView *)view;

@@ -50,7 +50,7 @@ static UIColor *randColor(void) {
 static ZLStackView *sectionView(NSString *title) {
     ZLStackView *s = ZLStackView.vertical;
     s.insets = UIEdgeInsetsMake(12, 12, 12, 12);
-    s.spacing = 8;
+    s.spacing = 10;
     s.layer.borderColor = [UIColor colorWithWhite:0.85 alpha:1].CGColor;
     s.layer.borderWidth = 1;
     s.layer.cornerRadius = 8;
@@ -93,21 +93,23 @@ static ZLStackView *sectionView(NSString *title) {
 }
 
 - (void)buildDemos {
-    [self demo01_axisAndSpacing];
-    [self demo02_justifyContent];
-    [self demo03_alignment];
-    [self demo04_insets];
-    [self demo05_customSpacing];
-    [self demo06_flexibleSpacing];
-    [self demo07_flex];
-    [self demo08_alignSelf];
-    [self demo09_alignStartEndSpacing];
-    [self demo10_hiddenAutoLayout];
-    [self demo11_addLayout];
-    [self demo12_removeView];
-    [self demo13_insertAtIndex];
-    [self demo14_tapAction];
-    [self demo15_chainAPI];
+//    [self demo01_axisAndSpacing];
+//    [self demo02_justifyContent];
+//    [self demo03_alignment];
+//    [self demo04_insets];
+//    [self demo05_customSpacing];
+//    [self demo06_flexibleSpacing];
+    
+//    [self demo07_flex];
+//    [self demo08_alignSelf];
+//    [self demo09_alignStartEndSpacing];
+//    [self demo10_hiddenAutoLayout];
+//    [self demo11_addLayout];
+    
+//    [self demo12_removeView];
+//    [self demo13_insertAtIndex];
+//    [self demo14_tapAction];
+//    [self demo15_chainAPI];
     [self demo16_scrollStackView];
     [self demo17_wrapScrollView];
     [self demo18_nestedStack];
@@ -303,6 +305,7 @@ static ZLStackView *sectionView(NSString *title) {
 // ─────────────────────────────────────────
 - (void)demo06_flexibleSpacing {
     ZLStackView *sec = sectionView(@"06. flexibleSpacing 弹性间距（justifyFill 下）");
+    sec.alignment = ZLAlignFill; // 纵轴拉伸填满
     [_contentStack addArrangedSubview:sec];
 
     ZLStackView *row = ZLStackView.horizontal;
@@ -414,13 +417,10 @@ static ZLStackView *sectionView(NSString *title) {
     row.alignment = ZLAlignStart;
     row.spacing = 8;
     row.backgroundColor = [UIColor colorWithWhite:0.93 alpha:1];
-    [row mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(80);
-    }];
-
+   
     UILabel *a = colorBlock(@"A\nstartSpacing=10", randColor());
     a.numberOfLines = 0;
-    UILabel *b = colorBlock(@"B\nendSpacing=10", randColor());
+    UILabel *b = colorBlock(@"B\nendSpacing=50", randColor());
     b.numberOfLines = 0;
     UILabel *c = colorBlock(@"C\nnormal", randColor());
     c.numberOfLines = 0;
@@ -430,7 +430,7 @@ static ZLStackView *sectionView(NSString *title) {
         [row addArrangedSubview:l];
     }
     [row setAlignmentStartSpacing:10 forView:a]; // a 距顶部 10pt
-    [row setAlignmentEndSpacing:10   forView:b]; // b 距底部 10pt
+    [row setAlignmentEndSpacing:50   forView:b]; // b 距底部 10pt
     [sec addArrangedSubview:row];
 }
 
@@ -440,15 +440,14 @@ static ZLStackView *sectionView(NSString *title) {
 - (void)demo10_hiddenAutoLayout {
     ZLStackView *sec = sectionView(@"10. hidden 自动重排（点击 B 切换显示）");
     [_contentStack addArrangedSubview:sec];
-
     ZLStackView *row = ZLStackView.horizontal;
     row.spacing = 8;
 
     UILabel *a = colorBlock(@"A", randColor());
     UILabel *b = colorBlock(@"B(tap)", randColor());
     UILabel *c = colorBlock(@"C", randColor());
-    for (UILabel *l in @[a, b, c]) {
-        [l mas_makeConstraints:^(MASConstraintMaker *make) { make.width.mas_equalTo(50); make.height.mas_equalTo(36); }];
+    for (UILabel *l in @[a,b,c]) {
+        l.KFC.square(50);
         [row addArrangedSubview:l];
     }
 
@@ -544,7 +543,7 @@ static ZLStackView *sectionView(NSString *title) {
         [row addArrangedSubview:l];
     }
     // 0.8s 后在 index=1 插入 B
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.8 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         UILabel *b = colorBlock(@"B(插入)", randColor());
         [b mas_makeConstraints:^(MASConstraintMaker *make) { make.width.mas_equalTo(60); make.height.mas_equalTo(36); }];
         [row insertArrangedSubview:b atIndex:1];

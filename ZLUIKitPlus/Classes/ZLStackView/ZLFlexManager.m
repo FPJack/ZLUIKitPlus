@@ -68,6 +68,7 @@
     NSMutableArray<UIView *> *flexViews = NSMutableArray.array;
     for (int i = 0; i < count; i ++) {
         UIView *view = self.views[i];
+        view.translatesAutoresizingMaskIntoConstraints = NO;
         ZLFlexItem *cfg = view.zl_flex;
         if (cfg.flexValue > 0 && self.justify != ZLJustifyFillEqually) {
             [flexViews addObject:view];
@@ -87,6 +88,8 @@
                 break;
             case ZLAlignCenter:
             {
+                
+                
                 CGFloat offsetY = (startSpacing - endSpacing) * 0.5;
                 cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:self.stackView.topAnchor constant:startSpacing + inset.top];
                 [self.constraints addObject:cons];
@@ -278,6 +281,7 @@
 
     for (int i = 0; i < count; i ++) {
         UIView *view = self.views[i];
+        view.translatesAutoresizingMaskIntoConstraints = NO;
         ZLFlexItem *cfg = view.zl_flex;
         if (cfg.flexValue > 0 && self.justify != ZLJustifyFillEqually) {
             [flexViews addObject:view];

@@ -32,16 +32,13 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.markedDirty = YES;
+        ///消除staview 宽度为0的时候 设置了内边距控制台报约束警告的问题
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
     }
     return self;
 }
-- (NSMutableArray<__kindof UIView *> *)arrangedViews {
-    if (!_arrangedViews) {
-        _arrangedViews = NSMutableArray.array;
-    }
-    return _arrangedViews;
-}
+
 - (NSMutableArray<__kindof UIView *> *)allViews {
     if (!_allViews) {
         _allViews = NSMutableArray.array;
@@ -85,10 +82,9 @@
         [cfg setValue:view forKey:@"view"];
         [cfg setValue:self forKey:@"stackView"];
         [self.allViews addObject:view];
+        [self adjustLabelCompression:view];
         [self addSubview:view];
         if (view.hidden) return;
-        [self adjustLabelCompression:view];
-        view.translatesAutoresizingMaskIntoConstraints = NO;
         self.markedDirty = YES;
         [self setNeedsUpdateConstraints];
     }
@@ -122,29 +118,25 @@
         [view setContentCompressionResistancePriority:priorit - 0.1 forAxis:axis];
     }
 }
-- (void)refreshArrangedSubviews {
-    [self.arrangedViews removeAllObjects];
-    [self.allViews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (!obj.hidden) {
-            [self.arrangedViews addObject:obj];
+- (NSArray<__kindof UIView *> *)arrangedViews {
+    return [self.allViews filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(UIView * _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        if (![evaluatedObject.superview isEqual:self]) {
+            [self addSubview:evaluatedObject];
         }
-        if ([obj.superview isEqual:self]) {
-            [self addSubview:obj];
-        }
-    }];
+        return !evaluatedObject.hidden;
+    }]];
 }
+
 - (void)removeArrangedSubview:(UIView *)view {
     if (![self.allViews containsObject:view]) return;
     [view removeFromSuperview];
     [self.allViews removeObject:view];
-    if (![self.arrangedViews containsObject:view]) return;
-    [self.arrangedViews removeObject:view];
     self.markedDirty = YES;
     [self setNeedsUpdateConstraints];
 }
 - (void)setFlexibleSpacing:(BOOL)flexible afterView:(UIView *)arrangedSubview {
     if (![arrangedSubview isKindOfClass:UIView.class]) return;
-    if (![self.arrangedViews containsObject:arrangedSubview]) return;
+    if (![self.allViews containsObject:arrangedSubview]) return;
     if (flexible == arrangedSubview.zl_flex.isFlexSpace) return;
     arrangedSubview.zl_flex.isFlexSpace = flexible;
     if (arrangedSubview.hidden) return;
@@ -158,7 +150,7 @@
     }]];
 }
 - (void)setCustomSpacing:(CGFloat)spacing afterView:(UIView *)arrangedSubview {
-    if (![self.arrangedViews containsObject:arrangedSubview]) return;
+    if (![self.allViews containsObject:arrangedSubview]) return;
     if (![arrangedSubview isKindOfClass:UIView.class]) return;
     ZLFlexItem *viewCfg = arrangedSubview.zl_flex;
     if (viewCfg.spacing == spacing) return;
@@ -177,7 +169,7 @@
     }
 }
 - (void)setCustomMinSpacing:(CGFloat)minSpacing afterView:(UIView *)arrangedSubview {
-    if (![self.arrangedViews containsObject:arrangedSubview]) return;
+    if (![self.allViews containsObject:arrangedSubview]) return;
     if (![arrangedSubview isKindOfClass:UIView.class]) return;
     ZLFlexItem *viewCfg = arrangedSubview.zl_flex;
     if (viewCfg.minSpacing == minSpacing) return;
@@ -197,7 +189,7 @@
 }
 
 - (void)setCustomMaxSpacing:(CGFloat)maxSpacing afterView:(UIView *)arrangedSubview {
-    if (![self.arrangedViews containsObject:arrangedSubview]) return;
+    if (![self.allViews containsObject:arrangedSubview]) return;
     if (![arrangedSubview isKindOfClass:UIView.class]) return;
     ZLFlexItem *viewCfg = arrangedSubview.zl_flex;
     if (viewCfg.maxSpacing == maxSpacing) return;
@@ -216,18 +208,21 @@
     }
 }
 - (void)setFlex:(NSInteger)flex forView:(UIView *)arrangedSubview{
+    if (![self.allViews containsObject:arrangedSubview]) return;
     ZLFlexItem *cfg = arrangedSubview.zl_flex;
     if (flex < 0 || cfg.flexValue == flex) return;
     cfg.flexValue = flex;
+    if (arrangedSubview.hidden) return;
     self.markedDirty = YES;
     [self setNeedsUpdateConstraints];
     
 }
 - (void)setAlignment:(ZLAlign)alignment forView:(UIView *)arrangedSubview {
-    if (![self.arrangedViews containsObject:arrangedSubview]) return;
+    if (![self.allViews containsObject:arrangedSubview]) return;
     ZLFlexItem *cfg = arrangedSubview.zl_flex;
     if (alignment == cfg.alignSelf) return;
     cfg.alignSelf = alignment;
+    if (arrangedSubview.hidden) return;
     self.markedDirty = YES;
     [self setNeedsUpdateConstraints];
 }
@@ -237,6 +232,7 @@
     ZLFlexItem *cfg = arrangedSubview.zl_flex;
     if (spacing == cfg.startSpacing) return;
     cfg.startSpacing = spacing;
+    if (arrangedSubview.hidden) return;
     self.markedDirty = YES;
     [self setNeedsUpdateConstraints];
 }
@@ -246,13 +242,13 @@
     ZLFlexItem *cfg = arrangedSubview.zl_flex;
     if (cfg.endSpacing == spacing) return;
     cfg.endSpacing = spacing;
+    if (arrangedSubview.hidden) return;
     self.markedDirty = YES;
     [self setNeedsUpdateConstraints];
 }
 - (void)updateConstraints {
     [super updateConstraints];
     if (!self.markedDirty) return;
-    [self refreshArrangedSubviews];
     [self.layoutManager removeAllSpacing];
     [self.layoutManager deactivateConstraints];
     [self.layoutManager addHorizontalLayoutConstraints];

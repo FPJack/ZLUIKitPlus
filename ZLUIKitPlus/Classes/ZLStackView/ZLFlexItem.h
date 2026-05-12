@@ -36,6 +36,13 @@ NS_ASSUME_NONNULL_BEGIN
 //弹性权重（横向=宽度比例，纵向=高度比例）
 @property (nonatomic,assign)ZLAlign alignSelf;
 
+@property (nonatomic,assign)CGFloat height;
+@property (nonatomic,assign)CGFloat width;
+@property (nonatomic,assign)CGFloat minWidth;
+@property (nonatomic,assign)CGFloat maxWidth;
+@property (nonatomic,assign)CGFloat minHeight;
+@property (nonatomic,assign)CGFloat maxHeight;
+
 
 ///链式配置
 @property(readonly)ZLFlexItem *(^start)(CGFloat spacing);
@@ -46,6 +53,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property(readonly)ZLFlexItem *(^flexSpace)(BOOL isFlex);
 @property(readonly)ZLFlexItem *(^flex)(NSInteger flex);
 @property(readonly)ZLFlexItem *(^align)(ZLAlign align);
+
+@property(readonly)ZLFlexItem *(^h)(CGFloat height);
+@property(readonly)ZLFlexItem *(^w)(CGFloat width);
+@property(readonly)ZLFlexItem *(^minW)(CGFloat minWidth);
+@property(readonly)ZLFlexItem *(^maxW)(CGFloat maxWidth);
+@property(readonly)ZLFlexItem *(^minH)(CGFloat minHeight);
+@property(readonly)ZLFlexItem *(^maxH)(CGFloat maxHeight);
+
 - (instancetype)alignStart;
 - (instancetype)alignEnd;
 - (instancetype)alignCenter;

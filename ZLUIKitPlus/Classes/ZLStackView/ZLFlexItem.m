@@ -156,4 +156,49 @@
     self.alignSelf = ZLAlignFill;
     return self;
 }
+- (ZLFlexItem * _Nonnull (^)(CGFloat))h {
+    return ^(CGFloat h) {
+        self.height = h;
+        return self;
+    };
+}
+- (ZLFlexItem * _Nonnull (^)(CGFloat))w {
+    return ^(CGFloat w) {
+        self.width = w;
+        return self;
+    };
+}
+
+- (ZLFlexItem * _Nonnull (^)(CGFloat))minW {
+    return ^(CGFloat w) {
+        self.minWidth = w;
+        return self;
+    };
+}
+
+
+- (ZLFlexItem * _Nonnull (^)(CGFloat))minH {
+    return ^(CGFloat h) {
+        self.minHeight = h;
+        return self;
+    };
+}
+
+
+- (ZLFlexItem * _Nonnull (^)(CGFloat))maxW {
+    return ^(CGFloat w) {
+        self.maxWidth = w;
+        return self;
+    };
+}
+
+
+- (ZLFlexItem * _Nonnull (^)(CGFloat))maxH {
+    return ^(CGFloat h) {
+        self.maxHeight = h;
+        return self;
+    };
+}
+
+
 @end

@@ -17,14 +17,12 @@
     [contentStack wrapScrollView].KFC
         .addToFull(self.view);
 
-    //[contentStack addArrangedSubview:[self demo01_pairLabelViewHorizontal]];
-//    [contentStack addArrangedSubview:[self demo02_pairLabelViewVertical]];
-//    [contentStack addArrangedSubview:[self demo03_pairLabelSpacing]];
-//    [contentStack addArrangedSubview:[self demo04_pairLabelFlex]];
-    
-//    [contentStack addArrangedSubview:[self demo05_pairLabelAlignSpacing]];
+    [contentStack addArrangedSubview:[self demo01_pairLabelViewHorizontal]];
+    [contentStack addArrangedSubview:[self demo02_pairLabelViewVertical]];
+    [contentStack addArrangedSubview:[self demo03_pairLabelSpacing]];
+    [contentStack addArrangedSubview:[self demo04_pairLabelFlex]];
+    [contentStack addArrangedSubview:[self demo05_pairLabelAlignSpacing]];
     [contentStack addArrangedSubview:[self demo06_pairImageView]];
-    return;
     [contentStack addArrangedSubview:[self demo07_pairButtonView]];
     [contentStack addArrangedSubview:[self demo08_imgLabelView]];
     [contentStack addArrangedSubview:[self demo09_imgButtonView]];
@@ -195,22 +193,21 @@
         .systemFont(13)
         .color(@"#666666");
     [sec addArrangedSubview:p1];
-    
+//    
     
     // secondStartSpace / secondEndSpace
     ZLPairLabelView *p2 = ZLPairLabelView.new
-        .space(8)
         .bgColor(@"#FFF7E6")
         .corner(8)
         .minSpace(20)
-        .flexSpace(YES)
+        //.flexSpace(YES)
         .masksToBounds(YES)
         .inset(0, 12, 0, 12)
         .secondStartSpace(18)
-        .secondEndSpace(8);
+        .secondEndSpace(18);
    
     p2.second
-        .txt(@"secondStartSpace(8)\nsecondEndSpace(8)")
+        .txt(@"secondStartSpace(18)secondEndSpace(18)secondStartSpace")
         .systemFont(12)
         .color(@"#FA8C16")
         .lines(2)
@@ -229,7 +226,7 @@
 #pragma mark - Demo 06: ZLPairImageView
 
 - (UIView *)demo06_pairImageView {
-    ZLStackView *sec = ZLStackView.vertical.alignFill.space(8);
+    ZLStackView *sec = ZLStackView.vertical.space(8);
     [sec addArrangedSubview:[self sectionTitle:@"Demo 06 · ZLPairImageView 两个 ImageView"]];
 
     // 水平排列两个色块 ImageView
@@ -384,7 +381,7 @@
         .bgColor(@"#F5F5F5").corner(8).masksToBounds(YES).inset(14, 16, 14, 16);
     item.first.txt(@"个人信息").systemFont(15).color(@"#333333");
     item.second.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1];
-    item.second.corner(2).KFC.size(7, 12);
+    item.second.corner(2).KFC.size(50, 50);
     [sec addArrangedSubview:item];
 
     return sec;

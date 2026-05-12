@@ -239,7 +239,6 @@
                 return NO;
             }
         }
-        NSLog(@"过滤掉的约束：%@", evaluatedObject);
         return YES;
     }]];
 

@@ -219,7 +219,7 @@
    ///刷选不是宽高的约束
     NSArray *filterConstraints = [self.constraints filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSLayoutConstraint * _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
         BOOL res2 = [self.customContraints containsObject:evaluatedObject];
-        if ([evaluatedObject.firstItem isEqual:self]) {
+        if ([evaluatedObject.firstItem isEqual:self] || [evaluatedObject.secondItem isEqual:self]) {
             if (evaluatedObject.firstAttribute == NSLayoutAttributeWidth ||
                 evaluatedObject.firstAttribute == NSLayoutAttributeHeight) {
                 return NO;

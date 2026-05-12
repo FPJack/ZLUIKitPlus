@@ -219,6 +219,12 @@
    ///刷选不是宽高的约束
     NSArray *filterConstraints = [self.constraints filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSLayoutConstraint * _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
         BOOL res2 = [self.customContraints containsObject:evaluatedObject];
+        if ([evaluatedObject.firstItem isEqual:self]) {
+            if (evaluatedObject.firstAttribute == NSLayoutAttributeWidth ||
+                evaluatedObject.firstAttribute == NSLayoutAttributeHeight) {
+                return NO;
+            }
+        }
         if (res2) return NO;
         
         BOOL res1 = evaluatedObject.firstItem == self.lab ||
@@ -228,15 +234,12 @@
         if (res1) {
             if (evaluatedObject.firstAttribute == NSLayoutAttributeWidth ||
                 evaluatedObject.firstAttribute == NSLayoutAttributeHeight ||
-//                evaluatedObject.firstAttribute == NSLayoutAttributeCenterY ||
-//                evaluatedObject.firstAttribute == NSLayoutAttributeCenterX ||
-//                evaluatedObject.secondAttribute == NSLayoutAttributeCenterY ||
-//                evaluatedObject.secondAttribute == NSLayoutAttributeCenterX ||
                 evaluatedObject.secondAttribute == NSLayoutAttributeWidth ||
                 evaluatedObject.secondAttribute == NSLayoutAttributeHeight) {
                 return NO;
             }
         }
+        NSLog(@"过滤掉的约束：%@", evaluatedObject);
         return YES;
     }]];
 
@@ -257,9 +260,11 @@
         UIImage *image = [self imageForState:self.state];
         CGSize size = image.size;
         if (size.width > 0 && size.height > 0) {
+            self.imgView.translatesAutoresizingMaskIntoConstraints = NO;
             [self.imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
             [self.imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-            self.imgView.translatesAutoresizingMaskIntoConstraints = NO;
+            [self.imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+            [self.imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
             [arr addObject:self.imgView];
         }
     }
@@ -278,6 +283,7 @@
         return;
     }
     self.orderKey = orderKey;
+    [self updateImageSize];
     
     [NSLayoutConstraint deactivateConstraints:self.customContraints];
     [self.customContraints removeAllObjects];
@@ -288,10 +294,11 @@
     NSInteger count = arr.count;
     UIEdgeInsets insets = [self _zl_effectiveInsets];
     CGFloat space = self.layoutSpacing;
-    if (count == 0) {
-        cons = [self.widthAnchor constraintEqualToConstant: MAX(0, insets.left + insets.right)];
+    if (count == 1) {
+        
+        cons = [self.widthAnchor constraintGreaterThanOrEqualToConstant: MAX(0, insets.left + insets.right)];
         [self.customContraints addObject:cons];
-        cons = [self.heightAnchor constraintEqualToConstant:MAX(insets.top + insets.bottom, 0)];
+        cons = [self.heightAnchor constraintGreaterThanOrEqualToConstant:MAX(insets.top + insets.bottom, 0)];
         [self.customContraints addObject:cons];
     }
    
@@ -371,7 +378,6 @@
                     [self.customContraints addObject:cons];
                     
                     CGFloat offsetY = (insets.top - insets.bottom + startSpacing - endSpacing) / 2;
-                    
                     cons = [view.centerYAnchor constraintEqualToAnchor:self.centerYAnchor constant:offsetY];
                     [self.customContraints addObject:cons];
                     
@@ -493,6 +499,10 @@
 
     [NSLayoutConstraint activateConstraints:self.customContraints];
 }
+- (CGSize)intrinsicContentSize {
+    //返回自适应
+    return CGSizeMake(self.layoutEdgeInsets.left + self.layoutEdgeInsets.right, self.layoutEdgeInsets.top + self.layoutEdgeInsets.bottom);
+}
 ///重新生成orderKey
 - (NSString *)generateOrderKeyWithStr:(NSString *)str {
     NSString *orderKey = str ?: @"";
@@ -500,6 +510,7 @@
     orderKey = [orderKey stringByAppendingFormat:@"%ld", self.verticalAlign];
     orderKey = [orderKey stringByAppendingFormat:@"%ld", self.horizontalAlign];
     orderKey = [orderKey stringByAppendingFormat:@"%d", self.flexibleSpacing];
+    orderKey = [orderKey stringByAppendingFormat:@"%@", NSStringFromCGSize(self.layoutImageSize)];
     UIEdgeInsets insets = [self _zl_effectiveInsets];
     if (self.axis == ZLButtonAxisHorizontal) {
         orderKey = [orderKey stringByAppendingFormat:@"%f-%f", insets.top,insets.bottom];
@@ -592,7 +603,8 @@
     _flexibleSpacing = NO;
     _layoutEdgeInsets = UIEdgeInsetsZero;
     _layoutImageSize = CGSizeZero;
- 
+    self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _cornerRadiiValue = UIEdgeInsetsMake(-1, -1, -1, -1);
     _horizontalAlign = ZLButtonAlignCenter;
     _verticalAlign = ZLButtonAlignCenter;
     [self setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
@@ -959,6 +971,12 @@
 - (void)setLayoutImageSize:(CGSize)layoutImageSize {
     if (CGSizeEqualToSize(layoutImageSize, _layoutImageSize)) return;
     _layoutImageSize = layoutImageSize;
+    [self setNeedsUpdateConstraints];
+}
+- (void)updateImageSize {
+    if (self.imgView && CGSizeEqualToSize(self.imgView.frame.size, self.layoutImageSize)) {
+        return;
+    }
     ///删除imageView的宽高约束
    NSArray *deleteCons = [self.imageView.constraints filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
         NSLayoutConstraint *cons = (NSLayoutConstraint *)evaluatedObject;
@@ -974,9 +992,10 @@
     [NSLayoutConstraint deactivateConstraints:deleteCons];
     self.imageView.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:@[
-        [self.imageView.widthAnchor constraintEqualToConstant:layoutImageSize.width],
-        [self.imageView.heightAnchor constraintEqualToConstant:layoutImageSize.height]
+        [self.imageView.widthAnchor constraintEqualToConstant:self.layoutImageSize.width],
+        [self.imageView.heightAnchor constraintEqualToConstant:self.layoutImageSize.height]
     ]];
+
 }
 - (ZLButton * _Nonnull (^)(CGFloat, CGFloat))imageSize {
     return ^(CGFloat width, CGFloat height) {
@@ -1098,6 +1117,7 @@
     return ^ZLButton*(CGFloat radius){
         if (radius == self.radiusValue) return self;
         self.radiusValue = radius;
+        [self backgroundShapeLayer];
         [self setNeedLayoutIfNeed];
         return self;
     };
@@ -1109,6 +1129,7 @@
             return self;
         }
         self.cornerRadiiValue = UIEdgeInsetsMake(topLeft, topRight, bottomLeft, bottomRight);
+        [self backgroundShapeLayer];
         [self setNeedLayoutIfNeed];
         return self;
     };

@@ -103,6 +103,8 @@ NS_INLINE GMStartEndInsets GMStartEndInsetsMake(CGFloat start, CGFloat end) {
 /// 是否启用弹性间距（图文之间弹性撑满），默认 NO
 /// 启用后 layoutSpacing 作为最小间距
 @property (nonatomic, assign) BOOL flexibleSpacing;
+
+///相对应的布局方向设置弹性间距，只有当对应布局方向的 justify 为 ZLJustifyFill 时才会生效
 - (instancetype)flexSpacing; // 便捷方法，设置 flexibleSpacing = YES
 
 

@@ -18,156 +18,159 @@
         .wrapScrollView
         .KFC
         .addToFull(self.view);
+    
+    
 
     // ─────────────────────────────────────
     // 1. 水平布局：图片在前（ZLBtnH）
     // ─────────────────────────────────────
-    [root addArrangedSubview:[self sec:@"1. 水平布局 ZLBtnH（图左文右）"]];
-    [root addArrangedSubview:ZLBtnH.systemImage(@"star.fill")
-     .vAlignFill
-     .imageSize(20, 20)
-     .title(@"spacing=12")
-     .systemFont(15)
-     .titleColor(@"#333333")
-     .bgColor(@"#E3F2FD")
-     .insets(10, 16, 10, 16)
-     .corner(8)
-     .spacing(12)];
-    
-    // ─────────────────────────────────────
-    // 2. 垂直布局：图片在上（ZLBtnV）
-    // ─────────────────────────────────────
-    [root addArrangedSubview:[self sec:@"2. 垂直布局 ZLBtnV（图上文下）"]];
-    [root addArrangedSubview:ZLStackView.horizontal.alignCenter.space(16)
-        .add(ZLBtnV.systemImage(@"heart")
-            .imageSize(28, 28)
-            .title(@"图上文下")
-            .systemFont(13)
-            .titleColor(@"#E91E63")
-            .spacing(6)
-            .insets(12, 16, 12, 16))
-        .add(ZLBtnV.systemImage(@"star")
-            .imageSize(28, 28)
-            .title(@"spacing=10")
-            .systemFont(13)
-            .titleColor(@"#FF9800")
-            .spacing(10)
-            .insets(12, 16, 12, 16))];
-//    return;
+//    [root addArrangedSubview:[self sec:@"1. 水平布局 ZLBtnH（图左文右）"]];
+//
+//    [root addArrangedSubview:ZLBtnH
+//     .systemImage(@"star.fill")
+//     .imageSize(20, 20)
+//     .title(@"spacing=12")
+//     .systemFont(15)
+//     .titleColor(@"#333333")
+//     .bgColor(@"#E3F2FD")
+//     .insets(10, 16, 10, 16)
+//     .corner(8)
+//     .spacing(12)];
+//    // ─────────────────────────────────────
+//    // 2. 垂直布局：图片在上（ZLBtnV）
+//    // ─────────────────────────────────────
+//    [root addArrangedSubview:[self sec:@"2. 垂直布局 ZLBtnV（图上文下）"]];
+//    [root addArrangedSubview:ZLStackView.horizontal.alignCenter.space(16)
+//        .justifyFillEqually
+//        .add(ZLBtnV.systemImage(@"heart")
+//            .imageSize(28, 28)
+//            .title(@"图上文下")
+//            .systemFont(13)
+//            .titleColor(@"#E91E63")
+//            .spacing(6)
+//            .insets(12, 16, 12, 16))
+//        .add(ZLBtnV.systemImage(@"star")
+//            .imageSize(28, 28)
+//            .title(@"spacing=10")
+//            .systemFont(13)
+//            .titleColor(@"#FF9800")
+//            .spacing(10)
+//            .insets(12, 16, 12, 16))];
     // ─────────────────────────────────────
     // 3. titleFirst（文字在前）
     // ─────────────────────────────────────
-    [root addArrangedSubview:[self sec:@"3. titleFirst（文字在前）"]];
-    [root addArrangedSubview:ZLStackView.horizontal.alignCenter.space(12)
-        .add(ZLBtnH.titleFirst
-            .title(@"文左图右")
-            .systemImage(@"chevron.right")
-            .imageSize(14, 14)
-            .systemFont(15)
-            .titleColor(@"#333333")
-            .bgColor(@"#EEEEEE")
-            .insets(10, 16, 10, 16)
-            .corner(8)
-            .spacing(6))
-        .add(ZLBtnV.titleFirst
-            .title(@"文上图下")
-            .systemImage(@"chevron.down")
-            .imageSize(14, 14)
-            .systemFont(13)
-            .titleColor(@"#9C27B0")
-            .insets(10, 16, 10, 16)
-            .spacing(6))];
-//    return;
+//    [root addArrangedSubview:[self sec:@"3. titleFirst（文字在前）"]];
+//    [root addArrangedSubview:HStackView.justifyFillEqually.alignCenter.space(12)
+//        .add(ZLBtnH.titleFirst
+//            .title(@"文左图右")
+//            .systemImage(@"chevron.right")
+//            .imageSize(14, 14)
+//            .systemFont(15)
+//            .titleColor(@"#333333")
+//            .bgColor(@"#EEEEEE")
+//            .insets(10, 16, 10, 16)
+//            .corner(8)
+//            .spacing(6))
+//        .add(ZLBtnV.titleFirst
+//            .title(@"文上图下")
+//            .systemImage(@"chevron.down")
+//            .imageSize(50, 50)
+//            .systemFont(13)
+//            .titleColor(@"#9C27B0")
+//            .insets(10, 16, 10, 16)
+//            .spacing(6))];
+    
     // ─────────────────────────────────────
     // 4. flexibleSpacing（弹性间距）
     // ─────────────────────────────────────
-    [root addArrangedSubview:[self sec:@"4. flexSpacing 弹性间距（图文撑满）"]];
-    ZLButton *flexBtn = ZLBtnH.flexSpacing
-        .title(@"弹性间距：图文撑满")
-        .systemImage(@"arrow.left.and.right")
-        .imageSize(18, 18)
-        .systemFont(14)
-        .titleColor(@"#FFFFFF")
-        .bgColor(@"#4CAF50")
-        .insets(10, 16, 10, 16)
-        .corner(8);
-    flexBtn.KFC.height(44);
-    [root addArrangedSubview:flexBtn];
-
+//    [root addArrangedSubview:[self sec:@"4. flexSpacing 弹性间距（图文撑满）"]];
+//    ZLButton *flexBtn = ZLBtnH.flexSpacing
+//        .hAlignFill
+//        .title(@"弹性间距：图文撑满")
+//        .systemImage(@"arrow.left.and.right")
+//        .imageSize(18, 18)
+//        .spacing(10)
+//        .systemFont(14)
+//        .titleColor(@"#FFFFFF")
+//        .bgColor(@"#4CAF50")
+//        .insets(10, 16, 10, 16)
+//        .corner(8);
+//    
+//    flexBtn.KFC.height(64);
+//  
+//    [root addArrangedSubview:flexBtn];
     // ─────────────────────────────────────
     // 5. insets / hInset / vInset 内边距
     // ─────────────────────────────────────
-    [root addArrangedSubview:[self sec:@"5. insets / hInset / vInset 内边距"]];
-    [root addArrangedSubview:ZLStackView.vertical.alignStart.space(8)
-        .add(ZLBtnH.title(@"insets(8,20,8,20)")
-            .systemFont(14).titleColor(@"#333333")
-            .bgColor(@"#E3F2FD").corner(6).insets(8, 20, 8, 20))
-        .add(ZLBtnH.title(@"hInset(24,24)")
-            .systemFont(14).titleColor(@"#333333")
-            .bgColor(@"#FFF9C4").corner(6).hInset(24, 24))
-        .add(ZLBtnH.title(@"vInset(14,14)")
-            .systemFont(14).titleColor(@"#333333")
-            .bgColor(@"#F3E5F5").corner(6).vInset(14, 14))];
-
+//    [root addArrangedSubview:[self sec:@"5. insets / hInset / vInset 内边距"]];
+//    [root addArrangedSubview:ZLStackView.vertical.alignStart.space(8)
+//        .add(ZLBtnH.title(@"insets(8,20,8,20)")
+//            .systemFont(14).titleColor(@"#333333")
+//            .bgColor(@"#E3F2FD").corner(6).insets(8, 20, 8, 20))
+//        .add(ZLBtnH.title(@"hInset(24,24)")
+//            .systemFont(14).titleColor(@"#333333")
+//            .bgColor(@"#FFF9C4").corner(6).hInset(24, 24))
+//        .add(ZLBtnH.title(@"vInset(14,14)")
+//            .systemFont(14).titleColor(@"#333333")
+//            .bgColor(@"#F3E5F5").corner(6).vInset(14, 14))];
     // ─────────────────────────────────────
     // 6. 字体：systemFont / mediumFont / semiboldFont / boldFont
     // ─────────────────────────────────────
-    [root addArrangedSubview:[self sec:@"6. 字体 systemFont / mediumFont / semiboldFont / boldFont"]];
-    [root addArrangedSubview:ZLStackView.vertical.alignStart.space(8)
-        .add(ZLBtnH.title(@"systemFont(15)").systemFont(15).titleColor(@"#333333"))
-        .add(ZLBtnH.title(@"systemFontColor(15, '#2196F3')").systemFontColor(15, @"#2196F3"))
-        .add(ZLBtnH.title(@"systemTitleFontColor").systemTitleFontColor(@"快捷三合一", 15, @"#9C27B0"))
-        .add(ZLBtnH.title(@"mediumFont(16)").mediumFont(16).titleColor(@"#FF9800"))
-        .add(ZLBtnH.title(@"mediumFontColor(16,'#4CAF50')").mediumFontColor(16, @"#4CAF50"))
-        .add(ZLBtnH.title(@"semiboldFont(17)").semiboldFont(17).titleColor(@"#E91E63"))
-        .add(ZLBtnH.title(@"boldFont(18)").boldFont(18).titleColor(@"#F44336"))];
+//    [root addArrangedSubview:[self sec:@"6. 字体 systemFont / mediumFont / semiboldFont / boldFont"]];
+//    [root addArrangedSubview:ZLStackView.vertical.alignStart.space(8)
+//        .add(ZLBtnH.title(@"systemFont(15)").systemFont(15).titleColor(@"#333333"))
+//        .add(ZLBtnH.title(@"systemFontColor(15, '#2196F3')").systemFontColor(15, @"#2196F3"))
+//        .add(ZLBtnH.title(@"systemTitleFontColor").systemTitleFontColor(@"快捷三合一", 15, @"#9C27B0"))
+//        .add(ZLBtnH.title(@"mediumFont(16)").mediumFont(16).titleColor(@"#FF9800"))
+//        .add(ZLBtnH.title(@"mediumFontColor(16,'#4CAF50')").mediumFontColor(16, @"#4CAF50"))
+//        .add(ZLBtnH.title(@"semiboldFont(17)").semiboldFont(17).titleColor(@"#E91E63"))
+//        .add(ZLBtnH.title(@"boldFont(18)").boldFont(18).titleColor(@"#F44336"))];
 
     // ─────────────────────────────────────
     // 7. selectTitle / selectImage / selectTitleColor
     // ─────────────────────────────────────
-    [root addArrangedSubview:[self sec:@"7. selectTitle / selectImage / selectTitleColor（点击切换）"]];
-    UILabel *selResult = ZLLab.txt(@"点击按钮切换选中状态").systemFont(13).color(@"#999999");
-    __weak UILabel *weakSelResult = selResult;
-    ZLButton *selBtn = ZLBtnH
-        .systemImage(@"heart")
-        .selectImage(@"heart.fill")
-        .title(@"收藏")
-        .selectTitle(@"已收藏")
-        .titleColor(@"#555555")
-        .selectTitleColor(@"#F44336")
-        .imageSize(18, 18)
-        .systemFont(15)
-        .bgColor(@"#F5F5F5")
-        .insets(10, 16, 10, 16)
-        .corner(20)
-        .spacing(6)
-        .tapAction(^(ZLButton *btn) {
-            btn.selected = !btn.selected;
-            weakSelResult.text = btn.selected ? @"当前状态：已收藏 ❤️" : @"当前状态：未收藏";
-        });
-    [root addArrangedSubview:ZLStackView.vertical.alignCenter.space(8)
-        .add(selBtn).add(selResult)];
+//    [root addArrangedSubview:[self sec:@"7. selectTitle / selectImage / selectTitleColor（点击切换）"]];
+//    UILabel *selResult = ZLLab.txt(@"点击按钮切换选中状态").systemFont(13).color(@"#999999");
+//    __weak UILabel *weakSelResult = selResult;
+//    ZLButton *selBtn = ZLBtnH
+//        .systemImage(@"heart")
+//        .selectImage(@"heart.fill")
+//        .title(@"收藏")
+//        .selectTitle(@"已收藏")
+//        .titleColor(@"#555555")
+//        .selectTitleColor(@"#F44336")
+//        .imageSize(18, 18)
+//        .systemFont(15)
+//        .bgColor(@"#F5F5F5")
+//        .insets(10, 16, 10, 16)
+//        .corner(20)
+//        .spacing(6)
+//        .tapAction(^(ZLButton *btn) {
+//            btn.selected = !btn.selected;
+//            weakSelResult.text = btn.selected ? @"当前状态：已收藏 ❤️" : @"当前状态：未收藏";
+//        });
+//    [root addArrangedSubview:ZLStackView.vertical.alignCenter.space(8)
+//        .add(selBtn).add(selResult)];
 
     // ─────────────────────────────────────
     // 8. select / activeStyle / inactiveStyle
     // ─────────────────────────────────────
-    [root addArrangedSubview:[self sec:@"8. select / userActive / activeStyle / inactiveStyle"]];
-    [root addArrangedSubview:ZLStackView.horizontal.alignCenter.space(12)
-        .add(ZLBtnH.title(@"select=YES")
-            .systemFont(14).titleColor(UIColor.whiteColor)
-            .bgColor(@"#2196F3").insets(10, 16, 10, 16).corner(8)
-            .select(YES))
-        .add(ZLBtnH.title(@"userActive=NO")
-            .systemFont(14).titleColor(UIColor.whiteColor)
-            .bgColor(@"#9E9E9E").insets(10, 16, 10, 16).corner(8)
-            .userActive(NO)
-            .inactiveStyle(^(ZLButton *b) { b.alpha = 0.5; }))
-        .add(ZLBtnH.title(@"activeStyle")
-            .systemFont(14).titleColor(UIColor.whiteColor)
-            .bgColor(@"#4CAF50").insets(10, 16, 10, 16).corner(8)
-            .userActive(YES)
-            .activeStyle(^(ZLButton *b) { b.backgroundColor = UIColor.systemGreenColor; }))];
-
+//    [root addArrangedSubview:[self sec:@"8. select / userActive / activeStyle / inactiveStyle"]];
+//    [root addArrangedSubview:ZLStackView.horizontal.alignCenter.space(12)
+//        .add(ZLBtnH.title(@"select=YES")
+//            .systemFont(14).titleColor(UIColor.whiteColor)
+//            .bgColor(@"#2196F3").insets(10, 16, 10, 16).corner(8)
+//            .select(YES))
+//        .add(ZLBtnH.title(@"userActive=NO")
+//            .systemFont(14).titleColor(UIColor.whiteColor)
+//            .bgColor(@"#9E9E9E").insets(10, 16, 10, 16).corner(8)
+//            .userActive(NO)
+//            .inactiveStyle(^(ZLButton *b) { b.alpha = 0.5; }))
+//        .add(ZLBtnH.title(@"activeStyle")
+//            .systemFont(14).titleColor(UIColor.whiteColor)
+//            .bgColor(@"#4CAF50").insets(10, 16, 10, 16).corner(8)
+//            .userActive(YES)
+//            .activeStyle(^(ZLButton *b) { b.backgroundColor = UIColor.systemGreenColor; }))];
     // ─────────────────────────────────────
     // 9. corner / cornerRadii / circle
     // ─────────────────────────────────────
@@ -186,7 +189,7 @@
             .systemFont(11).titleColor(UIColor.whiteColor)
             .bgColor(@"#9C27B0").insets(10, 14, 10, 14)
             .cornerRadii(0, 16, 16, 0))];
-
+    return;
     // ─────────────────────────────────────
     // 10. border / shColor / shOpacity / shRadius / shOffset
     // ─────────────────────────────────────

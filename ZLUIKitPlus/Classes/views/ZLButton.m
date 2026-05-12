@@ -225,10 +225,13 @@
         evaluatedObject.secondItem == self.lab ||
         evaluatedObject.firstItem  == self.imgView ||
         evaluatedObject.secondItem  == self.imgView;
-        
         if (res1) {
             if (evaluatedObject.firstAttribute == NSLayoutAttributeWidth ||
                 evaluatedObject.firstAttribute == NSLayoutAttributeHeight ||
+//                evaluatedObject.firstAttribute == NSLayoutAttributeCenterY ||
+//                evaluatedObject.firstAttribute == NSLayoutAttributeCenterX ||
+//                evaluatedObject.secondAttribute == NSLayoutAttributeCenterY ||
+//                evaluatedObject.secondAttribute == NSLayoutAttributeCenterX ||
                 evaluatedObject.secondAttribute == NSLayoutAttributeWidth ||
                 evaluatedObject.secondAttribute == NSLayoutAttributeHeight) {
                 return NO;
@@ -483,9 +486,9 @@
             
         }
     }
-    [self.customContraints enumerateObjectsUsingBlock:^(NSLayoutConstraint*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        obj.priority = UILayoutPriorityRequired - 1;
-    }];
+//    [self.customContraints enumerateObjectsUsingBlock:^(NSLayoutConstraint*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//        obj.priority = UILayoutPriorityRequired - 1;
+//    }];
 
 
     [NSLayoutConstraint activateConstraints:self.customContraints];
@@ -645,7 +648,9 @@
 }
 
 #pragma mark - Convenience Setters
-
+- (BOOL)translatesAutoresizingMaskIntoConstraints {
+    return NO;
+}
 - (void)setLayoutImage:(UIImage *)layoutImage {
     [self setImage:layoutImage forState:UIControlStateNormal];
 }
@@ -661,6 +666,24 @@
 - (ZLButton * _Nonnull (^)(id _Nonnull))image {
     return ^(id img) {
         self.layoutImage = [self imageWithObj:img];
+        return self;
+    };
+}
+- (ZLButton * _Nonnull (^)(id _Nonnull))systemImage {
+    return ^(id img) {
+        UIImage *image = [self imageWithObj:img];
+        if (!image) {
+            if (@available(iOS 13.0, *)) {
+                image = [UIImage systemImageNamed:img];
+            } else {
+                // Fallback on earlier versions
+            }
+        }
+        if (@available(iOS 13.0, *)) {
+            image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        }
+        self.tintColor = UIColor.orangeColor;
+        self.layoutImage = image;
         return self;
     };
 }

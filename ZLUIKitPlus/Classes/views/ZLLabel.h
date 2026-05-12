@@ -56,8 +56,6 @@ NS_ASSUME_NONNULL_BEGIN
 ///不可点击情况下配置userActive(NO) 触发回调
 @property (readonly) ZLLabel* (^inactiveStyle)(void (^)(ZLLabel * label));
 
-///选中样式
-@property (readonly) ZLLabel* (^selectStyle)(void (^)(ZLLabel * label));
 
 ///设置圆角
 @property ( readonly) ZLLabel* (^corner)(CGFloat radius);

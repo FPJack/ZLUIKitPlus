@@ -123,7 +123,11 @@ NS_INLINE GMStartEndInsets GMStartEndInsetsMake(CGFloat start, CGFloat end) {
 
 /// 便捷设置图片（设置 Normal 状态）
 @property (nonatomic, strong, nullable) UIImage *layoutImage;
+
 @property (nonatomic, copy,readonly) ZLButton* (^image)(id image);// layoutImage 的别名，便捷设置 UIImage 或 UIImageName
+
+@property (nonatomic, copy,readonly) ZLButton* (^systemImage)(id image);// 加载系统图片
+
 ///选中图片
 @property (nonatomic, copy, readonly)ZLButton* (^selectImage)(id image);// 便捷设置选中状态图片，支持 UIImage 或 UIImageName
 /// 便捷设置标题（设置 Normal 状态）

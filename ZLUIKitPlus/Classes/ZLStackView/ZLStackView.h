@@ -83,6 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,readonly)ObjectType (^insertFlexSpace)(BOOL flexible);
 
 @property (nonatomic, readonly)ObjectType (^add)(UIView *view);
+
 @property (nonatomic, readonly)ObjectType (^addLayout)(
     UIView *view,
     void(^)(__kindof UIView *view, ZLFlexItem *flexItem)

@@ -602,6 +602,7 @@
     _flexibleSpacing = NO;
     _layoutEdgeInsets = UIEdgeInsetsZero;
     _layoutImageSize = CGSizeZero;
+    self.translatesAutoresizingMaskIntoConstraints = NO;
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _cornerRadiiValue = UIEdgeInsetsMake(-1, -1, -1, -1);
     _horizontalAlign = ZLButtonAlignCenter;

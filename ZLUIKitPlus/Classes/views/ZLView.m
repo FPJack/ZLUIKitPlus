@@ -451,12 +451,13 @@
 @interface ZLWrapperView()
 @property (nonatomic, weak,readwrite) UIView *contentView;
 @property (nonatomic, copy)NSArray *constraintsArr;
-@property (nonatomic, assign)UIEdgeInsets _contentInsets;
+@property (nonatomic, copy)NSValue* _contentInsets;
 @end
 @implementation ZLWrapperView
 - (void)updateConstraints {
     [super updateConstraints];
     if (!self.constraintsArr) return;
+    self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:self.constraintsArr];
     self.constraintsArr = nil;
 }
@@ -466,15 +467,22 @@
     [wrap addSubview:view];
     return  [wrap insetsZero];
 }
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+    }
+    return self;
+}
 - (instancetype)insetsZero {
     return self.insets(0, 0, 0, 0);
 }
 - (ZLWrapperView * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))insets {
     return ^(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing) {
-        if (UIEdgeInsetsEqualToEdgeInsets(self._contentInsets, UIEdgeInsetsMake(top, leading, bottom, trailing))) {
+        if (self._contentInsets && UIEdgeInsetsEqualToEdgeInsets(self._contentInsets.UIEdgeInsetsValue, UIEdgeInsetsMake(top, leading, bottom, trailing))) {
             return self;
         }
-        self._contentInsets = UIEdgeInsetsMake(top, leading, bottom, trailing);
+        self._contentInsets = [NSValue valueWithUIEdgeInsets:UIEdgeInsetsMake(top, leading, bottom, trailing)];
         [NSLayoutConstraint deactivateConstraints:self.constraintsArr];
         self.constraintsArr = @[[self.contentView.topAnchor constraintEqualToAnchor:self.topAnchor constant:top],
                                 [self.contentView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:leading],

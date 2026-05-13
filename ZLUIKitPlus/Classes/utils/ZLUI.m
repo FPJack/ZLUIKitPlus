@@ -86,7 +86,7 @@
         if (!superview) return self;
         self.view.translatesAutoresizingMaskIntoConstraints = NO;
         [NSLayoutConstraint activateConstraints:@[
-            [self.view.bottomAnchor constraintEqualToAnchor:superview.bottomAnchor constant:-bottom],
+            [self.view.bottomAnchor constraintEqualToAnchor:superview.bottomAnchor constant:bottom],
         ]];
         return self;
     };
@@ -97,7 +97,7 @@
         if (!superview) return self;
         self.view.translatesAutoresizingMaskIntoConstraints = NO;
         [NSLayoutConstraint activateConstraints:@[
-            [self.view.trailingAnchor constraintEqualToAnchor:superview.trailingAnchor constant:-trailling],
+            [self.view.trailingAnchor constraintEqualToAnchor:superview.trailingAnchor constant:trailling],
         ]];
         return self;
     };
@@ -147,8 +147,8 @@
         [NSLayoutConstraint activateConstraints:@[
             [self.view.topAnchor constraintEqualToAnchor:superview.topAnchor constant:top],
             [self.view.leadingAnchor constraintEqualToAnchor:superview.leadingAnchor constant:leading],
-            [self.view.bottomAnchor constraintEqualToAnchor:superview.bottomAnchor constant:bottom],
-            [self.view.trailingAnchor constraintEqualToAnchor:superview.trailingAnchor constant:trailing],
+            [self.view.bottomAnchor constraintEqualToAnchor:superview.bottomAnchor constant:-bottom],
+            [self.view.trailingAnchor constraintEqualToAnchor:superview.trailingAnchor constant:-trailing],
         ]];
         return self;
     };

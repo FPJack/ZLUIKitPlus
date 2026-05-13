@@ -109,6 +109,5 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak,readonly) UIView *contentView;
 @property (readonly)ZLWrapperView *(^insets)(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing);
 + (instancetype)wrapWithView:(UIView *)view;
-- (instancetype)insetsZero;
 @end
 NS_ASSUME_NONNULL_END

@@ -25,21 +25,36 @@
     [contentStack addArrangedSubview:[self demo02_zl_btn]];
     [contentStack addArrangedSubview:[self demo03_zl_imgView]];
     [contentStack addArrangedSubview:[self demo04_zl_stackView]];
+    
     [contentStack addArrangedSubview:[self demo05_altGroup]];
+    
     [contentStack addArrangedSubview:[self demo06_extraGroup]];
+    
     [contentStack addArrangedSubview:[self demo07_pairLab]];
+    
     [contentStack addArrangedSubview:[self demo08_pairImg]];
+    
     [contentStack addArrangedSubview:[self demo09_pairBtn]];
+    
     [contentStack addArrangedSubview:[self demo10_pairStackView]];
+    
     [contentStack addArrangedSubview:[self demo11_imgViewLab]];
+    
     [contentStack addArrangedSubview:[self demo12_imgViewBtn]];
+    
     [contentStack addArrangedSubview:[self demo13_btnImgView]];
+    
     [contentStack addArrangedSubview:[self demo14_btnLabel]];
+    
     [contentStack addArrangedSubview:[self demo15_labelBtn]];
+    
     [contentStack addArrangedSubview:[self demo16_labImgView]];
+    
     [contentStack addArrangedSubview:[self demo17_wrapView_cornerBorderShadow]];
     [contentStack addArrangedSubview:[self demo18_wrapView_gradientAndInsets]];
+    
     [contentStack addArrangedSubview:[self demo19_wrapView_reuseOnSameView]];
+    
     [contentStack addArrangedSubview:[self demo20_multiPropertyOnOneView]];
 }
 
@@ -285,7 +300,7 @@
 #pragma mark - Demo 08: zl_pairImg（ZLPairImageView）
 
 - (UIView *)demo08_pairImg {
-    ZLStackView *sec = ZLStackView.vertical.alignFill.space(8);
+    ZLStackView *sec = ZLStackView.vertical.space(8);
     [sec addArrangedSubview:[self sectionTitle:@"Demo 08 · zl_pairImg — 懒加载 ZLPairImageView"]];
 
     UIView *card = [self cardContainer];
@@ -488,41 +503,34 @@
 #pragma mark - Demo 17: zl_wrapView — 圆角 / 边框 / 阴影
 
 - (UIView *)demo17_wrapView_cornerBorderShadow {
-    ZLStackView *sec = ZLStackView.vertical.alignFill.space(12);
+    ZLStackView *sec = ZLStackView.vertical.space(12);
     [sec addArrangedSubview:[self sectionTitle:@"Demo 17 · zl_wrapView — 圆角 / 边框 / 阴影（包裹原始 UIView）"]];
 
     // ── 圆角 ──
     // 原始 UILabel，通过 zl_wrapView 包裹后加圆角
     ZLLabel *lab1 = ZLLab.txt(@"原始 UILabel，通过 zl_wrapView 加圆角 + 背景色")
         .systemFont(13).color(@"#FFFFFF").insets(10, 12, 10, 12);
-    ZLWrapperView *wrap1 = lab1.zl_wrapView;
     
     lab1.zl_wrapView
-        .insetsZero          // contentView 填满 wrapView
         .corner(12)
-        .bgColor(@"#1677FF")
-        .KFC.edgesZero();
+        .bgColor(@"#1677FF");
     [sec addArrangedSubview:lab1.zl_wrapView];
 
-    // ── 边框 ──
+//    // ── 边框 ──
     ZLLabel *lab2 = ZLLab.txt(@"zl_wrapView 边框效果 border(2, #1677FF)")
         .systemFont(13).color(@"#1677FF").insets(10, 12, 10, 12);
     lab2.zl_wrapView
-        .insetsZero
         .corner(8).masksToBounds(YES)
-        .border(2, @"#1677FF")
-        .KFC.edgesZero();
+        .border(2, @"#1677FF");
     [sec addArrangedSubview:lab2.zl_wrapView];
-
-    // ── 阴影（不能与 masksToBounds 同时使用）──
+//
+//    // ── 阴影（不能与 masksToBounds 同时使用）──
     ZLLabel *lab3 = ZLLab.txt(@"zl_wrapView 阴影效果（shColor + shOpacity + shRadius + shOffset）")
         .systemFont(13).color(@"#333333").insets(10, 12, 10, 12).lines(0);
     lab3.zl_wrapView
-        .insetsZero
         .bgColor(@"#FFFFFF")
         .corner(10)
-        .shColor(@"#000000").shOpacity(0.12).shRadius(8).shOffset(0, 4)
-        .KFC.edgesZero();
+        .shColor(@"#000000").shOpacity(0.12).shRadius(8).shOffset(0, 4);
     [sec addArrangedSubview:lab3.zl_wrapView];
 
     return sec;
@@ -538,7 +546,6 @@
     ZLLabel *lab1 = ZLLab.txt(@"渐变背景：左蓝右紫").mediumFont(15).color(@"#FFFFFF")
         .insets(14, 20, 14, 20);
     lab1.zl_wrapView
-        .insetsZero
         .corner(12)
         .gradColors(@[[UIColor colorWithRed:0.22 green:0.47 blue:1.0 alpha:1],
                       [UIColor colorWithRed:0.56 green:0.18 blue:0.82 alpha:1]])
@@ -562,7 +569,6 @@
     ZLLabel *lab3 = ZLLab.txt(@"渐变方向：上到下").mediumFont(14).color(@"#FFFFFF")
         .insets(14, 0, 14, 0).textAlignCenter;
     lab3.zl_wrapView
-        .insetsZero
         .corner(8)
         .gradColors(@[[UIColor colorWithRed:0.32 green:0.80 blue:0.52 alpha:1],
                       [UIColor colorWithRed:0.0  green:0.50 blue:0.30 alpha:1]])
@@ -584,7 +590,6 @@
 
     __block BOOL toggled = NO;
     lab.zl_wrapView
-        .insetsZero
         .bgColor(@"#F0F7FF")
         .corner(8)
         .border(2, @"#1677FF")
@@ -642,7 +647,6 @@
 
     // 用 zl_wrapView 给整个 card 加阴影
     card.zl_wrapView
-        .insetsZero
         .bgColor(@"#FFFFFF")
         .corner(12)
         .shColor(@"#000000").shOpacity(0.08).shRadius(10).shOffset(0, 3)

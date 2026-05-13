@@ -20,14 +20,13 @@
 
     ZLStackView *contentStack = ZLStackView.vertical.alignFill.space(16).inset(16, 16, 16, 16);
     [contentStack wrapScrollView].KFC.addToFull(self.view);
-
+//
     [contentStack addArrangedSubview:[self demo01_zl_lab]];
     [contentStack addArrangedSubview:[self demo02_zl_btn]];
     [contentStack addArrangedSubview:[self demo03_zl_imgView]];
     [contentStack addArrangedSubview:[self demo04_zl_stackView]];
     
     [contentStack addArrangedSubview:[self demo05_altGroup]];
-    
     [contentStack addArrangedSubview:[self demo06_extraGroup]];
     
     [contentStack addArrangedSubview:[self demo07_pairLab]];
@@ -549,8 +548,7 @@
         .corner(12)
         .gradColors(@[[UIColor colorWithRed:0.22 green:0.47 blue:1.0 alpha:1],
                       [UIColor colorWithRed:0.56 green:0.18 blue:0.82 alpha:1]])
-        .gradDirection(CGPointMake(0, 0.5), CGPointMake(1, 0.5))
-        .KFC.edgesZero();
+        .gradDirection(CGPointMake(0, 0.5), CGPointMake(1, 0.5));
     [sec addArrangedSubview:lab1.zl_wrapView];
 
     // 渐变 + insets（contentView 不填满，有内边距）
@@ -561,8 +559,7 @@
         .insets(8, 16, 8, 16)  // ← contentView 与 wrap 的间距
         .bgColor(@"#FFF7E6")
         .corner(10).masksToBounds(YES)
-        .border(1, @"#FFD591")
-        .KFC.edgesZero();
+        .border(1, @"#FFD591");
     [sec addArrangedSubview:lab2.zl_wrapView];
 
     // 垂直渐变
@@ -573,7 +570,7 @@
         .gradColors(@[[UIColor colorWithRed:0.32 green:0.80 blue:0.52 alpha:1],
                       [UIColor colorWithRed:0.0  green:0.50 blue:0.30 alpha:1]])
         .gradDirection(CGPointMake(0.5, 0), CGPointMake(0.5, 1))
-        .KFC.edgesZero();
+;
     [sec addArrangedSubview:lab3.zl_wrapView];
 
     return sec;
@@ -599,7 +596,7 @@
             v.border(2, toggled ? @"#FF4D4F" : @"#1677FF");
             v.bgColor(toggled ? @"#FFF0F0" : @"#F0F7FF");
         })
-        .KFC.edgesZero();
+        ;
 
     [sec addArrangedSubview:lab.zl_wrapView];
 
@@ -640,7 +637,7 @@
         .KFC.trailing(-16).top(42).size(68, 26);
 
     // 分隔线：zl_altImgView（作为分隔线）
-    card.zl_altImgView.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+    card.zl_altImgView.backgroundColor = [UIColor redColor];
     card.zl_altImgView.KFC.leading(16).trailing(-16).bottom(-1).height(1);
 
     card.KFC.height(88);
@@ -649,8 +646,7 @@
     card.zl_wrapView
         .bgColor(@"#FFFFFF")
         .corner(12)
-        .shColor(@"#000000").shOpacity(0.08).shRadius(10).shOffset(0, 3)
-        .KFC.edgesZero();
+        .shColor(@"#000000").shOpacity(0.08).shRadius(10).shOffset(0, 3);
 
     [sec addArrangedSubview:card.zl_wrapView];
 

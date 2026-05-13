@@ -6,7 +6,7 @@
 //
 
 #import "ZLView.h"
-#import "ZLUI.h"
+#import "ZLLayout.h"
 #import <objc/runtime.h>
 @interface ZLBaseView()
 @property (nonatomic, strong) CAShapeLayer *backgroundShapeLayer;
@@ -454,6 +454,7 @@
 @property (nonatomic, copy)NSValue* _contentInsets;
 @end
 @implementation ZLWrapperView
+
 - (void)updateConstraints {
     [super updateConstraints];
     if (!self.constraintsArr) return;
@@ -463,6 +464,7 @@
 }
 + (instancetype)wrapWithView:(UIView *)view {
     ZLWrapperView *wrap = [[ZLWrapperView alloc] initWithFrame:view.frame];
+    wrap.translatesAutoresizingMaskIntoConstraints = NO;
     wrap.contentView = view;
     [wrap addSubview:view];
     return  [wrap insetsZero];
@@ -477,6 +479,7 @@
 - (instancetype)insetsZero {
     return self.insets(0, 0, 0, 0);
 }
+
 - (ZLWrapperView * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))insets {
     return ^(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing) {
         if (self._contentInsets && UIEdgeInsetsEqualToEdgeInsets(self._contentInsets.UIEdgeInsetsValue, UIEdgeInsetsMake(top, leading, bottom, trailing))) {

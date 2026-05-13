@@ -9,7 +9,7 @@
 #import "ZLFlexItem.h"
 #import "ZLStackView.h"
 #import <objc/runtime.h>
-
+#import "ZLLayout.h"
 @implementation UIView (Flex)
 - (ZLFlexItem *)zl_flex {
     ZLFlexItem *cfg = objc_getAssociatedObject(self, _cmd);
@@ -76,7 +76,31 @@
         [view addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
     }
 }
-
+- (void)setWidth:(CGFloat)width {
+    if (width == _width) return;
+    _width = width;
+    
+}
+- (void)setHeight:(CGFloat)height {
+    if (height == _height) return;
+    _height = height;
+}
+- (void)setMinWidth:(CGFloat)minWidth {
+    if (minWidth == _minWidth) return;
+    _minWidth = minWidth;
+}
+- (void)setMaxWidth:(CGFloat)maxWidth {
+    if (maxWidth == _maxWidth) return;
+    _maxWidth = maxWidth;
+}
+- (void)setMinHeight:(CGFloat)minHeight {
+    if (minHeight == _minHeight) return;
+    _minHeight = minHeight;
+}
+- (void)setMaxHeight:(CGFloat)maxHeight {
+    if (maxHeight == _maxHeight) return;
+    _maxHeight = maxHeight;
+}
 - (void)setStackViewNeedsUpdateConstraints {
     if (!self.view.superview || !self.stackView || ![self.stackView isEqual:self.view.superview]) return;
     [self.stackView setValue:@(YES) forKey:@"markedDirty"];

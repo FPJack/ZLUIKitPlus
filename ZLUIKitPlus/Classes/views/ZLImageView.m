@@ -7,13 +7,14 @@
 
 #import "ZLImageView.h"
 #import "ZLButton.h"
-#import "ZLUI.h"
+#import "ZLLayout.h"
 @interface ZLImageView()
 @property (nonatomic,copy)NSNumber* isCircle;
 @property CGFloat cornerRadius;
 
 @end
 @implementation ZLImageView
+
 - (ZLImageView * _Nonnull (^)(id _Nonnull))img {
     return ^(id img) {
         self.image = ZLImageFromObj(img);

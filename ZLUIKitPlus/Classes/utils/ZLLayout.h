@@ -1,5 +1,5 @@
 //
-//  ZLUI.h
+//  ZLLayout.h
 //  Pods
 //
 //  Created by admin on 2026/4/24.
@@ -37,61 +37,71 @@ static inline UIColor * _Nullable ZLColorFromObj(NSObject * _Nullable obj) {
     return nil;
 }
 
-@interface ZLUI : NSObject
+@interface ZLLayout : NSObject
 
 @property (nonatomic,weak)UIView *view;
 
 
-@property (nonatomic,  readonly) ZLUI* (^centerX)(CGFloat x);
+@property (nonatomic,  readonly) ZLLayout* (^centerX)(CGFloat x);
 
-@property (nonatomic,  readonly) ZLUI* (^centerY)(CGFloat y);
+@property (nonatomic,  readonly) ZLLayout* (^centerY)(CGFloat y);
 
-@property (nonatomic,  readonly) ZLUI* (^center)(void);
+@property (nonatomic,  readonly) ZLLayout* (^center)(void);
 
-@property (nonatomic,  readonly) ZLUI* (^centerOffset)(CGFloat x,CGFloat y);
+@property (nonatomic,  readonly) ZLLayout* (^centerOffset)(CGFloat x,CGFloat y);
 
-@property (nonatomic,  readonly) ZLUI* (^top)(CGFloat top);
+@property (nonatomic,  readonly) ZLLayout* (^top)(CGFloat top);
 
-@property (nonatomic,  readonly) ZLUI* (^leading)(CGFloat leading);
+@property (nonatomic,  readonly) ZLLayout* (^leading)(CGFloat leading);
 
-@property (nonatomic,  readonly) ZLUI* (^bottom)(CGFloat bottom);
+@property (nonatomic,  readonly) ZLLayout* (^bottom)(CGFloat bottom);
 
-@property (nonatomic,  readonly) ZLUI* (^trailing)(CGFloat trailling);
+@property (nonatomic,  readonly) ZLLayout* (^trailing)(CGFloat trailling);
 
 ///设置高度
-@property (nonatomic, copy, readonly) ZLUI* (^height)(CGFloat height);
+@property (nonatomic, copy, readonly) ZLLayout* (^height)(CGFloat height);
+
+@property (nonatomic, copy, readonly) ZLLayout* (^minHeight)(CGFloat height);
+
+@property (nonatomic, copy, readonly) ZLLayout* (^maxHeight)(CGFloat height);
+
 ///设置宽度
-@property (nonatomic, copy, readonly) ZLUI* (^width)(CGFloat width);
+@property (nonatomic, copy, readonly) ZLLayout* (^width)(CGFloat width);
+
+@property (nonatomic, copy, readonly) ZLLayout* (^minWidth)(CGFloat width);
+
+@property (nonatomic, copy, readonly) ZLLayout* (^maxWidth)(CGFloat width);
+
 ///同时设置宽高
-@property (nonatomic, copy, readonly) ZLUI* (^size)(CGFloat width,CGFloat height);
+@property (nonatomic, copy, readonly) ZLLayout* (^size)(CGFloat width,CGFloat height);
 
 ///设置宽高相等
-@property (nonatomic, copy, readonly) ZLUI* (^square)(CGFloat wh);
+@property (nonatomic, copy, readonly) ZLLayout* (^square)(CGFloat wh);
 
 ///贴紧父视图四边(参数布局)
-@property (nonatomic, copy, readonly) ZLUI* (^edge)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
+@property (nonatomic, copy, readonly) ZLLayout* (^edge)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
 
 ///贴紧父视图四边(参数布局)，参数相同 inset(10) 等价于 edge(10,10,10,10)
-@property (nonatomic, copy, readonly) ZLUI *(^inset)(CGFloat); // ⭐高频
+@property (nonatomic, copy, readonly) ZLLayout *(^inset)(CGFloat); // ⭐高频
 ///贴紧父视图四边布局
-@property (nonatomic, copy, readonly) ZLUI* (^edgesZero)(void);
+@property (nonatomic, copy, readonly) ZLLayout* (^edgesZero)(void);
 
 ///添加点击事件
-@property (nonatomic,readonly) ZLUI* (^tapAction)(void(^)(__kindof UIView *view));
+@property (nonatomic,readonly) ZLLayout* (^tapAction)(void(^)(__kindof UIView *view));
 
 ///添加到父视图，参数是父视图
-@property (nonatomic, copy, readonly) ZLUI *(^addTo)(UIView *superview);
+@property (nonatomic, copy, readonly) ZLLayout *(^addTo)(UIView *superview);
 ///添加到父视图 并且贴紧父视图四边布局，参数是父视图
-@property (nonatomic, copy, readonly) ZLUI *(^addToFull)(UIView *superview);
+@property (nonatomic, copy, readonly) ZLLayout *(^addToFull)(UIView *superview);
 
-@property (nonatomic, copy, readonly) ZLUI *(^addSubview)(UIView *subview);
+@property (nonatomic, copy, readonly) ZLLayout *(^addSubview)(UIView *subview);
 
-@property (nonatomic, copy, readonly) ZLUI *(^addSubviewLayout)(UIView *subview, void(^)(ZLUI *layout));
+@property (nonatomic, copy, readonly) ZLLayout *(^addSubviewLayout)(UIView *subview, void(^)(ZLLayout *layout));
 
 @end
 
-@interface UIView (ZLUI)
-@property (nonatomic,readonly)ZLUI *KFC;
+@interface UIView (ZLLayout)
+@property (nonatomic,readonly)ZLLayout *KFC;
 @end
 
 NS_ASSUME_NONNULL_END

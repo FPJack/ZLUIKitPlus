@@ -1,5 +1,5 @@
 #import "ZLLabel.h"
-#import "ZLUI.h"
+#import "ZLLayout.h"
 @interface ZLLabel ()
 @property (nonatomic,copy)void (^activeStyleBlock)(id );
 @property (nonatomic,copy)void (^inactiveStyleBlock)(id );

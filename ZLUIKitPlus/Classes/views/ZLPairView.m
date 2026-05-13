@@ -6,7 +6,7 @@
 //
 
 #import "ZLPairView.h"
-#import "ZLUI.h"
+#import "ZLLayout.h"
 @interface ZLPairView ()
 @property (nonatomic, strong,readwrite) UIView*  first;
 @property (nonatomic, strong,readwrite) UIView* second;

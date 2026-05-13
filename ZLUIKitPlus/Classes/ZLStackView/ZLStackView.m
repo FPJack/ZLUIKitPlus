@@ -10,7 +10,7 @@
 #import "ZLFlexManager.h"
 #import "ZLFlexItem.h"
 #import "ZLConstraintItem.h"
-#import "ZLUI.h"
+#import "ZLLayout.h"
 @interface ZLBaseStackView()
 @property (nonatomic,strong)ZLFlexManager *layoutManager;
 @property(nonatomic,strong) NSMutableArray<__kindof UIView *> *allViews;
@@ -34,6 +34,7 @@
         self.markedDirty = YES;
         ///消除staview 宽度为0的时候 设置了内边距控制台报约束警告的问题
 //        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.translatesAutoresizingMaskIntoConstraints = NO;
         self.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
     }
     return self;

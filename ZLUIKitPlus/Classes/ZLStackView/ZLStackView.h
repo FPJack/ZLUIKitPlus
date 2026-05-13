@@ -84,8 +84,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 添加一个已创建好的 view
 @property (nonatomic, readonly)ObjectType (^addView)(UIView *view);
+
+
 /// 根据条件决定是否添加 view，condition 为 YES 才添加
 @property (nonatomic, readonly)ObjectType (^addViewIf)(BOOL condition, UIView *view);
+
 /// 根据条件决定是否通过 block 创建并添加 view，condition 为 YES 才执行 block 并添加
 @property (nonatomic, readonly)ObjectType (^addViewMakeIf)(BOOL condition, UIView *(^make)(ZLBaseStackView *stackView));
 

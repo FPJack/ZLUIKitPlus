@@ -16,7 +16,7 @@
         .inset(16, 16, 16, 16)
         .assignToPtr(&root)
         .wrapScrollView
-        .KFC
+        .zl_layout
         .addToFull(self.view);
     
     
@@ -96,7 +96,7 @@
         .insets(10, 16, 10, 16)
         .corner(8);
     
-    flexBtn.KFC.height(64);
+    flexBtn.zl_layout.height(64);
   
     [root addArrangedSubview:flexBtn];
     // ─────────────────────────────────────
@@ -426,7 +426,7 @@
         else if ([key isEqualToString:@"hAlignEnd"])    [ab hAlignEnd];
         else if ([key isEqualToString:@"vAlignStart"])  [ab vAlignStart];
         else if ([key isEqualToString:@"vAlignEnd"])    [ab vAlignEnd];
-        ab.KFC.height(80);
+        ab.zl_layout.height(80);
         [alignRow addArrangedSubview:ab];
     }
     [root addArrangedSubview:alignRow];

@@ -283,7 +283,7 @@
 }
 - (ZLLabel * _Nonnull (^)(void (^ _Nonnull)(ZLLabel * _Nonnull)))tapAction {
     return ^id(void (^action)(ZLLabel *label)) {
-        return self.KFC.tapAction(action).view;
+        return self.zl_layout.tapAction(action).view;
     };
 }
 
@@ -301,37 +301,37 @@
 }
 - (ZLLabel * _Nonnull (^)(CGFloat))height {
     return ^(CGFloat height) {
-        self.KFC.height(height);
+        self.zl_layout.height(height);
         return self;
     };
 }
 - (ZLLabel * _Nonnull (^)(CGFloat))width {
     return ^(CGFloat width) {
-        self.KFC.width(width);
+        self.zl_layout.width(width);
         return self;
     };
 }
 - (ZLLabel * _Nonnull (^)(CGFloat, CGFloat))size {
     return ^(CGFloat width, CGFloat height) {
-        self.KFC.size(width, height);
+        self.zl_layout.size(width, height);
         return self;
     };
 }
 - (ZLLabel * _Nonnull (^)(CGFloat))square {
     return ^(CGFloat side) {
-        self.KFC.square(side);
+        self.zl_layout.square(side);
         return self;
     };
 }
 - (ZLLabel * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))edge {
     return ^(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing) {
-        self.KFC.edge(top, leading, bottom, trailing);
+        self.zl_layout.edge(top, leading, bottom, trailing);
         return self;
     };
 }
 - (ZLLabel * _Nonnull (^)(void))edgesZero {
     return ^() {
-        self.KFC.edgesZero();
+        self.zl_layout.edgesZero();
         return self;
     };
 }
@@ -348,7 +348,7 @@
     return ^(UIView *superview){
         if ([superview isKindOfClass:UIView.class]) {
             [superview addSubview:self];
-            self.KFC.edgesZero();
+            self.zl_layout.edgesZero();
         }
         return self;
     };

@@ -119,7 +119,7 @@
     return ^(void (^tapAction)(ZLImageView *imgView)) {
         if (tapAction) {
             self.userInteractionEnabled = YES;
-            self.KFC.tapAction(^(UIView * _Nonnull view) {
+            self.zl_layout.tapAction(^(UIView * _Nonnull view) {
                 if (tapAction) tapAction(self);
             });
         } else {
@@ -149,13 +149,13 @@
 }
 - (ZLImageView * _Nonnull (^)(CGFloat))centerX {
     return ^(CGFloat centerX){
-         self.KFC.centerX(centerX);
+         self.zl_layout.centerX(centerX);
         return self;
     };
 }
 - (ZLImageView * _Nonnull (^)(CGFloat))centerY {
     return ^(CGFloat centerY){
-         self.KFC.centerY(centerY);
+         self.zl_layout.centerY(centerY);
          return self;
     };
 }
@@ -169,61 +169,61 @@
 }
 - (ZLImageView * _Nonnull (^)(CGFloat))top {
     return ^(CGFloat top){
-        self.KFC.top(top);
+        self.zl_layout.top(top);
         return self;
     };
 }
 - (ZLImageView * _Nonnull (^)(CGFloat))leading {
     return ^(CGFloat leading){
-        self.KFC.leading(leading);
+        self.zl_layout.leading(leading);
         return self;
     };
 }
 - (ZLImageView * _Nonnull (^)(CGFloat))bottom {
     return ^(CGFloat bottom){
-        self.KFC.bottom(bottom);
+        self.zl_layout.bottom(bottom);
         return self;
     };
 }
 - (ZLImageView * _Nonnull (^)(CGFloat))trailing {
     return ^(CGFloat trailling){
-        self.KFC.trailing(trailling);
+        self.zl_layout.trailing(trailling);
         return self;
     };
 }
 - (ZLImageView * _Nonnull (^)(CGFloat))height {
     return ^(CGFloat height) {
-        self.KFC.height(height);
+        self.zl_layout.height(height);
         return self;
     };
 }
 - (ZLImageView * _Nonnull (^)(CGFloat))width {
     return ^(CGFloat width) {
-        self.KFC.width(width);
+        self.zl_layout.width(width);
         return self;
     };
 }
 - (ZLImageView * _Nonnull (^)(CGFloat, CGFloat))size {
     return ^(CGFloat width, CGFloat height) {
-        self.KFC.size(width, height);
+        self.zl_layout.size(width, height);
         return self;
     };
 }
 - (ZLImageView * _Nonnull (^)(CGFloat))square {
     return ^(CGFloat side) {
-        self.KFC.square(side);
+        self.zl_layout.square(side);
         return self;
     };
 }
 - (ZLImageView * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))edge {
     return ^(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing) {
-        self.KFC.edge(top, leading, bottom, trailing);
+        self.zl_layout.edge(top, leading, bottom, trailing);
         return self;
     };
 }
 - (ZLImageView * _Nonnull (^)(void))edgesZero {
     return ^() {
-        self.KFC.edgesZero();
+        self.zl_layout.edgesZero();
         return self;
     };
 }
@@ -240,7 +240,7 @@
     return ^(UIView *superview){
         if ([superview isKindOfClass:UIView.class]) {
             [superview addSubview:self];
-            self.KFC.edgesZero();
+            self.zl_layout.edgesZero();
         }
         return self;
     };

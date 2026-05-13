@@ -14,7 +14,7 @@
     self.view.backgroundColor = UIColor.whiteColor;
 
     ZLStackView *contentStack = ZLStackView.vertical.alignFill.space(16).inset(16, 16, 16, 16);
-    [contentStack wrapScrollView].KFC
+    [contentStack wrapScrollView].zl_layout
         .addToFull(self.view);
 
     [contentStack addArrangedSubview:[self demo01_pairLabelViewHorizontal]];
@@ -233,18 +233,18 @@
     ZLPairImageView *pair = ZLPairImageView.new.space(12).inset(8, 0, 8, 0)
         .bgColor(@"#F9F9F9").corner(8).masksToBounds(YES);
     pair.first.backgroundColor = [UIColor colorWithRed:0.36 green:0.61 blue:1.0 alpha:1];
-    pair.first.corner(8).KFC.square(60);
+    pair.first.corner(8).zl_layout.square(60);
     pair.second.backgroundColor = [UIColor colorWithRed:1.0 green:0.42 blue:0.21 alpha:1];
-    pair.second.corner(8).KFC.square(60);
+    pair.second.corner(8).zl_layout.square(60);
     [sec addArrangedSubview:pair];
 
     // 垂直排列
     ZLPairImageView *pair2 = ZLPairImageView.new.vertical.space(8).inset(8, 0, 8, 0).alignCenter
         .bgColor(@"#F9F9F9").corner(8).masksToBounds(YES);
     pair2.first.backgroundColor = [UIColor colorWithRed:0.32 green:0.80 blue:0.52 alpha:1];
-    pair2.first.corner(6).KFC.size(80, 40);
+    pair2.first.corner(6).zl_layout.size(80, 40);
     pair2.second.backgroundColor = [UIColor colorWithRed:1.0 green:0.76 blue:0 alpha:1];
-    pair2.second.corner(6).KFC.size(80, 40);
+    pair2.second.corner(6).zl_layout.size(80, 40);
     [sec addArrangedSubview:pair2];
 
     return sec;
@@ -287,7 +287,7 @@
     ZLImgLabelView *item = ZLImgLabelView.new.alignCenter.space(8)
         .bgColor(@"#F5F5F5").corner(8).masksToBounds(YES).inset(12, 12, 12, 12);
     item.first.backgroundColor = [UIColor colorWithRed:0.36 green:0.61 blue:1.0 alpha:1];
-    item.first.corner(18).KFC.square(36);
+    item.first.corner(18).zl_layout.square(36);
     item.second.txt(@"消息通知").systemFont(15).color(@"#333333");
     [sec addArrangedSubview:item];
 
@@ -295,7 +295,7 @@
     ZLImgLabelView *item2 = ZLImgLabelView.new.alignStart.space(10)
         .bgColor(@"#FFFBE6").corner(8).masksToBounds(YES).inset(12, 12, 12, 12);
     item2.first.backgroundColor = [UIColor colorWithRed:1.0 green:0.76 blue:0 alpha:1];
-    item2.first.corner(8).KFC.square(40);
+    item2.first.corner(8).zl_layout.square(40);
     item2.second.txt(@"这是一段比较长的描述文字，用来展示图标与多行文字组合的效果，文字会自动换行。")
         .systemFont(13).color(@"#666666").lines(0);
     [sec addArrangedSubview:item2];
@@ -305,7 +305,7 @@
     for (NSString *title in @[@"首页", @"发现", @"消息", @"我的"]) {
         ZLImgLabelView *tab = ZLImgLabelView.new.vertical.alignCenter.space(4);
         tab.first.backgroundColor = [UIColor colorWithRed:0.36 green:0.61 blue:1.0 alpha:1];
-        tab.first.corner(14).KFC.square(28);
+        tab.first.corner(14).zl_layout.square(28);
         tab.second.txt(title).systemFont(11).color(@"#1677FF");
         [row addArrangedSubview:tab];
     }
@@ -324,7 +324,7 @@
     ZLImgButtonView *item = ZLImgButtonView.new.alignCenter.space(12).flexSpace(YES)
         .bgColor(@"#F9F9F9").corner(10).masksToBounds(YES).inset(12, 12, 12, 12);
     item.first.backgroundColor = [UIColor colorWithRed:0.32 green:0.80 blue:0.52 alpha:1];
-    item.first.corner(22).KFC.square(44);
+    item.first.corner(22).zl_layout.square(44);
     item.second.title(@"立即领取").systemFont(14).titleColor(@"#FFFFFF")
         .bgColor(@"#52C41A").corner(16).masksToBounds(YES).height(32).width(80)
         .tapAction(^(ZLButton *btn) { NSLog(@"领取"); });
@@ -345,7 +345,7 @@
         .border(1, @"#EB2F96").corner(14).masksToBounds(YES).height(28).width(60)
         .tapAction(^(ZLButton *btn) { NSLog(@"喜欢"); });
     item.second.backgroundColor = [UIColor colorWithRed:0.92 green:0.18 blue:0.59 alpha:1];
-    item.second.corner(18).KFC.square(36);
+    item.second.corner(18).zl_layout.square(36);
     [sec addArrangedSubview:item];
 
     return sec;
@@ -381,7 +381,7 @@
         .bgColor(@"#F5F5F5").corner(8).masksToBounds(YES).inset(14, 16, 14, 16);
     item.first.txt(@"个人信息").systemFont(15).color(@"#333333");
     item.second.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1];
-    item.second.corner(2).KFC.size(50, 50);
+    item.second.corner(2).zl_layout.size(50, 50);
     [sec addArrangedSubview:item];
 
     return sec;
@@ -497,7 +497,7 @@
         .bgColor(@"#FFF0F6").corner(8).masksToBounds(YES).inset(12, 12, 12, 12)
         .thenFirst(^(ZLImageView *img) {
             img.backgroundColor = [UIColor colorWithRed:0.92 green:0.18 blue:0.59 alpha:1];
-            img.corner(20).KFC.square(40);
+            img.corner(20).zl_layout.square(40);
         })
         .thenSecond(^(ZLLabel *lab) {
             lab.txt(@"thenFirst 配置图片\nthenSecond 配置文字").systemFont(13).color(@"#EB2F96").lines(2);

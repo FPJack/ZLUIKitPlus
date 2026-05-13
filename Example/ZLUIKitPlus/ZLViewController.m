@@ -32,8 +32,8 @@
 //        stack.axis = UILayoutConstraintAxisVertical;
 //        [self.view addSubview:stack];
 //        stack.backgroundColor = UIColor.lightGrayColor;
-//        stack.KFC.width(200);
-//        stack.KFC.center();
+//        stack.zl_layout.width(200);
+//        stack.zl_layout.center();
         
         UILabel *lab1 = UILabel.new;
         lab1.text = @"Hello";
@@ -81,7 +81,7 @@
     tableView.dataSource = self;
     [tableView registerClass:UITableViewCell.class forCellReuseIdentifier:@"cell"];
     [self.view addSubview:tableView];
-    tableView.KFC.edgesZero();
+    tableView.zl_layout.edgesZero();
     
   
    

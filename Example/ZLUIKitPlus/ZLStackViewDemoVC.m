@@ -75,7 +75,7 @@ static ZLStackView *sectionView(NSString *title) {
     ZLStackView.vertical.space(16).inset(16, 16, 16, 16)
         .assignToPtr(&stack)
         .wrapScrollView
-        .KFC
+        .zl_layout
         .addToFull(self.view);
     self.contentStack = stack;
 
@@ -113,7 +113,7 @@ static ZLStackView *sectionView(NSString *title) {
     ZLStackView *h = ZLStackView.horizontal.alignCenter.space(8);
     for (int i = 1; i <= 4; i++) {
         UILabel *l = colorBlock([NSString stringWithFormat:@"H%d", i], randColor());
-//        l.KFC.square(36);
+//        l.zl_layout.square(36);
         [h addArrangedSubview:l];
     }
     [sec addArrangedSubview:h];
@@ -121,7 +121,7 @@ static ZLStackView *sectionView(NSString *title) {
     ZLStackView *v = ZLStackView.vertical.alignStart.space(6);
     for (int i = 1; i <= 3; i++) {
         UILabel *l = colorBlock([NSString stringWithFormat:@"V%d", i], randColor());
-//        l.KFC.height(28);
+//        l.zl_layout.height(28);
         [v addArrangedSubview:l];
     }
     [sec addArrangedSubview:v];
@@ -154,7 +154,7 @@ static ZLStackView *sectionView(NSString *title) {
 
         ZLStackView *row = ZLStackView.horizontal.alignFill.bgColor(@"#EFEFEF");
         row.justifyContent = [item[1] integerValue];
-        row.KFC.height(36);
+        row.zl_layout.height(36);
         for (int i = 0; i < 3; i++) {
             [row addArrangedSubview:colorBlock(@"●●", randColor())];
         }
@@ -184,12 +184,12 @@ static ZLStackView *sectionView(NSString *title) {
 
         ZLStackView *row = ZLStackView.horizontal.space(8).bgColor(@"#EFEFEF").justifyCenter;
         row.alignment = [item[1] integerValue];
-        row.KFC.height(70);
+        row.zl_layout.height(70);
         NSArray *sizes = @[@20, @40, @60];
         for (NSNumber *h in sizes) {
             UILabel *b = colorBlock(@"", randColor());
-            b.KFC.width(36);
-            if ([item[1] integerValue] != ZLAlignFill) b.KFC.height(h.floatValue);
+            b.zl_layout.width(36);
+            if ([item[1] integerValue] != ZLAlignFill) b.zl_layout.height(h.floatValue);
             [row addArrangedSubview:b];
         }
         [sec addArrangedSubview:row];
@@ -224,9 +224,9 @@ static ZLStackView *sectionView(NSString *title) {
     sec.alignment = ZLAlignCenter;
     [_contentStack addArrangedSubview:sec];
 
-    UILabel *a = colorBlock(@"A", randColor()); a.KFC.size(40, 32);
-    UILabel *b = colorBlock(@"B", randColor()); b.KFC.size(40, 32);
-    UILabel *c = colorBlock(@"C", randColor()); c.KFC.size(40, 32);
+    UILabel *a = colorBlock(@"A", randColor()); a.zl_layout.size(40, 32);
+    UILabel *b = colorBlock(@"B", randColor()); b.zl_layout.size(40, 32);
+    UILabel *c = colorBlock(@"C", randColor()); c.zl_layout.size(40, 32);
     ZLStackView *row = ZLStackView.horizontal.space(4).alignCenter;
     [row addArrangedSubview:a];
     [row setCustomSpacing:20 afterView:a];
@@ -236,9 +236,9 @@ static ZLStackView *sectionView(NSString *title) {
     [row addArrangedSubview:c];
     [sec addArrangedSubview:row];
 
-    UILabel *x = colorBlock(@"X", randColor()); x.KFC.size(40, 32);
-    UILabel *y = colorBlock(@"Y", randColor()); y.KFC.size(40, 32);
-    UILabel *z = colorBlock(@"Z", randColor()); z.KFC.size(40, 32);
+    UILabel *x = colorBlock(@"X", randColor()); x.zl_layout.size(40, 32);
+    UILabel *y = colorBlock(@"Y", randColor()); y.zl_layout.size(40, 32);
+    UILabel *z = colorBlock(@"Z", randColor()); z.zl_layout.size(40, 32);
     ZLStackView *row2 = ZLStackView.horizontal.space(4).alignCenter
         .addView(x).spacingAfter(24,x)
         .addView(y).minSpacingAfter(4,y).maxSpacingAfter( 40,y)
@@ -280,18 +280,18 @@ static ZLStackView *sectionView(NSString *title) {
     ZLStackView *sec = sectionView(@"07. flex 权重（类似 flexbox flex:N）");
     [_contentStack addArrangedSubview:sec];
 
-    UILabel *a = colorBlock(@"flex:1", randColor()); a.KFC.height(36);
-    UILabel *b = colorBlock(@"flex:2", randColor()); b.KFC.height(36);
-    UILabel *c = colorBlock(@"flex:1", randColor()); c.KFC.height(36);
+    UILabel *a = colorBlock(@"flex:1", randColor()); a.zl_layout.height(36);
+    UILabel *b = colorBlock(@"flex:2", randColor()); b.zl_layout.height(36);
+    UILabel *c = colorBlock(@"flex:1", randColor()); c.zl_layout.height(36);
     ZLStackView *row = ZLStackView.horizontal.justifyFill.space(4);
     [row addArrangedSubview:a]; [row setFlex:1 forView:a];
     [row addArrangedSubview:b]; [row setFlex:2 forView:b];
     [row addArrangedSubview:c]; [row setFlex:1 forView:c];
     [sec addArrangedSubview:row];
 
-    UILabel *x = colorBlock(@"1", randColor()); x.KFC.height(36);
-    UILabel *y = colorBlock(@"3", randColor()); y.KFC.height(36);
-    UILabel *z = colorBlock(@"1", randColor()); z.KFC.height(36);
+    UILabel *x = colorBlock(@"1", randColor()); x.zl_layout.height(36);
+    UILabel *y = colorBlock(@"3", randColor()); y.zl_layout.height(36);
+    UILabel *z = colorBlock(@"1", randColor()); z.zl_layout.height(36);
     ZLStackView *row2 = ZLStackView.horizontal.justifyFill.space(4)
         .addView(x).flexFor(1,x)
         .addView(y).flexFor(3,y)
@@ -307,11 +307,11 @@ static ZLStackView *sectionView(NSString *title) {
     [_contentStack addArrangedSubview:sec];
 
     ZLStackView *row = ZLStackView.horizontal.alignCenter.space(8).bgColor(@"#EFEFEF");
-    row.KFC.height(70);
-    UILabel *a = colorBlock(@"Start",  randColor()); a.KFC.width(52);
-    UILabel *b = colorBlock(@"Center", randColor()); b.KFC.width(52);
-    UILabel *c = colorBlock(@"End",    randColor()); c.KFC.width(52);
-    UILabel *d = colorBlock(@"Fill",   randColor()); d.KFC.width(52);
+    row.zl_layout.height(70);
+    UILabel *a = colorBlock(@"Start",  randColor()); a.zl_layout.width(52);
+    UILabel *b = colorBlock(@"Center", randColor()); b.zl_layout.width(52);
+    UILabel *c = colorBlock(@"End",    randColor()); c.zl_layout.width(52);
+    UILabel *d = colorBlock(@"Fill",   randColor()); d.zl_layout.width(52);
     [row addArrangedSubview:a]; [row setAlignment:ZLAlignStart  forView:a];
     [row addArrangedSubview:b]; [row setAlignment:ZLAlignCenter forView:b];
     [row addArrangedSubview:c]; [row setAlignment:ZLAlignEnd    forView:c];
@@ -327,9 +327,9 @@ static ZLStackView *sectionView(NSString *title) {
     [_contentStack addArrangedSubview:sec];
 
     ZLStackView *row = ZLStackView.horizontal.alignStart.space(8).bgColor(@"#EFEFEF");
-    UILabel *a = colorBlock(@"A\nstart+10", randColor()); a.numberOfLines = 0; a.KFC.width(80);
-    UILabel *b = colorBlock(@"B\nend+30",   randColor()); b.numberOfLines = 0; b.KFC.width(80);
-    UILabel *c = colorBlock(@"C\nnormal",   randColor()); c.numberOfLines = 0; c.KFC.width(80);
+    UILabel *a = colorBlock(@"A\nstart+10", randColor()); a.numberOfLines = 0; a.zl_layout.width(80);
+    UILabel *b = colorBlock(@"B\nend+30",   randColor()); b.numberOfLines = 0; b.zl_layout.width(80);
+    UILabel *c = colorBlock(@"C\nnormal",   randColor()); c.numberOfLines = 0; c.zl_layout.width(80);
     [row addArrangedSubview:a]; [row setAlignmentStartSpacing:10 forView:a];
     [row addArrangedSubview:b]; [row setAlignmentEndSpacing:30   forView:b];
     [row addArrangedSubview:c];
@@ -344,9 +344,9 @@ static ZLStackView *sectionView(NSString *title) {
     [_contentStack addArrangedSubview:sec];
 
     ZLStackView *row = ZLStackView.horizontal.space(8);
-    UILabel *a = colorBlock(@"A", randColor()); a.KFC.square(50);
-    UILabel *b = colorBlock(@"B(tap)", randColor()); b.KFC.square(50);
-    UILabel *c = colorBlock(@"C", randColor()); c.KFC.square(50);
+    UILabel *a = colorBlock(@"A", randColor()); a.zl_layout.square(50);
+    UILabel *b = colorBlock(@"B(tap)", randColor()); b.zl_layout.square(50);
+    UILabel *c = colorBlock(@"C", randColor()); c.zl_layout.square(50);
     row.addView(a).addView(b).addView(c);
 
     UILabel *tip = UILabel.new;
@@ -384,7 +384,7 @@ static ZLStackView *sectionView(NSString *title) {
     NSArray *flexes  = @[@1, @2, @1];
     for (int i = 0; i < 3; i++) {
         UILabel *l = colorBlock(titles[i], randColor());
-        l.KFC.height(36);
+        l.zl_layout.height(36);
         NSInteger flex = [flexes[i] integerValue];
         [row addArrangedSubview:l layout:^(__kindof UIView *view, ZLFlexItem *item) {
             item.flexValue = flex;
@@ -400,9 +400,9 @@ static ZLStackView *sectionView(NSString *title) {
     ZLStackView *sec = sectionView(@"12. removeArrangedSubview（0.8s 后移除 B）");
     [_contentStack addArrangedSubview:sec];
 
-    UILabel *a = colorBlock(@"A", randColor()); a.KFC.size(60, 36);
-    UILabel *b = colorBlock(@"B(移除)", randColor()); b.KFC.size(80, 36);
-    UILabel *c = colorBlock(@"C", randColor()); c.KFC.size(60, 36);
+    UILabel *a = colorBlock(@"A", randColor()); a.zl_layout.size(60, 36);
+    UILabel *b = colorBlock(@"B(移除)", randColor()); b.zl_layout.size(80, 36);
+    UILabel *c = colorBlock(@"C", randColor()); c.zl_layout.size(60, 36);
     ZLStackView *row = ZLStackView.horizontal.space(8).addView(a).addView(b).addView(c);
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.8 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -418,13 +418,13 @@ static ZLStackView *sectionView(NSString *title) {
     ZLStackView *sec = sectionView(@"13. insertArrangedSubview:atIndex:（2s 后插入 B）");
     [_contentStack addArrangedSubview:sec];
 
-    UILabel *a = colorBlock(@"A", randColor()); a.KFC.size(40, 36);
-    UILabel *c = colorBlock(@"C", randColor()); c.KFC.size(40, 36);
+    UILabel *a = colorBlock(@"A", randColor()); a.zl_layout.size(40, 36);
+    UILabel *c = colorBlock(@"C", randColor()); c.zl_layout.size(40, 36);
     ZLStackView *row = ZLStackView.horizontal.space(8).addView(a).addView(c);
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         UILabel *b = colorBlock(@"B(插入)", randColor());
-        b.KFC.size(70, 36);
+        b.zl_layout.size(70, 36);
         [row insertArrangedSubview:b atIndex:1];
     });
     [sec addArrangedSubview:row];
@@ -473,14 +473,14 @@ static ZLStackView *sectionView(NSString *title) {
         .shColor(@"#000000").shOpacity(0.25).shRadius(8).shOffset(0, 4);
     for (int i = 1; i <= 3; i++) {
         UILabel *l = colorBlock([NSString stringWithFormat:@"item%d", i], UIColor.whiteColor);
-        l.KFC.height(30);
+        l.zl_layout.height(30);
         [row addArrangedSubview:l];
     }
     [sec addArrangedSubview:row];
 
     // visibility + alphaValue
-    UILabel *vis = colorBlock(@"visibility=YES", randColor()); vis.KFC.height(32);
-    UILabel *alp = colorBlock(@"alpha=0.3", randColor());      alp.KFC.height(32);
+    UILabel *vis = colorBlock(@"visibility=YES", randColor()); vis.zl_layout.height(32);
+    UILabel *alp = colorBlock(@"alpha=0.3", randColor());      alp.zl_layout.height(32);
     ZLStackView *row2 = ZLStackView.horizontal.space(8)
         .addView(vis).visibility(YES)
         .addView(alp).alphaValue(0.3);
@@ -504,11 +504,11 @@ static ZLStackView *sectionView(NSString *title) {
     ZLStackView *hStack = ZLStackView.horizontal.space(8).inset(8, 8, 8, 8).bgColor(@"#EFEFEF");
     for (int i = 1; i <= 12; i++) {
         UILabel *l = colorBlock([NSString stringWithFormat:@"item%d", i], randColor());
-        l.KFC.size(64, 40);
+        l.zl_layout.size(64, 40);
         [hStack addArrangedSubview:l];
     }
     UIScrollView *sv = [hStack wrapScrollView];
-    sv.KFC.height(56);
+    sv.zl_layout.height(56);
     [sec addArrangedSubview:sv];
 }
 
@@ -522,11 +522,11 @@ static ZLStackView *sectionView(NSString *title) {
     ZLStackView *vStack = ZLStackView.vertical.space(6).inset(8, 8, 8, 8);
     for (int i = 1; i <= 8; i++) {
         UILabel *l = colorBlock([NSString stringWithFormat:@"row%d（内容超出可滚动）", i], randColor());
-        l.KFC.height(36);
+        l.zl_layout.height(36);
         [vStack addArrangedSubview:l];
     }
     UIScrollView *sv = [vStack wrapScrollView];
-    sv.KFC.height(120);
+    sv.zl_layout.height(120);
     [sec addArrangedSubview:sv];
 }
 
@@ -546,7 +546,7 @@ static ZLStackView *sectionView(NSString *title) {
         .masksToBounds(YES);
     for (int i = 0; i < 3; i++) {
         UILabel *l = colorBlock([NSString stringWithFormat:@"L%d", i+1], randColor());
-        l.KFC.height(28);
+        l.zl_layout.height(28);
         [left addArrangedSubview:l];
     }
 
@@ -558,7 +558,7 @@ static ZLStackView *sectionView(NSString *title) {
         .masksToBounds(YES);
     for (int i = 0; i < 3; i++) {
         UILabel *l = colorBlock([NSString stringWithFormat:@"R%d", i+1], randColor());
-        l.KFC.height(28);
+        l.zl_layout.height(28);
         [right addArrangedSubview:l];
     }
 

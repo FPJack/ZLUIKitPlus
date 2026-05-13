@@ -243,7 +243,7 @@
         if ([subview isKindOfClass:UIView.class]) {
             [self.view addSubview:subview];
             if (layout) {
-                layout(subview.KFC);
+                layout(subview.zl_layout);
             }
         }
         return self;
@@ -261,5 +261,13 @@
     }
     return layoutObj;
 }
-
+- (ZLLayout *)zl_layout {
+    ZLLayout *layoutObj = objc_getAssociatedObject(self, _cmd);
+    if (!layoutObj) {
+        layoutObj = ZLLayout.new;
+        layoutObj.view = self;
+        objc_setAssociatedObject(self, _cmd, layoutObj, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return layoutObj;
+}
 @end

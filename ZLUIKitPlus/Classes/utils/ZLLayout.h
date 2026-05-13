@@ -101,7 +101,8 @@ static inline UIColor * _Nullable ZLColorFromObj(NSObject * _Nullable obj) {
 @end
 
 @interface UIView (ZLLayout)
-@property (nonatomic,readonly)ZLLayout *KFC;
+//@property (nonatomic,readonly)ZLLayout *KFC;
+@property (nonatomic,readonly)ZLLayout *zl_layout;
 @end
 
 NS_ASSUME_NONNULL_END

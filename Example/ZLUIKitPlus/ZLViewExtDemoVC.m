@@ -19,7 +19,7 @@
     self.view.backgroundColor = UIColor.whiteColor;
 
     ZLStackView *contentStack = ZLStackView.vertical.alignFill.space(16).inset(16, 16, 16, 16);
-    [contentStack wrapScrollView].KFC.addToFull(self.view);
+    [contentStack wrapScrollView].zl_layout.addToFull(self.view);
 //
     [contentStack addArrangedSubview:[self demo01_zl_lab]];
     [contentStack addArrangedSubview:[self demo02_zl_btn]];
@@ -84,16 +84,16 @@
         .systemFont(14)
         .color(@"#333333")
         .lines(0)
-        .KFC.edge(12, 12, 12, 12);
-    card.KFC.height(56);
+        .zl_layout.edge(12, 12, 12, 12);
+    card.zl_layout.height(56);
     [sec addArrangedSubview:card];
 
     // 多次访问同一个 zl_lab 返回同一个实例（懒加载单例）
     UIView *card2 = [self cardContainer];
     card2.zl_lab.txt(@"第一次设置文字").systemFont(13).color(@"#1677FF");
     card2.zl_lab.txt(@"第二次修改：同一个实例").color(@"#FF4D4F"); // 同一个 lab
-    card2.zl_lab.KFC.edge(12, 12, 12, 12);
-    card2.KFC.height(44);
+    card2.zl_lab.zl_layout.edge(12, 12, 12, 12);
+    card2.zl_layout.height(44);
     [sec addArrangedSubview:card2];
 
     return sec;
@@ -117,8 +117,8 @@
             NSLog(@"zl_btn 点击");
             btn.bgColor(btn.isUserInteractionEnabled ? @"#52C41A" : @"#1677FF");
         })
-        .KFC.edge(12, 12, 12, 12).height(44);
-    card.KFC.height(68);
+        .zl_layout.edge(12, 12, 12, 12).height(44);
+    card.zl_layout.height(68);
     [sec addArrangedSubview:card];
 
     // zl_btn + zl_lab 同时挂载在同一个父视图上
@@ -127,7 +127,7 @@
         .txt(@"标题")
         .mediumFont(15)
         .color(@"#333333")
-        .KFC.leading(12).centerY(0);
+        .zl_layout.leading(12).centerY(0);
     card2.zl_btn
         .title(@"操作")
         .systemFont(13)
@@ -135,8 +135,8 @@
         .border(1, @"#1677FF")
         .corner(14).masksToBounds(YES)
         .tapAction(^(ZLButton *btn) { NSLog(@"操作按钮点击"); })
-        .KFC.trailing(-12).centerY(0).size(60, 28);
-    card2.KFC.height(52);
+        .zl_layout.trailing(-12).centerY(0).size(60, 28);
+    card2.zl_layout.height(52);
     [sec addArrangedSubview:card2];
 
     return sec;
@@ -150,14 +150,14 @@
 
     UIView *card = [self cardContainer];
     card.zl_imgView.backgroundColor = [UIColor colorWithRed:0.36 green:0.61 blue:1.0 alpha:1];
-    card.zl_imgView.corner(30).KFC.square(60).leading(12).centerY(0);
+    card.zl_imgView.corner(30).zl_layout.square(60).leading(12).centerY(0);
 
     card.zl_lab
         .txt(@"zl_imgView + zl_lab 组合")
         .systemFont(14)
         .color(@"#333333")
-        .KFC.leading(84).trailing(-12).centerY(0);
-    card.KFC.height(84);
+        .zl_layout.leading(84).trailing(-12).centerY(0);
+    card.zl_layout.height(84);
     [sec addArrangedSubview:card];
 
     return sec;
@@ -176,8 +176,8 @@
         ZLLabel *dot = ZLLab.txt(@"●").systemFont(20).color(color);
         [stack addArrangedSubview:dot];
     }
-    stack.KFC.edgesZero();
-    card.KFC.height(52);
+    stack.zl_layout.edgesZero();
+    card.zl_layout.height(52);
     [sec addArrangedSubview:card];
 
     return sec;
@@ -197,14 +197,14 @@
         .txt(@"主标题 zl_lab")
         .mediumFont(16)
         .color(@"#333333")
-        .KFC.leading(12).top(12);
+        .zl_layout.leading(12).top(12);
 
     // 副标题（zl_altLab）—— 同一父视图上的第二个 label
     card.zl_altLab
         .txt(@"副标题 zl_altLab（独立实例）")
         .systemFont(13)
         .color(@"#999999")
-        .KFC.leading(12).top(36);
+        .zl_layout.leading(12).top(36);
 
     // 主按钮（zl_btn）
     card.zl_btn
@@ -212,7 +212,7 @@
         .systemFont(13).titleColor(@"#FFFFFF")
         .bgColor(@"#1677FF").corner(14).masksToBounds(YES)
         .tapAction(^(ZLButton *b) { NSLog(@"主按钮"); })
-        .KFC.trailing(-12).top(12).size(64, 28);
+        .zl_layout.trailing(-12).top(12).size(64, 28);
 
     // 第二个按钮（zl_altBtn）
     card.zl_altBtn
@@ -220,13 +220,13 @@
         .systemFont(13).titleColor(@"#1677FF")
         .border(1, @"#1677FF").corner(14).masksToBounds(YES)
         .tapAction(^(ZLButton *b) { NSLog(@"次按钮"); })
-        .KFC.trailing(-12).top(48).size(64, 28);
+        .zl_layout.trailing(-12).top(48).size(64, 28);
 
     // 图片（zl_altImgView）
     card.zl_altImgView.backgroundColor = [UIColor colorWithRed:0.32 green:0.80 blue:0.52 alpha:1];
-    card.zl_altImgView.corner(4).KFC.leading(12).bottom(-12).size(32, 32);
+    card.zl_altImgView.corner(4).zl_layout.leading(12).bottom(-12).size(32, 32);
 
-    card.KFC.height(96);
+    card.zl_layout.height(96);
     [sec addArrangedSubview:card];
 
     return sec;
@@ -243,15 +243,15 @@
     // 三个颜色标签：zl_lab / zl_altLab / zl_extraLab
     card.zl_lab.txt(@"Tag1").systemFont(12).color(@"#FFFFFF")
         .bgColor(@"#1677FF").insets(2, 6, 2, 6).corner(10).masksToBounds(YES)
-        .KFC.leading(12).centerY(0);
+        .zl_layout.leading(12).centerY(0);
 
     card.zl_altLab.txt(@"Tag2").systemFont(12).color(@"#FFFFFF")
         .bgColor(@"#52C41A").insets(2, 6, 2, 6).corner(10).masksToBounds(YES)
-        .KFC.leading(68).centerY(0);
+        .zl_layout.leading(68).centerY(0);
 
     card.zl_extraLab.txt(@"Tag3").systemFont(12).color(@"#FFFFFF")
         .bgColor(@"#FA8C16").insets(2, 6, 2, 6).corner(10).masksToBounds(YES)
-        .KFC.leading(124).centerY(0);
+        .zl_layout.leading(124).centerY(0);
 
     // 三个按钮：zl_btn / zl_altBtn / zl_extraBtn
     card.zl_extraBtn
@@ -259,9 +259,9 @@
         .systemFont(12).titleColor(@"#722ED1")
         .border(1, @"#722ED1").corner(14).masksToBounds(YES)
         .tapAction(^(ZLButton *b) { NSLog(@"extra btn"); })
-        .KFC.trailing(-12).centerY(0).height(28).width(140);
+        .zl_layout.trailing(-12).centerY(0).height(28).width(140);
 
-    card.KFC.height(52);
+    card.zl_layout.height(52);
     [sec addArrangedSubview:card];
 
     return sec;
@@ -280,8 +280,8 @@
         .inset(12, 12, 12, 12);
     card.zl_pairLab.first.txt(@"收货地址").systemFont(14).color(@"#999999");
     card.zl_pairLab.second.txt(@"广东省深圳市南山区").systemFont(14).color(@"#333333");
-    card.zl_pairLab.KFC.edgesZero();
-    card.KFC.height(48);
+    card.zl_pairLab.zl_layout.edgesZero();
+    card.zl_layout.height(48);
     [sec addArrangedSubview:card];
 
     // 切换为垂直排列（同一个 zl_pairLab 实例，直接调用 .vertical）
@@ -289,8 +289,8 @@
     card2.zl_pairLab.vertical.space(4).inset(12, 12, 12, 12);
     card2.zl_pairLab.first.txt(@"订单金额").systemFont(12).color(@"#999999");
     card2.zl_pairLab.second.txt(@"¥ 299.00").boldFont(20).color(@"#FF4D4F");
-    card2.zl_pairLab.KFC.edgesZero();
-    card2.KFC.height(72);
+    card2.zl_pairLab.zl_layout.edgesZero();
+    card2.zl_layout.height(72);
     [sec addArrangedSubview:card2];
 
     return sec;
@@ -305,11 +305,11 @@
     UIView *card = [self cardContainer];
     card.zl_pairImg.alignCenter.space(12).inset(12, 12, 12, 12);
     card.zl_pairImg.first.backgroundColor = [UIColor colorWithRed:0.36 green:0.61 blue:1.0 alpha:1];
-    card.zl_pairImg.first.corner(20).KFC.square(40);
+    card.zl_pairImg.first.corner(20).zl_layout.square(40);
     card.zl_pairImg.second.backgroundColor = [UIColor colorWithRed:0.32 green:0.80 blue:0.52 alpha:1];
-    card.zl_pairImg.second.corner(20).KFC.square(40);
-    card.zl_pairImg.KFC.edgesZero();
-    card.KFC.height(64);
+    card.zl_pairImg.second.corner(20).zl_layout.square(40);
+    card.zl_pairImg.zl_layout.edgesZero();
+    card.zl_layout.height(64);
     [sec addArrangedSubview:card];
 
     return sec;
@@ -331,8 +331,8 @@
         .title(@"确认").systemFont(14).titleColor(@"#FFFFFF")
         .bgColor(@"#1677FF").corner(20).masksToBounds(YES).height(40)
         .tapAction(^(ZLButton *b) { NSLog(@"确认"); });
-    card.zl_pairBtn.KFC.edgesZero();
-    card.KFC.height(64);
+    card.zl_pairBtn.zl_layout.edgesZero();
+    card.zl_layout.height(64);
     [sec addArrangedSubview:card];
 
     return sec;
@@ -356,8 +356,8 @@
     [right addArrangedSubview:ZLLab.txt(@"3.6k").boldFont(22).color(@"#52C41A")];
     [right addArrangedSubview:ZLLab.txt(@"粉丝").systemFont(12).color(@"#999999")];
 
-    card.zl_pairStackView.KFC.edgesZero();
-    card.KFC.height(80);
+    card.zl_pairStackView.zl_layout.edgesZero();
+    card.zl_layout.height(80);
     [sec addArrangedSubview:card];
 
     return sec;
@@ -372,20 +372,20 @@
     UIView *card = [self cardContainer];
     card.zl_imgViewLab.alignCenter.space(10).inset(12, 12, 12, 12);
     card.zl_imgViewLab.first.backgroundColor = [UIColor colorWithRed:1.0 green:0.42 blue:0.21 alpha:1];
-    card.zl_imgViewLab.first.corner(18).KFC.square(36);
+    card.zl_imgViewLab.first.corner(18).zl_layout.square(36);
     card.zl_imgViewLab.second.txt(@"zl_imgViewLab：图片在左，文字在右").systemFont(14).color(@"#333333");
-    card.zl_imgViewLab.KFC.edgesZero();
-    card.KFC.height(60);
+    card.zl_imgViewLab.zl_layout.edgesZero();
+    card.zl_layout.height(60);
     [sec addArrangedSubview:card];
 
     // 切换为垂直（图上文下）：同一个 zl_imgViewLab 实例
     UIView *card2 = [self cardContainer];
     card2.zl_imgViewLab.vertical.alignCenter.space(6).inset(10, 0, 10, 0);
     card2.zl_imgViewLab.first.backgroundColor = [UIColor colorWithRed:0.36 green:0.61 blue:1.0 alpha:1];
-    card2.zl_imgViewLab.first.corner(18).KFC.square(36);
+    card2.zl_imgViewLab.first.corner(18).zl_layout.square(36);
     card2.zl_imgViewLab.second.txt(@"图上文下").systemFont(12).color(@"#1677FF");
-    card2.zl_imgViewLab.KFC.edgesZero();
-    card2.KFC.height(90);
+    card2.zl_imgViewLab.zl_layout.edgesZero();
+    card2.zl_layout.height(90);
     [sec addArrangedSubview:card2];
 
     return sec;
@@ -400,14 +400,14 @@
     UIView *card = [self cardContainer];
     card.zl_imgViewBtn.alignCenter.flexSpace(YES).inset(12, 12, 12, 12);
     card.zl_imgViewBtn.first.backgroundColor = [UIColor colorWithRed:0.32 green:0.80 blue:0.52 alpha:1];
-    card.zl_imgViewBtn.first.corner(22).KFC.square(44);
+    card.zl_imgViewBtn.first.corner(22).zl_layout.square(44);
     card.zl_imgViewBtn.second
         .title(@"立即领取")
         .systemFont(14).titleColor(@"#FFFFFF")
         .bgColor(@"#52C41A").corner(16).masksToBounds(YES).height(32).width(80)
         .tapAction(^(ZLButton *b) { NSLog(@"领取"); });
-    card.zl_imgViewBtn.KFC.edgesZero();
-    card.KFC.height(68);
+    card.zl_imgViewBtn.zl_layout.edgesZero();
+    card.zl_layout.height(68);
     [sec addArrangedSubview:card];
 
     return sec;
@@ -426,9 +426,9 @@
         .border(1, @"#EB2F96").corner(14).masksToBounds(YES).height(28).width(60)
         .tapAction(^(ZLButton *b) { NSLog(@"喜欢"); });
     card.zl_btnImgView.second.backgroundColor = [UIColor colorWithRed:0.92 green:0.18 blue:0.59 alpha:1];
-    card.zl_btnImgView.second.corner(18).KFC.square(36);
-    card.zl_btnImgView.KFC.edgesZero();
-    card.KFC.height(60);
+    card.zl_btnImgView.second.corner(18).zl_layout.square(36);
+    card.zl_btnImgView.zl_layout.edgesZero();
+    card.zl_layout.height(60);
     [sec addArrangedSubview:card];
 
     return sec;
@@ -453,8 +453,8 @@
     card.zl_btnLabel.second
         .txt(@"我已阅读并同意《用户协议》和《隐私政策》")
         .systemFont(13).color(@"#666666").lines(0);
-    card.zl_btnLabel.KFC.edgesZero();
-    card.KFC.height(48);
+    card.zl_btnLabel.zl_layout.edgesZero();
+    card.zl_layout.height(48);
     [sec addArrangedSubview:card];
 
     return sec;
@@ -473,8 +473,8 @@
     card.zl_labelBtn.second
         .title(@"查看全部 >").systemFont(13).titleColor(@"#1677FF")
         .tapAction(^(ZLButton *b) { NSLog(@"查看全部"); });
-    card.zl_labelBtn.KFC.edgesZero();
-    card.KFC.height(48);
+    card.zl_labelBtn.zl_layout.edgesZero();
+    card.zl_layout.height(48);
     [sec addArrangedSubview:card];
 
     return sec;
@@ -491,9 +491,9 @@
     card.zl_labImgView.alignCenter.flexSpace(YES).inset(14, 16, 14, 16);
     card.zl_labImgView.first.txt(@"隐私设置").systemFont(15).color(@"#333333");
     card.zl_labImgView.second.backgroundColor = [UIColor colorWithRed:0.75 green:0.75 blue:0.75 alpha:1];
-    card.zl_labImgView.second.corner(2).KFC.size(7, 12);
-    card.zl_labImgView.KFC.edgesZero();
-    card.KFC.height(48);
+    card.zl_labImgView.second.corner(2).zl_layout.size(7, 12);
+    card.zl_labImgView.zl_layout.edgesZero();
+    card.zl_layout.height(48);
     [sec addArrangedSubview:card];
 
     return sec;
@@ -614,33 +614,33 @@
 
     // 头像：zl_imgView
     card.zl_imgView.backgroundColor = [UIColor colorWithRed:0.36 green:0.61 blue:1.0 alpha:1];
-    card.zl_imgView.corner(24).KFC.square(48).leading(16).top(16);
+    card.zl_imgView.corner(24).zl_layout.square(48).leading(16).top(16);
 
     // 姓名：zl_lab
     card.zl_lab.txt(@"张三丰").mediumFont(16).color(@"#333333")
-        .KFC.leading(80).top(18);
+        .zl_layout.leading(80).top(18);
 
     // 职位：zl_altLab
     card.zl_altLab.txt(@"高级产品经理 · 深圳").systemFont(12).color(@"#999999")
-        .KFC.leading(80).top(42);
+        .zl_layout.leading(80).top(42);
 
     // 状态 badge：zl_extraLab
     card.zl_extraLab.txt(@"在线").systemFont(11).color(@"#FFFFFF")
         .bgColor(@"#52C41A").insets(2, 6, 2, 6).corner(8).masksToBounds(YES)
-        .KFC.trailing(-16).top(18);
+        .zl_layout.trailing(-16).top(18);
 
     // 操作按钮：zl_btn
     card.zl_btn
         .title(@"发消息").systemFont(13).titleColor(@"#1677FF")
         .border(1, @"#1677FF").corner(14).masksToBounds(YES)
         .tapAction(^(ZLButton *b) { NSLog(@"发消息"); })
-        .KFC.trailing(-16).top(42).size(68, 26);
+        .zl_layout.trailing(-16).top(42).size(68, 26);
 
     // 分隔线：zl_altImgView（作为分隔线）
     card.zl_altImgView.backgroundColor = [UIColor redColor];
-    card.zl_altImgView.KFC.leading(16).trailing(-16).bottom(-1).height(1);
+    card.zl_altImgView.zl_layout.leading(16).trailing(-16).bottom(-1).height(1);
 
-    card.KFC.height(88);
+    card.zl_layout.height(88);
 
     // 用 zl_wrapView 给整个 card 加阴影
     card.zl_wrapView

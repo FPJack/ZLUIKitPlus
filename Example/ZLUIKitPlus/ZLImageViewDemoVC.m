@@ -15,7 +15,7 @@
         ZLLabel *tip = ZLLab;
         tip.txt(@"1. 基础图片").systemFont(13).color(@"#999999");
         [self.view addSubview:tip];
-        tip.KFC.top(y).leading(20);
+        tip.zl_layout.top(y).leading(20);
         y += 25;
         
         ZLImageView *imgView = ZLImageView.new;
@@ -34,13 +34,13 @@
         ZLLabel *tip = ZLLab;
         tip.txt(@"2. 圆形图片").systemFont(13).color(@"#999999");
         [self.view addSubview:tip];
-        tip.KFC.top(y).leading(20);
+        tip.zl_layout.top(y).leading(20);
         y += 25;
         
         ZLImageView *imgView = ZLImageView.new;
         imgView.img(@"猫狗通用-分离焦虑").aspectFill.circle(YES);
         [self.view addSubview:imgView];
-        imgView.KFC.top(y).leading(20).square(80);
+        imgView.zl_layout.top(y).leading(20).square(80);
         y += 100;
     }
     
@@ -49,13 +49,13 @@
         ZLLabel *tip = ZLLab;
         tip.txt(@"3. 圆角+边框").systemFont(13).color(@"#999999");
         [self.view addSubview:tip];
-        tip.KFC.top(y).leading(20);
+        tip.zl_layout.top(y).leading(20);
         y += 25;
         
         ZLImageView *imgView = ZLImageView.new;
         imgView.img(@"分享").aspectFit.corner(12).border(2, @"#4A90D9").bgColor(@"#E3F2FD");
         [self.view addSubview:imgView];
-        imgView.KFC.top(y).leading(20).size(80, 80);
+        imgView.zl_layout.top(y).leading(20).size(80, 80);
         y += 100;
     }
     
@@ -64,7 +64,7 @@
         ZLLabel *tip = ZLLab;
         tip.txt(@"4. 高亮图片切换(点击切换)").systemFont(13).color(@"#999999");
         [self.view addSubview:tip];
-        tip.KFC.top(y).leading(20);
+        tip.zl_layout.top(y).leading(20);
         y += 25;
         
         ZLImageView *imgView = ZLImageView.new;
@@ -73,7 +73,7 @@
                 iv.highlight(!iv.isHighlighted);
             });
         [self.view addSubview:imgView];
-        imgView.KFC.top(y).leading(20).size(60, 60);
+        imgView.zl_layout.top(y).leading(20).size(60, 60);
         y += 80;
     }
     
@@ -82,13 +82,13 @@
         ZLLabel *tip = ZLLab;
         tip.txt(@"5. 透明度0.5 + 背景色").systemFont(13).color(@"#999999");
         [self.view addSubview:tip];
-        tip.KFC.top(y).leading(20);
+        tip.zl_layout.top(y).leading(20);
         y += 25;
         
         ZLImageView *imgView = ZLImageView.new;
         imgView.img(@"猫狗通用-分离焦虑").aspectFit.alphaValue(0.5).bgColor(@"#FFECB3").corner(8);
         [self.view addSubview:imgView];
-        imgView.KFC.top(y).leading(20).size(80, 80);
+        imgView.zl_layout.top(y).leading(20).size(80, 80);
         y += 100;
     }
     
@@ -97,7 +97,7 @@
         ZLLabel *tip = ZLLab;
         tip.txt(@"6. toPtr赋值 + then回调").systemFont(13).color(@"#999999");
         [self.view addSubview:tip];
-        tip.KFC.top(y).leading(20);
+        tip.zl_layout.top(y).leading(20);
         y += 25;
         
         __block ZLImageView *ref;
@@ -106,7 +106,7 @@
             iv.img(@"分享").aspectFit.bgColor(@"#E8F5E9").corner(8);
         });
         [self.view addSubview:imgView];
-        imgView.KFC.top(y).leading(20).size(60, 60);
+        imgView.zl_layout.top(y).leading(20).size(60, 60);
     }
 }
 

@@ -11,6 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class ZLView,ZLWrapperView;
 @interface ZLBaseView<__covariant ObjectType> : UIView
+///立马回调一次，多次调用也只会调用一次
+@property (readonly) ObjectType (^onInit)(void(^)(ZLBaseView* view));
+
 ///赋值当前对象到一个指针上
 /// 例如：ZLBaseView *view;
 ///  ZLBaseView.new.assignToPtr(&view);
@@ -20,7 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) ObjectType (^userActive)(BOOL userInteractionEnabled);
 
 @property (readonly) ObjectType (^visibility)(BOOL visible);
-
 
 @property (readonly)ObjectType (^alphaValue)(CGFloat alpha);
 
@@ -93,7 +95,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) ObjectType (^activeStyle)(void (^)(ZLBaseView * view));
 ///不可点击情况下配置userActive(NO) 触发回调
 @property (readonly) ObjectType (^inactiveStyle)(void (^)(ZLBaseView * view));
-///立即触发block回调，适用于需要在初始化时立即配置样式的场景
+///立即触发block回调，每次调用都会回调出来，onInit只会调用一次
 @property (readonly) ObjectType (^then)(void (^)(ZLBaseView * view));
 ///点击事件
 @property (readonly) ObjectType (^tapAction)(void(^)(ZLBaseView *view));

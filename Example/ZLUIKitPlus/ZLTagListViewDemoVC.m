@@ -24,7 +24,7 @@
         ZLLabel *tip = ZLLab;
         tip.txt(@"1. Delegate方式(点击选中)").systemFont(13).color(@"#999999");
         [self.view addSubview:tip];
-        tip.KFC.top(y).leading(20);
+        tip.zl_layout.top(y).leading(20);
         y += 25;
         
         ZLTagListView *tagList = ZLTagListView.new;
@@ -36,7 +36,7 @@
         tagList.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1];
         tagList.layer.cornerRadius = 8;
         [self.view addSubview:tagList];
-        tagList.KFC.top(y).leading(16).trailing(16).height(150);
+        tagList.zl_layout.top(y).leading(16).trailing(16).height(150);
         [tagList reloadData];
         y += 170;
     }
@@ -46,7 +46,7 @@
         ZLLabel *tip = ZLLab;
         tip.txt(@"2. Block方式(ZLBlockTagListView)").systemFont(13).color(@"#999999");
         [self.view addSubview:tip];
-        tip.KFC.top(y).leading(20);
+        tip.zl_layout.top(y).leading(20);
         y += 25;
         
         NSArray *colors = @[@"#FF5722", @"#4CAF50", @"#2196F3", @"#9C27B0", @"#FF9800"];
@@ -79,7 +79,7 @@
         blockTag.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1];
         blockTag.layer.cornerRadius = 8;
         [self.view addSubview:blockTag];
-        blockTag.KFC.top(y).leading(16).trailing(16).height(60);
+        blockTag.zl_layout.top(y).leading(16).trailing(16).height(60);
         [blockTag reloadData];
         y += 80;
     }
@@ -89,7 +89,7 @@
         ZLLabel *tip = ZLLab;
         tip.txt(@"3. 居中对齐(alignment=Center)").systemFont(13).color(@"#999999");
         [self.view addSubview:tip];
-        tip.KFC.top(y).leading(20);
+        tip.zl_layout.top(y).leading(20);
         y += 25;
         
         NSArray *items = @[@"A", @"BB", @"CCC", @"DDDD", @"EE"];
@@ -111,7 +111,7 @@
         centerTag.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1];
         centerTag.layer.cornerRadius = 8;
         [self.view addSubview:centerTag];
-        centerTag.KFC.top(y).leading(16).trailing(16).height(55);
+        centerTag.zl_layout.top(y).leading(16).trailing(16).height(55);
         [centerTag reloadData];
         y += 75;
     }
@@ -121,7 +121,7 @@
         ZLLabel *tip = ZLLab;
         tip.txt(@"4. 水平滚动(horizontalScroll=YES)").systemFont(13).color(@"#999999");
         [self.view addSubview:tip];
-        tip.KFC.top(y).leading(20);
+        tip.zl_layout.top(y).leading(20);
         y += 25;
         
         NSArray *items = @[@"北京", @"上海", @"广州", @"深圳", @"杭州", @"成都", @"武汉", @"南京", @"西安", @"重庆"];
@@ -143,7 +143,7 @@
         hTag.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1];
         hTag.layer.cornerRadius = 8;
         [self.view addSubview:hTag];
-        hTag.KFC.top(y).leading(16).trailing(16).height(52);
+        hTag.zl_layout.top(y).leading(16).trailing(16).height(52);
         [hTag reloadData];
     }
 }

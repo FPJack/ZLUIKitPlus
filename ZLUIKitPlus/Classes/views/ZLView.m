@@ -1,5 +1,5 @@
 //
-//  ZLView.m
+//  ZLBaseView.m
 //  ZLUIKitPlus
 //
 //  Created by admin on 2026/5/11.
@@ -8,7 +8,7 @@
 #import "ZLView.h"
 #import "ZLUI.h"
 #import <objc/runtime.h>
-@interface ZLView()
+@interface ZLBaseView()
 @property (nonatomic, strong) CAShapeLayer *backgroundShapeLayer;
 @property (nonatomic,strong)  CAGradientLayer *gradLayer;
 ///是否需要重绘
@@ -20,7 +20,7 @@
 @property (nonatomic,copy)void (^activeStyleBlock)(id );
 @property (nonatomic,copy)void (^inactiveStyleBlock)(id );
 @end
-@implementation ZLView
+@implementation ZLBaseView
 - (CAShapeLayer *)backgroundShapeLayer {
     if (!_backgroundShapeLayer) {
         _backgroundShapeLayer = [CAShapeLayer layer];
@@ -145,8 +145,8 @@
     self.needsUpdate = YES;
     [self setNeedsLayout];
 }
-- (ZLView * _Nonnull (^)(BOOL))userActive {
-    return ^ZLView* (BOOL active) {
+- (id _Nonnull (^)(BOOL))userActive {
+    return ^ZLBaseView* (BOOL active) {
         self.userInteractionEnabled = active;
         if (active) {
             if (self.activeStyleBlock) self.activeStyleBlock(self);
@@ -156,32 +156,32 @@
         return self;
     };
 }
-- (ZLView * _Nonnull (^)(BOOL))visibility {
-    return ^ZLView* (BOOL visible) {
+- (id _Nonnull (^)(BOOL))visibility {
+    return ^ZLBaseView* (BOOL visible) {
         self.hidden = !visible;
         return self;
     };
 }
-- (ZLView * _Nonnull (^)(CGFloat))alphaValue {
-    return ^ZLView* (CGFloat alpha) {
+- (id _Nonnull (^)(CGFloat))alphaValue {
+    return ^ZLBaseView* (CGFloat alpha) {
         self.alpha = alpha;
         return self;
     };
 }
-- (ZLView *_Nonnull (^)(ZLView * _Nullable __autoreleasing * _Nullable))assignToPtr {
-    return ^(ZLView **ptr){
+- (id _Nonnull (^)(ZLBaseView * _Nullable __autoreleasing * _Nullable))assignToPtr {
+    return ^(ZLBaseView **ptr){
         if (ptr) *ptr = self;
         return self;
     };
 }
-- (ZLView *_Nonnull (^)(id _Nonnull))bgColor {
+- (id _Nonnull (^)(id _Nonnull))bgColor {
     return ^(id color) {
         self.backgroundColor = ZLColorFromObj(color);
         return self;
     };
 }
-- (ZLView * _Nonnull (^)(NSArray * _Nonnull))gradColors {
-    return ^ZLView* (NSArray *colors) {
+- (id _Nonnull (^)(NSArray * _Nonnull))gradColors {
+    return ^ZLBaseView* (NSArray *colors) {
         NSMutableArray *cgColors = [NSMutableArray arrayWithCapacity:colors.count];
         for (id color in colors) {
             [cgColors addObject:(__bridge id)ZLColorFromObj(color).CGColor];
@@ -195,8 +195,8 @@
         return self;
     };
 }
-- (ZLView * _Nonnull (^)(CGPoint, CGPoint))gradDirection {
-    return ^ZLView* (CGPoint start, CGPoint end) {
+- (id _Nonnull (^)(CGPoint, CGPoint))gradDirection {
+    return ^ZLBaseView* (CGPoint start, CGPoint end) {
         self.gradLayer.startPoint = start;
         self.gradLayer.endPoint = end;
         if (!(self -> _gradLayer)) {
@@ -205,16 +205,16 @@
         return self;
     };
 }
-- (ZLView *_Nonnull (^)(CGFloat))corner {
-    return ^ZLView*(CGFloat radius){
+- (id _Nonnull (^)(CGFloat))corner {
+    return ^ZLBaseView*(CGFloat radius){
         if (radius == self.radiusValue) return self;
         self.radiusValue = radius;
         [self setNeedLayoutIfNeed];
         return self;
     };
 }
-- (ZLView *_Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))cornerRadii {
-    return ^ZLView*(CGFloat topLeft, CGFloat topRight, CGFloat bottomLeft, CGFloat bottomRight){
+- (id _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))cornerRadii {
+    return ^ZLBaseView*(CGFloat topLeft, CGFloat topRight, CGFloat bottomLeft, CGFloat bottomRight){
         UIEdgeInsets radii = UIEdgeInsetsMake(topLeft, topRight, bottomLeft, bottomRight);
         if (UIEdgeInsetsEqualToEdgeInsets(radii, self.cornerRadiiValue)) {
             return self;
@@ -231,8 +231,8 @@
     return [UIApplication sharedApplication].userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
 }
 
-- (ZLView *_Nonnull (^)(BOOL))circle {
-    return ^ZLView*(BOOL clip) {
+- (id _Nonnull (^)(BOOL))circle {
+    return ^ZLBaseView*(BOOL clip) {
         if (clip == self.circleTag.boolValue) return self;
         self.circleTag = @(clip);
         [self setNeedLayoutIfNeed];
@@ -240,27 +240,27 @@
     };
 }
 
-- (ZLView *(^)(id ))borderColor {
-    return  ^ZLView*(id color){
+- (id (^)(id ))borderColor {
+    return  ^ZLBaseView*(id color){
         self.backgroundShapeLayer.strokeColor = ZLColorFromObj(color).CGColor;
         return self;
     };
 }
-- (ZLView *(^)(CGFloat ))borderWidth {
-    return  ^ZLView*(CGFloat width){
+- (id (^)(CGFloat ))borderWidth {
+    return  ^ZLBaseView*(CGFloat width){
         self.backgroundShapeLayer.lineWidth = width;
         return self;
     };
 }
-- (ZLView *_Nonnull (^)(CGFloat, id _Nonnull))border {
-    return ^ZLView*(CGFloat width, id color){
+- (id _Nonnull (^)(CGFloat, id _Nonnull))border {
+    return ^ZLBaseView*(CGFloat width, id color){
         self.borderWidth(width);
         self.borderColor(color);
         return self;
     };
 }
-- (ZLView * _Nonnull (^)(id _Nonnull))shColor {
-    return ^ZLView* (id color) {
+- (id  _Nonnull (^)(id _Nonnull))shColor {
+    return ^ZLBaseView* (id color) {
         self.layer.shadowColor = ZLColorFromObj(color).CGColor;
         self.layer.shadowOpacity = 0.2;
         self.layer.shadowRadius = 8;
@@ -272,112 +272,114 @@
 }
 
 
-- (ZLView * _Nonnull (^)(CGFloat, CGFloat))shOffset {
-    return ^ZLView* (CGFloat width, CGFloat height) {
+- (id _Nonnull (^)(CGFloat, CGFloat))shOffset {
+    return ^ZLBaseView* (CGFloat width, CGFloat height) {
         self.layer.shadowOffset = CGSizeMake(width, height);
         return self;
     };
 }
 
 
-- (ZLView * _Nonnull (^)(CGFloat))shRadius {
-    return ^ZLView* (CGFloat radius) {
+- (id _Nonnull (^)(CGFloat))shRadius {
+    return ^ZLBaseView* (CGFloat radius) {
         self.layer.shadowRadius = radius;
         return self;
     };
 }
 
-- (ZLView * _Nonnull (^)(CGFloat))shOpacity {
-    return ^ZLView* (CGFloat opacity) {
+- (id _Nonnull (^)(CGFloat))shOpacity {
+    return ^ZLBaseView* (CGFloat opacity) {
         self.layer.shadowOpacity = opacity;
         return self;
     };
 }
-- (ZLView * _Nonnull (^)(BOOL))masksToBounds {
-    return ^ZLView* (BOOL masks) {
+- (id _Nonnull (^)(BOOL))masksToBounds {
+    return ^ZLBaseView* (BOOL masks) {
         self.layer.masksToBounds = masks;
         return self;
     };
 }
-- (ZLView * _Nonnull (^)(CGFloat))centerX {
+- (id _Nonnull (^)(CGFloat))centerX {
     return ^(CGFloat centerX){
          self.KFC.centerX(centerX);
         return self;
     };
 }
-- (ZLView * _Nonnull (^)(CGFloat))centerY {
+- (id _Nonnull (^)(CGFloat))centerY {
     return ^(CGFloat centerY){
          self.KFC.centerY(centerY);
          return self;
     };
 }
 
-- (ZLView * _Nonnull (^)(CGFloat, CGFloat))centerOffset {
+- (id _Nonnull (^)(CGFloat, CGFloat))centerOffset {
     return ^(CGFloat centerX, CGFloat centerY){
-        return self.centerX(centerX).centerY(centerY);
+        self.centerX(centerX);
+        self.centerY(centerY);
+        return self;
     };
 }
-- (ZLView * _Nonnull (^)(CGFloat))top {
+- (id _Nonnull (^)(CGFloat))top {
     return ^(CGFloat top){
         self.KFC.top(top);
         return self;
     };
 }
-- (ZLView * _Nonnull (^)(CGFloat))leading {
+- (id _Nonnull (^)(CGFloat))leading {
     return ^(CGFloat leading){
         self.KFC.leading(leading);
         return self;
     };
 }
-- (ZLView * _Nonnull (^)(CGFloat))bottom {
+- (id _Nonnull (^)(CGFloat))bottom {
     return ^(CGFloat bottom){
         self.KFC.bottom(bottom);
         return self;
     };
 }
-- (ZLView * _Nonnull (^)(CGFloat))trailing {
+- (id _Nonnull (^)(CGFloat))trailing {
     return ^(CGFloat trailling){
         self.KFC.trailing(trailling);
         return self;
     };
 }
-- (ZLView *_Nonnull (^)(CGFloat))height {
+- (id _Nonnull (^)(CGFloat))height {
     return ^(CGFloat height) {
         self.KFC.height(height);
         return self;
     };
 }
-- (ZLView *_Nonnull (^)(CGFloat))width {
+- (id _Nonnull (^)(CGFloat))width {
     return ^(CGFloat width) {
         self.KFC.width(width);
         return self;
     };
 }
-- (ZLView *_Nonnull (^)(CGFloat, CGFloat))size {
+- (id _Nonnull (^)(CGFloat, CGFloat))size {
     return ^(CGFloat width, CGFloat height) {
         self.KFC.size(width, height);
         return self;
     };
 }
-- (ZLView *_Nonnull (^)(CGFloat))square {
+- (id _Nonnull (^)(CGFloat))square {
     return ^(CGFloat side) {
         self.KFC.square(side);
         return self;
     };
 }
-- (ZLView *_Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))edge {
+- (id _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))edge {
     return ^(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing) {
         self.KFC.edge(top, leading, bottom, trailing);
         return self;
     };
 }
-- (ZLView *_Nonnull (^)(void))edgesZero {
+- (id _Nonnull (^)(void))edgesZero {
     return ^() {
         self.KFC.edgesZero();
         return self;
     };
 }
-- (ZLView *_Nonnull (^)(UIView * _Nonnull))addTo {
+- (id _Nonnull (^)(UIView * _Nonnull))addTo {
     return ^(UIView *superview){
         if ([superview isKindOfClass:UIView.class]) {
             [superview addSubview:self];
@@ -386,7 +388,7 @@
     };
 }
 
-- (ZLView *_Nonnull (^)(UIView * _Nonnull))addToFull {
+- (id _Nonnull (^)(UIView * _Nonnull))addToFull {
     return ^(UIView *superview){
         if ([superview isKindOfClass:UIView.class]) {
             [superview addSubview:self];
@@ -395,7 +397,7 @@
         return self;
     };
 }
-- (ZLView *_Nonnull (^)(UIView * _Nonnull))addSubview {
+- (id _Nonnull (^)(UIView * _Nonnull))addSubview {
     return ^(UIView *subview){
         if ([subview isKindOfClass:UIView.class]) {
             [self addSubview:subview];
@@ -403,8 +405,8 @@
         return self;
     };
 }
-- (ZLView * _Nonnull (^)(UIView * _Nonnull, void (^ _Nonnull)(ZLView * _Nonnull, __kindof UIView * _Nonnull)))addSubviewLayout {
-    return ^(UIView *subview, void (^block)(ZLView *, UIView *)) {
+- (id _Nonnull (^)(UIView * _Nonnull, void (^ _Nonnull)(ZLBaseView * _Nonnull, __kindof UIView * _Nonnull)))addSubviewLayout {
+    return ^(UIView *subview, void (^block)(ZLBaseView *, UIView *)) {
         if ([subview isKindOfClass:UIView.class]) {
             [self addSubview:subview];
             if (block) block(self, subview);
@@ -412,57 +414,76 @@
         return self;
     };
 }
-- (ZLView* (^)(void (^ _Nonnull)(ZLView * _Nonnull)))activeStyle {
-    return ^(void (^block)(ZLView *)) {
+- (id (^)(void (^ _Nonnull)(ZLBaseView * _Nonnull)))activeStyle {
+    return ^(void (^block)(ZLBaseView *)) {
         self.activeStyleBlock = block;
         if (self.userInteractionEnabled) if (block) block(self);
         return self;
     };
 }
-- (ZLView* (^)(void (^ _Nonnull)(ZLView * _Nonnull)))inactiveStyle {
-    return ^(void (^block)(ZLView *)) {
+- (id (^)(void (^ _Nonnull)(ZLBaseView * _Nonnull)))inactiveStyle {
+    return ^(void (^block)(ZLBaseView *)) {
         self.inactiveStyleBlock = block;
         if (!self.userInteractionEnabled) if (block) block(self);
         return self;
     };
 }
-- (ZLView * _Nonnull (^)(void (^ _Nonnull)(ZLView * _Nonnull)))then {
-    return ^(void (^block)(ZLView *)) {
+- (id _Nonnull (^)(void (^ _Nonnull)(ZLBaseView * _Nonnull)))then {
+    return ^(void (^block)(ZLBaseView *)) {
         if (block) block(self);
         return self;
     };
 }
-- (ZLView * _Nonnull (^)(void (^ _Nonnull)(ZLView * _Nonnull)))tapAction {
-    return ^(void (^block)(ZLView *)) {
+- (id _Nonnull (^)(void (^ _Nonnull)(ZLBaseView * _Nonnull)))tapAction {
+    return ^(void (^block)(ZLBaseView *)) {
         self.KFC.tapAction(block);
         return self;
     };
 }
 @end
+
+@implementation ZLView
+
+
+
+@end
+
 @interface ZLWrapperView()
 @property (nonatomic, weak,readwrite) UIView *contentView;
 @property (nonatomic, copy)NSArray *constraintsArr;
+@property (nonatomic, assign)UIEdgeInsets _contentInsets;
 @end
 @implementation ZLWrapperView
+- (void)updateConstraints {
+    [super updateConstraints];
+    if (!self.constraintsArr) return;
+    [NSLayoutConstraint activateConstraints:self.constraintsArr];
+    self.constraintsArr = nil;
+}
 + (instancetype)wrapWithView:(UIView *)view {
     ZLWrapperView *wrap = [[ZLWrapperView alloc] initWithFrame:view.frame];
     wrap.contentView = view;
     [wrap addSubview:view];
-    return wrap;
+    return  [wrap insetsZero];
 }
 - (instancetype)insetsZero {
     return self.insets(0, 0, 0, 0);
 }
 - (ZLWrapperView * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))insets {
     return ^(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing) {
+        if (UIEdgeInsetsEqualToEdgeInsets(self._contentInsets, UIEdgeInsetsMake(top, leading, bottom, trailing))) {
+            return self;
+        }
+        self._contentInsets = UIEdgeInsetsMake(top, leading, bottom, trailing);
         [NSLayoutConstraint deactivateConstraints:self.constraintsArr];
         self.constraintsArr = @[[self.contentView.topAnchor constraintEqualToAnchor:self.topAnchor constant:top],
                                 [self.contentView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:leading],
                                 [self.contentView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-bottom],
                                 [self.contentView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-trailing]];
-        [NSLayoutConstraint activateConstraints:self.constraintsArr];
+        [self setNeedsUpdateConstraints];
         return self;
     };
 }
 @end
+
 

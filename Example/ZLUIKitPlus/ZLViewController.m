@@ -14,6 +14,7 @@
 #import "ZLPairViewDemoVC.h"
 #import "ZLTagListViewDemoVC.h"
 #import "ZLStackViewDemoVC.h"
+#import "ZLViewExtDemoVC.h"
 
 @interface ZLViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) NSArray<NSDictionary *> *demos;
@@ -72,6 +73,7 @@
         @{@"title": @"ZLPairView Demo", @"class": ZLPairViewDemoVC.class},
         @{@"title": @"ZLTagListView Demo", @"class": ZLTagListViewDemoVC.class},
         @{@"title": @"ZLStackView Demo",   @"class": ZLStackViewDemoVC.class},
+        @{@"title": @"UIView+ZLView Demo",  @"class": ZLViewExtDemoVC.class},
     ];
     
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];

@@ -1,5 +1,5 @@
 //
-//  ZLView.h
+//  ZLBaseView.h
 //  ZLUIKitPlus
 //
 //  Created by admin on 2026/5/11.
@@ -9,98 +9,103 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ZLView : UIView
+@class ZLView,ZLWrapperView;
+@interface ZLBaseView<__covariant ObjectType> : UIView
 ///赋值当前对象到一个指针上
-/// 例如：ZLView *view;
-///  ZLView.new.assignToPtr(&view);
-@property (nonatomic, copy, readonly) ZLView * (^assignToPtr)(ZLView *_Nullable* _Nullable buttonPtr);
+/// 例如：ZLBaseView *view;
+///  ZLBaseView.new.assignToPtr(&view);
+@property (nonatomic, copy, readonly)ObjectType (^assignToPtr)(ZLBaseView *_Nullable* _Nullable buttonPtr);
 
 ///设置userinteractionEnabled 会触发activeStyle 或者 inactiveStyle 回调
-@property (nonatomic, copy, readonly) ZLView* (^userActive)(BOOL userInteractionEnabled);
+@property (nonatomic, copy, readonly) ObjectType (^userActive)(BOOL userInteractionEnabled);
 
-@property (readonly) ZLView* (^visibility)(BOOL visible);
+@property (readonly) ObjectType (^visibility)(BOOL visible);
 
 
-@property (readonly) ZLView * (^alphaValue)(CGFloat alpha);
+@property (readonly)ObjectType (^alphaValue)(CGFloat alpha);
 
-@property (nonatomic, copy,readonly) ZLView * (^bgColor)(id color);// 便捷设置背景色，支持 UIColor 或 UIColorHex
+@property (nonatomic, copy,readonly)ObjectType (^bgColor)(id color);// 便捷设置背景色，支持 UIColor 或 UIColorHex
 ///设置圆角
-@property (nonatomic, copy, readonly) ZLView * (^corner)(CGFloat radius);
+@property (nonatomic, copy, readonly)ObjectType (^corner)(CGFloat radius);
 
 ///设置4个方向的圆角，传入不同的值
-@property (nonatomic, copy, readonly) ZLView * (^cornerRadii)(CGFloat topLeft, CGFloat topRight, CGFloat bottomLeft, CGFloat bottomRight);
+@property (nonatomic, copy, readonly)ObjectType (^cornerRadii)(CGFloat topLeft, CGFloat topRight, CGFloat bottomLeft, CGFloat bottomRight);
 ///设置是否圆形裁剪
-@property (nonatomic, copy, readonly) ZLView * (^circle)(BOOL circle);
+@property (nonatomic, copy, readonly)ObjectType (^circle)(BOOL circle);
 ///UIColor or #333333
-@property (nonatomic,readonly) ZLView * (^borderColor)(id);
+@property (nonatomic,readonly)ObjectType (^borderColor)(id);
 
-@property (nonatomic,readonly) ZLView * (^borderWidth)(CGFloat);
+@property (nonatomic,readonly)ObjectType (^borderWidth)(CGFloat);
 
-@property (nonatomic,readonly) ZLView * (^border)(CGFloat width,id color);
+@property (nonatomic,readonly)ObjectType (^border)(CGFloat width,id color);
 
-@property (nonatomic,readonly) ZLView * (^shColor)(id color);
+@property (nonatomic,readonly)ObjectType (^shColor)(id color);
 //默认 （0,2）
-@property (nonatomic,readonly) ZLView * (^shOffset)(CGFloat width,CGFloat height);
+@property (nonatomic,readonly)ObjectType (^shOffset)(CGFloat width,CGFloat height);
 //默认0.2
-@property (nonatomic,readonly) ZLView * (^shOpacity)(CGFloat opacity);
+@property (nonatomic,readonly)ObjectType (^shOpacity)(CGFloat opacity);
 //默认6
-@property (nonatomic,readonly) ZLView * (^shRadius)(CGFloat radius);
+@property (nonatomic,readonly)ObjectType (^shRadius)(CGFloat radius);
 
-@property (nonatomic,readonly) ZLView * (^masksToBounds)(BOOL masksToBounds);
+@property (nonatomic,readonly)ObjectType (^masksToBounds)(BOOL masksToBounds);
 
 ///渐变颜色
-@property (nonatomic, readonly) ZLView * (^gradColors)(NSArray *colors);
+@property (nonatomic, readonly)ObjectType (^gradColors)(NSArray *colors);
 ///渐变方向，传入起点和终点坐标，范围0~1
-@property (nonatomic, readonly) ZLView * (^gradDirection)(CGPoint startPoint, CGPoint endPoint);
+@property (nonatomic, readonly)ObjectType (^gradDirection)(CGPoint startPoint, CGPoint endPoint);
 ///布局相关
-@property (readonly) ZLView* (^centerX)(CGFloat x);
+@property (readonly) ObjectType (^centerX)(CGFloat x);
 
-@property (readonly) ZLView* (^centerY)(CGFloat y);
+@property (readonly) ObjectType (^centerY)(CGFloat y);
 
-@property (readonly) ZLView* (^centerOffset)(CGFloat x,CGFloat y);
+@property (readonly) ObjectType (^centerOffset)(CGFloat x,CGFloat y);
 
-@property (readonly) ZLView* (^top)(CGFloat top);
+@property (readonly) ObjectType (^top)(CGFloat top);
 
-@property (readonly) ZLView* (^leading)(CGFloat leading);
+@property (readonly) ObjectType (^leading)(CGFloat leading);
 
-@property (readonly) ZLView* (^bottom)(CGFloat bottom);
+@property (readonly) ObjectType (^bottom)(CGFloat bottom);
 
-@property (readonly) ZLView* (^trailing)(CGFloat trailling);
+@property (readonly) ObjectType (^trailing)(CGFloat trailling);
 ///设置高度
-@property (readonly) ZLView * (^height)(CGFloat height);
+@property (readonly)ObjectType (^height)(CGFloat height);
 ///设置宽度
-@property (readonly) ZLView * (^width)(CGFloat width);
+@property (readonly)ObjectType (^width)(CGFloat width);
 ///同时设置宽高
-@property (readonly) ZLView * (^size)(CGFloat width,CGFloat height);
+@property (readonly)ObjectType (^size)(CGFloat width,CGFloat height);
 ///设置宽高相等
-@property (readonly) ZLView * (^square)(CGFloat wh);
+@property (readonly)ObjectType (^square)(CGFloat wh);
 ///贴紧父视图四边(参数布局)
-@property (readonly) ZLView * (^edge)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
+@property (readonly)ObjectType (^edge)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
  // ⭐高频
 ///贴紧父视图四边布局
-@property (readonly) ZLView * (^edgesZero)(void);
+@property (readonly)ObjectType (^edgesZero)(void);
 ///添加到父视图，参数是父视图
-@property (readonly) ZLView * (^addTo)(UIView *superview);
+@property (readonly)ObjectType (^addTo)(UIView *superview);
 
 ///添加到父视图 并且贴紧父视图四边布局，参数是父视图
-@property (readonly) ZLView * (^addToFull)(UIView *superview);
+@property (readonly)ObjectType (^addToFull)(UIView *superview);
 ///添加子视图，参数是子视图
-@property (readonly) ZLView *(^addSubview)(UIView *subview);
+@property (readonly)ObjectType(^addSubview)(UIView *subview);
 ///添加子视图并且对子视图进行布局配置，参数是子视图和布局配置回调，回调参数是当前view和子视图，使用者在回调里对view进行布局配置即可
-@property (readonly) ZLView *(^addSubviewLayout)(UIView *subview, void(^)(ZLView *view,__kindof UIView *subview));
+@property (readonly)ObjectType(^addSubviewLayout)(UIView *subview, void(^)(ZLBaseView *view,__kindof UIView *subview));
 ///可点击情况下进行相应配置 userActive(YES) 触发回调
-@property (readonly) ZLView* (^activeStyle)(void (^)(ZLView * view));
+@property (readonly) ObjectType (^activeStyle)(void (^)(ZLBaseView * view));
 ///不可点击情况下配置userActive(NO) 触发回调
-@property (readonly) ZLView* (^inactiveStyle)(void (^)(ZLView * view));
+@property (readonly) ObjectType (^inactiveStyle)(void (^)(ZLBaseView * view));
 ///立即触发block回调，适用于需要在初始化时立即配置样式的场景
-@property (readonly) ZLView* (^then)(void (^)(ZLView * view));
+@property (readonly) ObjectType (^then)(void (^)(ZLBaseView * view));
 ///点击事件
-@property (readonly) ZLView* (^tapAction)(void(^)(ZLView *view));
+@property (readonly) ObjectType (^tapAction)(void(^)(ZLBaseView *view));
+
+@end
+
+@interface ZLView : ZLBaseView<ZLView *>
 
 @end
 
 
-@interface ZLWrapperView : ZLView
+@interface ZLWrapperView : ZLBaseView<ZLWrapperView *>
 @property (nonatomic, weak,readonly) UIView *contentView;
 @property (readonly)ZLWrapperView *(^insets)(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing);
 + (instancetype)wrapWithView:(UIView *)view;

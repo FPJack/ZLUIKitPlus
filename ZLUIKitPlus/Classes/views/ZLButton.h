@@ -9,9 +9,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 //图片文字水平
-#define ZLBtnH [ZLButton horizontal]
+#define HButton [ZLButton horizontal]
 //图片文字垂直
-#define ZLBtnV [ZLButton vertical]
+#define VButton [ZLButton vertical]
 /// 图片与文字的排列方向
 typedef NS_ENUM(NSUInteger, ZLButtonAxis) {
     ZLButtonAxisHorizontal = 0,  // 水平排列

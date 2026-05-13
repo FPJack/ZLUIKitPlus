@@ -107,7 +107,7 @@
 - (void)update {
     CGRect bounds = self.bounds;
     if (CGRectIsEmpty(bounds) || !_backgroundShapeLayer) return;
-    if (!self.needsUpdate) return;
+    if (!self.needsUpdate && CGRectEqualToRect(_backgroundShapeLayer.bounds, self.bounds)) return;
     self.needsUpdate = NO;
     CGFloat topLeft, topRight, bottomLeft, bottomRight;
     if ([self _zl_isRTL]) {

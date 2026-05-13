@@ -22,11 +22,11 @@
     
 
     // ─────────────────────────────────────
-    // 1. 水平布局：图片在前（ZLBtnH）
+    // 1. 水平布局：图片在前（HButton）
     // ─────────────────────────────────────
-    [root addArrangedSubview:[self sec:@"1. 水平布局 ZLBtnH（图左文右）"]];
+    [root addArrangedSubview:[self sec:@"1. 水平布局 HButton（图左文右）"]];
 
-    [root addArrangedSubview:ZLBtnH
+    [root addArrangedSubview:HButton
      .systemImage(@"star.fill")
      .imageSize(20, 20)
      .title(@"spacing=12")
@@ -37,19 +37,19 @@
      .corner(8)
      .spacing(12)];
 //    // ─────────────────────────────────────
-//    // 2. 垂直布局：图片在上（ZLBtnV）
+//    // 2. 垂直布局：图片在上（VButton）
 //    // ─────────────────────────────────────
-    [root addArrangedSubview:[self sec:@"2. 垂直布局 ZLBtnV（图上文下）"]];
+    [root addArrangedSubview:[self sec:@"2. 垂直布局 VButton（图上文下）"]];
     [root addArrangedSubview:ZLStackView.horizontal.alignCenter.space(16)
         .justifyFillEqually
-        .addView(ZLBtnV.systemImage(@"heart")
+        .addView(VButton.systemImage(@"heart")
             .imageSize(28, 28)
             .title(@"图上文下")
             .systemFont(13)
             .titleColor(@"#E91E63")
             .spacing(6)
             .insets(12, 16, 12, 16))
-        .addView(ZLBtnV.systemImage(@"star")
+        .addView(VButton.systemImage(@"star")
             .imageSize(28, 28)
             .title(@"spacing=10")
             .systemFont(13)
@@ -61,7 +61,7 @@
     // ─────────────────────────────────────
     [root addArrangedSubview:[self sec:@"3. titleFirst（文字在前）"]];
     [root addArrangedSubview:HStackView.justifyFillEqually.alignCenter.space(12)
-        .addView(ZLBtnH.titleFirst
+        .addView(HButton.titleFirst
             .title(@"文左图右")
             .systemImage(@"chevron.right")
             .imageSize(14, 14)
@@ -71,7 +71,7 @@
             .insets(10, 16, 10, 16)
             .corner(8)
             .spacing(6))
-        .addView(ZLBtnV.titleFirst
+        .addView(VButton.titleFirst
             .title(@"文上图下")
             .systemImage(@"chevron.down")
             .imageSize(50, 50)
@@ -84,7 +84,7 @@
     // 4. flexibleSpacing（弹性间距）
     // ─────────────────────────────────────
     [root addArrangedSubview:[self sec:@"4. flexSpacing 弹性间距（图文撑满）"]];
-    ZLButton *flexBtn = ZLBtnH.flexSpacing
+    ZLButton *flexBtn = HButton.flexSpacing
         .hAlignFill
         .title(@"弹性间距：图文撑满")
         .systemImage(@"arrow.left.and.right")
@@ -104,13 +104,13 @@
     // ─────────────────────────────────────
     [root addArrangedSubview:[self sec:@"5. insets / hInset / vInset 内边距"]];
     [root addArrangedSubview:ZLStackView.vertical.alignStart.space(8)
-        .addView(ZLBtnH.title(@"insets(8,20,8,20)")
+        .addView(HButton.title(@"insets(8,20,8,20)")
             .systemFont(14).titleColor(@"#333333")
             .bgColor(@"#E3F2FD").corner(6).insets(8, 20, 8, 20))
-        .addView(ZLBtnH.title(@"hInset(24,24)")
+        .addView(HButton.title(@"hInset(24,24)")
             .systemFont(14).titleColor(@"#333333")
             .bgColor(@"#FFF9C4").corner(6).hInset(24, 24))
-        .addView(ZLBtnH.title(@"vInset(14,14)")
+        .addView(HButton.title(@"vInset(14,14)")
             .systemFont(14).titleColor(@"#333333")
             .bgColor(@"#F3E5F5").corner(6).vInset(14, 14))];
     // ─────────────────────────────────────
@@ -118,13 +118,13 @@
     // ─────────────────────────────────────
     [root addArrangedSubview:[self sec:@"6. 字体 systemFont / mediumFont / semiboldFont / boldFont"]];
     [root addArrangedSubview:ZLStackView.vertical.alignStart.space(8)
-        .addView(ZLBtnH.title(@"systemFont(15)").systemFont(15).titleColor(@"#333333"))
-        .addView(ZLBtnH.title(@"systemFontColor(15, '#2196F3')").systemFontColor(15, @"#2196F3"))
-        .addView(ZLBtnH.title(@"systemTitleFontColor").systemTitleFontColor(@"快捷三合一", 15, @"#9C27B0"))
-        .addView(ZLBtnH.title(@"mediumFont(16)").mediumFont(16).titleColor(@"#FF9800"))
-        .addView(ZLBtnH.title(@"mediumFontColor(16,'#4CAF50')").mediumFontColor(16, @"#4CAF50"))
-        .addView(ZLBtnH.title(@"semiboldFont(17)").semiboldFont(17).titleColor(@"#E91E63"))
-        .addView(ZLBtnH.title(@"boldFont(18)").boldFont(18).titleColor(@"#F44336"))];
+        .addView(HButton.title(@"systemFont(15)").systemFont(15).titleColor(@"#333333"))
+        .addView(HButton.title(@"systemFontColor(15, '#2196F3')").systemFontColor(15, @"#2196F3"))
+        .addView(HButton.title(@"systemTitleFontColor").systemTitleFontColor(@"快捷三合一", 15, @"#9C27B0"))
+        .addView(HButton.title(@"mediumFont(16)").mediumFont(16).titleColor(@"#FF9800"))
+        .addView(HButton.title(@"mediumFontColor(16,'#4CAF50')").mediumFontColor(16, @"#4CAF50"))
+        .addView(HButton.title(@"semiboldFont(17)").semiboldFont(17).titleColor(@"#E91E63"))
+        .addView(HButton.title(@"boldFont(18)").boldFont(18).titleColor(@"#F44336"))];
 
     // ─────────────────────────────────────
     // 7. selectTitle / selectImage / selectTitleColor
@@ -132,7 +132,7 @@
     [root addArrangedSubview:[self sec:@"7. selectTitle / selectImage / selectTitleColor（点击切换）"]];
     UILabel *selResult = ZLLab.txt(@"点击按钮切换选中状态").systemFont(13).color(@"#999999");
     __weak UILabel *weakSelResult = selResult;
-    ZLButton *selBtn = ZLBtnH
+    ZLButton *selBtn = HButton
         .systemImage(@"heart")
         .selectImage(@"heart.fill")
         .title(@"收藏")
@@ -157,16 +157,16 @@
     // ─────────────────────────────────────
     [root addArrangedSubview:[self sec:@"8. select / userActive / activeStyle / inactiveStyle"]];
     [root addArrangedSubview:ZLStackView.horizontal.alignCenter.space(12)
-        .addView(ZLBtnH.title(@"select=YES")
+        .addView(HButton.title(@"select=YES")
             .systemFont(14).titleColor(UIColor.whiteColor)
             .bgColor(@"#2196F3").insets(10, 16, 10, 16).corner(8)
             .select(YES))
-        .addView(ZLBtnH.title(@"userActive=NO")
+        .addView(HButton.title(@"userActive=NO")
             .systemFont(14).titleColor(UIColor.whiteColor)
             .bgColor(@"#9E9E9E").insets(10, 16, 10, 16).corner(8)
             .userActive(NO)
             .inactiveStyle(^(ZLButton *b) { b.alpha = 0.5; }))
-        .addView(ZLBtnH.title(@"activeStyle")
+        .addView(HButton.title(@"activeStyle")
             .systemFont(14).titleColor(UIColor.whiteColor)
             .bgColor(@"#4CAF50").insets(10, 16, 10, 16).corner(8)
             .userActive(YES)
@@ -176,16 +176,16 @@
     // ─────────────────────────────────────
     [root addArrangedSubview:[self sec:@"9. corner / cornerRadii / circle 圆角"]];
     [root addArrangedSubview:ZLStackView.horizontal.alignCenter.space(10)
-        .addView(ZLBtnH.title(@"corner(8)")
+        .addView(HButton.title(@"corner(8)")
             .systemFont(13).titleColor(UIColor.whiteColor)
             .bgColor(@"#2196F3").insets(10, 14, 10, 14).corner(8))
-        .addView(ZLBtnH.title(@"corner(20)")
+        .addView(HButton.title(@"corner(20)")
             .systemFont(13).titleColor(UIColor.whiteColor)
             .bgColor(@"#4CAF50").insets(10, 14, 10, 14).corner(20))
-        .addView(ZLBtnH.title(@"circle")
+        .addView(HButton.title(@"circle")
             .systemFont(13).titleColor(UIColor.whiteColor)
             .bgColor(@"#FF9800").square(56).circle(YES))
-        .addView(ZLBtnH.title(@"TL=0\nBR=16")
+        .addView(HButton.title(@"TL=0\nBR=16")
             .systemFont(11).titleColor(UIColor.whiteColor)
             .bgColor(@"#9C27B0").insets(10, 14, 10, 14)
             .cornerRadii(0, 16, 16, 0))];
@@ -194,11 +194,11 @@
     // ─────────────────────────────────────
     [root addArrangedSubview:[self sec:@"10. border + shadow 边框和阴影"]];
     [root addArrangedSubview:ZLStackView.horizontal.alignCenter.space(16)
-        .addView(ZLBtnH.title(@"border(2,'#2196F3')")
+        .addView(HButton.title(@"border(2,'#2196F3')")
             .systemFont(12).titleColor(@"#2196F3")
             .insets(10, 14, 10, 14).corner(8)
             .border(2, @"#2196F3"))
-        .addView(ZLBtnH.title(@"shadow")
+        .addView(HButton.title(@"shadow")
             .systemFont(14).titleColor(@"#333333")
             .bgColor(UIColor.whiteColor).insets(12, 20, 12, 20).corner(10)
             .shColor(@"#000000").shOpacity(0.2).shRadius(8).shOffset(0, 4))];
@@ -206,7 +206,7 @@
     // 11. bgImage / selectBgImage / bgImageMode
     // ─────────────────────────────────────
     [root addArrangedSubview:[self sec:@"11. bgImage / selectBgImage 背景图片"]];
-    ZLButton *bgImgBtn = ZLBtnH
+    ZLButton *bgImgBtn = HButton
         .title(@"背景图片（点击切换）")
         .systemFont(14).titleColor(UIColor.whiteColor)
         .bgImage([UIImage systemImageNamed:@"star.fill"])
@@ -221,12 +221,12 @@
     // ─────────────────────────────────────
     [root addArrangedSubview:[self sec:@"12. imageSize / imageCorner / imageMode 图片控制"]];
     [root addArrangedSubview:ZLStackView.horizontal.alignCenter.space(12)
-        .addView(ZLBtnH.systemImage(@"photo")
+        .addView(HButton.systemImage(@"photo")
             .imageSize(32, 32)
             .title(@"imageSize(32,32)")
             .systemFont(13).titleColor(@"#333333")
             .bgColor(@"#E3F2FD").insets(10, 14, 10, 14).corner(8).spacing(6))
-        .addView(ZLBtnH.systemImage(@"photo.fill")
+        .addView(HButton.systemImage(@"photo.fill")
             .imageSize(32, 32)
             .imageCorner(20)
             .title(@"imageCorner(8)")
@@ -237,14 +237,14 @@
     // ─────────────────────────────────────
     [root addArrangedSubview:[self sec:@"13. imgInsets / titInsets 图片和文字偏移"]];
     [root addArrangedSubview:ZLStackView.horizontal.alignCenter.space(12)
-        .addView(ZLBtnH.systemImage(@"star")
+        .addView(HButton.systemImage(@"star")
             .imageSize(18, 18)
             .title(@"imgInsets(10,4)")
             .systemFont(13).titleColor(@"#333333")
             .bgColor(@"#EFEFEF").insets(10, 14, 10, 14).corner(8)
             .imgInsets(10, 4)
             .spacing(6))
-        .addView(ZLBtnH.systemImage(@"star")
+        .addView(HButton.systemImage(@"star")
             .imageSize(18, 18)
             .title(@"titInsets(4,10)")
             .systemFont(13).titleColor(@"#333333")
@@ -256,12 +256,12 @@
     // ─────────────────────────────────────
     [root addArrangedSubview:[self sec:@"14. titleLines / titleMaxWidth 多行文字"]];
     [root addArrangedSubview:ZLStackView.vertical.alignStart.space(8)
-        .addView(ZLBtnH
+        .addView(HButton
             .title(@"这是一段较长的按钮标题，titleLines(0)+titleMaxWidth(200)，超出会自动换行显示")
             .systemFont(13).titleColor(@"#333333")
             .bgColor(@"#E8F5E9").insets(10, 14, 10, 14).corner(6)
             .titleLines(0).titleMaxWidth(200))
-        .addView(ZLBtnH
+        .addView(HButton
             .title(@"titleLines(2)：超过两行截断，这是超出两行的文字内容部分")
             .systemFont(13).titleColor(@"#333333")
             .bgColor(@"#FFF3E0").insets(10, 14, 10, 14).corner(6)
@@ -270,7 +270,7 @@
     // 15. titSize 固定文字区域大小
     // ─────────────────────────────────────
     [root addArrangedSubview:[self sec:@"15. titSize 固定文字区域"]];
-    [root addArrangedSubview:ZLBtnH
+    [root addArrangedSubview:HButton
         .systemImage(@"star").imageSize(20, 20)
         .title(@"titSize(120,30)")
         .systemFont(14).titleColor(@"#FFFFFF")
@@ -284,7 +284,7 @@
     UILabel *tapResult = ZLLab.txt(@"等待点击...").systemFont(13).color(@"#999999");
     __weak UILabel *weakTapResult = tapResult;
 
-    ZLButton *tapBtn = ZLBtnH
+    ZLButton *tapBtn = HButton
         .title(@"tapAction 点我")
         .systemFont(15).titleColor(UIColor.whiteColor)
         .bgColor(@"#2196F3").insets(12, 20, 12, 20).corner(8)
@@ -293,7 +293,7 @@
             weakTapResult.text = [NSString stringWithFormat:@"tapAction 点击了 %d 次 ✅", ++n];
         });
     
-    ZLButton *selBtn2 = ZLBtnH
+    ZLButton *selBtn2 = HButton
         .title(@"addTargetSel 点我")
         .systemFont(15).titleColor(UIColor.whiteColor)
         .bgColor(@"#4CAF50").insets(12, 20, 12, 20).corner(8)
@@ -309,7 +309,7 @@
     UILabel *debounceResult = ZLLab.txt(@"等待点击...").systemFont(13).color(@"#999999");
     __weak UILabel *weakDebounce = debounceResult;
     [root addArrangedSubview:ZLStackView.vertical.alignFill.space(8)
-        .addView(ZLBtnH.title(@"debounce(1.0) 快速点击只响应一次")
+        .addView(HButton.title(@"debounce(1.0) 快速点击只响应一次")
             .systemFont(14).titleColor(UIColor.whiteColor)
             .bgColor(@"#FF5722").insets(12, 16, 12, 16).corner(8)
             .debounce(1.0)
@@ -325,7 +325,7 @@
     [root addArrangedSubview:[self sec:@"18. touchAreaEdge 扩大点击区域"]];
     UILabel *touchResult = ZLLab.txt(@"点击小按钮周围也能响应 ↓").systemFont(13).color(@"#999999");
     __weak UILabel *weakTouch = touchResult;
-    ZLButton *smallBtn = ZLBtnH
+    ZLButton *smallBtn = HButton
         .title(@"小按钮")
         .systemFont(12).titleColor(UIColor.whiteColor)
         .bgColor(@"#9C27B0").square(44).corner(22)
@@ -342,7 +342,7 @@
     UILabel *imgTouchResult = ZLLab.txt(@"只有点击图片才响应").systemFont(13).color(@"#999999");
     __weak UILabel *weakImgTouch = imgTouchResult;
     [root addArrangedSubview:ZLStackView.vertical.alignStart.space(8)
-        .addView(ZLBtnH
+        .addView(HButton
             .systemImage(@"star.fill").imageSize(28, 28)
             .title(@"文字区域点击无效，只有图片响应")
             .systemFont(14).titleColor(@"#333333")
@@ -357,13 +357,13 @@
     // ─────────────────────────────────────
     [root addArrangedSubview:[self sec:@"20. gradColors / gradDirection 渐变背景"]];
     [root addArrangedSubview:ZLStackView.horizontal.justifyFillEqually.alignCenter.space(12)
-        .addView(ZLBtnH.title(@"水平渐变")
+        .addView(HButton.title(@"水平渐变")
             .systemFont(14).titleColor(UIColor.whiteColor)
             .insets(12, 20, 12, 20).corner(10)
             .gradColors(@[[UIColor colorWithRed:0.13 green:0.59 blue:0.95 alpha:1],
                            [UIColor colorWithRed:0.30 green:0.69 blue:0.31 alpha:1]])
             .gradDirection(CGPointMake(0, 0.5), CGPointMake(1, 0.5)))
-        .addView(ZLBtnH.title(@"垂直渐变")
+        .addView(HButton.title(@"垂直渐变")
             .systemFont(14).titleColor(UIColor.whiteColor)
             .insets(12, 20, 12, 20).corner(10)
             .gradColors(@[[UIColor colorWithRed:0.96 green:0.26 blue:0.21 alpha:1],
@@ -374,18 +374,18 @@
     // ─────────────────────────────────────
     [root addArrangedSubview:[self sec:@"21. visibility / alphaValue"]];
     [root addArrangedSubview:ZLStackView.horizontal.alignCenter.space(10)
-        .addView(ZLBtnH.title(@"visibility=YES").systemFont(13).titleColor(UIColor.whiteColor)
+        .addView(HButton.title(@"visibility=YES").systemFont(13).titleColor(UIColor.whiteColor)
             .bgColor(@"#4CAF50").insets(10, 14, 10, 14).corner(6).visibility(YES))
-        .addView(ZLBtnH.title(@"visibility=NO").systemFont(13).titleColor(UIColor.whiteColor)
+        .addView(HButton.title(@"visibility=NO").systemFont(13).titleColor(UIColor.whiteColor)
             .bgColor(@"#F44336").insets(10, 14, 10, 14).corner(6).visibility(NO))
-        .addView(ZLBtnH.title(@"alpha=0.4").systemFont(13).titleColor(UIColor.whiteColor)
+        .addView(HButton.title(@"alpha=0.4").systemFont(13).titleColor(UIColor.whiteColor)
             .bgColor(@"#2196F3").insets(10, 14, 10, 14).corner(6).alphaValue(0.4))];
     // ─────────────────────────────────────
     // 22. assignToPtr / then
     // ─────────────────────────────────────
     [root addArrangedSubview:[self sec:@"22. assignToPtr / then"]];
     ZLButton *refBtn;
-    ZLBtnH.title(@"assignToPtr：通过指针引用按钮")
+    HButton.title(@"assignToPtr：通过指针引用按钮")
         .systemFont(14).titleColor(@"#333333")
         .bgColor(@"#E8F5E9").insets(12, 16, 12, 16).corner(8)
         .assignToPtr(&refBtn)
@@ -395,7 +395,7 @@
         });
     [root addArrangedSubview:refBtn];
 
-    [root addArrangedSubview:ZLBtnH.title(@"then：链式中立即执行配置")
+    [root addArrangedSubview:HButton.title(@"then：链式中立即执行配置")
         .systemFont(14).titleColor(@"#555555")
         .bgColor(@"#FFF8E1").insets(12, 16, 12, 16).corner(8)
         .then(^(ZLButton *b) {
@@ -416,7 +416,7 @@
         @[@"vEnd",   @"vAlignEnd"],
     ];
     for (NSArray *c in alignCases) {
-        ZLButton *ab = ZLBtnV
+        ZLButton *ab = VButton
             .systemImage(@"star").imageSize(16, 16)
             .title(c[0])
             .systemFont(11).titleColor(@"#FFFFFF")

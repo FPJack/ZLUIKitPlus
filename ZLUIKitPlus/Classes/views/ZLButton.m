@@ -36,7 +36,6 @@
 ///是否需要重绘
 @property (nonatomic, assign) BOOL needsUpdate;
 @property (nonatomic, assign)UIEdgeInsets cornerRadiiValue;
-@property (nonatomic, assign) CGFloat radiusValue;
 @property (nonatomic, copy) NSNumber* circleTag;
 @property (nonatomic, copy) UIColor* bgColorValue;
 @property (nonatomic,copy)void (^activeStyleBlock)(id );
@@ -122,10 +121,10 @@
         bottomRight = self.cornerRadiiValue.right;
     }
     
-    CGFloat tl = topLeft  >= 0 ? topLeft : _radiusValue;
-    CGFloat tr = topRight >= 0 ? topRight     : _radiusValue;
-    CGFloat bl = bottomLeft   >= 0 ? bottomLeft   : _radiusValue;
-    CGFloat br = bottomRight  >= 0 ? bottomRight  : _radiusValue;
+    CGFloat tl = MAX(topLeft, 0);
+    CGFloat tr = MAX(topRight, 0);
+    CGFloat bl = MAX(bottomLeft, 0);
+    CGFloat br = MAX(bottomRight, 0);
 
     if (self.circleTag){
         if (self.circleTag.boolValue) {
@@ -1115,8 +1114,11 @@
 
 - (ZLButton * _Nonnull (^)(CGFloat))corner {
     return ^ZLButton*(CGFloat radius){
-        if (radius == self.radiusValue) return self;
-        self.radiusValue = radius;
+        UIEdgeInsets cornerRadiiValue = UIEdgeInsetsMake(radius, radius, radius, radius);
+        if (UIEdgeInsetsEqualToEdgeInsets(cornerRadiiValue, self.cornerRadiiValue)) {
+            return self;
+        }
+        self.cornerRadiiValue = cornerRadiiValue;
         [self backgroundShapeLayer];
         [self setNeedLayoutIfNeed];
         return self;

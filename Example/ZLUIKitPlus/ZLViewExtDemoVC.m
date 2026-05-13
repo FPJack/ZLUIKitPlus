@@ -523,12 +523,11 @@
         .border(2, @"#1677FF");
     [sec addArrangedSubview:lab2.zl_wrapView];
 //
-//    // ── 阴影（不能与 masksToBounds 同时使用）──
     ZLLabel *lab3 = ZLLab.txt(@"zl_wrapView 阴影效果（shColor + shOpacity + shRadius + shOffset）")
         .systemFont(13).color(@"#333333").insets(10, 12, 10, 12).lines(0);
     lab3.zl_wrapView
         .bgColor(@"#FFFFFF")
-        .corner(10)
+        .corner(8)
         .shColor(@"#000000").shOpacity(0.12).shRadius(8).shOffset(0, 4);
     [sec addArrangedSubview:lab3.zl_wrapView];
 

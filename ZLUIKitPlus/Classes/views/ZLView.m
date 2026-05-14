@@ -14,7 +14,7 @@
 ///是否需要重绘
 @property (nonatomic, assign) BOOL needsUpdate;
 @property (nonatomic, assign)UIEdgeInsets cornerRadiiValue;
-@property (nonatomic, copy) NSNumber* circleTag;
+@property (nonatomic, assign) BOOL circleTag;
 @property (nonatomic, copy) UIColor* bgColorValue;
 
 @property (nonatomic, copy)void (^activeStyleBlock)(id);
@@ -104,30 +104,28 @@
     if (CGRectIsEmpty(bounds) || !_backgroundShapeLayer) return;
     if (!self.needsUpdate && CGRectEqualToRect(_backgroundShapeLayer.bounds, self.bounds)) return;
     self.needsUpdate = NO;
-    CGFloat topLeft, topRight, bottomLeft, bottomRight;
-    if ([self _zl_isRTL]) {
-        topLeft = self.cornerRadiiValue.left;      // original topRight
-        topRight = self.cornerRadiiValue.top;       // original topLeft
-        bottomLeft = self.cornerRadiiValue.right;   // original bottomRight
-        bottomRight = self.cornerRadiiValue.bottom;  // original bottomLeft
-    } else {
-        topLeft = self.cornerRadiiValue.top;
-        topRight = self.cornerRadiiValue.left;
-        bottomLeft = self.cornerRadiiValue.bottom;
-        bottomRight = self.cornerRadiiValue.right;
-    }
-    
-    CGFloat tl = MAX(topLeft, 0);
-    CGFloat tr = MAX(topRight, 0);
-    CGFloat bl = MAX(bottomLeft, 0);
-    CGFloat br = MAX(bottomRight, 0);
+   
+    CGFloat tl ,tr, bl, br;
 
-    if (self.circleTag){
-        if (self.circleTag.boolValue) {
-            tl = tr = bl = br = MIN(bounds.size.width, bounds.size.height) / 2;
-        }else {
-            tl = tr = bl = br = 0;
+    if (self.circleTag) {
+        tl = tr = bl = br = MIN(bounds.size.width, bounds.size.height) / 2;
+    }else {
+        CGFloat topLeft, topRight, bottomLeft, bottomRight;
+        if ([self _zl_isRTL]) {
+            topLeft = self.cornerRadiiValue.left;      // original topRight
+            topRight = self.cornerRadiiValue.top;       // original topLeft
+            bottomLeft = self.cornerRadiiValue.right;   // original bottomRight
+            bottomRight = self.cornerRadiiValue.bottom;  // original bottomLeft
+        } else {
+            topLeft = self.cornerRadiiValue.top;
+            topRight = self.cornerRadiiValue.left;
+            bottomLeft = self.cornerRadiiValue.bottom;
+            bottomRight = self.cornerRadiiValue.right;
         }
+         tl = MAX(topLeft, 0);
+         tr = MAX(topRight, 0);
+         bl = MAX(bottomLeft, 0);
+         br = MAX(bottomRight, 0);
     }
     
     UIBezierPath *path = [self _bezierPathWithRect:bounds tl:tl tr:tr bl:bl br:br];
@@ -257,8 +255,8 @@
 
 - (id _Nonnull (^)(BOOL))circle {
     return ^ZLBaseView*(BOOL clip) {
-        if (clip == self.circleTag.boolValue) return self;
-        self.circleTag = @(clip);
+        if (clip == self.circleTag) return self;
+        self.circleTag = clip;
         [self setNeedLayoutIfNeed];
         return self;
     };

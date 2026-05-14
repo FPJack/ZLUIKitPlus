@@ -9,9 +9,7 @@
 #import "ZLButton.h"
 #import "ZLLayout.h"
 @interface ZLImageView()
-@property (nonatomic,copy)NSNumber* isCircle;
-@property CGFloat cornerRadius;
-
+@property (nonatomic,assign)BOOL isCircle;
 @end
 @implementation ZLImageView
 
@@ -49,14 +47,21 @@
     return ^(CGFloat corner) {
         self.layer.cornerRadius = corner;
         self.layer.masksToBounds = corner > 0;
-        self.cornerRadius = corner;
         return self;
     };
 }
 - (ZLImageView * _Nonnull (^)(BOOL))circle {
     return ^(BOOL isCircle) {
-        self.isCircle = @(isCircle);
-        [self setNeedsLayout];
+        if (isCircle == self.isCircle) {
+            return self;
+        }
+        if (isCircle) {
+            self.isCircle = isCircle;
+            [self setNeedsLayout];
+        }else {
+            self.layer.cornerRadius = 0;
+            self.layer.masksToBounds = NO;
+        }
         return self;
     };
 }
@@ -67,14 +72,10 @@
     };
 }
 - (void)updateCircel {
-    CGFloat corner = self.cornerRadius;
     if (self.isCircle) {
-        if (self.isCircle.boolValue) {
-            corner = MIN(self.bounds.size.width, self.bounds.size.height) / 2.0;
-        }
+        self.layer.cornerRadius = MIN(self.bounds.size.width, self.bounds.size.height) / 2.0;
+        self.layer.masksToBounds = YES;
     }
-    self.layer.cornerRadius = corner;
-    self.layer.masksToBounds = YES;
 }
 - (ZLImageView * _Nonnull (^)(CGFloat, id _Nonnull))border {
     return ^(CGFloat width, id color) {

@@ -116,6 +116,8 @@
 ///防止换行的时候挤出右边下面的view
 - (void)adjustLabelCompression:(UIView*)view {
     if (![view isKindOfClass:UILabel.class]) return;
+    UILabel *label = (UILabel*)view;
+    if (label.numberOfLines == 1) return;
     UILayoutConstraintAxis axis = self.axis == ZLStackViewAxisHorizontal ? UILayoutConstraintAxisHorizontal : UILayoutConstraintAxisVertical;
     UILayoutPriority priorit = [view contentCompressionResistancePriorityForAxis:axis];
     if (priorit == UILayoutPriorityDefaultHigh) {

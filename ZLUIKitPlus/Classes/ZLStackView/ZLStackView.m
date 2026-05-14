@@ -49,8 +49,9 @@
 - (void)setInsets:(UIEdgeInsets)insets {
     if (UIEdgeInsetsEqualToEdgeInsets(insets, _insets)) return;
     _insets = insets;
-    self.markedDirty = YES;
-    [self setNeedsUpdateConstraints];
+    [self.layoutManager updateInsets:insets];
+//    self.markedDirty = YES;
+//    [self setNeedsUpdateConstraints];
 }
 - (void)setAxis:(ZLStackViewAxis)axis {
     if (axis == _axis) return;

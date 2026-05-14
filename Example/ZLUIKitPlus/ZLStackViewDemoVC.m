@@ -18,9 +18,9 @@
 static UILabel *colorBlock(NSString *text, UIColor *color) {
     UILabel *l = UILabel.new;
     l.text = text;
+    l.textColor = UIColor.blackColor;
     l.textAlignment = NSTextAlignmentCenter;
     l.font = [UIFont systemFontOfSize:13];
-    l.textColor = UIColor.whiteColor;
     l.backgroundColor = color;
     l.layer.cornerRadius = 4;
     l.layer.masksToBounds = YES;
@@ -86,6 +86,7 @@ static ZLStackView *sectionView(NSString *title) {
     [self demo01_axisAndSpacing];
     [self demo02_justifyContent];
     [self demo03_alignment];
+  
     [self demo04_insets];
     [self demo05_customSpacing];
     [self demo06_flexibleSpacing];
@@ -98,6 +99,7 @@ static ZLStackView *sectionView(NSString *title) {
     [self demo13_insertAtIndex];
     [self demo14_tapAction];
     [self demo15_chainAPI];
+    
     [self demo16_wrapScrollViewHorizontal];
     [self demo17_wrapScrollViewVertical];
     [self demo18_nestedStack];
@@ -127,6 +129,9 @@ static ZLStackView *sectionView(NSString *title) {
     }
    
     [sec addArrangedSubview:v];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        sec.inset(50, 50, 50, 50);
+    });
 }
 
 // ─────────────────────────────────────────
@@ -480,6 +485,7 @@ static ZLStackView *sectionView(NSString *title) {
     }
     [sec addArrangedSubview:row];
 
+    
     // visibility + alphaValue
     UILabel *vis = colorBlock(@"visibility=YES", randColor()); vis.zl_layout.height(32);
     UILabel *alp = colorBlock(@"alpha=0.3", randColor());      alp.zl_layout.height(32);

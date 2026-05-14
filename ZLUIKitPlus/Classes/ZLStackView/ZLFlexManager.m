@@ -57,14 +57,14 @@
 ///水平布局时添加所有约束
 - (void)addHorizontalLayoutConstraints {
     if (!self.horizontal) return;
-    NSLayoutXAxisAnchor *nextAnchor = self.stackEdgeInsets.leadingAnchor;
+    NSLayoutXAxisAnchor *nextAnchor = self.stackEdgeInsets.jLeadingAnchor;
     NSInteger count = self.views.count;
     NSLayoutConstraint *cons;
     NSLayoutDimension  *widthDim;
     NSLayoutDimension *viewWidthDim;
     NSLayoutDimension  *flexWidthDim;
 
-    UIEdgeInsets inset = self.stackView.insets;
+    
     NSMutableArray<UIView *> *flexViews = NSMutableArray.array;
     for (int i = 0; i < count; i ++) {
         UIView *view = self.views[i];
@@ -80,11 +80,11 @@
         switch (cfg.alignSelf) {
             case ZLAlignStart:
             {
-                cons = [view.topAnchor constraintEqualToAnchor:self.stackView.topAnchor constant:startSpacing + inset.top];
+                cons = [view.topAnchor constraintEqualToAnchor:self.stackEdgeInsets.topAnchor constant:startSpacing ];
                 cons.item.type = ZLLayoutConTypeStart;
                 cons.item.view = view;
                 [self.constraints addObject:cons];
-                cons = [view.bottomAnchor constraintLessThanOrEqualToAnchor:self.stackView.bottomAnchor constant:-endSpacing - inset.bottom];
+                cons = [view.bottomAnchor constraintLessThanOrEqualToAnchor:self.stackEdgeInsets.bottomAnchor constant:-endSpacing ];
                 cons.item.type = ZLLayoutConTypeEnd;
                 cons.item.view = view;
                 [self.constraints addObject:cons];
@@ -95,17 +95,17 @@
                 
                 
                 CGFloat offsetY = (startSpacing - endSpacing) * 0.5;
-                cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:self.stackView.topAnchor constant:startSpacing + inset.top];
+                cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:self.stackEdgeInsets.topAnchor constant:startSpacing ];
                 cons.item.type = ZLLayoutConTypeStart;
                 cons.item.view = view;
                 [self.constraints addObject:cons];
                 
-                cons = [view.bottomAnchor constraintLessThanOrEqualToAnchor:self.stackView.bottomAnchor constant:-endSpacing - inset.bottom];
+                cons = [view.bottomAnchor constraintLessThanOrEqualToAnchor:self.stackEdgeInsets.bottomAnchor constant:-endSpacing ];
                 cons.item.type = ZLLayoutConTypeEnd;
                 cons.item.view = view;
                 [self.constraints addObject:cons];
                 
-                cons = [view.centerYAnchor constraintEqualToAnchor:self.stackView.centerYAnchor constant:offsetY];
+                cons = [view.centerYAnchor constraintEqualToAnchor:self.stackEdgeInsets.centerYAnchor constant:offsetY];
                 cons.item.type = ZLLayoutConTypeCenter;
                 cons.item.view = view;
                 [self.constraints addObject:cons];
@@ -115,12 +115,12 @@
                 break;
             case ZLAlignEnd:
             {
-                cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:self.stackView.topAnchor constant:startSpacing + inset.top];
+                cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:self.stackEdgeInsets.topAnchor constant:startSpacing ];
                 cons.item.type = ZLLayoutConTypeStart;
                 cons.item.view = view;
                 [self.constraints addObject:cons];
             
-                cons = [view.bottomAnchor constraintEqualToAnchor:self.stackView.bottomAnchor constant:-endSpacing - inset.bottom];
+                cons = [view.bottomAnchor constraintEqualToAnchor:self.stackEdgeInsets.bottomAnchor constant:-endSpacing ];
                 cons.item.type = ZLLayoutConTypeEnd;
                 cons.item.view = view;
                 [self.constraints addObject:cons];
@@ -129,11 +129,11 @@
                 break;
             case ZLAlignFill:
             {
-                cons = [view.topAnchor constraintEqualToAnchor:self.stackView.topAnchor constant:startSpacing + inset.top];
+                cons = [view.topAnchor constraintEqualToAnchor:self.stackEdgeInsets.topAnchor constant:startSpacing ];
                 cons.item.type = ZLLayoutConTypeStart;
                 cons.item.view = view;
                 [self.constraints addObject:cons];
-                cons = [view.bottomAnchor constraintEqualToAnchor:self.stackView.bottomAnchor constant:-endSpacing - inset.bottom];
+                cons = [view.bottomAnchor constraintEqualToAnchor:self.stackEdgeInsets.bottomAnchor constant:-endSpacing ];
                 cons.item.type = ZLLayoutConTypeEnd;
                 cons.item.view = view;
                 [self.constraints addObject:cons];
@@ -143,12 +143,11 @@
                 break;
         }
         
-        CGFloat leadingMarge = i == 0 ? inset.left : 0;
         
         if (self.stackView.justifyContent == ZLJustifyEnd && i == 0) {
-            cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:nextAnchor constant:leadingMarge];
+            cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:nextAnchor constant:0];
         }else {
-            cons = [view.leadingAnchor constraintEqualToAnchor:nextAnchor constant:leadingMarge];
+            cons = [view.leadingAnchor constraintEqualToAnchor:nextAnchor constant:0];
         }
         nextAnchor = view.trailingAnchor;
         [self.constraints addObject:cons];
@@ -236,13 +235,12 @@
         }
     }
     
-    CGFloat trailingMarge = inset.right;
     if (self.justify == ZLJustifyStart) {
         
-        cons = [nextAnchor constraintLessThanOrEqualToAnchor:self.stackEdgeInsets.trailingAnchor constant:-trailingMarge] ;
+        cons = [nextAnchor constraintLessThanOrEqualToAnchor:self.stackEdgeInsets.jTrailingAnchor constant:0] ;
         [self.constraints addObject:cons];
     }else {
-        cons = [nextAnchor constraintEqualToAnchor:self.stackEdgeInsets.trailingAnchor constant:-trailingMarge];
+        cons = [nextAnchor constraintEqualToAnchor:self.stackEdgeInsets.jTrailingAnchor constant:0];
         [self.constraints addObject:cons];
     }
     
@@ -288,13 +286,12 @@
 }
 - (void)addVerticalLayoutConstraints {
     if (self.horizontal) return;
-    NSLayoutYAxisAnchor *nextAnchor = self.stackEdgeInsets.topAnchor;
+    NSLayoutYAxisAnchor *nextAnchor = self.stackEdgeInsets.jTopAnchor;
     NSInteger count = self.views.count;
     NSLayoutConstraint *cons;
     NSLayoutDimension  *heightDim;
     NSLayoutDimension *viewheightDim;
     NSLayoutDimension *flexHeightDim;
-    UIEdgeInsets inset = self.stackView.insets;
     NSMutableArray<UIView *> *flexViews = NSMutableArray.array;
 
     for (int i = 0; i < count; i ++) {
@@ -311,11 +308,11 @@
         switch (cfg.alignSelf) {
             case ZLAlignStart:
             {
-                cons = [view.leadingAnchor constraintEqualToAnchor:self.stackView.leadingAnchor constant:startSpacing + inset.left];
+                cons = [view.leadingAnchor constraintEqualToAnchor:self.stackEdgeInsets.leadingAnchor constant:startSpacing];
                 cons.item.type = ZLLayoutConTypeStart;
                 cons.item.view = view;
                 [self.constraints addObject:cons];
-                cons = [view.trailingAnchor constraintLessThanOrEqualToAnchor:self.stackView.trailingAnchor constant:-endSpacing - inset.right];
+                cons = [view.trailingAnchor constraintLessThanOrEqualToAnchor:self.stackEdgeInsets.trailingAnchor constant:-endSpacing];
                 cons.item.type = ZLLayoutConTypeEnd;
                 cons.item.view = view;
                 [self.constraints addObject:cons];
@@ -324,17 +321,17 @@
             case ZLAlignCenter:
             {
                 CGFloat offsetY = (startSpacing - endSpacing) * 0.5;
-                cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.stackView.leadingAnchor constant:startSpacing + inset.left];
+                cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.stackEdgeInsets.leadingAnchor constant:startSpacing];
                 cons.item.type = ZLLayoutConTypeStart;
                 cons.item.view = view;
                 [self.constraints addObject:cons];
                 
-                cons = [view.trailingAnchor constraintLessThanOrEqualToAnchor:self.stackView.trailingAnchor constant:-endSpacing - inset.right];
+                cons = [view.trailingAnchor constraintLessThanOrEqualToAnchor:self.stackEdgeInsets.trailingAnchor constant:-endSpacing];
                 cons.item.type = ZLLayoutConTypeEnd;
                 cons.item.view = view;
                 [self.constraints addObject:cons];
                 
-                cons = [view.centerXAnchor constraintEqualToAnchor:self.stackView.centerXAnchor constant:offsetY];
+                cons = [view.centerXAnchor constraintEqualToAnchor:self.stackEdgeInsets.centerXAnchor constant:offsetY];
                 cons.item.type = ZLLayoutConTypeCenter;
                 cons.item.view = view;
                 [self.constraints addObject:cons];
@@ -344,12 +341,12 @@
                 break;
             case ZLAlignEnd:
             {
-                cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.stackView.leadingAnchor constant:startSpacing + inset.left];
+                cons = [view.leadingAnchor constraintGreaterThanOrEqualToAnchor:self.stackEdgeInsets.leadingAnchor constant:startSpacing ];
                 cons.item.type = ZLLayoutConTypeStart;
                 cons.item.view = view;
                 [self.constraints addObject:cons];
             
-                cons = [view.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor constant:-endSpacing - inset.right];
+                cons = [view.trailingAnchor constraintEqualToAnchor:self.stackEdgeInsets.trailingAnchor constant:-endSpacing ];
                 cons.item.type = ZLLayoutConTypeEnd;
                 cons.item.view = view;
                 [self.constraints addObject:cons];
@@ -358,11 +355,11 @@
                 break;
             case ZLAlignFill:
             {
-                cons = [view.leadingAnchor constraintEqualToAnchor:self.stackView.leadingAnchor constant:startSpacing + inset.left];
+                cons = [view.leadingAnchor constraintEqualToAnchor:self.stackEdgeInsets.leadingAnchor constant:startSpacing ];
                 cons.item.type = ZLLayoutConTypeStart;
                 cons.item.view = view;
                 [self.constraints addObject:cons];
-                cons = [view.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor constant:-endSpacing - inset.right];
+                cons = [view.trailingAnchor constraintEqualToAnchor:self.stackEdgeInsets.trailingAnchor constant:-endSpacing ];
                 cons.item.type = ZLLayoutConTypeEnd;
                 cons.item.view = view;
                 [self.constraints addObject:cons];
@@ -372,12 +369,11 @@
                 break;
         }
         
-        CGFloat topMarge = i == 0 ? inset.top : 0;
         
         if (self.stackView.justifyContent == ZLJustifyEnd && i == 0) {
-            cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:nextAnchor constant:topMarge];
+            cons = [view.topAnchor constraintGreaterThanOrEqualToAnchor:nextAnchor constant:0];
         }else {
-            cons = [view.topAnchor constraintEqualToAnchor:nextAnchor constant:topMarge];
+            cons = [view.topAnchor constraintEqualToAnchor:nextAnchor constant:0];
         }
         nextAnchor = view.bottomAnchor;
         [self.constraints addObject:cons];
@@ -466,12 +462,11 @@
         }
     }
     
-    CGFloat bottomMarge = inset.bottom;
     if (self.justify == ZLJustifyStart) {
-        cons = [nextAnchor constraintLessThanOrEqualToAnchor:self.stackEdgeInsets.bottomAnchor constant:-bottomMarge];
+        cons = [nextAnchor constraintLessThanOrEqualToAnchor:self.stackEdgeInsets.jBottomAnchor constant:0];
         [self.constraints addObject:cons];
     }else {
-        cons = [nextAnchor constraintEqualToAnchor:self.stackEdgeInsets.bottomAnchor constant:-bottomMarge];
+        cons = [nextAnchor constraintEqualToAnchor:self.stackEdgeInsets.jBottomAnchor constant:0];
         [self.constraints addObject:cons];
     }
     
@@ -520,5 +515,8 @@
 - (void)deactivateConstraints {
     [NSLayoutConstraint deactivateConstraints:self.constraints];
     [self.constraints removeAllObjects];
+}
+- (void)updateInsets:(UIEdgeInsets)insets {
+    self.stackEdgeInsets.insets = insets;
 }
 @end

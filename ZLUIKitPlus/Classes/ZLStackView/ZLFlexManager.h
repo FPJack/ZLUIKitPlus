@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///激活所有约束
 - (void)activateConstraints;
 - (void)deactivateConstraints;
+- (void)updateInsets:(UIEdgeInsets)insets;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -190,18 +190,9 @@ static ZLStackView *sectionView(NSString *title) {
         NSArray *sizes = @[@20, @40, @60];
         for (NSNumber *h in sizes) {
             UILabel *b = colorBlock(@"", randColor());
-            b.zl_layout.width(36).height(50);
+            b.zl_layout.width(36);
             if ([item[1] integerValue] != ZLAlignFill) b.zl_layout.height(h.floatValue);
             [row addArrangedSubview:b];
-            if (b.zl_flex.alignSelf == ZLAlignCenter) {
-                static dispatch_once_t onceToken;
-                dispatch_once(&onceToken, ^{
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        b.zl_flex.start(50).end(10);
-                    });
-                });
-                
-            }
         }
         [sec addArrangedSubview:row];
     }

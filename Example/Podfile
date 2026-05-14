@@ -6,6 +6,7 @@ platform :ios, '13.0'
 target 'ZLUIKitPlus_Example' do
   pod 'ZLUIKitPlus', :path => '../'
   pod 'Masonry'
+  pod 'SDWebImage'
 
 
   target 'ZLUIKitPlus_Tests' do

@@ -10,6 +10,9 @@
 #import "ZLLayout.h"
 @interface ZLImageView()
 @property (nonatomic,assign)BOOL isCircle;
+@property (nonatomic,copy)void (^activeStyleBlock)(id );
+@property (nonatomic,copy)void (^inactiveStyleBlock)(id );
+
 @end
 @implementation ZLImageView
 
@@ -113,6 +116,35 @@
         if ([self respondsToSelector:sel]) {
             [self performSelector:sel withObject:url withObject:ZLImageFromObj(placeholder)];
         }
+        return self;
+    };
+}
+- (ZLImageView * _Nonnull (^)(BOOL))userActive {
+    return ^(BOOL active) {
+        self.userInteractionEnabled = active;
+        if (active && self.activeStyleBlock) {
+            self.activeStyleBlock(self);
+        } else if (!active && self.inactiveStyleBlock) {
+            self.inactiveStyleBlock(self);
+        }
+        return self;
+    };
+}
+- (ZLImageView * _Nonnull (^)(void (^ _Nonnull)(ZLImageView * _Nonnull)))activeStyle {
+    return ^(void (^activeStyle)(ZLImageView *imgView)) {
+        if (self.userInteractionEnabled && activeStyle) {
+            activeStyle(self);
+        }
+        self.activeStyleBlock = activeStyle;
+        return self;
+    };
+}
+- (ZLImageView * _Nonnull (^)(void (^ _Nonnull)(ZLImageView * _Nonnull)))inactiveStyle {
+    return ^(void (^inactiveStyle)(ZLImageView *imgView)) {
+        if (!self.userInteractionEnabled && inactiveStyle) {
+            inactiveStyle(self);
+        }
+        self.inactiveStyleBlock = inactiveStyle;
         return self;
     };
 }

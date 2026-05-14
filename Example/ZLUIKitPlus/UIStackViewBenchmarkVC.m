@@ -4,9 +4,9 @@
 #import "UIStackViewBenchmarkVC.h"
 #import <mach/mach.h>
 
-static const NSInteger kOuter  = 3;   // 第一层列数
+static const NSInteger kOuter  = 2;   // 第一层列数
 static const NSInteger kMiddle = 50;   // 第二层行数
-static const NSInteger kInner  = 4;   // 第三层列数（叶子）
+static const NSInteger kInner  = 10;   // 第三层列数（叶子）
 
 static uint64_t benchNowNs(void) {
     struct timespec ts;

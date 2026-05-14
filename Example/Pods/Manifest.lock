@@ -5,17 +5,22 @@ PODS:
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
   - Masonry (1.1.0)
+  - SDWebImage (5.21.7):
+    - SDWebImage/Core (= 5.21.7)
+  - SDWebImage/Core (5.21.7)
   - ZLUIKitPlus (0.1.0)
 
 DEPENDENCIES:
   - FBSnapshotTestCase
   - Masonry
+  - SDWebImage
   - ZLUIKitPlus (from `../`)
 
 SPEC REPOS:
   trunk:
     - FBSnapshotTestCase
     - Masonry
+    - SDWebImage
 
 EXTERNAL SOURCES:
   ZLUIKitPlus:
@@ -24,8 +29,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  SDWebImage: e9fc87c1aab89a8ab1bbd74eba378c6f53be8abf
   ZLUIKitPlus: ec796051dca5a67e95e0db94072441d0da2d443d
 
-PODFILE CHECKSUM: 5fdffaf3a9f4bc7e1738fd662dbc4cd1e21f2dcc
+PODFILE CHECKSUM: aea4e93001709966bfd89c85db97fb294dd1b416
 
 COCOAPODS: 1.16.2

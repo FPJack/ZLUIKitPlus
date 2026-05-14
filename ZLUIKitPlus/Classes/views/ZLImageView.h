@@ -68,6 +68,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) ZLImageView* (^addToFull)(UIView *superview);
 
 @property (readonly) ZLImageView*(^addSubview)(UIView *subview);
+///设置userinteractionEnabled
+@property (nonatomic, copy, readonly) ZLImageView* (^userActive)(BOOL userInteractionEnabled);
 ///可点击情况下进行相应配置 userActive(YES) 触发回调
 @property (readonly) ZLImageView* (^activeStyle)(void (^)(ZLImageView* view));
 ///不可点击情况下配置userActive(NO) 触发回调

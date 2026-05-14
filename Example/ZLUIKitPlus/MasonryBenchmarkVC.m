@@ -6,9 +6,9 @@
 #import <Masonry/Masonry.h>
 #import <mach/mach.h>
 
-static const NSInteger kOuter  = 3;
+static const NSInteger kOuter  = 2;
 static const NSInteger kMiddle = 50;
-static const NSInteger kInner  = 4;
+static const NSInteger kInner  = 10;
 
 static uint64_t masonryNowNs(void) {
     struct timespec ts;

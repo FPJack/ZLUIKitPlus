@@ -24,28 +24,40 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,assign)UIEdgeInsets insets;
 @property(nonatomic,copy,readonly) NSArray<__kindof UIView *> *arrangedViews;
 @property (nonatomic,assign)CGFloat spacing;
+
 /// 添加view到stackView，默认添加到最后
 - (void)addArrangedSubview:(UIView *)view;
+
 ///添加view并且配置view的布局属性
 - (void)addArrangedSubview:(UIView *)view layout:(void(^)(__kindof UIView *view, ZLFlexItem *flexItem))config;
+
 ///在某个位置插入view
 - (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)stackIndex;
+
 /// 移除view
 - (void)removeArrangedSubview:(UIView *)view;
+
 ///设置view在主轴方向的间距
 - (void)setCustomSpacing:(CGFloat)spacing afterView:(UIView *)arrangedSubview;
+
 /// 设置view在主轴方向的最小间距
 - (void)setCustomMinSpacing:(CGFloat)minSpacing afterView:(UIView *)arrangedSubview;
+
 ///设置view在主轴方向的最大间距
 - (void)setCustomMaxSpacing:(CGFloat)maxSpacing afterView:(UIView *)arrangedSubview;
+
 ///设置view在主轴方向的权重
 - (void)setFlex:(NSInteger)flex forView:(UIView *)arrangedSubview;
+
 ///在某个view后面设置是否弹性空间 只有justify  ==  ZLJustifyFill 才会有效
 - (void)setFlexibleSpacing:(BOOL)flexible afterView:(UIView *)arrangedSubview;
+
 ///设置view的alignment，优先级高于stackView的alignment
 - (void)setAlignment:(ZLAlign)alignment forView:(UIView *)arrangedSubview;
+
 ///设置view的alignment方向start间距
 - (void)setAlignmentStartSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview;
+
 ///设置view的alignment方向end间距
 - (void)setAlignmentEndSpacing:(CGFloat)spacing forView:(UIView *)arrangedSubview;
 

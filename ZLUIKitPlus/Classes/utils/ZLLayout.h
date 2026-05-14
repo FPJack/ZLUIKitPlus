@@ -148,10 +148,10 @@ typedef NS_ENUM(NSInteger, ZLAttr) {
 @property (readonly) ZLLayout* (^square)(CGFloat wh);
 
 ///贴紧父视图四边(参数布局)
-@property (readonly) ZLLayout* (^edge)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
+@property (readonly) ZLLayout* (^edges)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
 
 ///贴紧父视图四边(参数布局)，参数相同 inset(10) 等价于 edge(10,10,10,10)
-@property (readonly) ZLLayout *(^inset)(CGFloat); // ⭐高频
+@property (readonly) ZLLayout *(^allEdges)(CGFloat); // ⭐高频
 ///贴紧父视图四边布局
 @property (readonly) ZLLayout* (^edgesZero)(void);
 
@@ -170,7 +170,6 @@ typedef NS_ENUM(NSInteger, ZLAttr) {
 @end
 
 @interface UIView (ZLLayout)
-//@property (nonatomic,readonly)ZLLayout *KFC;
 @property (nonatomic,readonly)ZLLayout *zl_layout;
 @end
 

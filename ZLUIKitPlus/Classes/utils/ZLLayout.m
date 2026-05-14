@@ -263,7 +263,7 @@
         }
     }];
 }
-- (ZLLayout * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))edge {
+- (ZLLayout * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))edges {
     return ^(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing){
         self.view.translatesAutoresizingMaskIntoConstraints = NO;
         UIView *superview = self.view.superview;
@@ -276,14 +276,14 @@
         return self;
     };
 }
-- (ZLLayout * _Nonnull (^)(CGFloat))inset {
+- (ZLLayout * _Nonnull (^)(CGFloat))allEdges {
     return ^(CGFloat inset){
-        return self.edge(inset, inset, inset, inset);
+        return self.edges(inset, inset, inset, inset);
     };
 }
 - (ZLLayout * _Nonnull (^)(void))edgesZero {
     return ^(){
-        return self.edge(0, 0, 0, 0);
+        return self.edges(0, 0, 0, 0);
     };
 }
 

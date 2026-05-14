@@ -84,7 +84,7 @@
         .systemFont(14)
         .color(@"#333333")
         .lines(0)
-        .zl_layout.edge(12, 12, 12, 12);
+        .zl_layout.edges(12, 12, 12, 12);
     card.zl_layout.height(56);
     [sec addArrangedSubview:card];
 
@@ -92,7 +92,7 @@
     UIView *card2 = [self cardContainer];
     card2.zl_lab.txt(@"第一次设置文字").systemFont(13).color(@"#1677FF");
     card2.zl_lab.txt(@"第二次修改：同一个实例").color(@"#FF4D4F"); // 同一个 lab
-    card2.zl_lab.zl_layout.edge(12, 12, 12, 12);
+    card2.zl_lab.zl_layout.edges(12, 12, 12, 12);
     card2.zl_layout.height(44);
     [sec addArrangedSubview:card2];
 
@@ -117,7 +117,7 @@
             NSLog(@"zl_btn 点击");
             btn.bgColor(btn.isUserInteractionEnabled ? @"#52C41A" : @"#1677FF");
         })
-        .zl_layout.edge(12, 12, 12, 12).height(44);
+        .zl_layout.edges(12, 12, 12, 12).height(44);
     card.zl_layout.height(68);
     [sec addArrangedSubview:card];
 

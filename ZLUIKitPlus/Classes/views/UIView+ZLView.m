@@ -72,4 +72,23 @@ kPropertyGetterImplementation(ZLLabelImgView, zl_labImgView)
     }
     return wrap;
 }
+
+- (UIView * _Nonnull (^)(void (^ _Nonnull)(__kindof UIView * _Nonnull)))zl_init {
+    return ^(void (^initBlock)(__kindof UIView *view)) {
+        NSString *key = NSStringFromSelector(_cmd);
+        NSString *tag = self.propertyObjs[key];
+        if (tag) return self;
+        self.propertyObjs[key] = @"";
+        if (initBlock) initBlock(self);
+        return self;
+    };
+}
+- (instancetype)zl_init:(void (^)(__kindof UIView * view))block {
+    NSString *key = NSStringFromSelector(_cmd);
+    NSString *tag = self.propertyObjs[key];
+    if (tag) return self;
+    self.propertyObjs[key] = @"";
+    if (block) block(self);
+    return self;
+}
 @end

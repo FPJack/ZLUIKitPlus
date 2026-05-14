@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///设置宽高相等
 @property (readonly) ZLImageView* (^square)(CGFloat wh);
 ///贴紧父视图四边(参数布局)
-@property (readonly) ZLImageView* (^edge)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
+@property (readonly) ZLImageView* (^edges)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
  // ⭐高频
 ///贴紧父视图四边布局
 @property (readonly) ZLImageView* (^edgesZero)(void);

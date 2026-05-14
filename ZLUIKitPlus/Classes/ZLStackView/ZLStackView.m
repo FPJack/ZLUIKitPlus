@@ -680,7 +680,7 @@
 }
 - (id _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))edge {
     return ^(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing) {
-        self.zl_layout.edge(top, leading, bottom, trailing);
+        self.zl_layout.edges(top, leading, bottom, trailing);
         return self;
     };
 }

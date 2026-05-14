@@ -46,6 +46,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 返回被包裹的view 提供圆角、边框、阴影、渐变等装饰功能
 @property (readonly) ZLWrapperView   *zl_wrapView;
+
+///一次性回调 可做初始化操作,每个实例对象多次调用也之后只会回调一次，适合在初始化时进行一些配置操作
+- (instancetype)zl_init:(void (^)(__kindof UIView * view))block;
 @end
 
 NS_ASSUME_NONNULL_END

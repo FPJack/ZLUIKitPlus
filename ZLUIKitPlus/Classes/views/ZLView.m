@@ -8,6 +8,8 @@
 #import "ZLView.h"
 #import "ZLLayout.h"
 #import <objc/runtime.h>
+#import "UIView+ZLView.h"
+
 @interface ZLBaseView()
 @property (nonatomic, strong) CAShapeLayer *backgroundShapeLayer;
 @property (nonatomic,strong)  CAGradientLayer *gradLayer;
@@ -35,10 +37,7 @@
 
 - (id  _Nonnull (^)(void (^ _Nonnull)(ZLBaseView * _Nonnull)))onInit {
     return ^(void (^block)(ZLBaseView *)) {
-        if (self.onInitFlag) return self;
-        if (block) block(self);
-        self.onInitFlag = YES;
-        return self;
+        return [self zl_init:block];
     };
 }
 - (CAShapeLayer *)backgroundShapeLayer {
@@ -390,9 +389,9 @@
         return self;
     };
 }
-- (id _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))edge {
+- (id _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))edges {
     return ^(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing) {
-        self.zl_layout.edge(top, leading, bottom, trailing);
+        self.zl_layout.edges(top, leading, bottom, trailing);
         return self;
     };
 }

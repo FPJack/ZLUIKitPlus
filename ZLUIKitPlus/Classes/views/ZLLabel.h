@@ -91,7 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///设置宽高相等
 @property ( copy, readonly) ZLLabel* (^square)(CGFloat wh);
 ///贴紧父视图四边(参数布局)
-@property ( copy, readonly) ZLLabel* (^edge)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
+@property ( copy, readonly) ZLLabel* (^edges)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
  // ⭐高频
 ///贴紧父视图四边布局
 @property ( copy, readonly) ZLLabel* (^edgesZero)(void);

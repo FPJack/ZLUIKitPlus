@@ -248,9 +248,9 @@
         return self;
     };
 }
-- (ZLImageView * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))edge {
+- (ZLImageView * _Nonnull (^)(CGFloat, CGFloat, CGFloat, CGFloat))edges {
     return ^(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing) {
-        self.zl_layout.edge(top, leading, bottom, trailing);
+        self.zl_layout.edges(top, leading, bottom, trailing);
         return self;
     };
 }

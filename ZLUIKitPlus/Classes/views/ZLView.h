@@ -78,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///设置宽高相等
 @property (readonly)ObjectType (^square)(CGFloat wh);
 ///贴紧父视图四边(参数布局)
-@property (readonly)ObjectType (^edge)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
+@property (readonly)ObjectType (^edges)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
  // ⭐高频
 ///贴紧父视图四边布局
 @property (readonly)ObjectType (^edgesZero)(void);

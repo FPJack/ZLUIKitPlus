@@ -263,7 +263,7 @@ NS_INLINE GMStartEndInsets GMStartEndInsetsMake(CGFloat start, CGFloat end) {
 ///设置宽高相等
 @property (nonatomic, copy, readonly) ZLButton* (^square)(CGFloat wh);
 ///贴紧父视图四边(参数布局)
-@property (nonatomic, copy, readonly) ZLButton* (^edge)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
+@property (nonatomic, copy, readonly) ZLButton* (^edges)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
  // ⭐高频
 ///贴紧父视图四边布局
 @property (nonatomic, copy, readonly) ZLButton* (^edgesZero)(void);

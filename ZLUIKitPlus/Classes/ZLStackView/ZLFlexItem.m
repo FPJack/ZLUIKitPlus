@@ -10,6 +10,9 @@
 #import "ZLStackView.h"
 #import <objc/runtime.h>
 #import "ZLLayout.h"
+#import "ZLFlexManager.h"
+#import "ZLConstraintItem.h"
+
 @implementation UIView (Flex)
 - (ZLFlexItem *)zl_flex {
     ZLFlexItem *cfg = objc_getAssociatedObject(self, _cmd);
@@ -51,12 +54,66 @@
     if (_spacing > 0) return _spacing;
     return self.stackView.spacing;
 }
-
+- (NSArray<NSLayoutConstraint *> *)filterConstraintWithBlock:(BOOL(^)(NSLayoutConstraint *constraint))block {
+    if (!self.stackView) return nil;
+    ZLFlexManager *manager = [self.stackView valueForKey:@"layoutManager"];
+    if (manager.constraints.count == 0) {
+        return nil;
+    }
+    return [manager.constraints filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSLayoutConstraint*  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        if (block) return block(evaluatedObject);
+        return NO;
+    }]];
+}
 
 - (void)setStartSpacing:(CGFloat)startSpacing {
     if (startSpacing == _startSpacing) return;
     _startSpacing = startSpacing;
-    [self setStackViewNeedsUpdateConstraints];
+    NSArray<NSLayoutConstraint *> * arr = [self filterConstraintWithBlock:^BOOL(NSLayoutConstraint *constraint) {
+        ZLConstraintItem *cfg = constraint.item;
+        return [cfg.view isEqual:self.view] && cfg.type == ZLLayoutConTypeStart;
+    }];
+    NSLayoutConstraint *cons = arr.firstObject;
+    if (cons) {
+        CGFloat insetStart = self.stackView.axis == ZLStackViewAxisHorizontal ? self.stackView.insets.top : self.stackView.insets.left;
+        cons.constant = startSpacing + insetStart;
+        if (self.alignSelf == ZLAlignCenter) {
+            NSLayoutConstraint *centerCons = [self filterConstraintWithBlock:^BOOL(NSLayoutConstraint *constraint) {
+                ZLConstraintItem *cfg = constraint.item;
+                return [cfg.view isEqual:self.view] && cfg.type == ZLLayoutConTypeCenter;
+            }].firstObject;
+            if (centerCons) {
+                centerCons.constant = (startSpacing - self.endSpacing) * 0.5;
+            }
+        }
+    }else {
+        [self setStackViewNeedsUpdateConstraints];
+    }
+}
+- (void)setEndSpacing:(CGFloat)endSpacing {
+    if (endSpacing == _endSpacing) return;
+    _endSpacing = endSpacing;
+    NSArray<NSLayoutConstraint *> * arr = [self filterConstraintWithBlock:^BOOL(NSLayoutConstraint *constraint) {
+        ZLConstraintItem *cfg = constraint.item;
+        return [cfg.view isEqual:self.view] && cfg.type == ZLLayoutConTypeEnd;
+    }];
+    
+    NSLayoutConstraint *cons = arr.firstObject;
+    if (cons) {
+        CGFloat insetEnd = self.stackView.axis == ZLStackViewAxisHorizontal ? self.stackView.insets.bottom : self.stackView.insets.right;
+        cons.constant = -endSpacing - insetEnd;
+        if (self.alignSelf == ZLAlignCenter) {
+            NSLayoutConstraint *centerCons = [self filterConstraintWithBlock:^BOOL(NSLayoutConstraint *constraint) {
+                ZLConstraintItem *cfg = constraint.item;
+                return [cfg.view isEqual:self.view] && cfg.type == ZLLayoutConTypeCenter;
+            }].firstObject;
+            if (centerCons) {
+                centerCons.constant = (self.startSpacing - endSpacing) * 0.5;
+            }
+        }
+    }else {
+        [self setStackViewNeedsUpdateConstraints];
+    }
 }
 - (void)setIsFlexSpace:(BOOL)isFlexSpace {
     if (isFlexSpace == _isFlexSpace) return;

@@ -28,21 +28,53 @@
 @implementation ZLLayout
 - (ZLLayout * _Nonnull (^)(CGFloat))centerX {
     return ^(CGFloat centerX){
-        UIView *superview = self.view.superview;
+        return self.centerXTo(self.view.superview.centerXAnchor, centerX);
+    };
+}
+- (ZLLayout * _Nonnull (^)(NSLayoutXAxisAnchor * _Nonnull, CGFloat))centerXTo {
+    return ^(NSLayoutXAxisAnchor *anchor, CGFloat centerX){
         self.view.translatesAutoresizingMaskIntoConstraints = NO;
-        [NSLayoutConstraint activateConstraints:@[
-            [self.view.centerXAnchor constraintEqualToAnchor:superview.centerXAnchor constant:centerX],
-        ]];
+        [self.view.centerXAnchor constraintEqualToAnchor:anchor constant:centerX].active = YES;
+        return self;
+    };
+}
+- (ZLLayout * _Nonnull (^)(NSLayoutXAxisAnchor * _Nonnull, CGFloat))centerXGreaterThanOrTo {
+    return ^(NSLayoutXAxisAnchor *anchor, CGFloat centerX){
+        self.view.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view.centerXAnchor constraintGreaterThanOrEqualToAnchor:anchor constant:centerX].active = YES;
+        return self;
+    };
+}
+- (ZLLayout * _Nonnull (^)(NSLayoutXAxisAnchor * _Nonnull, CGFloat))centerXLessThanOrTo {
+    return ^(NSLayoutXAxisAnchor *anchor, CGFloat centerX){
+        self.view.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view.centerXAnchor constraintLessThanOrEqualToAnchor:anchor constant:centerX].active = YES;
         return self;
     };
 }
 - (ZLLayout * _Nonnull (^)(CGFloat))centerY {
     return ^(CGFloat centerY){
-        UIView *superview = self.view.superview;
+        return self.centerYTo(self.view.superview.centerYAnchor, centerY);
+    };
+}
+- (ZLLayout * _Nonnull (^)(NSLayoutYAxisAnchor * _Nonnull, CGFloat))centerYTo {
+    return ^(NSLayoutYAxisAnchor *anchor, CGFloat centerY){
         self.view.translatesAutoresizingMaskIntoConstraints = NO;
-        [NSLayoutConstraint activateConstraints:@[
-            [self.view.centerYAnchor constraintEqualToAnchor:superview.centerYAnchor constant:centerY],
-        ]];
+        [self.view.centerYAnchor constraintEqualToAnchor:anchor constant:centerY].active = YES;
+        return self;
+    };
+}
+- (ZLLayout * _Nonnull (^)(NSLayoutYAxisAnchor * _Nonnull, CGFloat))centerYGreaterThanOrTo {
+    return ^(NSLayoutYAxisAnchor *anchor, CGFloat centerY){
+        self.view.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view.centerYAnchor constraintGreaterThanOrEqualToAnchor:anchor constant:centerY].active = YES;
+        return self;
+    };
+}
+- (ZLLayout * _Nonnull (^)(NSLayoutYAxisAnchor * _Nonnull, CGFloat))centerYLessThanOrTo {
+    return ^(NSLayoutYAxisAnchor *anchor, CGFloat centerY){
+        self.view.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view.centerYAnchor constraintLessThanOrEqualToAnchor:anchor constant:centerY].active = YES;
         return self;
     };
 }
@@ -58,41 +90,91 @@
 }
 - (ZLLayout * _Nonnull (^)(CGFloat))top {
     return ^(CGFloat top){
-        UIView *superview = self.view.superview;
+        return self.topTo(self.view.superview.topAnchor, top);
+    };
+}
+- (ZLLayout * _Nonnull (^)(NSLayoutYAxisAnchor * _Nonnull, CGFloat))topTo {
+    return ^(NSLayoutYAxisAnchor *anchor, CGFloat top){
         self.view.translatesAutoresizingMaskIntoConstraints = NO;
-        [NSLayoutConstraint activateConstraints:@[
-            [self.view.topAnchor constraintEqualToAnchor:superview.topAnchor constant:top],
-        ]];
+        [self.view.topAnchor constraintEqualToAnchor:anchor constant:top].active = YES;
+        return self;
+    };
+}
+- (ZLLayout * _Nonnull (^)(NSLayoutYAxisAnchor * _Nonnull, CGFloat))topGreaterThanOrTo {
+    return ^(NSLayoutYAxisAnchor *anchor, CGFloat top){
+        self.view.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view.topAnchor constraintGreaterThanOrEqualToAnchor:anchor constant:top].active = YES;
+        return self;
+    };
+}
+- (ZLLayout * _Nonnull (^)(NSLayoutYAxisAnchor * _Nonnull, CGFloat))topLessThanOrTo {
+    return ^(NSLayoutYAxisAnchor *anchor, CGFloat top){
+        self.view.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view.topAnchor constraintLessThanOrEqualToAnchor:anchor constant:top].active = YES;
         return self;
     };
 }
 - (ZLLayout * _Nonnull (^)(CGFloat))leading {
     return ^(CGFloat leading){
-        UIView *superview = self.view.superview;
+        return self.leadingTo(self.view.superview.leadingAnchor, leading);
+    };
+}
+- (ZLLayout * _Nonnull (^)(NSLayoutXAxisAnchor * _Nonnull, CGFloat))leadingTo {
+    return ^(NSLayoutXAxisAnchor *anchor, CGFloat leading){
         self.view.translatesAutoresizingMaskIntoConstraints = NO;
-        [NSLayoutConstraint activateConstraints:@[
-            [self.view.leadingAnchor constraintEqualToAnchor:superview.leadingAnchor constant:leading],
-        ]];
+        [self.view.leadingAnchor constraintEqualToAnchor:anchor constant:leading].active = YES;
+        return self;
+    };
+}
+- (ZLLayout * _Nonnull (^)(NSLayoutXAxisAnchor * _Nonnull, CGFloat))leadingGreaterThanOrTo {
+    return ^(NSLayoutXAxisAnchor *anchor, CGFloat leading){
+        self.view.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view.leadingAnchor constraintGreaterThanOrEqualToAnchor:anchor constant:leading].active = YES;
+        return self;
+    };
+}
+- (ZLLayout * _Nonnull (^)(NSLayoutXAxisAnchor * _Nonnull, CGFloat))leadingLessThanOrTo {
+    return ^(NSLayoutXAxisAnchor *anchor, CGFloat leading){
+        self.view.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view.leadingAnchor constraintLessThanOrEqualToAnchor:anchor constant:leading].active = YES;
         return self;
     };
 }
 - (ZLLayout * _Nonnull (^)(CGFloat))bottom {
     return ^(CGFloat bottom){
-        UIView *superview = self.view.superview;
+        return self.bottomTo(self.view.superview.bottomAnchor, bottom);
+    };
+}
+- (ZLLayout * _Nonnull (^)(NSLayoutYAxisAnchor * _Nonnull, CGFloat))bottomTo {
+    return ^(NSLayoutYAxisAnchor *anchor, CGFloat bottom){
         self.view.translatesAutoresizingMaskIntoConstraints = NO;
-        [NSLayoutConstraint activateConstraints:@[
-            [self.view.bottomAnchor constraintEqualToAnchor:superview.bottomAnchor constant:bottom],
-        ]];
+        [self.view.bottomAnchor constraintEqualToAnchor:anchor constant:bottom].active = YES;
+        return self;
+    };
+}
+- (ZLLayout * _Nonnull (^)(NSLayoutYAxisAnchor * _Nonnull, CGFloat))bottomGreaterThanOrTo {
+    return ^(NSLayoutYAxisAnchor *anchor, CGFloat bottom){
+        self.view.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view.bottomAnchor constraintGreaterThanOrEqualToAnchor:anchor constant:bottom].active = YES;
+        return self;
+    };
+}
+- (ZLLayout * _Nonnull (^)(NSLayoutYAxisAnchor * _Nonnull, CGFloat))bottomLessThanOrTo {
+    return ^(NSLayoutYAxisAnchor *anchor, CGFloat bottom){
+        self.view.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view.bottomAnchor constraintLessThanOrEqualToAnchor:anchor constant:bottom].active = YES;
         return self;
     };
 }
 - (ZLLayout * _Nonnull (^)(CGFloat))trailing {
     return ^(CGFloat trailling){
-        UIView *superview = self.view.superview;
+        return self.trailingTo(self.view.superview.trailingAnchor, trailling);
+    };
+}
+- (ZLLayout * _Nonnull (^)(NSLayoutXAxisAnchor * _Nonnull, CGFloat))trailingTo {
+    return ^(NSLayoutXAxisAnchor *anchor, CGFloat trailling){
         self.view.translatesAutoresizingMaskIntoConstraints = NO;
-        [NSLayoutConstraint activateConstraints:@[
-            [self.view.trailingAnchor constraintEqualToAnchor:superview.trailingAnchor constant:trailling],
-        ]];
+        [self.view.trailingAnchor constraintEqualToAnchor:anchor constant:trailling].active = YES;
         return self;
     };
 }
@@ -101,6 +183,14 @@
         self.view.translatesAutoresizingMaskIntoConstraints = NO;
         [self deactivieConstraints:NSLayoutAttributeHeight relation:NSLayoutRelationEqual];
         [self.view.heightAnchor constraintEqualToConstant:height].active = YES;
+        return self;
+    };
+}
+- (ZLLayout * _Nonnull (^)(NSLayoutDimension * _Nonnull))heightTo {
+    return ^(NSLayoutDimension *anchor){
+        self.view.translatesAutoresizingMaskIntoConstraints = NO;
+        [self deactivieConstraints:NSLayoutAttributeHeight relation:NSLayoutRelationEqual];
+        [self.view.heightAnchor constraintEqualToAnchor:anchor].active = YES;
         return self;
     };
 }
@@ -127,6 +217,14 @@
         [self.view.widthAnchor constraintEqualToConstant:width].active = YES;
         return self;
         };
+}
+- (ZLLayout * _Nonnull (^)(NSLayoutDimension * _Nonnull))widthTo {
+    return ^(NSLayoutDimension *anchor){
+        self.view.translatesAutoresizingMaskIntoConstraints = NO;
+        [self deactivieConstraints:NSLayoutAttributeWidth relation:NSLayoutRelationEqual];
+        [self.view.widthAnchor constraintEqualToAnchor:anchor].active = YES;
+        return self;
+    };
 }
 - (ZLLayout * _Nonnull (^)(CGFloat))minWidth {
     return ^(CGFloat minWidth){

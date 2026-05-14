@@ -111,6 +111,7 @@ static ZLStackView *sectionView(NSString *title) {
     [_contentStack addArrangedSubview:sec];
 
     ZLStackView *h = ZLStackView.horizontal.alignCenter.space(8);
+   
     for (int i = 1; i <= 4; i++) {
         UILabel *l = colorBlock([NSString stringWithFormat:@"H%d", i], randColor());
 //        l.zl_layout.square(36);
@@ -124,6 +125,7 @@ static ZLStackView *sectionView(NSString *title) {
 //        l.zl_layout.height(28);
         [v addArrangedSubview:l];
     }
+   
     [sec addArrangedSubview:v];
 }
 
@@ -184,13 +186,22 @@ static ZLStackView *sectionView(NSString *title) {
 
         ZLStackView *row = ZLStackView.horizontal.space(8).bgColor(@"#EFEFEF").justifyCenter;
         row.alignment = [item[1] integerValue];
-        row.zl_layout.height(70);
+        
         NSArray *sizes = @[@20, @40, @60];
         for (NSNumber *h in sizes) {
             UILabel *b = colorBlock(@"", randColor());
-            b.zl_layout.width(36);
+            b.zl_layout.width(36).height(50);
             if ([item[1] integerValue] != ZLAlignFill) b.zl_layout.height(h.floatValue);
             [row addArrangedSubview:b];
+            if (b.zl_flex.alignSelf == ZLAlignCenter) {
+                static dispatch_once_t onceToken;
+                dispatch_once(&onceToken, ^{
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        b.zl_flex.start(50).end(10);
+                    });
+                });
+                
+            }
         }
         [sec addArrangedSubview:row];
     }

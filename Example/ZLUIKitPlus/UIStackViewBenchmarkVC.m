@@ -3,10 +3,10 @@
 
 #import "UIStackViewBenchmarkVC.h"
 #import <mach/mach.h>
-
-static const NSInteger kOuter  = 2;   // 第一层列数
-static const NSInteger kMiddle = 50;   // 第二层行数
-static const NSInteger kInner  = 10;   // 第三层列数（叶子）
+#import <ZLUIKitPlus/ZLUIKitPlus.h>
+static const NSInteger kOuter  = 3;   // 第一层列数
+static const NSInteger kMiddle = 40;   // 第二层行数
+static const NSInteger kInner  = 3;   // 第三层列数（叶子）
 
 static uint64_t benchNowNs(void) {
     struct timespec ts;
@@ -88,7 +88,6 @@ static double benchMemMB(void) {
         col.distribution = UIStackViewDistributionFillEqually;
         col.alignment    = UIStackViewAlignmentFill;
         col.spacing      = 4;
-
         for (NSInteger j = 0; j < kMiddle; j++) {
             // 第三层：水平 StackView，包含 kInner 个叶子 Label
             UIStackView *row = [[UIStackView alloc] init];
@@ -114,6 +113,7 @@ static double benchMemMB(void) {
                                                       alpha:1];
                 [row addArrangedSubview:lab];
             }
+            row.zl_layout.height(10);
             [col addArrangedSubview:row];
         }
         [root addArrangedSubview:col];

@@ -6,9 +6,9 @@
 #import <Masonry/Masonry.h>
 #import <mach/mach.h>
 
-static const NSInteger kOuter  = 2;
-static const NSInteger kMiddle = 50;
-static const NSInteger kInner  = 10;
+static const NSInteger kOuter  = 3;
+static const NSInteger kMiddle = 40;
+static const NSInteger kInner  = 3;
 
 static uint64_t masonryNowNs(void) {
     struct timespec ts;
@@ -127,12 +127,12 @@ static double masonryMemMB(void) {
         }
 
         // ── 行容器约束（等分列高，固定高度） ──
-        CGFloat rowH = 28.0;
+        CGFloat rowH = 10.0;
         for (NSInteger j = 0; j < kMiddle; j++) {
             UIView *row = rows[j];
             [row mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.leading.trailing.mas_equalTo(0);
-                make.height.mas_equalTo(rowH);
+//                make.height.mas_equalTo(rowH);
                 make.top.mas_equalTo(j == 0 ? col.mas_top : rows[j-1].mas_bottom).offset(j == 0 ? 0 : 4);
             }];
         }

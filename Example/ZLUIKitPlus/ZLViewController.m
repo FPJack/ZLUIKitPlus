@@ -15,6 +15,10 @@
 #import "ZLTagListViewDemoVC.h"
 #import "ZLStackViewDemoVC.h"
 #import "ZLViewExtDemoVC.h"
+#import "ZLStackViewBenchmarkVC.h"
+#import "UIStackViewBenchmarkVC.h"
+#import "MasonryBenchmarkVC.h"
+#import "FrameBenchmarkVC.h"
 
 @interface ZLViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) NSArray<NSDictionary *> *demos;
@@ -74,6 +78,10 @@
         @{@"title": @"ZLTagListView Demo", @"class": ZLTagListViewDemoVC.class},
         @{@"title": @"ZLStackView Demo",   @"class": ZLStackViewDemoVC.class},
         @{@"title": @"UIView+ZLView Demo",  @"class": ZLViewExtDemoVC.class},
+        @{@"title": @"⚡ UIStackView 性能测试",  @"class": UIStackViewBenchmarkVC.class},
+        @{@"title": @"⚡ ZLStackView 性能测试",  @"class": ZLStackViewBenchmarkVC.class},
+        @{@"title": @"⚡ Masonry 性能测试",       @"class": MasonryBenchmarkVC.class},
+        @{@"title": @"⚡ Frame 性能测试",        @"class": FrameBenchmarkVC.class},
     ];
     
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];

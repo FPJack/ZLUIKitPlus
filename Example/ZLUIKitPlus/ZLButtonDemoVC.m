@@ -220,7 +220,7 @@
     // 12. imageSize / imageCorner / imageMode
     // ─────────────────────────────────────
     [root addArrangedSubview:[self sec:@"12. imageSize / imageCorner / imageMode 图片控制"]];
-    [root addArrangedSubview:ZLStackView.horizontal.alignCenter.space(12)
+    [root addArrangedSubview:ZLStackView.horizontal.alignCenter.space(12).justifyFillEqually
         .addView(HButton.systemImage(@"photo")
             .imageSize(32, 32)
             .title(@"imageSize(32,32)")

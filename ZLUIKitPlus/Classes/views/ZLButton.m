@@ -242,35 +242,28 @@
     NSMutableArray<UIView *> *arr = NSMutableArray.array;
     NSLayoutXAxisAnchor *nextXAnchor;
     NSLayoutYAxisAnchor *nextYAnchor;
+    NSString *orderKey = @"";
+
     if (self.lab) {
         ///判断size 是否宽高有一个为0
         NSString *title = [self titleForState:self.state];
         if (title.length > 0) {
-            self.lab.translatesAutoresizingMaskIntoConstraints = NO;
             [arr addObject:self.lab];
+            orderKey = [orderKey stringByAppendingString:@"0"];
         }
     }
     if (self.imgView) {
         UIImage *image = [self imageForState:self.state];
         CGSize size = image.size;
         if (size.width > 0 && size.height > 0) {
-            self.imgView.translatesAutoresizingMaskIntoConstraints = NO;
-            [self.imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-            [self.imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-            [self.imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-            [self.imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+//            [self.imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+//            [self.imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+//            [self.imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+//            [self.imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
             [arr addObject:self.imgView];
+            orderKey = [orderKey stringByAppendingString:@"1"];
         }
     }
-    if (arr.count > 1 && self.layoutOrder == ZLButtonOrderImageFirst) {
-        [arr exchangeObjectAtIndex:0 withObjectAtIndex:arr.count - 1];
-    }
-    
-    
-    __block NSString *orderKey = @"";
-    [arr enumerateObjectsUsingBlock:^(UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        orderKey = [orderKey stringByAppendingFormat:@"%d", [obj isEqual:self.lab] ? 0 : 1];
-    }];
     
     orderKey = [self generateOrderKeyWithStr:orderKey];
     if ([self.orderKey isEqualToString:orderKey]) {
@@ -596,7 +589,7 @@
     _layoutSpacing = 4;
     _flexibleSpacing = NO;
     _layoutEdgeInsets = UIEdgeInsetsZero;
-    _layoutImageSize = CGSizeZero;
+    _layoutImageSize = CGSizeMake(-1, -1);
     self.translatesAutoresizingMaskIntoConstraints = NO;
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _cornerRadiiValue = UIEdgeInsetsMake(-1, -1, -1, -1);
@@ -969,9 +962,16 @@
     [self setNeedsUpdateConstraints];
 }
 - (void)updateImageSize {
-    if (self.imgView && CGSizeEqualToSize(self.imgView.frame.size, self.layoutImageSize)) {
+    if (!self.imgView ) {
         return;
     }
+    if (CGSizeEqualToSize(self.layoutImageSize, CGSizeMake(-1, -1))) {
+        return;
+    }
+    if (CGSizeEqualToSize(self.imgView.frame.size, self.layoutImageSize)) {
+        return;
+    }
+   
     ///删除imageView的宽高约束
    NSArray *deleteCons = [self.imageView.constraints filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
         NSLayoutConstraint *cons = (NSLayoutConstraint *)evaluatedObject;
@@ -985,12 +985,16 @@
         return NO;
     }]];
     [NSLayoutConstraint deactivateConstraints:deleteCons];
+    if (self.imgView.translatesAutoresizingMaskIntoConstraints) {
+        self.imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    }
     self.imageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [NSLayoutConstraint activateConstraints:@[
-        [self.imageView.widthAnchor constraintEqualToConstant:self.layoutImageSize.width],
-        [self.imageView.heightAnchor constraintEqualToConstant:self.layoutImageSize.height]
-    ]];
-
+    ///降优先级防止和button的宽高约束冲突
+    NSLayoutConstraint *cons1 = [self.imageView.widthAnchor constraintEqualToConstant:self.layoutImageSize.width];
+    cons1.priority = UILayoutPriorityRequired - 1;
+    NSLayoutConstraint *cons2 = [self.imageView.heightAnchor constraintEqualToConstant:self.layoutImageSize.height];
+    cons2.priority = UILayoutPriorityRequired - 1;
+    [NSLayoutConstraint activateConstraints:@[cons1,cons2]];
 }
 - (ZLButton * _Nonnull (^)(CGFloat, CGFloat))imageSize {
     return ^(CGFloat width, CGFloat height) {

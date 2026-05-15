@@ -129,9 +129,7 @@ static ZLStackView *sectionView(NSString *title) {
     }
    
     [sec addArrangedSubview:v];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        sec.inset(50, 50, 50, 50);
-    });
+   
 }
 
 // ─────────────────────────────────────────
@@ -334,9 +332,9 @@ static ZLStackView *sectionView(NSString *title) {
     [_contentStack addArrangedSubview:sec];
 
     ZLStackView *row = ZLStackView.horizontal.alignStart.space(8).bgColor(@"#EFEFEF");
-    UILabel *a = colorBlock(@"A\nstart+10", randColor()); a.numberOfLines = 0; a.zl_layout.width(80);
-    UILabel *b = colorBlock(@"B\nend+30",   randColor()); b.numberOfLines = 0; b.zl_layout.width(80);
-    UILabel *c = colorBlock(@"C\nnormal",   randColor()); c.numberOfLines = 0; c.zl_layout.width(80);
+    UILabel *a = colorBlock(@"A\nstart+10", randColor()); a.numberOfLines = 0;
+    UILabel *b = colorBlock(@"B\nend+30",   randColor()); b.numberOfLines = 0;
+    UILabel *c = colorBlock(@"C\nnormal",   randColor()); c.numberOfLines = 0;
     [row addArrangedSubview:a]; [row setAlignmentStartSpacing:10 forView:a];
     [row addArrangedSubview:b]; [row setAlignmentEndSpacing:30   forView:b];
     [row addArrangedSubview:c];
@@ -350,10 +348,10 @@ static ZLStackView *sectionView(NSString *title) {
     ZLStackView *sec = sectionView(@"10. hidden 自动重排（点击 B 切换）");
     [_contentStack addArrangedSubview:sec];
 
-    ZLStackView *row = ZLStackView.horizontal.space(8);
-    UILabel *a = colorBlock(@"A", randColor()); a.zl_layout.square(50);
-    UILabel *b = colorBlock(@"B(tap)", randColor()); b.zl_layout.square(50);
-    UILabel *c = colorBlock(@"C", randColor()); c.zl_layout.square(50);
+    ZLStackView *row = ZLStackView.horizontal.space(8).justifyFillEqually;
+    UILabel *a = colorBlock(@"A", randColor());
+    UILabel *b = colorBlock(@"B(tap)", randColor());
+    UILabel *c = colorBlock(@"C", randColor());
     row.addView(a).addView(b).addView(c);
 
     UILabel *tip = UILabel.new;

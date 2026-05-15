@@ -100,34 +100,19 @@ static double benchMemMB(void) {
             row.layer.cornerRadius = 4;
 
             for (NSInteger k = 0; k < kInner; k++) {
-//                UILabel *lab = [[UILabel alloc] init];
-//                lab.text          = [NSString stringWithFormat:@"%ld·%ld·%ld", i, j, k];
-//                lab.font          = [UIFont systemFontOfSize:9];
-//                lab.textAlignment = NSTextAlignmentCenter;
-//                lab.adjustsFontSizeToFitWidth = YES;
-//                CGFloat hue = (i * kMiddle * kInner + j * kInner + k)
-//                              / (CGFloat)(kOuter * kMiddle * kInner);
-//                lab.backgroundColor = [UIColor colorWithHue:hue
-//                                                 saturation:0.35
-//                                                 brightness:0.92
-//                                                      alpha:1];
-//                [row addArrangedSubview:lab];
-                {
-                    ZLButton *btn = HButton;
-                    btn.title([NSString stringWithFormat:@"%ld", i]);
-                    btn.titleColor(UIColor.orangeColor);
-                    btn.systemImage(@"star");
-                    [row addArrangedSubview:btn];
-                }
-//                {
-//                    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-//                    [btn setTitle:[NSString stringWithFormat:@"%ld", i] forState:UIControlStateNormal];
-//                    [btn setTitleColor:UIColor.orangeColor forState:UIControlStateNormal];
-//                    [btn setImage:[UIImage systemImageNamed:@"star"] forState:UIControlStateNormal];
-////                    btn.title([NSString stringWithFormat:@"%ld·%ld·%ld", i, j, k]);
-////                    btn.titleColor(UIColor.orangeColor);
-//                    [row addArrangedSubview:btn];
-//                }
+                UILabel *lab = [[UILabel alloc] init];
+                lab.text          = [NSString stringWithFormat:@"%ld·%ld·%ld", i, j, k];
+                lab.font          = [UIFont systemFontOfSize:9];
+                lab.textAlignment = NSTextAlignmentCenter;
+                lab.adjustsFontSizeToFitWidth = YES;
+                CGFloat hue = (i * kMiddle * kInner + j * kInner + k)
+                              / (CGFloat)(kOuter * kMiddle * kInner);
+                lab.backgroundColor = [UIColor colorWithHue:hue
+                                                 saturation:0.35
+                                                 brightness:0.92
+                                                      alpha:1];
+                [row addArrangedSubview:lab];
+
             }
             row.zl_layout.height(10);
             [col addArrangedSubview:row];

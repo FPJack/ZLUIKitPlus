@@ -82,51 +82,51 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)justifySpaceEvenly;
 
 
-@property(nonatomic,readonly)ObjectType (^inset)(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing);
+@property (readonly)ObjectType (^inset)(CGFloat top, CGFloat leading, CGFloat bottom, CGFloat trailing);
 ///水平方向的间距
-@property(nonatomic,readonly)ObjectType (^hInset)(CGFloat leading, CGFloat trailing);
+@property (readonly)ObjectType (^hInset)(CGFloat leading, CGFloat trailing);
 ///垂直方向的间距
-@property(nonatomic,readonly)ObjectType (^vInset)(CGFloat top, CGFloat bottom);
-@property (nonatomic,readonly)ObjectType (^space)(CGFloat spacing);
+@property (readonly)ObjectType (^vInset)(CGFloat top, CGFloat bottom);
+@property (readonly)ObjectType (^space)(CGFloat spacing);
 
-@property (nonatomic,readonly)ObjectType (^insertSpace)(CGFloat spacing);
-@property (nonatomic,readonly)ObjectType (^insertMinSpace)(CGFloat spacing);
-@property (nonatomic,readonly)ObjectType (^insertMaxSpace)(CGFloat spacing);
-@property (nonatomic,readonly)ObjectType (^insertFlexSpace)(BOOL flexible);
+@property (readonly)ObjectType (^insertSpace)(CGFloat spacing);
+@property (readonly)ObjectType (^insertMinSpace)(CGFloat spacing);
+@property (readonly)ObjectType (^insertMaxSpace)(CGFloat spacing);
+@property (readonly)ObjectType (^insertFlexSpace)(BOOL flexible);
 
 /// 添加一个已创建好的 view
-@property (nonatomic, readonly)ObjectType (^addView)(UIView *view);
+@property (readonly)ObjectType (^addView)(UIView *view);
 
 
 /// 根据条件决定是否添加 view，condition 为 YES 才添加
-@property (nonatomic, readonly)ObjectType (^addViewIf)(BOOL condition, UIView *view);
+@property (readonly)ObjectType (^addViewIf)(BOOL condition, UIView *view);
 
 /// 根据条件决定是否通过 block 创建并添加 view，condition 为 YES 才执行 block 并添加
-@property (nonatomic, readonly)ObjectType (^addViewMakeIf)(BOOL condition, UIView *(^make)(ZLBaseStackView *stackView));
+@property (readonly)ObjectType (^addViewMakeIf)(BOOL condition, UIView *(^make)(ZLBaseStackView *stackView));
 
 /// 添加 view 并同时配置其 FlexItem 布局属性
-@property (nonatomic, readonly)ObjectType (^addViewLayout)(
+@property (readonly)ObjectType (^addViewLayout)(
     UIView *view,
     void(^)(__kindof UIView *view, ZLFlexItem *flexItem)
 );
 
 /// 通过 block 创建并添加 view（block 内返回要添加的 view）
-@property (nonatomic, readonly)ObjectType (^addViewMake)(UIView *(^make)(ZLBaseStackView *stackView));
+@property (readonly)ObjectType (^addViewMake)(UIView *(^make)(ZLBaseStackView *stackView));
 
 
-@property (nonatomic, readonly)ObjectType (^spacingAfter)(CGFloat spacing,UIView *arrangedSubview);
+@property (readonly)ObjectType (^spacingAfter)(CGFloat spacing,UIView *arrangedSubview);
 
-@property (nonatomic, readonly)ObjectType (^minSpacingAfter)(CGFloat minSpacing,UIView *arrangedSubview);
-@property (nonatomic, readonly)ObjectType (^maxSpacingAfter)(CGFloat maxSpacing,UIView *arrangedSubview);
-@property (nonatomic, readonly)ObjectType (^flexFor)(NSInteger flex,UIView *arrangedSubview);
-@property (nonatomic, readonly)ObjectType (^flexSpacingAfter)(BOOL flexible,UIView *arrangedSubview);
-@property (nonatomic, readonly)ObjectType (^alignFor)(ZLAlign alignment,UIView *arrangedSubview);
-@property (nonatomic, readonly)ObjectType (^alignStartSpacingFor)(CGFloat spacing,UIView *arrangedSubview);
-@property (nonatomic, readonly)ObjectType (^alignEndSpacingFor)(CGFloat spacing,UIView *arrangedSubview);
+@property (readonly)ObjectType (^minSpacingAfter)(CGFloat minSpacing,UIView *arrangedSubview);
+@property (readonly)ObjectType (^maxSpacingAfter)(CGFloat maxSpacing,UIView *arrangedSubview);
+@property (readonly)ObjectType (^flexFor)(NSInteger flex,UIView *arrangedSubview);
+@property (readonly)ObjectType (^flexSpacingAfter)(BOOL flexible,UIView *arrangedSubview);
+@property (readonly)ObjectType (^alignFor)(ZLAlign alignment,UIView *arrangedSubview);
+@property (readonly)ObjectType (^alignStartSpacingFor)(CGFloat spacing,UIView *arrangedSubview);
+@property (readonly)ObjectType (^alignEndSpacingFor)(CGFloat spacing,UIView *arrangedSubview);
 ///赋值当前对象到一个指针上
 /// 例如：ZLButton *btn;
 ///  ZLButton.new.assignToPtr(&btn);
-@property (nonatomic, copy, readonly) ObjectType (^assignToPtr)(ZLBaseStackView *_Nullable* _Nullable buttonPtr);
+@property (readonly) ObjectType (^assignToPtr)(ZLBaseStackView *_Nullable* _Nullable buttonPtr);
 
 ///点击事件
 @property (readonly) ObjectType (^tapAction)(void(^)(ZLBaseStackView *view));
@@ -136,30 +136,30 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) ObjectType (^alphaValue)(CGFloat alpha);
 
 ///设置userinteractionEnabled 会触发activeStyle 或者 inactiveStyle 回调
-@property (nonatomic, copy, readonly) ObjectType (^userActive)(BOOL userInteractionEnabled);
+@property (readonly) ObjectType (^userActive)(BOOL userInteractionEnabled);
 
-@property (nonatomic, copy,readonly) ObjectType (^bgColor)(id color);// 便捷设置背景色，支持 UIColor 或 UIColorHex
+@property (readonly) ObjectType (^bgColor)(id color);// 便捷设置背景色，支持 UIColor 或 UIColorHex
 
 ///设置圆角
-@property (nonatomic, copy, readonly) ObjectType (^corner)(CGFloat radius);
+@property (readonly) ObjectType (^corner)(CGFloat radius);
 ///设置哪个方向圆角 CACornerMask
-@property (nonatomic, copy, readonly) ObjectType (^corners)(CACornerMask corners);
+@property (readonly) ObjectType (^corners)(CACornerMask corners);
 ///UIColor or #333333
-@property (nonatomic,readonly) ObjectType (^borderColor)(id);
+@property (readonly) ObjectType (^borderColor)(id);
 
-@property (nonatomic,readonly) ObjectType (^borderWidth)(CGFloat);
+@property (readonly) ObjectType (^borderWidth)(CGFloat);
 
-@property (nonatomic,readonly) ObjectType (^border)(CGFloat width,id color);
+@property (readonly) ObjectType (^border)(CGFloat width,id color);
 
-@property (nonatomic,readonly) ObjectType (^shColor)(id color);
+@property (readonly) ObjectType (^shColor)(id color);
 //默认 （0,2）
-@property (nonatomic,readonly) ObjectType (^shOffset)(CGFloat width,CGFloat height);
+@property (readonly) ObjectType (^shOffset)(CGFloat width,CGFloat height);
 //默认0.2
-@property (nonatomic,readonly) ObjectType (^shOpacity)(CGFloat opacity);
+@property (readonly) ObjectType (^shOpacity)(CGFloat opacity);
 //默认6
-@property (nonatomic,readonly) ObjectType (^shRadius)(CGFloat radius);
+@property (readonly) ObjectType (^shRadius)(CGFloat radius);
 
-@property (nonatomic,readonly) ObjectType (^masksToBounds)(BOOL masksToBounds);
+@property (readonly) ObjectType (^masksToBounds)(BOOL masksToBounds);
 
 ///布局相关
 @property (readonly) ObjectType (^centerX)(CGFloat x);
@@ -210,7 +210,5 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///水平排列的stackView
 #define HStackView ZLStackView.horizontal
-
-
 
 NS_ASSUME_NONNULL_END

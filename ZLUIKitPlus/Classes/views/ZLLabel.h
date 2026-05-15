@@ -39,17 +39,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) ZLLabel* (^boldFont)(CGFloat fontSize);
 ///设置选中文字颜色
 ///设置文字换行最大宽度
-@property ( readonly) ZLLabel* (^txtMaxWidth)(CGFloat preferredMaxLayoutWidth);
+@property (readonly) ZLLabel* (^txtMaxWidth)(CGFloat preferredMaxLayoutWidth);
 ///设置几行 文字，超过则换行，配合 titleMaxWidth 使用
-@property ( readonly) ZLLabel* (^lines)(NSInteger lines);
+@property (readonly) ZLLabel* (^lines)(NSInteger lines);
 ///设置背景色
 @property (readonly) ZLLabel*  (^bgColor)(id color);// 便捷设置背景色，支持 UIColor 或 UIColorHex
 ///设置是否可见
-@property ( readonly) ZLLabel* (^visibility)(BOOL visible);
+@property (readonly) ZLLabel* (^visibility)(BOOL visible);
 ///设置透明度
-@property ( readonly) ZLLabel* (^alphaValue)(CGFloat alpha);
+@property (readonly) ZLLabel* (^alphaValue)(CGFloat alpha);
 ///设置userinteractionEnabled
-@property (nonatomic, copy, readonly) ZLLabel* (^userActive)(BOOL userInteractionEnabled);
+@property (readonly) ZLLabel* (^userActive)(BOOL userInteractionEnabled);
 ///可点击情况下进行相应配置 userActive(YES) 触发回调
 @property (readonly) ZLLabel* (^activeStyle)(void (^)(ZLLabel * label));
 
@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 ///设置圆角
-@property ( readonly) ZLLabel* (^corner)(CGFloat radius);
+@property (readonly) ZLLabel* (^corner)(CGFloat radius);
 ///设置每个角的圆角，参数依次是左上、右上、左下、右下，单独设置每个角（>= 0 时覆盖 cornerRadius）
 @property (readonly) ZLLabel* (^corners)(CACornerMask corners);
 
@@ -78,23 +78,23 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readonly) ZLLabel* (^tapAction)(void(^)(ZLLabel *label));
 
-@property ( copy, readonly) ZLLabel* (^assignToPtr)(ZLLabel *_Nullable* _Nullable ptr);
+@property (readonly) ZLLabel* (^assignToPtr)(ZLLabel *_Nullable* _Nullable ptr);
 ///立即触发block回调，适用于需要在初始化时立即配置样式的场景
 @property (readonly) ZLLabel* (^then)(void (^)(ZLLabel * label));
 
 ///设置高度
-@property ( copy, readonly) ZLLabel* (^height)(CGFloat height);
+@property (readonly) ZLLabel* (^height)(CGFloat height);
 ///设置宽度
-@property ( copy, readonly) ZLLabel* (^width)(CGFloat width);
+@property (readonly) ZLLabel* (^width)(CGFloat width);
 ///同时设置宽高
-@property ( copy, readonly) ZLLabel* (^size)(CGFloat width,CGFloat height);
+@property (readonly) ZLLabel* (^size)(CGFloat width,CGFloat height);
 ///设置宽高相等
-@property ( copy, readonly) ZLLabel* (^square)(CGFloat wh);
+@property (readonly) ZLLabel* (^square)(CGFloat wh);
 ///贴紧父视图四边(参数布局)
-@property ( copy, readonly) ZLLabel* (^edges)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
+@property (readonly) ZLLabel* (^edges)(CGFloat top,CGFloat leading, CGFloat bottom, CGFloat trailing);
  // ⭐高频
 ///贴紧父视图四边布局
-@property ( copy, readonly) ZLLabel* (^edgesZero)(void);
+@property (readonly) ZLLabel* (^edgesZero)(void);
 ///添加到父视图，参数是父视图
 @property (nonatomic, copy, readonly) ZLLabel* (^addTo)(UIView *superview);
 ///添加到父视图 并且贴紧父视图四边布局，参数是父视图

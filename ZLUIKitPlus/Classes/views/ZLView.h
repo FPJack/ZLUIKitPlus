@@ -17,44 +17,44 @@ NS_ASSUME_NONNULL_BEGIN
 ///赋值当前对象到一个指针上
 /// 例如：ZLBaseView *view;
 ///  ZLBaseView.new.assignToPtr(&view);
-@property (nonatomic, copy, readonly)ObjectType (^assignToPtr)(ZLBaseView *_Nullable* _Nullable buttonPtr);
+@property (readonly)ObjectType (^assignToPtr)(ZLBaseView *_Nullable* _Nullable buttonPtr);
 
 ///设置userinteractionEnabled 会触发activeStyle 或者 inactiveStyle 回调
-@property (nonatomic, copy, readonly) ObjectType (^userActive)(BOOL userInteractionEnabled);
+@property (readonly) ObjectType (^userActive)(BOOL userInteractionEnabled);
 
 @property (readonly) ObjectType (^visibility)(BOOL visible);
 
 @property (readonly)ObjectType (^alphaValue)(CGFloat alpha);
 
-@property (nonatomic, copy,readonly)ObjectType (^bgColor)(id color);// 便捷设置背景色，支持 UIColor 或 UIColorHex
+@property (readonly)ObjectType (^bgColor)(id color);// 便捷设置背景色，支持 UIColor 或 UIColorHex
 ///设置圆角
 @property (nonatomic, copy, readonly)ObjectType (^corner)(CGFloat radius);
 
 ///设置4个方向的圆角，传入不同的值
-@property (nonatomic, copy, readonly)ObjectType (^cornerRadii)(CGFloat topLeft, CGFloat topRight, CGFloat bottomLeft, CGFloat bottomRight);
+@property (readonly)ObjectType (^cornerRadii)(CGFloat topLeft, CGFloat topRight, CGFloat bottomLeft, CGFloat bottomRight);
 ///设置是否圆形裁剪
-@property (nonatomic, copy, readonly)ObjectType (^circle)(BOOL circle);
+@property (readonly)ObjectType (^circle)(BOOL circle);
 ///UIColor or #333333
-@property (nonatomic,readonly)ObjectType (^borderColor)(id);
+@property (readonly)ObjectType (^borderColor)(id);
 
-@property (nonatomic,readonly)ObjectType (^borderWidth)(CGFloat);
+@property (readonly)ObjectType (^borderWidth)(CGFloat);
 
-@property (nonatomic,readonly)ObjectType (^border)(CGFloat width,id color);
+@property (readonly)ObjectType (^border)(CGFloat width,id color);
 
-@property (nonatomic,readonly)ObjectType (^shColor)(id color);
+@property (readonly)ObjectType (^shColor)(id color);
 //默认 （0,2）
-@property (nonatomic,readonly)ObjectType (^shOffset)(CGFloat width,CGFloat height);
+@property (readonly)ObjectType (^shOffset)(CGFloat width,CGFloat height);
 //默认0.2
-@property (nonatomic,readonly)ObjectType (^shOpacity)(CGFloat opacity);
+@property (readonly)ObjectType (^shOpacity)(CGFloat opacity);
 //默认6
-@property (nonatomic,readonly)ObjectType (^shRadius)(CGFloat radius);
+@property (readonly)ObjectType (^shRadius)(CGFloat radius);
 
-@property (nonatomic,readonly)ObjectType (^masksToBounds)(BOOL masksToBounds);
+@property (readonly)ObjectType (^masksToBounds)(BOOL masksToBounds);
 
 ///渐变颜色
-@property (nonatomic, readonly)ObjectType (^gradColors)(NSArray *colors);
+@property (readonly)ObjectType (^gradColors)(NSArray *colors);
 ///渐变方向，传入起点和终点坐标，范围0~1
-@property (nonatomic, readonly)ObjectType (^gradDirection)(CGPoint startPoint, CGPoint endPoint);
+@property (readonly)ObjectType (^gradDirection)(CGPoint startPoint, CGPoint endPoint);
 ///布局相关
 @property (readonly) ObjectType (^centerX)(CGFloat x);
 

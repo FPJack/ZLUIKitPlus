@@ -682,7 +682,6 @@
         if (@available(iOS 13.0, *)) {
             image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         }
-        self.tintColor = UIColor.orangeColor;
         self.layoutImage = image;
         return self;
     };
@@ -720,6 +719,24 @@
         self.layoutTitle = title;
         return self;
     };
+}
+- (ZLButton * _Nonnull (^)(NSTextAlignment))titleAlign {
+    return ^(NSTextAlignment align) {
+        self.titleLabel.textAlignment = align;
+        return self;
+    };
+}
+- (instancetype)titleAlignLeft {
+    self.titleLabel.textAlignment = NSTextAlignmentLeft;
+    return self;
+}
+- (instancetype)titleAlignCenter {
+    self.titleLabel.textAlignment = NSTextAlignmentCenter;
+    return self;
+}
+- (instancetype)titleAlignRight {
+    self.titleLabel.textAlignment = NSTextAlignmentRight;
+    return self;
 }
 - (ZLButton * _Nonnull (^)(NSString* _Nonnull))selectTitle {
     return ^(NSString* title) {

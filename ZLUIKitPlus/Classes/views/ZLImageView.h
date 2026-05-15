@@ -9,30 +9,30 @@
 NS_ASSUME_NONNULL_BEGIN
 #define ZLImgView [ZLImageView new]
 @interface ZLImageView : UIImageView
-@property (nonatomic, copy, readonly) ZLImageView* (^img)(id _Nullable image);
+@property (readonly) ZLImageView* (^img)(id _Nullable image);
 ///高亮图片
-@property (nonatomic, copy, readonly) ZLImageView* (^hlImg)(id _Nullable highlightImage);
+@property (readonly) ZLImageView* (^hlImg)(id _Nullable highlightImage);
 ///设置高亮状态
-@property (nonatomic, copy, readonly) ZLImageView* (^highlight)(BOOL highlighted);
-@property (nonatomic, copy, readonly) ZLImageView* (^mode)(UIViewContentMode mode);
+@property (readonly) ZLImageView* (^highlight)(BOOL highlighted);
+@property (readonly) ZLImageView* (^mode)(UIViewContentMode mode);
 - (instancetype)aspectFill;
 
 - (instancetype)aspectFit;
 
-@property (nonatomic, copy, readonly) ZLImageView* (^corner)(CGFloat radius);
-@property (nonatomic, copy, readonly) ZLImageView* (^corners)(CACornerMask corners);
+@property (readonly) ZLImageView* (^corner)(CGFloat radius);
+@property (readonly) ZLImageView* (^corners)(CACornerMask corners);
 
-@property (nonatomic, copy, readonly) ZLImageView* (^circle)(BOOL isCircel);
+@property (readonly) ZLImageView* (^circle)(BOOL isCircel);
 
-@property (nonatomic, copy, readonly) ZLImageView* (^border)(CGFloat width, id _Nullable color);
-@property (nonatomic, copy, readonly) ZLImageView* (^bgColor)(id _Nullable color);
-@property (nonatomic, copy, readonly) ZLImageView* (^visibility)(BOOL visible);
+@property (readonly) ZLImageView* (^border)(CGFloat width, id _Nullable color);
+@property (readonly) ZLImageView* (^bgColor)(id _Nullable color);
+@property (readonly) ZLImageView* (^visibility)(BOOL visible);
 
-@property (nonatomic, copy, readonly) ZLImageView* (^alphaValue)(CGFloat alpha);
+@property (readonly) ZLImageView* (^alphaValue)(CGFloat alpha);
 
-@property (nonatomic, copy, readonly) ZLImageView* (^url)(id _Nullable url,id _Nullable placeholder);
+@property (readonly) ZLImageView* (^url)(id _Nullable url,id _Nullable placeholder);
 
-@property (nonatomic, copy, readonly) ZLImageView* (^assignToPtr)(ZLImageView *_Nullable* _Nullable ptr);
+@property (readonly) ZLImageView* (^assignToPtr)(ZLImageView *_Nullable* _Nullable ptr);
 
 ///布局相关
 @property (readonly) ZLImageView* (^centerX)(CGFloat x);
@@ -69,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readonly) ZLImageView*(^addSubview)(UIView *subview);
 ///设置userinteractionEnabled
-@property (nonatomic, copy, readonly) ZLImageView* (^userActive)(BOOL userInteractionEnabled);
+@property (readonly) ZLImageView* (^userActive)(BOOL userInteractionEnabled);
 ///可点击情况下进行相应配置 userActive(YES) 触发回调
 @property (readonly) ZLImageView* (^activeStyle)(void (^)(ZLImageView* view));
 ///不可点击情况下配置userActive(NO) 触发回调

@@ -160,10 +160,10 @@
    
     [self.layer insertSublayer:_backgroundShapeLayer atIndex:0];
 }
-- (void)setNeedLayoutIfNeed {
+- (void)setNeedsUpdateConstraintsIfNeed {
     if (self.needsUpdate) return;
     self.needsUpdate = YES;
-    [self setNeedsLayout];
+    [self setNeedsUpdateConstraints];
 }
 
 - (UIEdgeInsets)_zl_effectiveInsets {
@@ -281,6 +281,7 @@
     }
     self.orderKey = orderKey;
     [self updateImageSize];
+    [self updateTitleSize];
     
     [NSLayoutConstraint deactivateConstraints:self.customContraints];
     [self.customContraints removeAllObjects];
@@ -292,10 +293,14 @@
     UIEdgeInsets insets = [self _zl_effectiveInsets];
     CGFloat space = self.layoutSpacing;
     if (count == 1) {
-        cons = [self.widthAnchor constraintGreaterThanOrEqualToConstant: MAX(0, insets.left + insets.right)];
-        [self.customContraints addObject:cons];
-        cons = [self.heightAnchor constraintGreaterThanOrEqualToConstant:MAX(insets.top + insets.bottom, 0)];
-        [self.customContraints addObject:cons];
+        if (!self.translatesAutoresizingMaskIntoConstraints) {
+            cons = [self.widthAnchor constraintGreaterThanOrEqualToConstant: MAX(0, insets.left + insets.right)];
+            cons.priority = UILayoutPriorityRequired - 1;
+            [self.customContraints addObject:cons];
+            cons = [self.heightAnchor constraintGreaterThanOrEqualToConstant:MAX(insets.top + insets.bottom, 0)];
+            cons.priority = UILayoutPriorityRequired - 1;
+            [self.customContraints addObject:cons];
+        }
     }
    
  
@@ -492,14 +497,13 @@
     // TAMR=YES（frame 布局）时，降低所有自定义约束的优先级，避免和 autoresizing 约束冲突
     if ([super translatesAutoresizingMaskIntoConstraints]) {
         for (NSLayoutConstraint *c in self.customContraints) {
-            c.priority = UILayoutPriorityDefaultHigh; // 750，低于 autoresizing 的 1000
+            c.priority = UILayoutPriorityRequired - 1; // 750，低于 autoresizing 的 1000
         }
     }
     [NSLayoutConstraint activateConstraints:self.customContraints];
 
 }
 - (CGSize)intrinsicContentSize {
-    return CGSizeMake(UIViewNoIntrinsicMetric, UIViewNoIntrinsicMetric);
     //返回自适应
     return CGSizeMake(self.layoutEdgeInsets.left + self.layoutEdgeInsets.right, self.layoutEdgeInsets.top + self.layoutEdgeInsets.bottom);
 }
@@ -545,11 +549,9 @@
 - (void)saveView:(UIView *)view {
     if ([view isKindOfClass:UILabel.class] && [self.titleLabel isEqual:view]) {
         self.lab = (UILabel*)view;
-//        self.lab.translatesAutoresizingMaskIntoConstraints = NO;
     }
     if ([view isKindOfClass:UIImageView.class] && [self.imageView isEqual:view]) {
         self.imgView = (UIImageView *)view;
-//        self.imgView.translatesAutoresizingMaskIntoConstraints = NO;
     }
 }
 #pragma mark - Init
@@ -579,7 +581,7 @@
         }
         if (!(self -> _gradLayer)) {
             self.gradLayer.colors = cgColors;
-            [self setNeedLayoutIfNeed];
+            [self setNeedsUpdateConstraintsIfNeed];
             return self;
         }
         self.gradLayer.colors = cgColors;
@@ -591,7 +593,7 @@
         self.gradLayer.startPoint = start;
         self.gradLayer.endPoint = end;
         if (!(self -> _gradLayer)) {
-            [self setNeedLayoutIfNeed];
+            [self setNeedsUpdateConstraintsIfNeed];
         }
         return self;
     };
@@ -603,23 +605,25 @@
     _flexibleSpacing = NO;
     _layoutEdgeInsets = UIEdgeInsetsZero;
     _layoutImageSize = CGSizeMake(-1, -1);
+    _titleSize = CGSizeMake(-1, -1);
 //    self.translatesAutoresizingMaskIntoConstraints = NO;
 //    self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _cornerRadiiValue = UIEdgeInsetsMake(-1, -1, -1, -1);
     _horizontalAlign = ZLButtonAlignCenter;
     _verticalAlign = ZLButtonAlignCenter;
-    [self setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
+    [self setNeedsUpdateConstraintsIfNeed];
+    //[self setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
 }
 - (void)setVerticalAlign:(ZLButtonAlign)verticalAlign {
     if (_verticalAlign != verticalAlign) {
         _verticalAlign = verticalAlign;
-        [self setNeedsUpdateConstraints];
+        [self setNeedsUpdateConstraintsIfNeed];
     }
 }
 - (void)setHorizontalAlign:(ZLButtonAlign)horizontalAlign {
     if (_horizontalAlign != horizontalAlign) {
         _horizontalAlign = horizontalAlign;
-        [self setNeedsUpdateConstraints];
+        [self setNeedsUpdateConstraintsIfNeed];
     }
 }
 - (instancetype)vAlignCenter {
@@ -857,7 +861,7 @@
 - (void)setAxis:(ZLButtonAxis)layoutAxis {
     if (_axis != layoutAxis) {
         _axis = layoutAxis;
-        [self setNeedsUpdateConstraints];
+        [self setNeedsUpdateConstraintsIfNeed];
     }
 }
 - (instancetype)vertical {
@@ -871,7 +875,7 @@
 - (void)setLayoutOrder:(ZLButtonOrder)layoutOrder {
     if (_layoutOrder != layoutOrder) {
         _layoutOrder = layoutOrder;
-        [self setNeedsUpdateConstraints];
+        [self setNeedsUpdateConstraintsIfNeed];
     }
 }
 - (instancetype)imageFirst {
@@ -930,7 +934,7 @@
 - (void)setFlexibleSpacing:(BOOL)flexibleSpacing {
     if (_flexibleSpacing != flexibleSpacing) {
         _flexibleSpacing = flexibleSpacing;
-        [self setNeedsUpdateConstraints];
+        [self setNeedsUpdateConstraintsIfNeed];
     }
 }
 
@@ -972,13 +976,22 @@
 
 - (void)setTitleSize:(CGSize)titleSize {
     if (CGSizeEqualToSize(titleSize, self.titleLabel.intrinsicContentSize)) return;
+    if (CGSizeEqualToSize(titleSize, _titleSize)) return;
     _titleSize = titleSize;
+    [self setNeedsUpdateConstraintsIfNeed];
+}
+- (void)updateTitleSize {
+    if (!self.lab) return;
+    if (CGSizeEqualToSize(self.titleSize, CGSizeMake(-1, -1))) return;
+    if (CGSizeEqualToSize(self.titleSize, self.titleLabel.intrinsicContentSize)) return;
     [NSLayoutConstraint deactivateConstraints:self.titleLabel.constraints];
-//    self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    [NSLayoutConstraint activateConstraints:@[
-        [self.titleLabel.widthAnchor constraintEqualToConstant:titleSize.width],
-        [self.titleLabel.heightAnchor constraintEqualToConstant:titleSize.height]
-    ]];
+    NSMutableArray *arr = NSMutableArray.array;
+    NSLayoutConstraint *cons = [self.titleLabel.widthAnchor constraintEqualToConstant:self.titleSize.width];
+    cons.priority = UILayoutPriorityRequired - 1;
+    [arr addObject:cons];
+    cons = [self.titleLabel.heightAnchor constraintEqualToConstant:self.titleSize.height];
+    cons.priority = UILayoutPriorityRequired - 1;
+    [NSLayoutConstraint activateConstraints:arr];
 }
 - (ZLButton * _Nonnull (^)(CGFloat, CGFloat))titSize {
     return ^(CGFloat width, CGFloat height) {
@@ -989,7 +1002,7 @@
 - (void)setLayoutImageSize:(CGSize)layoutImageSize {
     if (CGSizeEqualToSize(layoutImageSize, _layoutImageSize)) return;
     _layoutImageSize = layoutImageSize;
-    [self setNeedsUpdateConstraints];
+    [self setNeedsUpdateConstraintsIfNeed];
 }
 - (void)updateImageSize {
     if (!self.imgView ) {
@@ -1033,7 +1046,7 @@
 }
 - (void)setImageInsets:(GMStartEndInsets)imageInsets {
     _imageInsets = imageInsets;
-    [self setNeedsUpdateConstraints];
+    [self setNeedsUpdateConstraintsIfNeed];
 }
 - (ZLButton * _Nonnull (^)(CGFloat, CGFloat))imgInsets {
     return ^(CGFloat start, CGFloat end) {
@@ -1043,7 +1056,7 @@
 }
 - (void)setTitleInsets:(GMStartEndInsets)titleInsets {
     _titleInsets = titleInsets;
-    [self setNeedsUpdateConstraints];
+    [self setNeedsUpdateConstraintsIfNeed];
 }
 - (ZLButton * _Nonnull (^)(CGFloat, CGFloat))titInsets {
     return ^(CGFloat start, CGFloat end) {
@@ -1149,7 +1162,7 @@
         }
         self.cornerRadiiValue = cornerRadiiValue;
         [self backgroundShapeLayer];
-        [self setNeedLayoutIfNeed];
+        [self setNeedsUpdateConstraintsIfNeed];
         return self;
     };
 }
@@ -1161,7 +1174,7 @@
         }
         self.cornerRadiiValue = UIEdgeInsetsMake(topLeft, topRight, bottomLeft, bottomRight);
         [self backgroundShapeLayer];
-        [self setNeedLayoutIfNeed];
+        [self setNeedsUpdateConstraintsIfNeed];
         return self;
     };
 }

@@ -20,7 +20,7 @@
         .addToFull(self.view);
     
     
-            UIButton * btn  = HButton
+            UIButton * btn  = VButton
                     .titleFirst
                     .systemImage(@"star.fill")
                     .imageSize(20, 20)
@@ -31,15 +31,41 @@
                     .insets(10, 16, 10, 16)
                     .corner(8)
                     .spacing(12);
-            btn.frame = CGRectMake(50, 100, 200, 50);
+            btn.frame = CGRectMake(50, 100, 200, 100);
+            [btn setNeedsUpdateConstraints];
+           // [self.view addSubview:btn];
+    
+    {
+        ZLButton * btn  = [ZLButton buttonWithType:UIButtonTypeCustom];
+        btn.frame = CGRectMake(50, 300, 300, 100);
+        [btn setTitle:@"spacing=12" forState:UIControlStateNormal];
+        [btn setImage:[UIImage systemImageNamed:@"star.fill"] forState:UIControlStateNormal];
+        [btn setTitleColor:UIColor.orangeColor forState:UIControlStateNormal];
+        btn.titleLabel.font = [UIFont systemFontOfSize:15];
+        [btn setBackgroundColor:UIColor.grayColor];
+//        btn.cornerRadii(10, 20, 30, 40).border(2, UIColor.orangeColor);
+//        btn.titleFirst.vertical;
 
-                [self.view addSubview:btn];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        btn.frame = CGRectMake(100, 300, 200, 100);
-        NSLog(@"%ld",btn.translatesAutoresizingMaskIntoConstraints);
+       // [btn setNeedsUpdateConstraints];
+//            btn.titleFirst
+//            .systemImage(@"star.fill")
+//            .imageSize(20, 20)
+//            .title(@"spacing=12")
+//            .systemFont(15)
+//            .titleColor(@"#333333")
+//            .bgColor(@"#E3F2FD")
+//            .insets(10, 16, 10, 16)
+//            .corner(8)
+//            .spacing(12);
+        [self.view addSubview:btn];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            btn.frame = CGRectMake(100, 200, 200, 150);
+            btn.vertical;
 
-    });
-//    return;
+        });
+    }
+    
+    return;
     
     
     // ─────────────────────────────────────

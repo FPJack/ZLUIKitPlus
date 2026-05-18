@@ -247,6 +247,7 @@
     if (self.lab) {
         ///判断size 是否宽高有一个为0
         NSString *title = [self titleForState:self.state];
+        self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
         if (title.length > 0) {
             [arr addObject:self.lab];
             orderKey = [orderKey stringByAppendingString:@"0"];
@@ -256,12 +257,21 @@
         UIImage *image = [self imageForState:self.state];
         CGSize size = image.size;
         if (size.width > 0 && size.height > 0) {
-//            [self.imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-//            [self.imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-//            [self.imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-//            [self.imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+            self.imgView.translatesAutoresizingMaskIntoConstraints = NO;
+            [self.imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+            [self.imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+            [self.imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+            [self.imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
             [arr addObject:self.imgView];
             orderKey = [orderKey stringByAppendingString:@"1"];
+        }
+    }
+    
+    if (arr.count == 2) {
+        if ([arr.firstObject isEqual:self.lab] && self.layoutOrder != ZLButtonOrderTitleFirst) {
+            [arr exchangeObjectAtIndex:0 withObjectAtIndex:1];
+        }else if ([arr.firstObject isEqual:self.imgView] && self.layoutOrder != ZLButtonOrderImageFirst) {
+            [arr exchangeObjectAtIndex:0 withObjectAtIndex:1];
         }
     }
     
@@ -282,7 +292,6 @@
     UIEdgeInsets insets = [self _zl_effectiveInsets];
     CGFloat space = self.layoutSpacing;
     if (count == 1) {
-        
         cons = [self.widthAnchor constraintGreaterThanOrEqualToConstant: MAX(0, insets.left + insets.right)];
         [self.customContraints addObject:cons];
         cons = [self.heightAnchor constraintGreaterThanOrEqualToConstant:MAX(insets.top + insets.bottom, 0)];
@@ -479,14 +488,18 @@
             
         }
     }
-//    [self.customContraints enumerateObjectsUsingBlock:^(NSLayoutConstraint*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//        obj.priority = UILayoutPriorityRequired - 1;
-//    }];
 
-
+    // TAMR=YES（frame 布局）时，降低所有自定义约束的优先级，避免和 autoresizing 约束冲突
+    if ([super translatesAutoresizingMaskIntoConstraints]) {
+        for (NSLayoutConstraint *c in self.customContraints) {
+            c.priority = UILayoutPriorityDefaultHigh; // 750，低于 autoresizing 的 1000
+        }
+    }
     [NSLayoutConstraint activateConstraints:self.customContraints];
+
 }
 - (CGSize)intrinsicContentSize {
+    return CGSizeMake(UIViewNoIntrinsicMetric, UIViewNoIntrinsicMetric);
     //返回自适应
     return CGSizeMake(self.layoutEdgeInsets.left + self.layoutEdgeInsets.right, self.layoutEdgeInsets.top + self.layoutEdgeInsets.bottom);
 }
@@ -532,11 +545,11 @@
 - (void)saveView:(UIView *)view {
     if ([view isKindOfClass:UILabel.class] && [self.titleLabel isEqual:view]) {
         self.lab = (UILabel*)view;
-        self.lab.translatesAutoresizingMaskIntoConstraints = NO;
+//        self.lab.translatesAutoresizingMaskIntoConstraints = NO;
     }
     if ([view isKindOfClass:UIImageView.class] && [self.imageView isEqual:view]) {
         self.imgView = (UIImageView *)view;
-        self.imgView.translatesAutoresizingMaskIntoConstraints = NO;
+//        self.imgView.translatesAutoresizingMaskIntoConstraints = NO;
     }
 }
 #pragma mark - Init
@@ -590,8 +603,8 @@
     _flexibleSpacing = NO;
     _layoutEdgeInsets = UIEdgeInsetsZero;
     _layoutImageSize = CGSizeMake(-1, -1);
-    self.translatesAutoresizingMaskIntoConstraints = NO;
-    self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//    self.translatesAutoresizingMaskIntoConstraints = NO;
+//    self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _cornerRadiiValue = UIEdgeInsetsMake(-1, -1, -1, -1);
     _horizontalAlign = ZLButtonAlignCenter;
     _verticalAlign = ZLButtonAlignCenter;
@@ -648,9 +661,9 @@
 }
 
 #pragma mark - Convenience Setters
-- (BOOL)translatesAutoresizingMaskIntoConstraints {
-    return NO;
-}
+//- (BOOL)translatesAutoresizingMaskIntoConstraints {
+//    return NO;
+//}
 - (void)setLayoutImage:(UIImage *)layoutImage {
     [self setImage:layoutImage forState:UIControlStateNormal];
 }
@@ -961,7 +974,7 @@
     if (CGSizeEqualToSize(titleSize, self.titleLabel.intrinsicContentSize)) return;
     _titleSize = titleSize;
     [NSLayoutConstraint deactivateConstraints:self.titleLabel.constraints];
-    self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+//    self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:@[
         [self.titleLabel.widthAnchor constraintEqualToConstant:titleSize.width],
         [self.titleLabel.heightAnchor constraintEqualToConstant:titleSize.height]
@@ -1005,7 +1018,6 @@
     if (self.imgView.translatesAutoresizingMaskIntoConstraints) {
         self.imageView.translatesAutoresizingMaskIntoConstraints = NO;
     }
-    self.imageView.translatesAutoresizingMaskIntoConstraints = NO;
     ///降优先级防止和button的宽高约束冲突
     NSLayoutConstraint *cons1 = [self.imageView.widthAnchor constraintEqualToConstant:self.layoutImageSize.width];
     cons1.priority = UILayoutPriorityRequired - 1;

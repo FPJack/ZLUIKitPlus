@@ -17,13 +17,14 @@
     [contentStack wrapScrollView].zl_layout
         .addToFull(self.view);
 
-    [contentStack addArrangedSubview:[self demo01_pairLabelViewHorizontal]];
-    [contentStack addArrangedSubview:[self demo02_pairLabelViewVertical]];
-    [contentStack addArrangedSubview:[self demo03_pairLabelSpacing]];
-    [contentStack addArrangedSubview:[self demo04_pairLabelFlex]];
-    [contentStack addArrangedSubview:[self demo05_pairLabelAlignSpacing]];
-    [contentStack addArrangedSubview:[self demo06_pairImageView]];
+//    [contentStack addArrangedSubview:[self demo01_pairLabelViewHorizontal]];
+//    [contentStack addArrangedSubview:[self demo02_pairLabelViewVertical]];
+//    [contentStack addArrangedSubview:[self demo03_pairLabelSpacing]];
+//    [contentStack addArrangedSubview:[self demo04_pairLabelFlex]];
+//    [contentStack addArrangedSubview:[self demo05_pairLabelAlignSpacing]];
+//    [contentStack addArrangedSubview:[self demo06_pairImageView]];
     [contentStack addArrangedSubview:[self demo07_pairButtonView]];
+    return;
     [contentStack addArrangedSubview:[self demo08_imgLabelView]];
     [contentStack addArrangedSubview:[self demo09_imgButtonView]];
     [contentStack addArrangedSubview:[self demo10_buttonImgView]];
@@ -258,20 +259,20 @@
 
     // 取消 + 确认
     ZLPairButtonView *pair = ZLPairButtonView.new.space(12).firstFlex(1).secondFlex(1);
-    pair.first.title(@"取消").systemFont(15).titleColor(@"#666666")
-        .border(1, @"#DDDDDD").corner(20).masksToBounds(YES).height(40)
-        .tapAction(^(ZLButton *btn) { NSLog(@"点击取消"); });
-    pair.second.title(@"确认").systemFont(15).titleColor(@"#FFFFFF")
-        .bgColor(@"#1677FF").corner(20).masksToBounds(YES).height(40)
-        .tapAction(^(ZLButton *btn) { NSLog(@"点击确认"); });
-    [sec addArrangedSubview:pair];
+//    pair.first.title(@"取消").systemFont(15).titleColor(@"#666666")
+//        .border(1, @"#DDDDDD").corner(20).masksToBounds(YES).height(40)
+//        .tapAction(^(ZLButton *btn) { NSLog(@"点击取消"); });
+//    pair.second.title(@"确认").systemFont(15).titleColor(@"#FFFFFF")
+//        .bgColor(@"#1677FF").corner(20).masksToBounds(YES).height(40)
+//        .tapAction(^(ZLButton *btn) { NSLog(@"点击确认"); });
+//    [sec addArrangedSubview:pair];
 
     // 垂直排列两个按钮
     ZLPairButtonView *pair2 = ZLPairButtonView.new.vertical.space(8).alignFill;
-    pair2.first.title(@"主要操作").systemFont(15).titleColor(@"#FFFFFF")
-        .bgColor(@"#1677FF").corner(8).masksToBounds(YES).height(44);
+    //pair2.first.title(@"主要操作").systemFont(15).titleColor(@"#FFFFFF")
+       // .bgColor(@"#1677FF").corner(8).masksToBounds(YES).height(44);
     pair2.second.title(@"次要操作").systemFont(15).titleColor(@"#1677FF")
-        .border(1, @"#1677FF").corner(8).masksToBounds(YES).height(44);
+        .border(1, @"#1677FF").corner(8).height(44);
     [sec addArrangedSubview:pair2];
 
     return sec;

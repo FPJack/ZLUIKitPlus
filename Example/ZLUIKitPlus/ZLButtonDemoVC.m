@@ -20,7 +20,28 @@
         .addToFull(self.view);
     
     
+            UIButton * btn  = HButton
+                    .titleFirst
+                    .systemImage(@"star.fill")
+                    .imageSize(20, 20)
+                    .title(@"spacing=12")
+                    .systemFont(15)
+                    .titleColor(@"#333333")
+                    .bgColor(@"#E3F2FD")
+                    .insets(10, 16, 10, 16)
+                    .corner(8)
+                    .spacing(12);
+            btn.frame = CGRectMake(50, 100, 200, 50);
 
+                [self.view addSubview:btn];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        btn.frame = CGRectMake(100, 300, 200, 100);
+        NSLog(@"%ld",btn.translatesAutoresizingMaskIntoConstraints);
+
+    });
+//    return;
+    
+    
     // ─────────────────────────────────────
     // 1. 水平布局：图片在前（HButton）
     // ─────────────────────────────────────

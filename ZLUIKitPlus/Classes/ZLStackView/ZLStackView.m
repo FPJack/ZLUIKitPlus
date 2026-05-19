@@ -33,8 +33,8 @@
     if (self) {
         self.markedDirty = YES;
         ///消除staview 宽度为0的时候 设置了内边距控制台报约束警告的问题
-//        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        self.translatesAutoresizingMaskIntoConstraints = NO;
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//        self.translatesAutoresizingMaskIntoConstraints = NO;
         self.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
     }
     return self;
@@ -75,9 +75,9 @@
     self.markedDirty = YES;
     [self setNeedsUpdateConstraints];
 }
-- (BOOL)translatesAutoresizingMaskIntoConstraints {
-    return NO;
-}
+//- (BOOL)translatesAutoresizingMaskIntoConstraints {
+//    return NO;
+//}
 - (void)addArrangedSubview:(UIView *)view{
     if ([view isKindOfClass:UIView.class]) {
         if ([self.allViews containsObject:view]) return;
@@ -86,13 +86,19 @@
         [cfg setValue:self forKey:@"stackView"];
         [self.allViews addObject:view];
         [self adjustLabelCompression:view];
+        [self adjustStackView:view];
         [self addSubview:view];
         if (view.hidden) return;
         self.markedDirty = YES;
         [self setNeedsUpdateConstraints];
     }
 }
-
+///如果是ZLStackView就设置translatesAutoresizingMaskIntoConstraints = NO;
+- (void)adjustStackView:(UIView*)view {
+    if (![view isKindOfClass:ZLBaseStackView.class]) return;
+    ///StackView嵌套的时候 有些情况会报约束冲突
+    view.translatesAutoresizingMaskIntoConstraints = NO;
+}
 - (void)addArrangedSubview:(UIView *)view layout:(void(^)(__kindof UIView *view, ZLFlexItem *viewCfg))config{
     [self addArrangedSubview:view];
     if (config) config(view,view.zl_flex);
@@ -101,6 +107,7 @@
 - (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)stackIndex {
     if ([view isKindOfClass:UIView.class]) {
         if ([self.allViews containsObject:view]) return;
+        [self adjustStackView:view];
         [self addSubview:view];
         ZLFlexItem *cfg = view.zl_flex;
         [cfg setValue:view forKey:@"view"];
@@ -260,6 +267,10 @@
     [self.layoutManager addVerticalLayoutConstraints];
     [self.layoutManager activateConstraints];
     self.markedDirty = NO;
+}
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
 }
 ///至关重要
 - (CGSize)intrinsicContentSize {
@@ -543,7 +554,7 @@
     };
 }
 - (BOOL)_zl_isRTL {
-    
+
     if (@available(iOS 10.0, *)) {
         return self.effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
     }

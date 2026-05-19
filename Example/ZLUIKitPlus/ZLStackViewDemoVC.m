@@ -80,27 +80,44 @@ static ZLStackView *sectionView(NSString *title) {
     self.contentStack = stack;
 
     [self buildDemos];
+    
+    ZLStackView *sk;
+    VStackView
+    .space(10)
+    .addView(UISwitch.new)
+    .addView(UISwitch.new)
+    .addView(UISwitch.new)
+    .assignToPtr(&sk);
+    [self.view addSubview:sk];
+    sk.frame = CGRectMake(150, 300, 100, 100);
+    
 }
 
 - (void)buildDemos {
     [self demo01_axisAndSpacing];
-    return;
+    
     [self demo02_justifyContent];
     [self demo03_alignment];
-  
+    
     [self demo04_insets];
     [self demo05_customSpacing];
+    
     [self demo06_flexibleSpacing];
     [self demo07_flex];
     [self demo08_alignSelf];
+    
+
     [self demo09_alignStartEndSpacing];
     [self demo10_hiddenAutoLayout];
     [self demo11_addLayout];
     [self demo12_removeView];
+    
+
     [self demo13_insertAtIndex];
     [self demo14_tapAction];
     [self demo15_chainAPI];
     
+
     [self demo16_wrapScrollViewHorizontal];
     [self demo17_wrapScrollViewVertical];
     [self demo18_nestedStack];
@@ -240,7 +257,9 @@ static ZLStackView *sectionView(NSString *title) {
     [row setCustomMinSpacing:4 afterView:b];
     [row setCustomMaxSpacing:30 afterView:b];
     [row addArrangedSubview:c];
+
     [sec addArrangedSubview:row];
+//    return;
 
     UILabel *x = colorBlock(@"X", randColor()); x.zl_layout.size(40, 32);
     UILabel *y = colorBlock(@"Y", randColor()); y.zl_layout.size(40, 32);
@@ -249,7 +268,9 @@ static ZLStackView *sectionView(NSString *title) {
         .addView(x).spacingAfter(24,x)
         .addView(y).minSpacingAfter(4,y).maxSpacingAfter( 40,y)
         .addView(z);
+
     [sec addArrangedSubview:row2];
+    
 }
 
 // ─────────────────────────────────────────

@@ -15,8 +15,8 @@
 #define kSpacingId @"kSpacingId"
 #define kCustomPriority UILayoutPriorityRequired - 1
 @interface ZLButton ()
-@property (nonatomic,weak)UILabel *lab;
-@property (nonatomic,weak)UIImageView *imgView;
+@property (nonatomic,weak)UILabel *lazyLab;
+@property (nonatomic,weak)UIImageView *lazyImgView;
 @property (nonatomic,assign)BOOL imgTouchOnly;
 @property (nonatomic,assign)UIEdgeInsets touchAreaEdgeInsets;
 @property (nonatomic,assign)CGFloat tapInerval;
@@ -227,10 +227,10 @@
         }
         if (res2) return NO;
         
-        BOOL res1 = evaluatedObject.firstItem == self.lab ||
-        evaluatedObject.secondItem == self.lab ||
-        evaluatedObject.firstItem  == self.imgView ||
-        evaluatedObject.secondItem  == self.imgView;
+        BOOL res1 = evaluatedObject.firstItem == self.lazyLab ||
+        evaluatedObject.secondItem == self.lazyLab ||
+        evaluatedObject.firstItem  == self.lazyImgView ||
+        evaluatedObject.secondItem  == self.lazyImgView;
         if (res1) {
             if (evaluatedObject.firstAttribute == NSLayoutAttributeWidth ||
                 evaluatedObject.firstAttribute == NSLayoutAttributeHeight ||
@@ -249,33 +249,33 @@
     NSLayoutYAxisAnchor *nextYAnchor;
     NSString *orderKey = @"";
 
-    if (self.lab) {
+    if (self.lazyLab) {
         ///判断size 是否宽高有一个为0
         NSString *title = [self titleForState:self.state];
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
         if (title.length > 0) {
-            [arr addObject:self.lab];
+            [arr addObject:self.lazyLab];
             orderKey = [orderKey stringByAppendingString:@"0"];
         }
     }
-    if (self.imgView) {
+    if (self.lazyImgView) {
         UIImage *image = [self imageForState:self.state];
         CGSize size = image.size;
         if (size.width > 0 && size.height > 0) {
-            self.imgView.translatesAutoresizingMaskIntoConstraints = NO;
-            [self.imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-            [self.imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-            [self.imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-            [self.imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-            [arr addObject:self.imgView];
+            self.lazyImgView.translatesAutoresizingMaskIntoConstraints = NO;
+            [self.lazyImgView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+            [self.lazyImgView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+            [self.lazyImgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+            [self.lazyImgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+            [arr addObject:self.lazyImgView];
             orderKey = [orderKey stringByAppendingString:@"1"];
         }
     }
     
     if (arr.count == 2) {
-        if ([arr.firstObject isEqual:self.lab] && self.layoutOrder != ZLButtonOrderTitleFirst) {
+        if ([arr.firstObject isEqual:self.lazyLab] && self.layoutOrder != ZLButtonOrderTitleFirst) {
             [arr exchangeObjectAtIndex:0 withObjectAtIndex:1];
-        }else if ([arr.firstObject isEqual:self.imgView] && self.layoutOrder != ZLButtonOrderImageFirst) {
+        }else if ([arr.firstObject isEqual:self.lazyImgView] && self.layoutOrder != ZLButtonOrderImageFirst) {
             [arr exchangeObjectAtIndex:0 withObjectAtIndex:1];
         }
     }
@@ -311,8 +311,8 @@
  
     for (int i = 0 ; i < count; i ++) {
         UIView *view = arr[i];
-        CGFloat startSpacing = [view isEqual:self.lab] ? self.titleInsets.start : self.imageInsets.start;
-        CGFloat endSpacing = [view isEqual:self.lab] ? self.titleInsets.end : self.imageInsets.end;
+        CGFloat startSpacing = [view isEqual:self.lazyLab] ? self.titleInsets.start : self.imageInsets.start;
+        CGFloat endSpacing = [view isEqual:self.lazyLab] ? self.titleInsets.end : self.imageInsets.end;
         if (self.axis == ZLButtonAxisHorizontal) {
             if (i == 0) {
                 switch (self.horizontalAlign) {
@@ -553,11 +553,19 @@
 }
 - (void)saveView:(UIView *)view {
     if ([view isKindOfClass:UILabel.class] && [self.titleLabel isEqual:view]) {
-        self.lab = (UILabel*)view;
+        self.lazyLab = (UILabel*)view;
     }
     if ([view isKindOfClass:UIImageView.class] && [self.imageView isEqual:view]) {
-        self.imgView = (UIImageView *)view;
+        self.lazyImgView = (UIImageView *)view;
     }
+}
+- (void)setLazyImgView:(UIImageView *)lazyImgView {
+    _lazyImgView = lazyImgView;
+    [self setNeedsUpdateConstraintsIfNeed];
+}
+- (void)setLazyLab:(UILabel *)lazyLab {
+    _lazyLab = lazyLab;
+    [self setNeedsUpdateConstraintsIfNeed];
 }
 #pragma mark - Init
 + (instancetype)vertical {
@@ -976,7 +984,7 @@
     if (topCons) topCons.constant = layoutEdgeInsets.top;
     NSLayoutConstraint *bottomCons = [self constraintWithIdentifier:kInsetBottomId];
     if (bottomCons) bottomCons.constant = layoutEdgeInsets.bottom;
-    [self setNeedsUpdateConstraints];
+    [self setNeedsUpdateConstraintsIfNeed];
 }
 
 - (void)setTitleSize:(CGSize)titleSize {
@@ -986,7 +994,7 @@
     [self setNeedsUpdateConstraintsIfNeed];
 }
 - (void)updateTitleSize {
-    if (!self.lab) return;
+    if (!self.lazyLab) return;
     if (CGSizeEqualToSize(self.titleSize, CGSizeMake(-1, -1))) return;
     if (CGSizeEqualToSize(self.titleSize, self.titleLabel.intrinsicContentSize)) return;
     [NSLayoutConstraint deactivateConstraints:self.titleLabel.constraints];
@@ -1010,13 +1018,13 @@
     [self setNeedsUpdateConstraintsIfNeed];
 }
 - (void)updateImageSize {
-    if (!self.imgView ) {
+    if (!self.lazyImgView ) {
         return;
     }
     if (CGSizeEqualToSize(self.layoutImageSize, CGSizeMake(-1, -1))) {
         return;
     }
-    if (CGSizeEqualToSize(self.imgView.frame.size, self.layoutImageSize)) {
+    if (CGSizeEqualToSize(self.lazyImgView.frame.size, self.layoutImageSize)) {
         return;
     }
    
@@ -1033,8 +1041,8 @@
         return NO;
     }]];
     [NSLayoutConstraint deactivateConstraints:deleteCons];
-    if (self.imgView.translatesAutoresizingMaskIntoConstraints) {
-        self.imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    if (self.lazyImgView.translatesAutoresizingMaskIntoConstraints) {
+        self.lazyImgView.translatesAutoresizingMaskIntoConstraints = NO;
     }
     ///降优先级防止和button的宽高约束冲突
     NSLayoutConstraint *cons1 = [self.imageView.widthAnchor constraintEqualToConstant:self.layoutImageSize.width];

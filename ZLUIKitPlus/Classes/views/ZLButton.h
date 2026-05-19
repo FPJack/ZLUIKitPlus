@@ -121,7 +121,7 @@ NS_INLINE GMStartEndInsets GMStartEndInsetsMake(CGFloat start, CGFloat end) {
 
 /// 图片固定大小，默认 CGSizeZero 表示使用图片自身大小
 @property (nonatomic, assign) CGSize layoutImageSize;
-@property (readonly) ZLButton* (^imageSize)(CGFloat width,CGFloat height);// layoutImageSize 的别名，便捷设置
+@property (readonly) ZLButton* (^imageSize)(CGFloat width,CGFloat height);// layoutImageSize 的别名，便捷设置8
 
 /// 便捷设置图片（设置 Normal 状态）
 @property (nonatomic, strong, nullable) UIImage *layoutImage;

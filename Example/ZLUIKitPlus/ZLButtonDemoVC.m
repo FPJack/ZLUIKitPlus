@@ -57,15 +57,11 @@
 //            .insets(10, 16, 10, 16)
 //            .corner(8)
 //            .spacing(12);
-        [self.view addSubview:btn];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            btn.frame = CGRectMake(100, 200, 200, 150);
-            btn.vertical;
-
-        });
+//        [self.view addSubview:btn];
+      
     }
     
-    return;
+//    return;
     
     
     // ─────────────────────────────────────

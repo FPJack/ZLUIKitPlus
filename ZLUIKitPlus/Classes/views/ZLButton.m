@@ -13,7 +13,7 @@
 #define kInsetTopId @"kInsetTopId"
 #define kInsetBottomId @"kInsetBottomId"
 #define kSpacingId @"kSpacingId"
-
+#define kCustomPriority UILayoutPriorityRequired - 1
 @interface ZLButton ()
 @property (nonatomic,weak)UILabel *lab;
 @property (nonatomic,weak)UIImageView *imgView;
@@ -103,8 +103,12 @@
 }
 - (void)update {
     CGRect bounds = self.bounds;
-    if (CGRectIsEmpty(bounds) || !_backgroundShapeLayer) return;
+    if (CGRectIsEmpty(bounds) || !_backgroundShapeLayer)  {
+        self.needsUpdate = NO;
+        return;
+    }
     if (!self.needsUpdate && CGRectEqualToRect(_backgroundShapeLayer.bounds, self.bounds)){
+        self.needsUpdate = NO;
         return;
     }
     self.needsUpdate = NO;
@@ -164,6 +168,7 @@
     if (self.needsUpdate) return;
     self.needsUpdate = YES;
     [self setNeedsUpdateConstraints];
+    [self setNeedsLayout];
 }
 
 - (UIEdgeInsets)_zl_effectiveInsets {
@@ -295,10 +300,10 @@
     if (count == 1) {
         if (!self.translatesAutoresizingMaskIntoConstraints) {
             cons = [self.widthAnchor constraintGreaterThanOrEqualToConstant: MAX(0, insets.left + insets.right)];
-            cons.priority = UILayoutPriorityRequired - 1;
+            cons.priority = kCustomPriority;
             [self.customContraints addObject:cons];
             cons = [self.heightAnchor constraintGreaterThanOrEqualToConstant:MAX(insets.top + insets.bottom, 0)];
-            cons.priority = UILayoutPriorityRequired - 1;
+            cons.priority = kCustomPriority;
             [self.customContraints addObject:cons];
         }
     }
@@ -497,7 +502,7 @@
     // TAMR=YES（frame 布局）时，降低所有自定义约束的优先级，避免和 autoresizing 约束冲突
     if ([super translatesAutoresizingMaskIntoConstraints]) {
         for (NSLayoutConstraint *c in self.customContraints) {
-            c.priority = UILayoutPriorityRequired - 1; // 750，低于 autoresizing 的 1000
+            c.priority = kCustomPriority; // 750，低于 autoresizing 的 1000
         }
     }
     [NSLayoutConstraint activateConstraints:self.customContraints];
@@ -987,10 +992,10 @@
     [NSLayoutConstraint deactivateConstraints:self.titleLabel.constraints];
     NSMutableArray *arr = NSMutableArray.array;
     NSLayoutConstraint *cons = [self.titleLabel.widthAnchor constraintEqualToConstant:self.titleSize.width];
-    cons.priority = UILayoutPriorityRequired - 1;
+    cons.priority = kCustomPriority;
     [arr addObject:cons];
     cons = [self.titleLabel.heightAnchor constraintEqualToConstant:self.titleSize.height];
-    cons.priority = UILayoutPriorityRequired - 1;
+    cons.priority = kCustomPriority;
     [NSLayoutConstraint activateConstraints:arr];
 }
 - (ZLButton * _Nonnull (^)(CGFloat, CGFloat))titSize {
@@ -1033,9 +1038,9 @@
     }
     ///降优先级防止和button的宽高约束冲突
     NSLayoutConstraint *cons1 = [self.imageView.widthAnchor constraintEqualToConstant:self.layoutImageSize.width];
-    cons1.priority = UILayoutPriorityRequired - 1;
+    cons1.priority = kCustomPriority;
     NSLayoutConstraint *cons2 = [self.imageView.heightAnchor constraintEqualToConstant:self.layoutImageSize.height];
-    cons2.priority = UILayoutPriorityRequired - 1;
+    cons2.priority = kCustomPriority;
     [NSLayoutConstraint activateConstraints:@[cons1,cons2]];
 }
 - (ZLButton * _Nonnull (^)(CGFloat, CGFloat))imageSize {

@@ -167,6 +167,8 @@ typedef NS_ENUM(NSInteger, ZLAttr) {
 
 @property (readonly) ZLLayout *(^addSubviewLayout)(UIView *subview, void(^)(ZLLayout *layout));
 
+///清除所有布局约束
+- (instancetype)clear;
 @end
 
 @interface UIView (ZLLayout)

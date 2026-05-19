@@ -17,14 +17,14 @@
     [contentStack wrapScrollView].zl_layout
         .addToFull(self.view);
 
-//    [contentStack addArrangedSubview:[self demo01_pairLabelViewHorizontal]];
-//    [contentStack addArrangedSubview:[self demo02_pairLabelViewVertical]];
-//    [contentStack addArrangedSubview:[self demo03_pairLabelSpacing]];
-//    [contentStack addArrangedSubview:[self demo04_pairLabelFlex]];
-//    [contentStack addArrangedSubview:[self demo05_pairLabelAlignSpacing]];
-//    [contentStack addArrangedSubview:[self demo06_pairImageView]];
+    [contentStack addArrangedSubview:[self demo01_pairLabelViewHorizontal]];
+    [contentStack addArrangedSubview:[self demo02_pairLabelViewVertical]];
+    [contentStack addArrangedSubview:[self demo03_pairLabelSpacing]];
+    [contentStack addArrangedSubview:[self demo04_pairLabelFlex]];
+    [contentStack addArrangedSubview:[self demo05_pairLabelAlignSpacing]];
+    [contentStack addArrangedSubview:[self demo06_pairImageView]];
     [contentStack addArrangedSubview:[self demo07_pairButtonView]];
-    return;
+    
     [contentStack addArrangedSubview:[self demo08_imgLabelView]];
     [contentStack addArrangedSubview:[self demo09_imgButtonView]];
     [contentStack addArrangedSubview:[self demo10_buttonImgView]];

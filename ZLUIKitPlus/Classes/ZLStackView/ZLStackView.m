@@ -259,14 +259,18 @@
     [self setNeedsUpdateConstraints];
 }
 - (void)updateConstraints {
-    [super updateConstraints];
-    if (!self.markedDirty) return;
+    if (!self.markedDirty){
+        [super updateConstraints];
+        return;
+    }
     [self.layoutManager removeAllSpacing];
     [self.layoutManager deactivateConstraints];
     [self.layoutManager addHorizontalLayoutConstraints];
     [self.layoutManager addVerticalLayoutConstraints];
     [self.layoutManager activateConstraints];
     self.markedDirty = NO;
+    [super updateConstraints];
+
 }
 - (void)layoutSubviews {
     [super layoutSubviews];

@@ -211,8 +211,8 @@
     return _endGuide;
 }
 - (void)updateConstraints {
-    [super updateConstraints];
     [self updateAllConstraints];
+    [super updateConstraints];
 }
 
 - (void)updateAllConstraints {

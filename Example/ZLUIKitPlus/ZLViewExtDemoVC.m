@@ -17,6 +17,12 @@
     [super viewDidLoad];
     self.title = @"UIView+ZLView Demo";
     self.view.backgroundColor = UIColor.whiteColor;
+    
+//    ZLView *v = ZLView.new;
+//    v.backgroundColor = UIColor.orangeColor;
+//    
+//    v.height(50).zl_wrapView.bgColor(UIColor.grayColor).addTo(self.view).leading(0).trailing(0).centerY(0).insets(10, 10, 10, 10);
+//    return;
 
     ZLStackView *contentStack = ZLStackView.vertical.alignFill.space(16).inset(16, 16, 16, 16);
     [contentStack wrapScrollView].zl_layout.addToFull(self.view);

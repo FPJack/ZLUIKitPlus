@@ -30,6 +30,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _cornerRadiiValue = UIEdgeInsetsMake(-1, -1, -1, -1);
     }
     return self;
@@ -478,15 +479,20 @@
 @implementation ZLWrapperView
 
 - (void)updateConstraints {
-    [super updateConstraints];
-    if (!self.constraintsArr) return;
+    if (!self.constraintsArr) {
+        [super updateConstraints];
+        return;
+    }
     self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:self.constraintsArr];
     self.constraintsArr = nil;
+    [super updateConstraints];
+   
 }
 + (instancetype)wrapWithView:(UIView *)view {
     ZLWrapperView *wrap = [[ZLWrapperView alloc] initWithFrame:view.frame];
-    wrap.translatesAutoresizingMaskIntoConstraints = NO;
+//    wrap.translatesAutoresizingMaskIntoConstraints = NO;
+//    wrap.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     wrap.contentView = view;
     [wrap addSubview:view];
     return  [wrap insetsZero];

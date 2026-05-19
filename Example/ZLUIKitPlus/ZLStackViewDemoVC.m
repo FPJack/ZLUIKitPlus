@@ -10,7 +10,7 @@
 #import "ZLStackView.h"
 #import "ZLLayout.h"
 #import <objc/runtime.h>
-
+#import <ZLUIKitPlus/ZLUIKitPlus.h>
 // ─────────────────────────────────────────
 #pragma mark - 辅助函数
 // ─────────────────────────────────────────
@@ -90,6 +90,19 @@ static ZLStackView *sectionView(NSString *title) {
     .assignToPtr(&sk);
     [self.view addSubview:sk];
     sk.frame = CGRectMake(150, 300, 100, 100);
+    
+    UILabel *label = UILabel.new;
+    label.text = @"UILabel";
+    label.textColor = UIColor.orangeColor;
+     HStackView
+        .hInset(0,10)
+        .space(10)
+        .addView(HButton.title(@"kdkdk"))
+        .addView(label)
+        .addView(HButton.title(@"kdkdk").insets(5, 5, 5, 5))
+        .addTo(self.view)
+        .leading(0).trailing(0).centerY(0).height(50)
+        ;
     
 }
 

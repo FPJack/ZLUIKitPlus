@@ -37,6 +37,7 @@
 		84FRM0012FB1F76B00C01D07 /* FrameBenchmarkVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FRM0022FB1F76B00C01D07 /* FrameBenchmarkVC.m */; };
 		84MAS0012FB1F76B00C01D07 /* MasonryBenchmarkVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 84MAS0022FB1F76B00C01D07 /* MasonryBenchmarkVC.m */; };
 		84UI00012FB1F76B00C01D07 /* UIStackViewBenchmarkVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 84UI00022FB1F76B00C01D07 /* UIStackViewBenchmarkVC.m */; };
+		84LYT0012FB1F76B00C01D07 /* ZLLayoutDemoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 84LYT0022FB1F76B00C01D07 /* ZLLayoutDemoVC.m */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -103,6 +104,8 @@
 		84MAS0032FB1F76B00C01D07 /* MasonryBenchmarkVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MasonryBenchmarkVC.h; sourceTree = "<group>"; };
 		84UI00022FB1F76B00C01D07 /* UIStackViewBenchmarkVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIStackViewBenchmarkVC.m; sourceTree = "<group>"; };
 		84UI00032FB1F76B00C01D07 /* UIStackViewBenchmarkVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIStackViewBenchmarkVC.h; sourceTree = "<group>"; };
+		84LYT0022FB1F76B00C01D07 /* ZLLayoutDemoVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLLayoutDemoVC.m; sourceTree = "<group>"; };
+		84LYT0032FB1F76B00C01D07 /* ZLLayoutDemoVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLLayoutDemoVC.h; sourceTree = "<group>"; };
 		85F4B8346B22B8B5ACFFBD82 /* ZLUIKitPlus.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ZLUIKitPlus.podspec; path = ../ZLUIKitPlus.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AFE2B5E7D34344C837F6F6F2 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -187,6 +190,8 @@
 				84BAD3A12FB1F76B00C01D07 /* ZLStackViewDemoVC.m */,
 				84EXT0002FB1F76B00C01D07 /* ZLViewExtDemoVC.h */,
 				84EXT0002FB1F76B00C01D07B /* ZLViewExtDemoVC.m */,
+				84LYT0032FB1F76B00C01D07 /* ZLLayoutDemoVC.h */,
+				84LYT0022FB1F76B00C01D07 /* ZLLayoutDemoVC.m */,
 				84BNC0032FB1F76B00C01D07 /* ZLStackViewBenchmarkVC.h */,
 				84BNC0022FB1F76B00C01D07 /* ZLStackViewBenchmarkVC.m */,
 				84UI00032FB1F76B00C01D07 /* UIStackViewBenchmarkVC.h */,
@@ -475,6 +480,7 @@
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				84BAD3A22FB1F76B00C01D07 /* ZLStackViewDemoVC.m in Sources */,
 				84EXT0012FB1F76B00C01D07 /* ZLViewExtDemoVC.m in Sources */,
+				84LYT0012FB1F76B00C01D07 /* ZLLayoutDemoVC.m in Sources */,
 				84BNC0012FB1F76B00C01D07 /* ZLStackViewBenchmarkVC.m in Sources */,
 				84UI00012FB1F76B00C01D07 /* UIStackViewBenchmarkVC.m in Sources */,
 				84MAS0012FB1F76B00C01D07 /* MasonryBenchmarkVC.m in Sources */,

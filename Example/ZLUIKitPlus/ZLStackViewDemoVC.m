@@ -543,7 +543,7 @@ static ZLStackView *sectionView(NSString *title) {
     [_contentStack addArrangedSubview:sec];
 
     ZLStackView *hStack = ZLStackView.horizontal.space(8).inset(8, 8, 8, 8).bgColor(@"#EFEFEF");
-    for (int i = 1; i <= 12; i++) {
+    for (int i = 1; i <= 2; i++) {
         UILabel *l = colorBlock([NSString stringWithFormat:@"item%d", i], randColor());
         l.zl_layout.size(64, 40);
         [hStack addArrangedSubview:l];

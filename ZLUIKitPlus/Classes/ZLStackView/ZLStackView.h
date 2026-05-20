@@ -10,7 +10,11 @@
 #import "ZLLayoutGuide.h"
 #import "ZLFlexItem.h"
 NS_ASSUME_NONNULL_BEGIN
-@class ZLStackView,ZLScrollStackView;
+@class ZLStackView;
+
+@interface ZLScrollView : UIScrollView
+
+@end
 
 @interface ZLBaseStackView<__covariant ObjectType> : UIView
 
@@ -196,7 +200,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) ObjectType (^addSubview)(UIView *subview);
 
 ///包裹一个scrollview，解决scrollview里面放stackview高度不自适应以及内容宽高超出容器宽高滑动的问题
-- (UIScrollView *)wrapScrollView;
+- (ZLScrollView *)wrapScrollView;
 
 @end
 

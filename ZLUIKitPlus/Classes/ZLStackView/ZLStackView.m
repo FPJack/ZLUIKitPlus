@@ -11,6 +11,24 @@
 #import "ZLFlexItem.h"
 #import "ZLConstraintItem.h"
 #import "ZLLayout.h"
+
+@implementation ZLScrollView
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    CGAffineTransform transform = self.effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft ? CGAffineTransformMakeScale(-1, 1) : CGAffineTransformIdentity;
+    if (!CGAffineTransformEqualToTransform(transform, self.transform)) {
+        self.transform = CGAffineTransformMakeScale(-1, 1);
+    }
+    [self.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull view, NSUInteger idx, BOOL * _Nonnull stop) {
+        CGAffineTransform transform = self.effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft ? CGAffineTransformMakeScale(-1, 1) : CGAffineTransformIdentity;
+        if (!CGAffineTransformEqualToTransform(transform, view.transform)) {
+            view.transform = CGAffineTransformMakeScale(-1, 1);
+        }
+    }];
+}
+@end
+
+
 @interface ZLBaseStackView()
 @property (nonatomic,strong)ZLFlexManager *layoutManager;
 @property(nonatomic,strong) NSMutableArray<__kindof UIView *> *allViews;
@@ -731,8 +749,9 @@
         return self;
     };
 }
-- (UIScrollView *)wrapScrollView{
-    UIScrollView *scrollView = UIScrollView.new;
+- (ZLScrollView *)wrapScrollView{
+    ZLScrollView *scrollView = ZLScrollView.new;
+    scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [scrollView addSubview:self];
     self.translatesAutoresizingMaskIntoConstraints = NO;
     self.zl_layout.edgesZero();

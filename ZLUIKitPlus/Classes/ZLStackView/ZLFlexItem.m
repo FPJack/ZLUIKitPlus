@@ -29,7 +29,7 @@
 ///记录已kvo
 @property (nonatomic,assign)BOOL isKVOAdded;
 @property (nonatomic,weak)ZLStackView *stackView;
-@property (nonatomic,weak)UIView *view;
+@property (nonatomic,weak,readwrite)UIView *view;
 @end
 @implementation ZLFlexItem
 @synthesize alignSelf = _alignSelf;

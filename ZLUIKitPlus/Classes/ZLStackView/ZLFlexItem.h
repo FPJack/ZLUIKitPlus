@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ZLFlexItem : NSObject
 
+@property (nonatomic,weak,readonly)UIView *view;
+
 @property (nonatomic,assign)CGFloat startSpacing;
 
 @property (nonatomic,assign)CGFloat endSpacing;

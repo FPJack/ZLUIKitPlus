@@ -46,6 +46,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
         addSeparator()
 
         demoPairLabelView()
+        
         demoImgLabelView()
         demoLabelImgView()
         demoPairImageView()
@@ -87,6 +88,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
         pv1.flexibleSpacing(true)  // first 靠左，second 靠右
         pv1.insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         addDemo(wrap(pv1, height: 44))
+        
         addCaption("flexibleSpacing(true)：左标题靠左，右价格靠右")
 
         // 场景2：标签+值（固定最小间距）
@@ -101,6 +103,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
             label.font = .systemFont(ofSize: 13)
         }
         pv2.minSpacing(12)
+        pv2.justify(.center)
         pv2.insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         addDemo(wrap(pv2, height: 38))
         addCaption("minSpacing(12)：两 label 间距至少 12pt")
@@ -124,7 +127,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
             label.text = "五星好评推荐商品"
             label.font = .systemFont(ofSize: 14)
         }
-        pv.minSpacing(10)
+        pv.minSpacing(10).justify(.center)
         pv.insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         addDemo(wrap(pv, height: 40))
         addCaption("ImgLabelView：icon(22×22) + label，minSpacing(10)")
@@ -149,7 +152,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
             iv.contentMode = .scaleAspectFit
             iv.flex.size = CGSize(width: 14, height: 14)
         }
-        pv.minSpacing(8)
+        pv.minSpacing(8).justify(.center)
         pv.insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         pv.layer.cornerRadius = 8
         pv.clipsToBounds = true
@@ -179,6 +182,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
         }
         pv.minSpacing(12).maxSpacing(30)
         pv.insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        pv.justify(.center)
         addDemo(wrap(pv, height: 54))
         addCaption("PairImageView：minSpacing(12) + maxSpacing(30) — 弹性间距区间")
 
@@ -204,7 +208,10 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
             btn.backgroundColor = .systemBlue
             btn.radius(10)
         }
-        pv1.firstFlex(1).secondFlex(1).minSpacing(12)
+        pv1.firstFlex(1)
+            .secondFlex(1)
+            .minSpacing(12)
+            .justify(.center)
         pv1.insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         addDemo(wrap(pv1, height: 44))
         addCaption("firstFlex(1) + secondFlex(1)：两按钮等宽分配")
@@ -223,7 +230,10 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
             btn.backgroundColor = .systemRed
             btn.radius(10)
         }
-        pv2.firstFlex(1).secondFlex(2).minSpacing(12)
+        pv2.firstFlex(1)
+            .secondFlex(2)
+            .minSpacing(12)
+            .justify(.center)
         pv2.insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         addDemo(wrap(pv2, height: 44))
         addCaption("firstFlex(1) + secondFlex(2)：1:2 宽度比例")
@@ -341,7 +351,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
         addSection("⑩ ZLButtonStackView — Button + StackView")
         addNote("按钮在左，StackView（可放多个子视图）在右。常见于「加入购物车 + 价格信息」布局。")
 
-        let pv = ZLButtonStackView()
+        let pv = ButtonStackView()
         pv.thenFirst { btn in
             btn.setImage(UIImage(systemName: "cart.fill"), for: .normal)
             btn.setTitle(" 加入购物车", for: .normal)

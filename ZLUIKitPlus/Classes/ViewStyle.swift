@@ -34,6 +34,9 @@ public class ViewStyle {
     
     private var _bgColor: UIColor?
     
+    var activeStyle: ((UIView) -> Void)?
+    var inactiveStyle: ((UIView) -> Void)?
+    
     public var backgroundColor: UIColor? {
         get {
             return _bgColor ?? self.view.superBackgroundColor()
@@ -200,10 +203,19 @@ extension ViewStyle {
     }
 }
 
+
+
 public protocol ViewStyleable where Self: UIView {
     var viewStyle: ViewStyle { get }
     func superBackgroundColor() -> UIColor?
     func superSetBackgroundColor(_ color: UIColor?)
+    /// 设置激活样式 userInteractionEnabled = true 时应用
+    func activeStyle(_ block: @escaping (Self) -> Void) -> Self
+    /// 设置非激活样式 userInteractionEnabled = false 时应用
+    func inactiveStyle(_ block: @escaping (Self) -> Void) -> Self
+    /// 设置是否可交互（激活/非激活），并应用对应的样式 userInteractionEnabled = true 时应用 activeStyle，userInteractionEnabled = false 时应用 inactiveStyle
+    func userActive(_ active: Bool) -> Self
+    
     func gradColors(_ colors: [UIColor]?) -> Self
     func gradDirection(start: CGPoint, end: CGPoint) -> Self
     func borderColor(color: UIColor?) -> Self
@@ -218,20 +230,55 @@ public protocol ViewStyleable where Self: UIView {
     func shadowOpacity(opacity: Float) -> Self
     
     func cornerRadii(_ topLeading: CGFloat,
-                            _ topTrailing: CGFloat,
-                            _ bottomLeading: CGFloat,
-                            _ bottomTrailing: CGFloat) -> Self
+                     _ topTrailing: CGFloat,
+                     _ bottomLeading: CGFloat,
+                     _ bottomTrailing: CGFloat) -> Self
     func radius(_ radius: CGFloat) -> Self
 }
 extension ViewStyleable {
     @discardableResult
+    public func activeStyle(_ block: @escaping (Self) -> Void) -> Self {
+        self.viewStyle.activeStyle = {  view in
+            guard let typedView = view as? Self else { return }
+            block(typedView)
+        }
+        if self.isUserInteractionEnabled {
+            block(self)
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func inactiveStyle(_ block: @escaping (Self) -> Void) -> Self {
+        self.viewStyle.inactiveStyle = {  view in
+            guard let typedView = view as? Self else { return }
+            block(typedView)
+        }
+        if !self.isUserInteractionEnabled {
+            block(self)
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func userActive(_ active: Bool) -> Self {
+        self.isUserInteractionEnabled = active
+        if active {
+            self.viewStyle.activeStyle?(self)
+        } else {
+            self.viewStyle.inactiveStyle?(self)
+        }
+        return self
+    }
+    
+    @discardableResult
     public func gradColors(_ colors: [UIColor]?) -> Self {
-         self.viewStyle.gradColors(colors).view as! Self
+        self.viewStyle.gradColors(colors).view as! Self
     }
     
     @discardableResult
     public func gradDirection(start: CGPoint, end: CGPoint) -> Self {
-         self.viewStyle.gradDirection(start: start, end: end).view as! Self
+        self.viewStyle.gradDirection(start: start, end: end).view as! Self
     }
     
     @discardableResult
@@ -283,7 +330,7 @@ extension ViewStyleable {
         cornerRadii(radius, radius, radius, radius)
     }
 }
- extension ViewStyle {
+extension ViewStyle {
     @discardableResult
     public func gradColors(_ colors: [UIColor]?) -> Self {
         if _gradLayer == nil {

@@ -25,6 +25,7 @@
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		841D1F0F2FD93C5B007D832A /* ZLViewDemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D1F0D2FD93C5B007D832A /* ZLViewDemoVC.swift */; };
 		841D1F102FD93C5B007D832A /* ZLWrapperViewDemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D1F0E2FD93C5B007D832A /* ZLWrapperViewDemoVC.swift */; };
+		841D1F172FD93C5B007D832A /* ZLUIViewExDemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D1F162FD93C5B007D832A /* ZLUIViewExDemoVC.swift */; };
 		841D1F112FD93C5B007D832A /* ZLButtonDemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D1F0A2FD93C5B007D832A /* ZLButtonDemoVC.swift */; };
 		841D1F122FD93C5B007D832A /* ZLDemoBaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D1F0B2FD93C5B007D832A /* ZLDemoBaseVC.swift */; };
 		841D1F132FD93C5B007D832A /* ZLLabelDemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D1F0C2FD93C5B007D832A /* ZLLabelDemoVC.swift */; };
@@ -67,6 +68,7 @@
 		62507C1E2F9BB95C00397C32 /* ZLUIKitPlus_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ZLUIKitPlus_Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		62507C1F2F9BB95C00397C32 /* ZLViewControllerSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLViewControllerSwift.swift; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		841D1F162FD93C5B007D832A /* ZLUIViewExDemoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLUIViewExDemoVC.swift; sourceTree = "<group>"; };
 		841D1F0A2FD93C5B007D832A /* ZLButtonDemoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLButtonDemoVC.swift; sourceTree = "<group>"; };
 		841D1F0B2FD93C5B007D832A /* ZLDemoBaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLDemoBaseVC.swift; sourceTree = "<group>"; };
 		841D1F0C2FD93C5B007D832A /* ZLLabelDemoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLLabelDemoVC.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				6003F59D195388D20070C39A /* ZLAppDelegate.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				62507C1F2F9BB95C00397C32 /* ZLViewControllerSwift.swift */,
+				841D1F162FD93C5B007D832A /* ZLUIViewExDemoVC.swift */,
 				841D1F0A2FD93C5B007D832A /* ZLButtonDemoVC.swift */,
 				841D1F0B2FD93C5B007D832A /* ZLDemoBaseVC.swift */,
 				841D1F0C2FD93C5B007D832A /* ZLLabelDemoVC.swift */,
@@ -415,6 +418,7 @@
 				6003F59E195388D20070C39A /* ZLAppDelegate.m in Sources */,
 				841D1F0F2FD93C5B007D832A /* ZLViewDemoVC.swift in Sources */,
 				841D1F102FD93C5B007D832A /* ZLWrapperViewDemoVC.swift in Sources */,
+				841D1F172FD93C5B007D832A /* ZLUIViewExDemoVC.swift in Sources */,
 				841D1F112FD93C5B007D832A /* ZLButtonDemoVC.swift in Sources */,
 				841D1F152FD93C8A007D832A /* ZLPairViewDemoVC.swift in Sources */,
 				841D1F122FD93C5B007D832A /* ZLDemoBaseVC.swift in Sources */,

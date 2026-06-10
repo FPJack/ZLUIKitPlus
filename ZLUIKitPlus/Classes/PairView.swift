@@ -4,13 +4,17 @@ import ZLFlexKit
 @objc(ZLPairView)
 open class PairView: StackView {
     public lazy var _first: UIView = {
-        return createFirstView()
+        let view = createFirstView()
+        addFirst(view)
+        return view
     }()
     private func addFirst(_ view: UIView) {
         super.insertArrangedSubview(view, at: 0)
     }
     public lazy var _second: UIView = {
-        return createSecondView()
+        let view = createSecondView()
+        addSecond(view)
+        return view
     }()
     private func addSecond(_ view: UIView) {
         super.addArrangedSubview(view)
@@ -114,9 +118,8 @@ open class PairView: StackView {
         super.addView(if: condition, make: make)
     }
     
-}
-
-extension PairView {
+    
+    
     @available(*, unavailable)
     public override func addArrangedSubview(_ view: UIView?) {
         super.addArrangedSubview(view)
@@ -255,6 +258,11 @@ extension PairView {
             return self
         }
     }
+    
+}
+
+extension PairView {
+    
 }
 
 
@@ -501,7 +509,7 @@ open class LabButtonView: PairView {
 
 
 @objc(ZLButtonStackView)
-open class ZLButtonStackView: PairView {
+open class ButtonStackView: PairView {
     public var first: Button {
         _first as! Button
     }

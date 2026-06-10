@@ -25,6 +25,22 @@
 import UIKit
 import ZLUIKitPlus
 
+// MARK: - 私有 block 包装器（iOS 13 兼容 addTarget）
+private class _BtnAction: NSObject {
+    let block: () -> Void
+    init(_ block: @escaping () -> Void) { self.block = block }
+    @objc func run() { block() }
+}
+private var _btnActionKey: UInt8 = 0
+private extension UIControl {
+    /// iOS 13 兼容的闭包点击绑定
+    func onTap(_ block: @escaping () -> Void) {
+        let action = _BtnAction(block)
+        objc_setAssociatedObject(self, &_btnActionKey, action, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        addTarget(action, action: #selector(_BtnAction.run), for: .touchUpInside)
+    }
+}
+
 class ZLButtonDemoVC: ZLDemoBaseVC {
 
     override func viewDidLoad() {
@@ -41,6 +57,7 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
         demoImageTitleSize()
         demoImageTitleMarge()
         demoTapInterval()
+        demoActiveInactiveStyle()
         demoTouchArea()
         demoImgTouchOnly()
         demoViewStyleable()
@@ -309,9 +326,228 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
         addSeparator()
     }
 
-    // MARK: - ⑨ touchAreaEdgeInsets
+    // MARK: - ⑨ activeStyle / inactiveStyle / userActive
+    private func demoActiveInactiveStyle() {
+        addSection("⑨ activeStyle / inactiveStyle / userActive — 激活/非激活样式")
+        addNote(
+            "• activeStyle { btn in ... }   — 预设「激活态」样式，在 userInteractionEnabled = true 时自动应用\n" +
+            "• inactiveStyle { btn in ... } — 预设「非激活态」样式，在 userInteractionEnabled = false 时自动应用\n" +
+            "• userActive(_ active: Bool)   — 切换可交互状态，并自动应用对应样式（active→activeStyle，inactive→inactiveStyle）\n\n" +
+            "三者配合使用，无需手动在多处修改按钮外观，状态与样式绑定，一行代码切换。"
+        )
+
+        // ──────────────────────────────────────────
+        // 演示1：基础用法 — 预设样式 + 手动切换
+        // ──────────────────────────────────────────
+        addNote("演示1：activeStyle + inactiveStyle + userActive 基础用法")
+
+        let btn1 = Button()
+        btn1.setTitle("提交订单", for: .normal)
+        btn1.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
+        btn1.tintColor = .white
+        btn1.setTitleColor(.white, for: .normal)
+        btn1.spacing(8)
+        btn1.insets(UIEdgeInsets(top: 14, left: 28, bottom: 14, right: 28))
+        btn1.radius(22)
+
+        // 预设激活态样式：蓝色背景 + 正常图标
+        btn1.activeStyle { btn in
+            btn.backgroundColor = .systemBlue
+            btn.alpha = 1.0
+            btn.setTitle("提交订单", for: .normal)
+            btn.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
+        }
+        // 预设非激活态样式：灰色背景 + 禁用图标
+        .inactiveStyle { btn in
+            btn.backgroundColor = .systemGray3
+            btn.alpha = 0.7
+            btn.setTitle("处理中...", for: .normal)
+            btn.setImage(UIImage(systemName: "clock.fill"), for: .normal)
+        }
+        // 初始化为激活态（触发 activeStyle 闭包应用初始样式）
+        .userActive(true)
+
+        let wrap1 = UIView()
+        wrap1.addSubview(btn1)
+        btn1.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            btn1.topAnchor.constraint(equalTo: wrap1.topAnchor, constant: 8),
+            btn1.centerXAnchor.constraint(equalTo: wrap1.centerXAnchor),
+            btn1.bottomAnchor.constraint(equalTo: wrap1.bottomAnchor, constant: -8),
+        ])
+        addDemo(wrap1, height: 72)
+
+        // 切换按钮
+        let toggleBtn1 = UIButton(type: .system)
+        toggleBtn1.setTitle("▶ 切换 userActive(false / true)", for: .normal)
+        toggleBtn1.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.1)
+        toggleBtn1.layer.cornerRadius = 8
+        toggleBtn1.clipsToBounds = true
+
+        var isActive1 = true
+        toggleBtn1.onTap { [weak btn1, weak toggleBtn1] in
+            isActive1.toggle()
+            btn1?.userActive(isActive1)
+            toggleBtn1?.setTitle(
+                "▶ 当前：\(isActive1 ? "active（蓝色可点）" : "inactive（灰色禁用）") — 点击切换",
+                for: .normal
+            )
+        }
+        addDemo(toggleBtn1, height: 40)
+        addCaption(
+            "btn.activeStyle { ... }.inactiveStyle { ... }.userActive(true)\n" +
+            "点击切换按钮体验：userActive(false) → 灰色+禁用，userActive(true) → 蓝色+可点"
+        )
+
+        // ──────────────────────────────────────────
+        // 演示2：实战场景 — 表单提交防止重复
+        // ──────────────────────────────────────────
+        addNote("演示2：实战 — 表单提交中禁用按钮，完成后自动恢复")
+
+        let submitBtn = Button()
+        submitBtn.setTitle("立即支付 ¥ 999", for: .normal)
+        submitBtn.setImage(UIImage(systemName: "creditcard.fill"), for: .normal)
+        submitBtn.tintColor = .white
+        submitBtn.setTitleColor(.white, for: .normal)
+        submitBtn.spacing(8)
+        submitBtn.insets(UIEdgeInsets(top: 16, left: 32, bottom: 16, right: 32))
+        submitBtn.radius(26)
+
+        submitBtn
+            .activeStyle { btn in
+                btn.gradColors([.systemOrange, .systemRed])
+                btn.gradDirection(start: CGPoint(x: 0, y: 0.5), end: CGPoint(x: 1, y: 0.5))
+                btn.alpha = 1.0
+                btn.setTitle("立即支付 ¥ 999", for: .normal)
+                btn.setImage(UIImage(systemName: "creditcard.fill"), for: .normal)
+            }
+            .inactiveStyle { btn in
+                btn.gradColors([.systemGray3, .systemGray4])
+                btn.alpha = 0.85
+                btn.setTitle("支付处理中...", for: .normal)
+                btn.setImage(UIImage(systemName: "hourglass"), for: .normal)
+            }
+            .userActive(true)   // 初始激活
+
+        let statusLabel2 = UILabel()
+        statusLabel2.text = "状态：待支付"
+        statusLabel2.font = .monospacedSystemFont(ofSize: 12, weight: .regular)
+        statusLabel2.textColor = .systemGray
+        statusLabel2.textAlignment = .center
+
+        // 点击后模拟支付请求（2秒后恢复）
+        submitBtn.onTap { [weak submitBtn, weak statusLabel2] in
+            submitBtn?.userActive(false)
+            statusLabel2?.text = "状态：支付中（2秒后恢复）"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                submitBtn?.userActive(true)
+                statusLabel2?.text = "状态：待支付"
+            }
+        }
+
+        let wrap2 = UIView()
+        [submitBtn, statusLabel2].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            wrap2.addSubview($0)
+        }
+        NSLayoutConstraint.activate([
+            submitBtn.topAnchor.constraint(equalTo: wrap2.topAnchor, constant: 8),
+            submitBtn.centerXAnchor.constraint(equalTo: wrap2.centerXAnchor),
+            statusLabel2.topAnchor.constraint(equalTo: submitBtn.bottomAnchor, constant: 8),
+            statusLabel2.centerXAnchor.constraint(equalTo: wrap2.centerXAnchor),
+            statusLabel2.bottomAnchor.constraint(equalTo: wrap2.bottomAnchor, constant: -4),
+        ])
+        addDemo(wrap2, height: 94)
+        addCaption(
+            "点击按钮触发：userActive(false) → inactiveStyle（灰色渐变+hourglass）\n" +
+            "2秒后自动：userActive(true) → activeStyle（橙红渐变+creditcard）"
+        )
+
+        // ──────────────────────────────────────────
+        // 演示3：独立样式组合 — 只设 activeStyle 或只设 inactiveStyle
+        // ──────────────────────────────────────────
+        addNote("演示3：只设 inactiveStyle，userActive(false) 时改变外观")
+
+        let onlyInactiveBtn = Button()
+        onlyInactiveBtn.setTitle("点击禁用（只有 inactiveStyle）", for: .normal)
+        onlyInactiveBtn.setTitleColor(.white, for: .normal)
+        onlyInactiveBtn.backgroundColor = .systemGreen
+        onlyInactiveBtn.radius(10)
+        onlyInactiveBtn.insets(UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20))
+
+        // 只设 inactiveStyle，不设 activeStyle
+        onlyInactiveBtn.inactiveStyle { btn in
+            btn.backgroundColor = .systemGray4
+            btn.setTitle("已禁用（无 activeStyle 无法自动恢复外观）", for: .normal)
+            btn.alpha = 0.6
+        }
+
+        onlyInactiveBtn.onTap { [weak onlyInactiveBtn] in
+            onlyInactiveBtn?.userActive(false)
+        }
+        addDemo(onlyInactiveBtn, height: 44)
+        addCaption(
+            "只设 inactiveStyle 不设 activeStyle：\n" +
+            "userActive(false) 应用灰色样式；若再调 userActive(true) 仅恢复 isUserInteractionEnabled，\n" +
+            "但外观不会改变（无 activeStyle 可应用），建议成对使用"
+        )
+
+        // ──────────────────────────────────────────
+        // 演示4：链式组合其他 Button 属性
+        // ──────────────────────────────────────────
+        addNote("演示4：activeStyle / inactiveStyle 可与其他链式 API 混用")
+
+        let chainBtn = Button()
+        chainBtn.setTitle("链式组合", for: .normal)
+        chainBtn.setImage(UIImage(systemName: "star.fill"), for: .normal)
+        chainBtn.tintColor = .white
+        chainBtn.setTitleColor(.white, for: .normal)
+
+        // 链式：先设布局属性，再设状态样式
+        chainBtn
+            .axis(.horizontal)
+            .spacing(8)
+            .insets(UIEdgeInsets(top: 12, left: 24, bottom: 12, right: 24))
+            .radius(22)
+            .activeStyle { btn in
+                btn.backgroundColor = .systemPurple
+                btn.alpha = 1
+                btn.shadowColor(color: .systemPurple)
+                btn.shadowOpacity(opacity: 0.35)
+            }
+            .inactiveStyle { btn in
+                btn.backgroundColor = .systemGray4
+                btn.alpha = 0.7
+                btn.shadowOpacity(opacity: 0)
+            }
+            .userActive(true)
+
+        var isActive4 = true
+        let chainWrap = UIView()
+        chainBtn.onTap { [weak chainBtn] in
+            isActive4.toggle()
+            chainBtn?.userActive(isActive4)
+        }
+        chainWrap.addSubview(chainBtn)
+        chainBtn.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            chainBtn.topAnchor.constraint(equalTo: chainWrap.topAnchor, constant: 8),
+            chainBtn.centerXAnchor.constraint(equalTo: chainWrap.centerXAnchor),
+            chainBtn.bottomAnchor.constraint(equalTo: chainWrap.bottomAnchor, constant: -8),
+        ])
+        addDemo(chainWrap, height: 70)
+        addCaption(
+            "链式：.axis().spacing().insets().radius()\n" +
+            "      .activeStyle { 紫色+阴影 }.inactiveStyle { 灰色+无阴影 }.userActive(true)\n" +
+            "点击按钮切换激活状态"
+        )
+
+        addSeparator()
+    }
+
+    // MARK: - ⑩ touchAreaEdgeInsets
     private func demoTouchArea() {
-        addSection("⑨ touchAreaEdgeInsets — 扩展点击热区")
+        addSection("⑩ touchAreaEdgeInsets — 扩展点击热区")
         addNote("touchAreaEdgeInsets(UIEdgeInsets) 将点击响应区域向四周扩展，但视觉大小不变。内部重写 point(inside:with:) 实现，适合小图标按钮提升可点击性。")
 
         let container = UIView()
@@ -345,7 +581,7 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
 
     // MARK: - ⑩ imgTouchOnly
     private func demoImgTouchOnly() {
-        addSection("⑩ imgTouchOnly — 仅图片区域响应点击")
+        addSection("⑪ imgTouchOnly — 仅图片区域响应点击")
         addNote("imgTouchOnly = true 时，point(inside:with:) 只判断 imageView 区域（可结合 touchAreaEdgeInsets 扩展图片热区）。适合图片+文字组合但只希望图片可点击的场景。")
 
         let btn = makeBtn(title: "点文字区域无效，点图片才触发", imageName: "hand.tap.fill", bg: .systemRed)
@@ -366,7 +602,7 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
 
     // MARK: - ⑪ ViewStyleable（继承 View 的样式能力）
     private func demoViewStyleable() {
-        addSection("⑪ ViewStyleable — Button 的样式能力")
+        addSection("⑫ ViewStyleable — Button 的样式能力")
         addNote("Button 也遵循 ViewStyleable，可使用全部渐变/描边/阴影/圆角链式 API。")
 
         // 渐变 + 阴影

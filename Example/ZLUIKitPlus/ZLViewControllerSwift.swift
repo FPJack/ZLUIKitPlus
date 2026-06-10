@@ -51,6 +51,12 @@ class ZLViewControllerSwift: UIViewController, UITableViewDataSource, UITableVie
             emoji: "🔗",
             makeVC: { ZLPairViewDemoVC() }
         ),
+        DemoItem(
+            title: "UIViewEx 扩展属性",
+            subtitle: "view.layout（Layout 链式 AutoLayout：addTo/center/top/edges/size/clear 等）\nview.flex（FlexItem：flex权重/alignSelf/spacing/isFlexibleSpace/startMarge/size 等）",
+            emoji: "🧩",
+            makeVC: { ZLUIViewExDemoVC() }
+        ),
     ]
 
     // MARK: - Life Cycle

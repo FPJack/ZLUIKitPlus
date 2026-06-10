@@ -998,6 +998,31 @@ public extension Button {
             self.radius(r)
         }
     }
+    
+    @objc(activeStyle)
+    @available(swift, obsoleted: 1, renamed: "activeStyle(_:)")
+    var activeStyleObjc: (_ block: @escaping (Button) -> Void) -> Button {
+        { block in
+            self.activeStyle(block)
+        }
+    }
+    
+    @objc(inactiveStyle)
+    @available(swift, obsoleted: 1, renamed: "inactiveStyle(_:)")
+    var inactiveStyleObjc: (_ block: @escaping (Button) -> Void) -> Button {
+        { block in
+            self.inactiveStyle(block)
+        }
+    }
+    
+    @objc(userActive)
+    @available(swift, obsoleted: 1, renamed: "userActive(_:)")
+    var userActiveObjc: (_ active: Bool) -> Button {
+        { active in
+            self.userActive(active)
+        }
+    }
+        
 }
 
 

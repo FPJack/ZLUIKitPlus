@@ -18,5 +18,10 @@
   "platforms": {
     "ios": "10.0"
   },
-  "source_files": "ZLUIKitPlus/Classes/**/*"
+  "source_files": "ZLUIKitPlus/Classes/**/*",
+  "dependencies": {
+    "ZLFlexKit": [
+
+    ]
+  }
 }

@@ -8,12 +8,15 @@ PODS:
   - SDWebImage (5.21.7):
     - SDWebImage/Core (= 5.21.7)
   - SDWebImage/Core (5.21.7)
-  - ZLUIKitPlus (0.1.0)
+  - ZLFlexKit (0.1.4)
+  - ZLUIKitPlus (0.1.0):
+    - ZLFlexKit
 
 DEPENDENCIES:
   - FBSnapshotTestCase
   - Masonry
   - SDWebImage
+  - ZLFlexKit (from `../../ZLFlexKit`)
   - ZLUIKitPlus (from `../`)
 
 SPEC REPOS:
@@ -23,6 +26,8 @@ SPEC REPOS:
     - SDWebImage
 
 EXTERNAL SOURCES:
+  ZLFlexKit:
+    :path: "../../ZLFlexKit"
   ZLUIKitPlus:
     :path: "../"
 
@@ -30,8 +35,9 @@ SPEC CHECKSUMS:
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   SDWebImage: e9fc87c1aab89a8ab1bbd74eba378c6f53be8abf
-  ZLUIKitPlus: ec796051dca5a67e95e0db94072441d0da2d443d
+  ZLFlexKit: e56af822d60d2217bb81648f39bc95d010e4ce4c
+  ZLUIKitPlus: 5786c3cbea8708e9b0e7feaccef72c9dfc0bdafa
 
-PODFILE CHECKSUM: aea4e93001709966bfd89c85db97fb294dd1b416
+PODFILE CHECKSUM: cbdcf54013834bbce35549b91d26bd77fb67e39e
 
 COCOAPODS: 1.16.2

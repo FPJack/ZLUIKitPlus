@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ZLUIKitPlusVersionNumber;
-FOUNDATION_EXPORT const unsigned char ZLUIKitPlusVersionString[];
+FOUNDATION_EXPORT double ZLFlexKitVersionNumber;
+FOUNDATION_EXPORT const unsigned char ZLFlexKitVersionString[];
 

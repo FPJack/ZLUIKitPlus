@@ -7,7 +7,8 @@ target 'ZLUIKitPlus_Example' do
   pod 'ZLUIKitPlus', :path => '../'
   pod 'Masonry'
   pod 'SDWebImage'
-
+  pod 'ZLFlexKit', :path => '../../ZLFlexKit'
+  
 
   target 'ZLUIKitPlus_Tests' do
     inherit! :search_paths

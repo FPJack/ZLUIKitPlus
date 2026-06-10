@@ -3,25 +3,20 @@ import UIKit
 
 // MARK: - Supporting Types
 
-@objc public enum ButtonAxis: Int {
-    case horizontal = 0
-    case vertical
+@objc(ZLButtonImagePosition)
+public enum ButtonImagePosition: Int {
+    case imageTop
+    case imageBottom
+    case imageLeading
+    case imageTrailing
 }
-
-@objc public enum ButtonOrder: Int {
-    case imageFirst = 0
-    case titleFirst
-}
-
-@objc public enum ButtonAlign: Int {
+@objc(ZLButtonAlign)
+public enum ButtonAlign: Int {
     case center = 0
     case start
     case end
     case fill
 }
-
-
-
 public struct StartEndInsets {
     public var start: CGFloat
     public var end: CGFloat
@@ -43,18 +38,15 @@ private let kCustomPriority  = UILayoutPriority(UILayoutPriority.required.rawVal
 
 @objc(ZLButton)
 open class Button: UIButton,ViewStyleable {
-
-    /// 内容布局轴向，默认为水平
-    @objc
-    public var axis: ButtonAxis = .horizontal {
-        didSet { guard axis != oldValue else { return }; setNeedsUpdateConstraintsIfNeed() }
-    }
+    /// 图片位置，默认为 .imageLeading
     
-    /// 内容顺序，默认为 imageFirst
-    @objc
-    public var contentOrder: ButtonOrder = .imageFirst {
-        didSet { guard contentOrder != oldValue else { return }; setNeedsUpdateConstraintsIfNeed() }
+    public var imagePosition: ButtonImagePosition = .imageLeading {
+        didSet {
+            guard imagePosition != oldValue else { return }
+            setNeedsUpdateConstraintsIfNeed()
+        }
     }
+        
     
     /// 内容在垂直方向的对齐方式，默认为 center
     @objc
@@ -163,7 +155,12 @@ open class Button: UIButton,ViewStyleable {
         }
     }
     
-    
+    private var isHorizontal: Bool {
+        imagePosition == .imageLeading || imagePosition == .imageTrailing
+    }
+    private var isImageFirst: Bool {
+        imagePosition == .imageLeading || imagePosition == .imageTop
+    }
     private var labelObservation: NSKeyValueObservation?
     private var imgHeighConstraint: NSLayoutConstraint?
     private var imgWidthConstraint: NSLayoutConstraint?
@@ -386,9 +383,9 @@ private extension Button {
 
         // ③ 排序
         if arr.count == 2 {
-            if arr[0] === titleLabel && contentOrder != .titleFirst {
+            if arr[0] === titleLabel && isImageFirst {
                 arr.swapAt(0, 1)
-            } else if arr[0] === imageView && contentOrder != .imageFirst {
+            } else if arr[0] === imageView && !isImageFirst {
                 arr.swapAt(0, 1)
             }
         }
@@ -426,7 +423,7 @@ private extension Button {
             let startSp = isTitle ? titleMarge.start : imageMarge.start
             let endSp   = isTitle ? titleMarge.end   : imageMarge.end
 
-            if axis == .horizontal {
+            if isHorizontal {
                 applyHorizontalMainAxis(
                     view: view, index: i, count: count,
                     nextX: &nextX, insets: ei, space: sp,
@@ -721,13 +718,13 @@ private extension Button {
 
     func generateOrderKey(base: String) -> String {
         var key = base
-        key += "\(axis.rawValue)"
+        key += "\(imagePosition.rawValue)"
         key += "\(verticalAlign.rawValue)"
         key += "\(horizontalAlign.rawValue)"
         key += "\(flexibleSpacing ? 1 : 0)"
         key += NSStringFromCGSize(imageSize)
         let ei = effectiveInsets
-        if axis == .horizontal {
+        if isHorizontal {
             key += "\(ei.top)-\(ei.bottom)"
         } else {
             key += "\(ei.left)-\(ei.right)"
@@ -757,16 +754,13 @@ private extension Button {
 }
 // MARK: - Swift 链式API
 public extension Button {
+    
     @discardableResult
-    func axis(_ v: ButtonAxis) -> Self {
-        self.axis = v
+    func imagePosition(_ v: ButtonImagePosition) -> Self {
+        self.imagePosition = v
         return self
     }
-    @discardableResult
-    func contentOrder(_ v: ButtonOrder) -> Self {
-        self.contentOrder = v
-        return self
-    }
+    
     @discardableResult
     func verticalAlign(_ v: ButtonAlign) -> Self {
         self.verticalAlign = v
@@ -824,30 +818,37 @@ public extension Button {
 // MARK: - ObjC 链式API
 public extension Button {
 
-    @objc(setAxis)
-    @available(swift, obsoleted: 1, renamed: "axis")
-    var axisObjc: (ButtonAxis) -> Button {
-        { [weak self] v in self?.axis = v; return self! }
+    
+    @objc(imagePosition)
+    @available(swift, obsoleted: 1, renamed: "imagePosition(_:)")
+    var imagePositionObjc: (ButtonImagePosition) -> Button {
+        { [weak self] v in self?.imagePosition = v; return self! }
     }
     
     @objc
-    var vertical: Button {
-        axis = .vertical
+    var imageLeading: Button {
+        imagePosition = .imageLeading
         return self
     }
     
     @objc
-    var horizontal: Button {
-        axis = .horizontal
+    var imageTrailing: Button {
+        imagePosition = .imageTrailing
         return self
     }
-   
-
-    @objc(setContentOrder)
-    @available(swift, obsoleted: 1, renamed: "contentOrder")
-    var contentOrderObjc: (ButtonOrder) -> Button {
-        { [weak self] v in self?.contentOrder = v; return self! }
+    
+    @objc
+    var imageTop: Button {
+        imagePosition = .imageTop
+        return self
     }
+    
+    @objc
+    var imageBottom: Button {
+        imagePosition = .imageBottom
+        return self
+    }
+    
 
     @objc(setVerticalAlign)
     @available(swift, obsoleted: 1, renamed: "verticalAlign")
@@ -913,6 +914,8 @@ public extension Button {
 
 // MARK: - ObjC 样式链式API
 public extension Button {
+    
+    
     @objc(gradColors)
     @available(swift, obsoleted: 1, renamed: "gradColors(_:)")
     var gradColorsObjc: (_ colors: [UIColor]?) -> Button {

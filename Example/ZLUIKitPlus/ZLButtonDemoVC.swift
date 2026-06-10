@@ -85,12 +85,12 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
         addNote("• axis(.horizontal)：图文水平排列（默认值）\n• axis(.vertical)：图文垂直排列")
 
         let btn1 = makeBtn(title: "水平排列 axis(.horizontal)", imageName: "star.fill")
-        btn1.axis(.horizontal).spacing(8).insets(UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)).radius(10)
+        btn1.imageLeading.spacing(8).insets(UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)).radius(10)
         addDemo(btn1, height: 44)
         addCaption("axis(.horizontal)：图文水平排列（默认）")
 
         let btn2 = makeBtn(title: "垂直排列 axis(.vertical)", imageName: "house.fill")
-        btn2.axis(.vertical).spacing(6).insets(UIEdgeInsets(top: 12, left: 24, bottom: 12, right: 24)).radius(12)
+        btn2.imageTop.spacing(6).insets(UIEdgeInsets(top: 12, left: 24, bottom: 12, right: 24)).radius(12)
         addDemo(btn2)
         addCaption("axis(.vertical)：图文垂直排列（图在上，文在下，默认 imageFirst）")
 
@@ -103,25 +103,25 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
         addNote("• contentOrder(.imageFirst)：图片在前（水平→图左文右，垂直→图上文下）\n• contentOrder(.titleFirst)：文字在前（水平→文左图右，垂直→文上图下）")
 
         let btn1 = makeBtn(title: "图左文右 (.imageFirst)", imageName: "chevron.right", bg: .systemGreen)
-        btn1.axis(.horizontal).contentOrder(.imageFirst).spacing(8)
+        btn1.imageLeading.spacing(8)
             .insets(UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)).radius(10)
         addDemo(btn1, height: 44)
         addCaption("contentOrder(.imageFirst)：水平，图片在左")
 
         let btn2 = makeBtn(title: "文左图右 (.titleFirst)", imageName: "chevron.right", bg: .systemOrange)
-        btn2.axis(.horizontal).contentOrder(.titleFirst).spacing(8)
+        btn2.imageTrailing.spacing(8)
             .insets(UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)).radius(10)
         addDemo(btn2, height: 44)
         addCaption("contentOrder(.titleFirst)：水平，文字在左")
 
         let btn3 = makeBtn(title: "图上文下", imageName: "house.fill", bg: .systemPurple)
-        btn3.axis(.vertical).contentOrder(.imageFirst).spacing(6)
+        btn3.imageTop.spacing(6)
             .insets(UIEdgeInsets(top: 12, left: 24, bottom: 12, right: 24)).radius(12)
         addDemo(btn3)
         addCaption("axis(.vertical) + contentOrder(.imageFirst)：图上文下")
 
         let btn4 = makeBtn(title: "文上图下", imageName: "arrow.down.circle.fill", bg: .systemIndigo)
-        btn4.axis(.vertical).contentOrder(.titleFirst).spacing(6)
+        btn4.imageBottom.spacing(6)
             .insets(UIEdgeInsets(top: 12, left: 24, bottom: 12, right: 24)).radius(12)
         addDemo(btn4)
         addCaption("axis(.vertical) + contentOrder(.titleFirst)：文上图下")
@@ -142,7 +142,7 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
         ]
         for (align, caption, color) in aligns {
             let btn = makeBtn(title: "按钮文字", imageName: "star.fill", bg: color)
-            btn.axis(.horizontal).spacing(8)
+            btn.imageLeading.spacing(8)
                 .horizontalAlign(align)
                 .verticalAlign(.center)
                 .insets(UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
@@ -154,7 +154,7 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
         // verticalAlign demo (垂直排列时生效)
         addNote("垂直排列时 verticalAlign 控制主轴（垂直）对齐：")
         let vBtn = makeBtn(title: "文字", imageName: "photo.fill", bg: .systemTeal)
-        vBtn.axis(.vertical).spacing(4).contentOrder(.imageFirst)
+        vBtn.imageTop.spacing(4)
             .verticalAlign(.center)   // 内容在垂直方向居中
             .horizontalAlign(.center)   // 水平方向拉伸
             .imageSize(CGSize(width: 24, height: 24))
@@ -173,7 +173,7 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
         // 不同间距对比
         for sp in [0, 4, 12, 24] {
             let btn = makeBtn(title: "spacing(\(sp))", imageName: "star.fill", bg: .systemBlue)
-            btn.axis(.horizontal).spacing(CGFloat(sp))
+            btn.imageLeading.spacing(CGFloat(sp))
                 .insets(UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)).radius(10)
             addDemo(btn, height: 44)
             addCaption("spacing(\(sp))：图文间距 \(sp)pt")
@@ -181,7 +181,7 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
 
         // flexibleSpacing
         let flexBtn = makeBtn(title: "弹性间距 flexibleSpacing(true)", imageName: "chevron.right", bg: .systemGreen)
-        flexBtn.axis(.horizontal)
+        flexBtn.imageLeading
             .flexibleSpacing(true)
             .insets(UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
             .radius(10)
@@ -218,13 +218,13 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
 
         // imageSize
         let btn1 = makeBtn(title: "imageSize(16×16)", imageName: "star.fill", bg: .systemBlue)
-        btn1.axis(.horizontal).imageSize(CGSize(width: 16, height: 16)).spacing(8)
+        btn1.imageLeading.imageSize(CGSize(width: 16, height: 16)).spacing(8)
             .insets(UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)).radius(10)
         addDemo(btn1, height: 44)
         addCaption("imageSize(16×16)：图片限制为 16pt")
 
         let btn2 = makeBtn(title: "imageSize(36×36)", imageName: "photo.fill", bg: .systemGreen)
-        btn2.axis(.horizontal).imageSize(CGSize(width: 36, height: 36)).spacing(10)
+        btn2.imageLeading.imageSize(CGSize(width: 36, height: 36)).spacing(10)
             .insets(UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)).radius(12)
         addDemo(btn2)
         addCaption("imageSize(36×36)：图片限制为 36pt")
@@ -247,7 +247,7 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
 
         // 图片下移，文字上移
         let btn1 = makeBtn(title: "图片偏下 / 文字偏上", imageName: "arrow.up.and.down", bg: .systemBrown)
-        btn1.axis(.horizontal).spacing(10)
+        btn1.imageLeading.spacing(10)
             .insets(UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)).radius(10)
         btn1.imageMarge(start: 0, end: 8)   // 图片底部 +8pt（交叉轴 end 方向）
         btn1.titleMarge(start: 8, end: 0)   // 文字顶部 +8pt（交叉轴 start 方向）
@@ -256,7 +256,7 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
 
         // 图片上移，文字下移
         let btn2 = makeBtn(title: "图片偏上 / 文字偏下", imageName: "arrow.up.and.down", bg: .systemTeal)
-        btn2.axis(.horizontal).spacing(10)
+        btn2.imageLeading.spacing(10)
             .insets(UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)).radius(10)
         btn2.imageMarge(start: 8, end: 0)
         btn2.titleMarge(start: 0, end: 8)
@@ -266,7 +266,7 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
         // 使用 StartEndInsets 直接赋属性
         addNote("也可直接设置 imageMarge / titleMarge 属性（StartEndInsets 结构体）：")
         let btn3 = makeBtn(title: "属性赋值方式", imageName: "star.fill", bg: .systemPink)
-        btn3.axis(.horizontal).spacing(8)
+        btn3.imageLeading.spacing(8)
             .insets(UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)).radius(10)
         btn3.imageMarge = StartEndInsets(start: 4, end: 4)  // 直接设置属性
         btn3.titleMarge = StartEndInsets(start: 2, end: 6)
@@ -505,7 +505,7 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
 
         // 链式：先设布局属性，再设状态样式
         chainBtn
-            .axis(.horizontal)
+            .imageLeading
             .spacing(8)
             .insets(UIEdgeInsets(top: 12, left: 24, bottom: 12, right: 24))
             .radius(22)

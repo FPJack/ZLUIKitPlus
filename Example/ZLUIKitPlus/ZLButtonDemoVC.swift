@@ -417,14 +417,14 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
 
         submitBtn
             .activeStyle { btn in
-                btn.gradColors([.systemOrange, .systemRed])
+                btn.gradColors([UIColor.systemOrange, UIColor.systemRed])
                 btn.gradDirection(start: CGPoint(x: 0, y: 0.5), end: CGPoint(x: 1, y: 0.5))
                 btn.alpha = 1.0
                 btn.setTitle("立即支付 ¥ 999", for: .normal)
                 btn.setImage(UIImage(systemName: "creditcard.fill"), for: .normal)
             }
             .inactiveStyle { btn in
-                btn.gradColors([.systemGray3, .systemGray4])
+                btn.gradColors([UIColor.systemGray3, UIColor.systemGray4])
                 btn.alpha = 0.85
                 btn.setTitle("支付处理中...", for: .normal)
                 btn.setImage(UIImage(systemName: "hourglass"), for: .normal)
@@ -514,7 +514,7 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
             .activeStyle { btn in
                 btn.backgroundColor = .systemPurple
                 btn.alpha = 1
-                btn.shadowColor(color: .systemPurple)
+                btn.shadowColor(color: UIColor.systemPurple)
                 btn.shadowOpacity(opacity: 0.35)
             }
             .inactiveStyle { btn in
@@ -609,9 +609,9 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
 
         // 渐变 + 阴影
         let btn1 = makeBtn(title: "渐变 + 阴影 Button", imageName: "bolt.fill")
-        btn1.gradColors([.systemOrange, .systemRed])
+        btn1.gradColors([UIColor.systemOrange, UIColor.systemRed])
             .gradDirection(start: CGPoint(x: 0, y: 0.5), end: CGPoint(x: 1, y: 0.5))
-            .shadowColor(color: .systemRed)
+            .shadowColor(color: UIColor.systemRed)
             .shadowOffset(w: 0, h: 5)
             .shadowRadius(radius: 10)
             .shadowOpacity(opacity: 0.35)
@@ -635,7 +635,7 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
         btn2.setTitle("描边按钮（Ghost Button）", for: .normal)
         btn2.setTitleColor(.systemBlue, for: .normal)
         btn2.backgroundColor = .white
-        btn2.border(color: .systemBlue, w: 1.5)
+        btn2.border(color: UIColor.systemBlue, w: 1.5)
             .radius(22)
             .insets(UIEdgeInsets(top: 12, left: 28, bottom: 12, right: 28))
         addDemo(btn2)
@@ -645,8 +645,8 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
         let btn3 = Button()
         btn3.setTitle("渐变 + 描边 + 独立圆角", for: .normal)
         btn3.setTitleColor(.white, for: .normal)
-        btn3.gradColors([.systemGreen, .systemTeal])
-            .border(color: .white, w: 1.5)
+        btn3.gradColors([UIColor.systemGreen, UIColor.systemTeal])
+            .border(color: UIColor.white, w: 1.5)
             .cornerRadii(16, 0, 0, 16)
             .insets(UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20))
         addDemo(btn3, height: 48)

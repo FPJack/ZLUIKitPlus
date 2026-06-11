@@ -142,7 +142,7 @@ class ZLUIViewExDemoVC: ZLDemoBaseVC {
         let card = View()
         card.backgroundColor = .white
         card.radius(14)
-        card.shadowColor(color: .black)
+        card.shadowColor(color: UIColor.black)
         card.shadowOffset(w: 0, h: 3)
         card.shadowRadius(radius: 8)
         card.shadowOpacity(opacity: 0.08)
@@ -673,10 +673,10 @@ class ZLUIViewExDemoVC: ZLDemoBaseVC {
 
         let wv2 = innerBtn.zl_wrapView
         wv2.insets(14, 30, 14, 30)
-        wv2.gradColors([.systemOrange, .systemRed])
+        wv2.gradColors([UIColor.systemOrange, UIColor.systemRed])
         wv2.gradDirection(start: CGPoint(x: 0, y: 0.5), end: CGPoint(x: 1, y: 0.5))
         wv2.radius(24)
-        wv2.shadowColor(color: .systemRed)
+        wv2.shadowColor(color: UIColor.systemRed)
         wv2.shadowOffset(w: 0, h: 5)
         wv2.shadowOpacity(opacity: 0.3)
         let wv2Padder = UIView()

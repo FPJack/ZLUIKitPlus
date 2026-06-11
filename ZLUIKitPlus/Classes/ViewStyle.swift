@@ -216,12 +216,12 @@ public protocol ViewStyleable where Self: UIView {
     /// 设置是否可交互（激活/非激活），并应用对应的样式 userInteractionEnabled = true 时应用 activeStyle，userInteractionEnabled = false 时应用 inactiveStyle
     func userActive(_ active: Bool) -> Self
     
-    func gradColors(_ colors: [UIColor]?) -> Self
+    func gradColors(_ colors: [ColorRepresentable]?) -> Self
     func gradDirection(start: CGPoint, end: CGPoint) -> Self
-    func borderColor(color: UIColor?) -> Self
+    func borderColor(color: ColorRepresentable?) -> Self
     func borderWidth(w: Double) -> Self
-    func border(color: UIColor?, w: Double) -> Self
-    func shadowColor(color: UIColor?) -> Self
+    func border(color: ColorRepresentable?, w: Double) -> Self
+    func shadowColor(color: ColorRepresentable?) -> Self
     
     func shadowOffset(w: Double,h: Double) -> Self
     
@@ -272,7 +272,7 @@ extension ViewStyleable {
     }
     
     @discardableResult
-    public func gradColors(_ colors: [UIColor]?) -> Self {
+    public func gradColors(_ colors: [ColorRepresentable]?) -> Self {
         self.viewStyle.gradColors(colors).view as! Self
     }
     
@@ -282,7 +282,7 @@ extension ViewStyleable {
     }
     
     @discardableResult
-    public func borderColor(color: UIColor?) -> Self{
+    public func borderColor(color: ColorRepresentable?) -> Self{
         self.viewStyle.borderColor(color: color).view as! Self
     }
     
@@ -292,12 +292,12 @@ extension ViewStyleable {
     }
     
     @discardableResult
-    public func border(color: UIColor?, w: Double) -> Self {
+    public func border(color: ColorRepresentable?, w: Double) -> Self {
         borderColor(color: color).borderWidth(w:w)
     }
     
     @discardableResult
-    public func shadowColor(color: UIColor?) -> Self{
+    public func shadowColor(color: ColorRepresentable?) -> Self{
         self.viewStyle.shadowColor(color: color).view as! Self
     }
     
@@ -332,13 +332,13 @@ extension ViewStyleable {
 }
 extension ViewStyle {
     @discardableResult
-    public func gradColors(_ colors: [UIColor]?) -> Self {
+    public func gradColors(_ colors: [ColorRepresentable]?) -> Self {
         if _gradLayer == nil {
             markedNeedUpdate = true
             view.setNeedsLayout()
         }
-        let cgColors = colors?.map {
-            $0.cgColor
+        let cgColors = colors?.compactMap {
+            $0.getColor?.cgColor
         }
         gradLayer.colors = cgColors
         return self
@@ -355,8 +355,8 @@ extension ViewStyle {
     }
     
     @discardableResult
-    public func borderColor(color: UIColor?) -> Self{
-        backgroundShapeLayer.strokeColor = color?.cgColor
+    public func borderColor(color: ColorRepresentable?) -> Self{
+        backgroundShapeLayer.strokeColor = color?.getColor?.cgColor
         return self
     }
     
@@ -367,14 +367,14 @@ extension ViewStyle {
     }
     
     @discardableResult
-    public func border(color: UIColor?, w: Double) -> Self {
+    public func border(color: ColorRepresentable?, w: Double) -> Self {
         borderColor(color: color).borderWidth(w:w)
     }
     
     @discardableResult
-    public func shadowColor(color: UIColor?) -> Self{
+    public func shadowColor(color: ColorRepresentable?) -> Self{
         let layer = view.layer
-        layer.shadowColor = color?.cgColor
+        layer.shadowColor = color?.getColor?.cgColor
         layer.shadowOpacity = 0.2
         layer.shadowRadius = 8
         layer.shadowOffset = CGSize(width: 0, height: 2)

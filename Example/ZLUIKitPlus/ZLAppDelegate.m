@@ -18,7 +18,16 @@
 //    ZLImageView.imageLoader = ^(NSString * _Nonnull, UIImage * _Nullable) {
 //        
 //    };
-    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        ZLImageView *view = ZLImageView.new;
+        view.setUrl(@"https://gips3.baidu.com/it/u=3886271102,3123389489&fm=3028&app=3028&f=JPEG&fmt=auto?w=1280&h=960", @"猫狗通用-分离焦虑");
+        view.tapAction(^(ZLImageView * _Nonnull) {
+            NSLog(@"点击了图片");
+        });
+        
+        
+        view.layout.addTo(self.window).centerOffset(0, 0);
+    });
     return YES;
 }
 

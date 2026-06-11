@@ -70,19 +70,19 @@ class ZLViewDemoVC: ZLDemoBaseVC {
         addNote("gradColors([UIColor]?) 接受颜色数组，数量不限。内部使用 CAGradientLayer + CAShapeLayer mask 实现，支持圆角裁剪。传 nil 移除渐变。")
 
         let v1 = View()
-        v1.gradColors([.systemPurple, .systemPink])
+        v1.gradColors([UIColor.systemPurple, UIColor.systemPink])
         v1.radius(12)
         addDemo(v1, height: 60)
         addCaption("gradColors([.systemPurple, .systemPink])：两色渐变（默认方向：左上→右下）")
 
         let v2 = View()
-        v2.gradColors([.systemRed, .systemOrange, .systemYellow])
+        v2.gradColors([UIColor.systemRed, UIColor.systemOrange, .systemYellow])
         v2.radius(12)
         addDemo(v2, height: 60)
         addCaption("gradColors([red, orange, yellow])：三色渐变")
 
         let v3 = View()
-        v3.gradColors([.systemBlue, .systemGreen, .systemTeal, .red])
+        v3.gradColors([UIColor.systemBlue, UIColor.systemGreen, .systemTeal, UIColor.red])
         v3.radius(12)
         addDemo(v3, height: 60)
         addCaption("gradColors([blue, green, teal, cyan])：四色渐变")
@@ -103,7 +103,7 @@ class ZLViewDemoVC: ZLDemoBaseVC {
         ]
         for (start, end, name) in directions {
             let v = View()
-            v.gradColors([.systemBlue, .systemPink])
+            v.gradColors([UIColor.systemBlue, UIColor.systemPink])
             v.gradDirection(start: start, end: end)
             v.radius(12)
             addDemo(v, height: 56)
@@ -121,7 +121,7 @@ class ZLViewDemoVC: ZLDemoBaseVC {
         // 一步设置
         let v1 = View()
         v1.backgroundColor = .white
-        v1.border(color: .systemBlue, w: 2.0)
+        v1.border(color: UIColor.systemBlue, w: 2.0)
         v1.radius(12)
         addDemo(v1, height: 50)
         addCaption("border(color: .systemBlue, w: 2.0)")
@@ -129,7 +129,7 @@ class ZLViewDemoVC: ZLDemoBaseVC {
         // 分开设置
         let v2 = View()
         v2.backgroundColor = UIColor.systemOrange.withAlphaComponent(0.08)
-        v2.borderColor(color: .systemOrange)
+        v2.borderColor(color: UIColor.systemOrange)
         v2.borderWidth(w: 1.5)
         v2.radius(8)
         addDemo(v2, height: 50)
@@ -137,8 +137,8 @@ class ZLViewDemoVC: ZLDemoBaseVC {
 
         // 描边 + 渐变背景
         let v3 = View()
-        v3.gradColors([.systemPurple, .systemBlue])
-        v3.border(color: .white, w: 2.0)
+        v3.gradColors([UIColor.systemPurple, UIColor.systemBlue])
+        v3.border(color: UIColor.white, w: 2.0)
         v3.radius(16)
         addDemo(v3, height: 60)
         addCaption("gradColors + border(color: .white, w:2)：渐变背景 + 白色描边")
@@ -146,7 +146,7 @@ class ZLViewDemoVC: ZLDemoBaseVC {
         // 粗边框
         let v4 = View()
         v4.backgroundColor = .systemYellow.withAlphaComponent(0.2)
-        v4.border(color: .systemYellow, w: 4.0)
+        v4.border(color: UIColor.systemYellow, w: 4.0)
         v4.radius(12)
         addDemo(v4, height: 50)
         addCaption("border(color:w:4.0)：粗边框")
@@ -163,7 +163,7 @@ class ZLViewDemoVC: ZLDemoBaseVC {
         let v1 = View()
         v1.backgroundColor = .white
         v1.radius(12)
-        v1.shadowColor(color: .black)
+        v1.shadowColor(color: UIColor.black)
         // 默认：opacity=0.2, radius=8, offset=(0,2)
         let wrap1 = UIView()
         wrap1.addSubview(v1)
@@ -182,7 +182,7 @@ class ZLViewDemoVC: ZLDemoBaseVC {
         let v2 = View()
         v2.backgroundColor = .white
         v2.radius(14)
-        v2.shadowColor(color: .systemBlue)
+        v2.shadowColor(color: UIColor.systemBlue)
         v2.shadowOffset(w: 0, h: 8)
         v2.shadowRadius(radius: 14)
         v2.shadowOpacity(opacity: 0.3)
@@ -203,7 +203,7 @@ class ZLViewDemoVC: ZLDemoBaseVC {
         let v3 = View()
         v3.backgroundColor = .white
         v3.radius(10)
-        v3.shadowColor(color: .black)
+        v3.shadowColor(color: UIColor.black)
         v3.shadowOffset(w: 6, h: 0)
         v3.shadowRadius(radius: 6)
         v3.shadowOpacity(opacity: 0.15)
@@ -256,9 +256,9 @@ class ZLViewDemoVC: ZLDemoBaseVC {
         // 渐变 + 圆角 + 阴影
         let v1 = View()
         v1
-            .gradColors([.systemOrange, .systemRed])
+            .gradColors([UIColor.systemOrange,UIColor .systemRed])
             .gradDirection(start: CGPoint(x: 0, y: 0.5), end: CGPoint(x: 1, y: 0.5))
-            .shadowColor(color: .systemRed)
+            .shadowColor(color: UIColor.systemRed)
             .shadowOffset(w: 0, h: 6)
             .shadowRadius(radius: 12)
             .shadowOpacity(opacity: 0.35)
@@ -281,7 +281,7 @@ class ZLViewDemoVC: ZLDemoBaseVC {
         v2
             .gradColors([UIColor(red: 0.1, green: 0.5, blue: 1, alpha: 1),
                          UIColor(red: 0.4, green: 0.1, blue: 0.9, alpha: 1)])
-            .border(color: .white, w: 2)
+            .border(color: UIColor.white, w: 2)
             .cornerRadii(20, 0, 0, 20)
         addDemo(v2, height: 60)
         addCaption("链式：gradColors + border(color: .white, w:2) + cornerRadii(20,0,0,20)")

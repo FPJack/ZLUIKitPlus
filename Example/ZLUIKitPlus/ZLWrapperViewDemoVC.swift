@@ -57,7 +57,7 @@ class ZLWrapperViewDemoVC: ZLDemoBaseVC {
             .insets(16, 16, 16, 16)
         wrapper2.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.1)
         wrapper2.radius(12)
-        wrapper2.border(color: .systemGreen, w: 1)
+        wrapper2.border(color: UIColor.systemGreen, w: 1)
         addDemo(wrapper2)
         addCaption("包裹多行 UILabel — 高度自动撑开")
 
@@ -69,7 +69,7 @@ class ZLWrapperViewDemoVC: ZLDemoBaseVC {
             .insets(8, 24, 8, 24)
         wrapper3.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.08)
         wrapper3.radius(20)
-        wrapper3.border(color: .systemBlue, w: 1)
+        wrapper3.border(color: UIColor.systemBlue, w: 1)
         addDemo(wrapper3)
         addCaption("WrapperView.wrap(with: UIButton).insets(8, 24, 8, 24)")
 
@@ -148,7 +148,7 @@ class ZLWrapperViewDemoVC: ZLDemoBaseVC {
         l1.textColor = .white
         l1.font = .boldSystemFont(ofSize: 15)
         let w1 = WrapperView.wrap(with: l1).insets(14, 20, 14, 20)
-        w1.gradColors([.systemBlue, .systemPurple])
+        w1.gradColors([UIColor.systemBlue, UIColor.systemPurple])
         w1.gradDirection(start: CGPoint(x: 0, y: 0.5), end: CGPoint(x: 1, y: 0.5))
         w1.radius(14)
         addDemo(w1)
@@ -162,7 +162,7 @@ class ZLWrapperViewDemoVC: ZLDemoBaseVC {
         let w2 = WrapperView.wrap(with: l2).insets(16, 20, 16, 20)
         w2.backgroundColor = .white
         w2.radius(12)
-        w2.shadowColor(color: .black)
+        w2.shadowColor(color: UIColor.black)
         w2.shadowOffset(w: 0, h: 4)
         w2.shadowRadius(radius: 10)
         w2.shadowOpacity(opacity: 0.12)
@@ -186,7 +186,7 @@ class ZLWrapperViewDemoVC: ZLDemoBaseVC {
         l3.textAlignment = .center
         let w3 = WrapperView.wrap(with: l3).insets(10, 24, 10, 24)
         w3.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.05)
-        w3.border(color: .systemGreen, w: 1.5)
+        w3.border(color: UIColor.systemGreen, w: 1.5)
         w3.radius(20)
         addDemo(w3)
         addCaption("border(color:w:) + radius：描边样式")
@@ -209,7 +209,7 @@ class ZLWrapperViewDemoVC: ZLDemoBaseVC {
             .insets(12, 16, 12, 16)
         wrapper.backgroundColor = UIColor.systemGray.withAlphaComponent(0.05)
         wrapper.radius(10)
-        wrapper.border(color: .systemGray4, w: 1)
+        wrapper.border(color: UIColor.systemGray4, w: 1)
         addDemo(wrapper)
 
         let btn = UIButton(type: .system)
@@ -290,7 +290,7 @@ class ZLWrapperViewDemoVC: ZLDemoBaseVC {
         let card = WrapperView.wrap(with: cardContent).insets(16, 16, 16, 16)
         card.backgroundColor = .white
         card.radius(14)
-        card.shadowColor(color: .black)
+        card.shadowColor(color: UIColor.black)
         card.shadowOffset(w: 0, h: 3)
         card.shadowRadius(radius: 8)
         card.shadowOpacity(opacity: 0.08)

@@ -66,11 +66,9 @@ open class Label: UILabel {
         
     }
     
-    public func tapAction(_ block: @escaping (Self) -> Void) -> Self {
-        zl_tapAction {block($0)}
-    }
+    
 }
-
+extension Label: TapActionable{}
 extension Label {
     @objc(tapAction)
     @available(swift, obsoleted: 1, renamed: "tapAction(_:)")

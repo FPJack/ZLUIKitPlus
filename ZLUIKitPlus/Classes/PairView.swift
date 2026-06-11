@@ -82,11 +82,6 @@ open class PairView: StackView {
         return self
     }
     
-    @nonobjc
-    public func tapAction(_ block: @escaping (Self) -> Void) -> Self {
-        zl_tapAction {block($0)}
-    }
-    
     
     
     
@@ -267,7 +262,7 @@ open class PairView: StackView {
     }
     
 }
-
+extension PairView: TapActionable{}
 extension PairView {
     @objc(tapAction)
     @available(swift, obsoleted: 1, renamed: "tapAction(_:)")

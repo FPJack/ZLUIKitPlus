@@ -11,7 +11,6 @@
 
 import UIKit
 import ZLUIKitPlus
-
 class ZLLabelDemoVC: ZLDemoBaseVC {
 
     override func viewDidLoad() {
@@ -34,7 +33,6 @@ class ZLLabelDemoVC: ZLDemoBaseVC {
         label1.layer.cornerRadius = 8
         label1.clipsToBounds = true
         
-        
        
         addDemo(label1)
         addCaption("四边各 10pt — Label 尺寸自动包含 insets")
@@ -44,7 +42,7 @@ class ZLLabelDemoVC: ZLDemoBaseVC {
         // ──────────────────────────────────────────
         addSection("② 胶囊 Tag 样式")
         addNote("上下 4pt + 左右 16pt，配合 cornerRadius = 14 实现常见 Tag 胶囊效果。由于 intrinsicContentSize 已计算 insets，无需手动设置宽高。")
-
+        
         let tagStack = UIStackView()
         tagStack.axis = .horizontal
         tagStack.spacing = 8
@@ -83,7 +81,9 @@ class ZLLabelDemoVC: ZLDemoBaseVC {
         label3.clipsToBounds = true
         addDemo(label3)
         addCaption("insets(top:8, left:30, bottom:8, right:8)：左侧大缩进预留图标空间")
-
+//        label3.tapAction { label in
+//            print("点击了带左缩进的 Label")
+//        }
         // ──────────────────────────────────────────
         // MARK: 4. 多行文字 + insets
         // ──────────────────────────────────────────

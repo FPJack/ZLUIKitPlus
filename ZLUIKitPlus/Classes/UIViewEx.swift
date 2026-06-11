@@ -154,32 +154,45 @@ public extension UIView {
 }
 
 
+
 // MARK: - 内部手势点击事件
-protocol TapActionProtocol where Self: UIView {
-    func zl_tapAction(_ action: @escaping (Self) -> Void) -> Self
+final class _ZLViewTapGesture: UITapGestureRecognizer {
+    var action: ((UIView) -> Void)?
+    init(view: UIView, action: @escaping (UIView) -> Void) {
+        super.init(target: nil, action: nil)
+        self.action = action
+        self.addTarget(self, action: #selector(handleTap))
+        if !view.isUserInteractionEnabled {
+            view.isUserInteractionEnabled = true
+        }
+        view.addGestureRecognizer(self)
+    }
+    @objc private func handleTap() {
+        if let view = self.view {
+            action?(view)
+        }
+    }
+}
+
+public protocol TapActionable where Self: UIView {
+    func tapAction(_ action: @escaping (Self) -> Void) -> Self
 }
 private let tapActionKey = "zl_tapAction"
-extension TapActionProtocol {
+extension TapActionable {
    @discardableResult
-   func zl_tapAction(_ action: @escaping (Self) -> Void) -> Self {
+   public func tapAction(_ action: @escaping (Self) -> Void) -> Self {
        let key = tapActionKey
        zl_storage[key] = action
        let tapKey = "\(key)_gesture"
        if zl_storage[tapKey] == nil {
-           let tap = UITapGestureRecognizer(target: self, action: #selector(_zl_handleTapAction))
-           addGestureRecognizer(tap)
-           self.isUserInteractionEnabled = true
-           self.addGestureRecognizer(tap)
+           let tap =  _ZLViewTapGesture(view: self) { view in
+               let block = self.zl_storage[key] as? (Self) -> Void
+               block?(view as! Self)
+           }
            zl_storage[tapKey] = tap
        }
        return self
     }
 }
-extension UIView: TapActionProtocol {
-        @objc func _zl_handleTapAction() {
-            let key = tapActionKey
-            if let action = zl_storage[key] as? (Self) -> Void {
-                action(self as! Self)
-            }
-        }
-}
+
+

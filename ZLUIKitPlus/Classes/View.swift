@@ -24,10 +24,9 @@ open class View: UIView,ViewStyleable {
         viewStyle.layoutSubviews()
     }
     
-    public func tapAction(_ block: @escaping (Self) -> Void) -> Self {
-        zl_tapAction {block($0)}
-    }
+   
 }
+extension View: TapActionable {}
 
 extension View {
     @objc(tapAction)
@@ -47,9 +46,9 @@ extension View {
 public extension View {
     @objc(gradColors)
     @available(swift, obsoleted: 1, renamed: "gradColors(_:)")
-    var gradColorsObjc: (_ colors: [UIColor]?) -> View {
+    var gradColorsObjc: (_ colors: [AnyObject]?) -> View {
         { colors in
-            self.gradColors(colors)
+            self.gradColors(colors?.compactMap(ColorFromObj))
         }
     }
     
@@ -63,9 +62,9 @@ public extension View {
     
     @objc(borderColor)
     @available(swift, obsoleted: 1, renamed: "borderColor(_:)")
-    var borderColorObjc: (_ color: UIColor?) -> View {
+    var borderColorObjc: (_ color: AnyObject?) -> View {
         { color in
-            self.borderColor(color: color)
+            self.borderColor(color: ColorFromObj(color))
         }
     }
     
@@ -79,16 +78,16 @@ public extension View {
     
     @objc(border)
     @available(swift, obsoleted: 1, renamed: "border(color:width:)")
-    var borderObjc: (_ color: UIColor?, _ width: CGFloat) -> View {
+    var borderObjc: (_ color: AnyObject?, _ width: CGFloat) -> View {
         { color, width in
-            self.border(color: color, w: width)
+            self.border(color: ColorFromObj(color), w: width)
         }
     }
     @objc(shadowColor)
     @available(swift, obsoleted: 1, renamed: "shadowColor(_:)")
-    var shadowColorObjc: (_ color: UIColor?) -> View {
+    var shadowColorObjc: (_ color: AnyObject?) -> View {
         { color in
-            self.shadowColor(color: color)
+            self.shadowColor(color: ColorFromObj(color))
         }
     }
     

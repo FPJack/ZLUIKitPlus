@@ -50,20 +50,17 @@ open class ImageView: UIImageView {
         return self
     }
     
-    @discardableResult
-    public func tapAction(_ block: @escaping (Self) -> Void) -> Self {
-        zl_tapAction {block($0)}
-        
-    }
+    
     @discardableResult
     public func url(_ url: String?, placeholder: ImageSource? = nil) -> Self {
         ImageView.imageLoader?(self,url, placeholder?.img)
         return self
     }
 }
-
+extension ImageView:TapActionable {}
 
 public extension ImageView {
+    
     @objc(tapAction)
     @available(swift, obsoleted: 1, renamed: "tapAction(_:)")
     var tapActionObjc: ((_ block: ((ImageView) -> Void)?) -> ImageView) {

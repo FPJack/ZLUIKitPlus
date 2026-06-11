@@ -47,7 +47,7 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
         super.viewDidLoad()
         title = "Button Demo"
         let url = "https://gips3.baidu.com/it/u=3886271102,3123389489&fm=3028&app=3028&f=JPEG&fmt=auto?w=1280&h=960"
-        ImageView().url(url, placeholder: "猫狗通用-分离焦虑").layout.addTo(view).centerOffset(x: 0, y: 0)
+        ImageView().style.url(url, placeholder: "猫狗通用-分离焦虑").layout.addTo(view).centerOffset(x: 0, y: 0)
     }
 
     override func setupDemos() {

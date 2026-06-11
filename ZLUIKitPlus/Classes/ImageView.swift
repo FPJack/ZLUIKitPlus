@@ -20,11 +20,10 @@ extension ImageSource {
     
 extension String: ImageSource {}
 extension UIImage: ImageSource {}
-@objc(ZLImageView)
-open class ImageView: UIImageView {
-    ///默认内部SDWebImage 加载图片，外部block赋值自定义加载图片
+
+extension UIImageView {
     @objc
-    static public var imageLoader: ((ImageView,String?, UIImage?) -> Void)? = {
+    static public var imageLoader: ((UIImageView,String?, UIImage?) -> Void)? = {
        imgView, url, placeholder in
         let urlObj: URL?
         let selector =
@@ -37,33 +36,15 @@ open class ImageView: UIImageView {
         }
         imgView.image = placeholder
     }
-    
-    
-    @discardableResult
-    ///设置图片，可以是图片名称或者UIImage对象
-    public func image(_ image: ImageSource? = nil) -> Self {
-        guard let image = image else {
-            self.image = nil
-            return self
-        }
-        self.image = image.img
-        return self
-    }
-    
-    
-    @discardableResult
-    public func url(_ url: String?, placeholder: ImageSource? = nil) -> Self {
-        ImageView.imageLoader?(self,url, placeholder?.img)
-        return self
-    }
 }
-extension ImageView:TapActionable {}
 
-public extension ImageView {
-    
+
+@objc(ZLImageView)
+open class ImageView: UIImageView {
+   
     @objc(tapAction)
     @available(swift, obsoleted: 1, renamed: "tapAction(_:)")
-    var tapActionObjc: ((_ block: ((ImageView) -> Void)?) -> ImageView) {
+    public var tapActionObjc: ((_ block: ((ImageView) -> Void)?) -> ImageView) {
         { block in
             if let block = block {
                 return self.tapAction(block)
@@ -74,10 +55,10 @@ public extension ImageView {
     
     @objc(setImage)
     @available(swift, obsoleted: 1, renamed: "image(_:)")
-    var imageObjc: (_ image: AnyObject?) -> ImageView {
+    public var imageObjc: (_ image: AnyObject?) -> ImageView {
         { image in
             if let img = image as? ImageSource {
-                self.image(img)
+                self.style.image(img)
             }
             return self
         }
@@ -85,12 +66,14 @@ public extension ImageView {
     
     @objc(setUrl)
     @available(swift, obsoleted: 1, renamed: "url(_:placeholder:)")
-    var urlObjc: (_ url: String?, _ placeholder: AnyObject?) -> ImageView {
+    public var urlObjc: (_ url: String?, _ placeholder: AnyObject?) -> ImageView {
         { url, placeholder in
             if placeholder != nil, let placeholder = placeholder as? ImageSource {
-               return self.url(url, placeholder: placeholder)
+                 self.style.url(url, placeholder: placeholder)
+                return self
             }
-           return self.url(url, placeholder: nil)
+             self.style.url(url, placeholder: nil)
+             return self
         }
     }
     

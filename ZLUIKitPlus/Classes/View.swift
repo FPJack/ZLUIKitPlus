@@ -26,7 +26,6 @@ open class View: UIView,ViewStyleable {
     
    
 }
-extension View: TapActionable {}
 
 extension View {
     @objc(tapAction)

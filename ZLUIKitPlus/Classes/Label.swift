@@ -68,7 +68,6 @@ open class Label: UILabel {
     
     
 }
-extension Label: TapActionable{}
 extension Label {
     @objc(tapAction)
     @available(swift, obsoleted: 1, renamed: "tapAction(_:)")

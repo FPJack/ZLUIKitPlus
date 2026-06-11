@@ -196,3 +196,283 @@ extension TapActionable {
 }
 
 
+
+
+
+
+
+public struct Style<Base: UIView> {
+    
+   public let base: Base
+    
+   public var layout: Layout {
+        base.layout
+   }
+   public var flex: FlexItem {
+        base.flex
+   }
+}
+
+public protocol StyleCompatible where Self: UIView {}
+
+extension StyleCompatible {
+    public var style: Style<Self> {
+        Style(base: self)
+    }
+}
+extension UIView: StyleCompatible,TapActionable {}
+
+
+public extension Style {
+    @discardableResult
+    func backgroundColor(_ color: ColorRepresentable?) -> Self {
+        base.backgroundColor = color?.getColor
+        return self
+    }
+    @discardableResult
+    func hidden(_ hidden: Bool) -> Self {
+        base.isHidden = hidden
+        return self
+    }
+    @discardableResult
+    func alpha(_ alpha: CGFloat) -> Self {
+        base.alpha = alpha
+        return self
+    }
+    
+    @discardableResult
+    func contentMode(_ mode: UIView.ContentMode ) -> Self {
+        base.contentMode = mode
+        return self
+    }
+    
+    @discardableResult
+    func tintColor(_ color: ColorRepresentable?) -> Self {
+        base.tintColor = color?.getColor
+        return self
+    }
+    
+    @discardableResult
+    func borderColor(color: ColorRepresentable?) -> Self {
+        base.layer.borderColor = color?.getColor?.cgColor
+        return self
+    }
+    
+    @discardableResult
+    func borderWidth(w: Double) -> Self {
+        base.layer.borderWidth = CGFloat(w)
+        return self
+    }
+    
+    @discardableResult
+    func border(color: ColorRepresentable?, w: Double) -> Self {
+        return borderColor(color: color).borderWidth(w: w)
+    }
+    @discardableResult
+    func shadowColor(color: ColorRepresentable?) -> Self {
+        base.layer.shadowColor = color?.getColor?.cgColor
+        return self
+    }
+    @discardableResult
+    func shadowOffset(w: Double,h: Double) -> Self {
+        base.layer.shadowOffset = CGSize(width: w, height: h)
+        return self
+    }
+    @discardableResult
+    func shadowRadius(radius: Double) -> Self {
+        base.layer.shadowRadius = radius
+        return self
+    }
+    @discardableResult
+    func shadowOpacity(opacity: Float) -> Self {
+        base.layer.shadowOpacity = opacity
+        return self
+    }
+    @discardableResult
+    func radius(_ radius: CGFloat) -> Self {
+        base.layer.cornerRadius = radius
+        return self
+    }
+    @discardableResult
+    @available(iOS 11.0, *)
+    func corner(_ corners: CACornerMask, radius: CGFloat) -> Self {
+        base.layer.cornerRadius = radius
+        base.layer.maskedCorners = corners
+        return self
+    }
+    @discardableResult
+    func masksToBounds(_ masks: Bool = true) -> Self {
+        base.layer.masksToBounds = masks
+        return self
+    }
+    
+    @discardableResult
+    func tapAction(_ action: @escaping (Base) -> Void) -> Self {
+        base.tapAction {action($0)}
+        return self
+    }
+    
+    @discardableResult
+    func height(_ height: NumberConvertible) -> Self {
+        base.heightAnchor.constraint(equalToConstant: height.cgFloat).isActive = true
+        return self
+    }
+    
+    @discardableResult
+    func width(_ width: NumberConvertible) -> Self {
+        base.widthAnchor.constraint(equalToConstant: width.cgFloat).isActive = true
+        return self
+    }
+    
+    @discardableResult
+    func size(w: NumberConvertible,h: NumberConvertible) -> Self {
+        width(w.cgFloat).height(h.cgFloat)
+    }
+    
+    @discardableResult
+    func square(_ side: NumberConvertible) -> Self {
+        width(side).height(side)
+    }
+    
+    
+    @discardableResult
+    func compressionResistance(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
+        base.setContentCompressionResistancePriority(priority, for: axis)
+        return self
+    }
+    
+    @discardableResult
+    func hugging(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
+        base.setContentHuggingPriority(priority, for: axis)
+        return self
+    }
+}
+
+
+extension Style where Base: UILabel {
+    @discardableResult
+    func text(_ text: String?) -> Self {
+        base.text = text
+        return self
+    }
+    
+    @discardableResult
+    func textColor(_ color: ColorRepresentable?) -> Self {
+        base.textColor = color?.getColor
+        return self
+    }
+    
+    @discardableResult
+    func font(_ font: UIFont?) -> Self {
+        base.font = font
+        return self
+    }
+    
+    @discardableResult
+    func fontSize(_ size: CGFloat) -> Self {
+        self.font(.systemFont(ofSize: size))
+    }
+    
+    @discardableResult
+    func text(_ text: String?, color: ColorRepresentable? = nil, fontSize: CGFloat? = nil) -> Self {
+        base.text = text
+        if let color = color {
+            base.textColor = color.getColor
+        }
+        if let fontSize = fontSize {
+            base.font = .systemFont(ofSize: fontSize)
+        }
+        return self
+    }
+    
+    @discardableResult
+    func numberOfLines(_ lines: Int) -> Self {
+        base.numberOfLines = lines
+        return self
+    }
+    
+    @discardableResult
+    func singleLine() -> Self {
+        base.numberOfLines = 1
+        return self
+    }
+    
+    @discardableResult
+    func multipleLines() -> Self {
+        base.numberOfLines = 0
+        return self
+    }
+    
+    @discardableResult
+    func twoLines() -> Self {
+        base.numberOfLines = 2
+        return self
+    }
+}
+extension Style where Base: UIButton {
+    func title(_ title: String?, for state: UIControl.State = .normal) -> Self {
+        base.setTitle(title, for: state)
+        return self
+    }
+    
+    func titleColor(_ color: ColorRepresentable?, for state: UIControl.State = .normal) -> Self {
+        base.setTitleColor(color?.getColor, for: state)
+        return self
+    }
+    
+    func font(_ font: UIFont?) -> Self {
+        base.titleLabel?.font = font
+        return self
+    }
+    
+    func fontSize(_ size: CGFloat) -> Self {
+        self.font(.systemFont(ofSize: size))
+    }
+    
+    func image(_ image: UIImage?, for state: UIControl.State = .normal) -> Self {
+        base.setImage(image, for: state)
+        return self
+    }
+    
+    func backgroundImage(_ image: UIImage?, for state: UIControl.State = .normal) -> Self {
+        base.setBackgroundImage(image, for: state)
+        return self
+    }
+    
+    func selected(_ selected: Bool) -> Self {
+        base.isSelected = selected
+        return self
+    }
+    
+    func highlighted(_ highlighted: Bool) -> Self {
+        base.isHighlighted = highlighted
+        return self
+    }
+    
+    func enabled(_ enabled: Bool) -> Self {
+        base.isEnabled = enabled
+        return self
+    }
+}
+
+
+
+extension Style where Base: UIImageView {
+    @discardableResult
+    ///设置图片，可以是图片名称或者UIImage对象
+    public func image(_ image: ImageSource? = nil) -> Self {
+        guard let image = image else {
+            base.image = nil
+            return self
+        }
+        base.image = image.img
+        return self
+    }
+    
+    
+    @discardableResult
+    public func url(_ url: String?, placeholder: ImageSource? = nil) -> Self {
+        UIImageView.imageLoader?(base,url, placeholder?.img)
+        return self
+    }
+}

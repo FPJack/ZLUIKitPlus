@@ -262,7 +262,6 @@ open class PairView: StackView {
     }
     
 }
-extension PairView: TapActionable{}
 extension PairView {
     @objc(tapAction)
     @available(swift, obsoleted: 1, renamed: "tapAction(_:)")

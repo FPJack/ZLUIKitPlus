@@ -23,6 +23,23 @@ open class View: UIView,ViewStyleable {
         super.layoutSubviews()
         viewStyle.layoutSubviews()
     }
+    
+    public func tapAction(_ block: @escaping (Self) -> Void) -> Self {
+        zl_tapAction {block($0)}
+    }
+}
+
+extension View {
+    @objc(tapAction)
+    @available(swift, obsoleted: 1, renamed: "tapAction(_:)")
+    var tapActionObjc: ((_ block: ((View) -> Void)?) -> View) {
+        { block in
+            if let block = block {
+                return self.tapAction(block)
+            }
+            return self
+        }
+    }
 }
 
 
@@ -116,23 +133,29 @@ public extension View {
     
     @objc(activeStyle)
     @available(swift, obsoleted: 1, renamed: "activeStyle(_:)")
-    var activeStyleObjc: (_ block: @escaping (View) -> Void) -> View {
+    var activeStyleObjc: ((_ block: ((View) -> Void)?) -> View) {
         { block in
-            self.activeStyle(block)
+            if let block = block {
+                return self.activeStyle(block)
+            }
+            return self
         }
     }
     
     @objc(inactiveStyle)
     @available(swift, obsoleted: 1, renamed: "inactiveStyle(_:)")
-    var inactiveStyleObjc: (_ block: @escaping (View) -> Void) -> View {
+    var inactiveStyleObjc: ((_ block: ((View) -> Void)?) -> View) {
         { block in
-            self.inactiveStyle(block)
+            if let block = block {
+                return self.inactiveStyle(block)
+            }
+            return self
         }
     }
     
-    @objc(userActive)
+    @objc(setUserActive)
     @available(swift, obsoleted: 1, renamed: "userActive(_:)")
-    var userActiveObjc: (_ active: Bool) -> View {
+    var setUserActiveObjc: (_ active: Bool) -> View {
         { active in
             self.userActive(active)
         }

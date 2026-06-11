@@ -71,7 +71,7 @@ class ZLViewControllerSwift: UIViewController, UITableViewDataSource, UITableVie
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(DemoCell.self, forCellReuseIdentifier: DemoCell.id)
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 72
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
 

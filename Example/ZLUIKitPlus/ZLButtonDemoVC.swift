@@ -88,7 +88,6 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
         btn1.imageLeading.spacing(8).insets(UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)).radius(10)
         addDemo(btn1, height: 44)
         addCaption("axis(.horizontal)：图文水平排列（默认）")
-
         let btn2 = makeBtn(title: "垂直排列 axis(.vertical)", imageName: "house.fill")
         btn2.imageTop.spacing(6).insets(UIEdgeInsets(top: 12, left: 24, bottom: 12, right: 24)).radius(12)
         addDemo(btn2)

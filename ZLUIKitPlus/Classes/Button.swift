@@ -265,13 +265,13 @@ open class Button: UIButton,ViewStyleable {
             swap(&edgeInsets.left, &edgeInsets.right)
         }
         if imgTouchOnly, let iv = imageView {
-            let expanded = UIEdgeInsetsInsetRect(iv.bounds, UIEdgeInsets(
+            let expanded = iv.bounds.inset(by: UIEdgeInsets(
                 top: -edgeInsets.top, left: -edgeInsets.left,
                 bottom: -edgeInsets.bottom, right: -edgeInsets.right))
             let pointInImageView = convert(point, to: iv)
             return expanded.contains(pointInImageView)
         }
-        let expanded = UIEdgeInsetsInsetRect(bounds, UIEdgeInsets(
+        let expanded = bounds.inset(by: UIEdgeInsets(
             top: -edgeInsets.top, left: -edgeInsets.left,
             bottom: -edgeInsets.bottom, right: -edgeInsets.right))
         return expanded.contains(point)
@@ -290,11 +290,26 @@ open class Button: UIButton,ViewStyleable {
             viewStyle.backgroundColor = newValue
         }
     }
+    
+    
     public func superBackgroundColor() -> UIColor? {
          super.backgroundColor
     }
     public func superSetBackgroundColor(_ color: UIColor?) {
         super.backgroundColor = color
+    }
+    
+    var tapBlock: ((Button) -> Void)?
+    
+    /// 添加点击事件，支持点击事件间隔限制（tapInterval）和仅图片响应（imgTouchOnly）
+    @discardableResult
+    public func tapAction(_ block: @escaping (Self) -> Void) -> Self {
+        tapBlock = {block($0 as! Self)}
+        addTarget(self, action: #selector(_tapAction), for: .touchUpInside)
+        return self
+    }
+    @objc private func _tapAction() {
+        tapBlock?(self)
     }
    
 }
@@ -722,7 +737,7 @@ private extension Button {
         key += "\(verticalAlign.rawValue)"
         key += "\(horizontalAlign.rawValue)"
         key += "\(flexibleSpacing ? 1 : 0)"
-        key += NSStringFromCGSize(imageSize)
+        key += String(describing: imageSize)
         let ei = effectiveInsets
         if isHorizontal {
             key += "\(ei.top)-\(ei.bottom)"
@@ -749,6 +764,7 @@ private extension Button {
         if hHugging != .defaultHigh {
             iv.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         }
+         
     }
 
 }
@@ -910,6 +926,19 @@ public extension Button {
         { [weak self] v in self?.touchAreaEdgeInsets = v; return self! }
     }
 }
+// MARK: - ObjC 点击事件链式API
+extension Button {
+    @objc(tapAction)
+    @available(swift, obsoleted: 1, renamed: "tapAction(_:)")
+    var tapActionObjc: ((_ block: ((Button) -> Void)?) -> Button) {
+        { block in
+            if let block = block {
+                return self.tapAction(block)
+            }
+            return self
+        }
+    }
+}
 
 
 // MARK: - ObjC 样式链式API
@@ -1002,25 +1031,32 @@ public extension Button {
         }
     }
     
+    
     @objc(activeStyle)
     @available(swift, obsoleted: 1, renamed: "activeStyle(_:)")
-    var activeStyleObjc: (_ block: @escaping (Button) -> Void) -> Button {
+    var activeStyleObjc: ((_ block: ((Button) -> Void)?) -> Button) {
         { block in
-            self.activeStyle(block)
+            if let block = block {
+                return self.activeStyle(block)
+            }
+            return self
         }
     }
     
     @objc(inactiveStyle)
     @available(swift, obsoleted: 1, renamed: "inactiveStyle(_:)")
-    var inactiveStyleObjc: (_ block: @escaping (Button) -> Void) -> Button {
+    var inactiveStyleObjc: ((_ block: ((Button) -> Void)?) -> Button) {
         { block in
-            self.inactiveStyle(block)
+            if let block = block {
+                return self.inactiveStyle(block)
+            }
+            return self
         }
     }
     
-    @objc(userActive)
+    @objc(setUserActive)
     @available(swift, obsoleted: 1, renamed: "userActive(_:)")
-    var userActiveObjc: (_ active: Bool) -> Button {
+    var setUserActiveObjc: (_ active: Bool) -> Button {
         { active in
             self.userActive(active)
         }

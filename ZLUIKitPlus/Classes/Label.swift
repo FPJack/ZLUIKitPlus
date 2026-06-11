@@ -26,7 +26,7 @@ open class Label: UILabel {
         )
     }
     open override func drawText(in rect: CGRect) {
-        super.drawText(in: UIEdgeInsetsInsetRect(rect, effectiveInsets))
+        super.drawText(in: rect.inset(by: effectiveInsets))
     }
     
     
@@ -64,6 +64,23 @@ open class Label: UILabel {
             
         )
         
+    }
+    
+    public func tapAction(_ block: @escaping (Self) -> Void) -> Self {
+        zl_tapAction {block($0)}
+    }
+}
+
+extension Label {
+    @objc(tapAction)
+    @available(swift, obsoleted: 1, renamed: "tapAction(_:)")
+    var tapActionObjc: ((_ block: ((Label) -> Void)?) -> Label) {
+        { block in
+            if let block = block {
+                return self.tapAction(block)
+            }
+            return self
+        }
     }
 }
 

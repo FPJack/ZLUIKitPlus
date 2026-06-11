@@ -33,6 +33,9 @@ class ZLLabelDemoVC: ZLDemoBaseVC {
         label1.insets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         label1.layer.cornerRadius = 8
         label1.clipsToBounds = true
+        
+        
+       
         addDemo(label1)
         addCaption("四边各 10pt — Label 尺寸自动包含 insets")
 

@@ -3,7 +3,7 @@ import ZLFlexKit
 @objcMembers
 @objc(ZLPairView)
 open class PairView: StackView {
-    public lazy var _first: UIView = {
+    lazy var _first: UIView = {
         let view = createFirstView()
         addFirst(view)
         return view
@@ -11,7 +11,7 @@ open class PairView: StackView {
     private func addFirst(_ view: UIView) {
         super.insertArrangedSubview(view, at: 0)
     }
-    public lazy var _second: UIView = {
+    lazy var _second: UIView = {
         let view = createSecondView()
         addSecond(view)
         return view
@@ -81,6 +81,13 @@ open class PairView: StackView {
         then(_second as! T)
         return self
     }
+    
+    @nonobjc
+    public func tapAction(_ block: @escaping (Self) -> Void) -> Self {
+        zl_tapAction {block($0)}
+    }
+    
+    
     
     
     @available(*, unavailable)
@@ -262,7 +269,16 @@ open class PairView: StackView {
 }
 
 extension PairView {
-    
+    @objc(tapAction)
+    @available(swift, obsoleted: 1, renamed: "tapAction(_:)")
+    var tapActionObjc: ((_ block: ((PairView) -> Void)?) -> PairView) {
+        { block in
+            if let block = block {
+                return self.tapAction(block)
+            }
+            return self
+        }
+    }
 }
 
 

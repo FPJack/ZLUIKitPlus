@@ -2,7 +2,7 @@ import UIKit
 import ZLFlexKit
 private var storageKey: UInt8 = 0
 public extension UIView {
-    private var zl_storage: NSMutableDictionary {
+     var zl_storage: NSMutableDictionary {
         if let dict = objc_getAssociatedObject(self, &storageKey) as? NSMutableDictionary {
             return dict
         }
@@ -151,4 +151,36 @@ public extension UIView {
              zl_storage[key] = view
              return view
     }
+}
+
+
+// MARK: - 内部手势点击事件
+protocol TapActionProtocol where Self: UIView {
+    func zl_tapAction(_ action: @escaping (Self) -> Void) -> Self
+}
+private let tapActionKey = "zl_tapAction"
+extension TapActionProtocol {
+   @discardableResult
+   func zl_tapAction(_ action: @escaping (Self) -> Void) -> Self {
+       let key = tapActionKey
+       zl_storage[key] = action
+       let tapKey = "\(key)_gesture"
+       if zl_storage[tapKey] != nil {
+           return self
+       }
+       let tap = UITapGestureRecognizer(target: self, action: #selector(_zl_handleTapAction))
+       addGestureRecognizer(tap)
+       self.isUserInteractionEnabled = true
+       self.addGestureRecognizer(tap)
+       zl_storage[tapKey] = tap
+        return self
+    }
+}
+extension UIView: TapActionProtocol {
+        @objc func _zl_handleTapAction() {
+            let key = tapActionKey
+            if let action = zl_storage[key] as? (Self) -> Void {
+                action(self as! Self)
+            }
+        }
 }

@@ -9,11 +9,15 @@
 #import "ZLAppDelegate.h"
 #import "ZLUIKitPlus-Swift.h"
 @import ZLUIKitPlus;
+@import ZLFlexKit;
 @implementation ZLAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+//    ZLImageView.imageLoader = ^(NSString * _Nonnull, UIImage * _Nullable) {
+//        
+//    };
     
     return YES;
 }

@@ -165,15 +165,14 @@ extension TapActionProtocol {
        let key = tapActionKey
        zl_storage[key] = action
        let tapKey = "\(key)_gesture"
-       if zl_storage[tapKey] != nil {
-           return self
+       if zl_storage[tapKey] == nil {
+           let tap = UITapGestureRecognizer(target: self, action: #selector(_zl_handleTapAction))
+           addGestureRecognizer(tap)
+           self.isUserInteractionEnabled = true
+           self.addGestureRecognizer(tap)
+           zl_storage[tapKey] = tap
        }
-       let tap = UITapGestureRecognizer(target: self, action: #selector(_zl_handleTapAction))
-       addGestureRecognizer(tap)
-       self.isUserInteractionEnabled = true
-       self.addGestureRecognizer(tap)
-       zl_storage[tapKey] = tap
-        return self
+       return self
     }
 }
 extension UIView: TapActionProtocol {

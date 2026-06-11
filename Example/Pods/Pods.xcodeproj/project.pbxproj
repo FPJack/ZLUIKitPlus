@@ -135,6 +135,7 @@
 		813BE4C96A6D39C13EC50C6CD164F0AF /* MASConstraintMaker.h in Headers */ = {isa = PBXBuildFile; fileRef = C4E90DB236E40BC181D66B8A601BB375 /* MASConstraintMaker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		83530BF68848CD2C4A79A1FD69B304A5 /* SDImageGIFCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E83E1F6956C4BD7899769D4E8E9B387 /* SDImageGIFCoder.m */; };
 		8414CFEEB64ACA817EB88D2FEADDA3B3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 978518F4D396CAD5339C5244180805EE /* Foundation.framework */; };
+		841D1F182FDA667B007D832A /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D1F172FDA667B007D832A /* ImageView.swift */; };
 		854807558DCB972EDDFC1D00032BA6E4 /* SDWebImageDownloaderConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 8DB7666CEED5CEE837BACE38F8A07E0C /* SDWebImageDownloaderConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		85C0B4EE334B9972299E62DE61A4BB56 /* SDImageLoadersManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B2D2DD7C278A756358F4A78DB89D6AE8 /* SDImageLoadersManager.m */; };
 		864972FB0DF4B464B1B505AA5F788E91 /* SDInternalMacros.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFE195B733D253C2E24156A1654D46D /* SDInternalMacros.m */; };
@@ -459,6 +460,7 @@
 		811AC3E9978CABACD947B60B2D402817 /* Pods_ZLUIKitPlus_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZLUIKitPlus_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		833DB4606990BCC1E1E20E5F6BBBFBB1 /* Pods-ZLUIKitPlus_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-ZLUIKitPlus_Example-umbrella.h"; sourceTree = "<group>"; };
 		83C26DCEDD33D58CE81C246A5213E503 /* SDImageCacheDefine.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDImageCacheDefine.h; path = SDWebImage/Core/SDImageCacheDefine.h; sourceTree = "<group>"; };
+		841D1F172FDA667B007D832A /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageView.swift; path = ZLUIKitPlus/Classes/ImageView.swift; sourceTree = "<group>"; };
 		845A7E5B45105C1C72AF9730EDC76BB5 /* SwiftSupport.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwiftSupport.swift; path = FBSnapshotTestCase/SwiftSupport.swift; sourceTree = "<group>"; };
 		87DC5DF0C003BB3D376AA7AD76DDF2D3 /* SDWebImageCacheSerializer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageCacheSerializer.h; path = SDWebImage/Core/SDWebImageCacheSerializer.h; sourceTree = "<group>"; };
 		892754EC5263B10A3339E0AC2001FA4B /* View+MASAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "View+MASAdditions.h"; path = "Masonry/View+MASAdditions.h"; sourceTree = "<group>"; };
@@ -875,6 +877,7 @@
 				8BC84B6C2EC49C54860A6B4A2182328C /* UIViewEx.swift */,
 				46B08447D8A24EC49BD6E21DFAC311E3 /* View.swift */,
 				681400A5E3871D9660B25CE5B3FA9B7D /* ViewStyle.swift */,
+				841D1F172FDA667B007D832A /* ImageView.swift */,
 				FD6FF0639EC805BA347C19151C7B50BA /* Pod */,
 				C9C2DDCCC49BF62327BFB7007B9BE8B9 /* Support Files */,
 			);
@@ -1774,6 +1777,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				841D1F182FDA667B007D832A /* ImageView.swift in Sources */,
 				621023BD880D810E5DA37E399F3942C0 /* Button.swift in Sources */,
 				B03DF0A86F8556C7B84A003919AAC847 /* Label.swift in Sources */,
 				453A74D58EA57C6055C4A23657ADFAA3 /* PairView.swift in Sources */,

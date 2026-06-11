@@ -284,26 +284,26 @@ extension PairView {
 
 @objc(ZLPairImageView)
 open class PairImageView: PairView {
-    public var first: UIImageView {
-        _first as! UIImageView
+    public var first: ImageView {
+        _first as! ImageView
     }
-    public var second: UIImageView {
-        _second as! UIImageView
+    public var second: ImageView {
+        _second as! ImageView
     }
     override func createFirstView() -> UIView {
-        UIImageView()
+        ImageView()
     }
     override func createSecondView() -> UIView {
-        UIImageView()
+        ImageView()
     }
     
     @discardableResult
-    public func thenFirst(_ then: @escaping (UIImageView) -> Void) -> Self {
+    public func thenFirst(_ then: @escaping (ImageView) -> Void) -> Self {
         return _thenFirst(then)
     }
     
     @discardableResult
-    public func thenSecond(_ then: @escaping (UIImageView) -> Void) -> Self {
+    public func thenSecond(_ then: @escaping (ImageView) -> Void) -> Self {
         return _thenSecond(then)
     }
 }
@@ -364,21 +364,21 @@ open class PairLabelView: PairView {
 
 @objc(ZLImgLabelView)
 open class ImgLabelView: PairView {
-    public var first: UIImageView {
-        _first as! UIImageView
+    public var first: ImageView {
+        _first as! ImageView
     }
     public var second: Label {
         _second as! Label
     }
     override func createFirstView() -> UIView {
-        UIImageView()
+        ImageView()
     }
     override func createSecondView() -> UIView {
         Label()
     }
     
     @discardableResult
-    public func thenFirst(_ then: @escaping (UIImageView) -> Void) -> Self {
+    public func thenFirst(_ then: @escaping (ImageView) -> Void) -> Self {
         return _thenFirst(then)
     }
     
@@ -391,21 +391,21 @@ open class ImgLabelView: PairView {
 
 @objc(ZLImgButtonView)
 open class ImgButtonView: PairView {
-    public var first: UIImageView {
-        _first as! UIImageView
+    public var first: ImageView {
+        _first as! ImageView
     }
     public var second: Button {
         _second as! Button
     }
     override func createFirstView() -> UIView {
-        UIImageView()
+        ImageView()
     }
     override func createSecondView() -> UIView {
         Button()
     }
     
     @discardableResult
-    public func thenFirst(_ then: @escaping (UIImageView) -> Void) -> Self {
+    public func thenFirst(_ then: @escaping (ImageView) -> Void) -> Self {
         return _thenFirst(then)
     }
     
@@ -421,14 +421,14 @@ open class ButtonImgView: PairView {
     public var first: Button {
         _first as! Button
     }
-    public var second: UIImageView {
-        _second as! UIImageView
+    public var second: ImageView {
+        _second as! ImageView
     }
     override func createFirstView() -> UIView {
         Button()
     }
     override func createSecondView() -> UIView {
-        UIImageView()
+        ImageView()
     }
     
     @discardableResult
@@ -437,7 +437,7 @@ open class ButtonImgView: PairView {
     }
     
     @discardableResult
-    public func thenSecond(_ then: @escaping (UIImageView) -> Void) -> Self {
+    public func thenSecond(_ then: @escaping (ImageView) -> Void) -> Self {
         return _thenSecond(then)
     }
 }
@@ -475,14 +475,14 @@ open class LabelImgView: PairView {
     public var first: Label {
         _first as! Label
     }
-    public var second: UIImageView {
-        _second as! UIImageView
+    public var second: ImageView {
+        _second as! ImageView
     }
     override func createFirstView() -> UIView {
         Label()
     }
     override func createSecondView() -> UIView {
-        UIImageView()
+        ImageView()
     }
     
     @discardableResult
@@ -491,7 +491,7 @@ open class LabelImgView: PairView {
     }
     
     @discardableResult
-    public func thenSecond(_ then: @escaping (UIImageView) -> Void) -> Self {
+    public func thenSecond(_ then: @escaping (ImageView) -> Void) -> Self {
         return _thenSecond(then)
     }
 }

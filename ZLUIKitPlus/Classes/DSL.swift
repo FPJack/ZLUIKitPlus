@@ -198,9 +198,11 @@ public extension DSL {
     }
 }
 
-/// MARK: - UILabel
+
 
 public extension DSL where Base: UILabel {
+    /// MARK: - UILabel
+    
     @discardableResult
     func text(_ text: String?) -> Self {
         view.text = text
@@ -360,6 +362,130 @@ extension DSL where Base: UIImageView {
     @discardableResult
     public func url(_ url: String?, placeholder: ImageSource? = nil) -> Self {
         UIImageView.imageLoader?(view,url, placeholder?.img)
+        return self
+    }
+}
+
+
+extension DSL where Base: UISwitch {
+    @discardableResult
+    public func setOn(_ on: Bool, animated: Bool) -> Self{
+        view.setOn(on, animated: animated)
+        return self
+    }
+    
+    @discardableResult
+    public func onTintColor(_ color: ColorRepresentable?) -> Self {
+        view.onTintColor = color?.getColor
+        return self
+    }
+    @discardableResult
+    public func thumbTintColor(_ color: ColorRepresentable?) -> Self {
+        view.thumbTintColor = color?.getColor
+        return self
+    }
+    
+    @discardableResult
+    public func onImage(_ image: ImageSource) -> Self {
+        view.onImage = image.img
+        return self
+    }
+    
+    @discardableResult
+    public func offImage(_ image: ImageSource) -> Self {
+        view.offImage = image.img
+        return self
+    }
+}
+
+extension DSL where Base: UITextField {
+    @discardableResult
+    public func text(_ text: String?) -> Self {
+        view.text = text
+        return self
+    }
+    
+    @discardableResult
+    public func placeholder(_ placeholder: String?) -> Self {
+        view.placeholder = placeholder
+        return self
+    }
+    
+    @discardableResult
+    public func textColor(_ color: ColorRepresentable?) -> Self {
+        view.textColor = color?.getColor
+        return self
+    }
+    
+    @discardableResult
+    public func font(_ font: UIFont?) -> Self {
+        view.font = font
+        return self
+    }
+    
+    @discardableResult
+    public func fontSize(_ size: CGFloat) -> Self {
+        self.font(.systemFont(ofSize: size))
+    }
+    
+    @discardableResult
+    func text(_ text: String?, color: ColorRepresentable? = nil, fontSize: CGFloat? = nil) -> Self {
+        view.text = text
+        if let color = color {
+            view.textColor = color.getColor
+        }
+        if let fontSize = fontSize {
+            view.font = .systemFont(ofSize: fontSize)
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func borderStyle(_ style: UITextField.BorderStyle) -> Self {
+        view.borderStyle = style
+        return self
+    }
+    
+    @discardableResult
+    public func textAlignment(_ alignment: NSTextAlignment) -> Self {
+        view.textAlignment = alignment
+        return self
+    }
+    
+    @discardableResult
+    public func isSecureTextEntry(_ secure: Bool) -> Self {
+        view.isSecureTextEntry = secure
+        return self
+    }
+    
+    @discardableResult
+    public func clearButtonMode(_ mode: UITextField.ViewMode) -> Self {
+        view.clearButtonMode = mode
+        return self
+    }
+    
+    @discardableResult
+    public func leftView(_ view: UIView?, mode: UITextField.ViewMode) -> Self {
+        self.view.leftView = view
+        return self
+    }
+    
+    @discardableResult
+    public func rightView(_ view: UIView?, mode: UITextField.ViewMode) -> Self
+    {
+        self.view.rightView = view
+        return self
+    }
+    
+    @discardableResult
+    public func addTarget(_ target: Any?, action: Selector, for controlEvents: UIControl.Event) -> Self {
+        view.addTarget(target, action: action, for: controlEvents)
+        return self
+    }
+    
+    @discardableResult
+    public func delegate(_ delegate: UITextFieldDelegate?) -> Self {
+        view.delegate = delegate
         return self
     }
 }

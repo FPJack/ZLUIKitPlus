@@ -21,26 +21,24 @@ public func ColorFromObj(_ obj: AnyObject?) -> UIColor? {
     if let str = obj as? String { return ColorFromHexStr(str) }
     return nil
 }
-public protocol ColorRepresentable {}
-extension String: ColorRepresentable {}
-extension NSString: ColorRepresentable {}
-extension UIColor: ColorRepresentable {}
-///颜色来源，可以是颜色名称（支持系统颜色和十六进制字符串）或者UIColor对象
-extension ColorRepresentable {
-   public var getColor: UIColor? {
-        if let colorName = self as? String {
-            if #available(iOS 11.0, *) {
-                if let color = UIColor(named: colorName) {
-                    return color
-                } else {
-                    return ColorFromHexStr(colorName)
-                }
+public protocol ColorRepresentable {
+    var getColor: UIColor? {get}
+}
+extension String: ColorRepresentable {
+    public var getColor: UIColor? {
+        if #available(iOS 11.0, *) {
+            if let color = UIColor(named: self) {
+                return color
             } else {
-                return ColorFromHexStr(colorName)
+                return ColorFromHexStr(self)
             }
-        } else if let color = self as? UIColor {
-            return color
+        } else {
+            return ColorFromHexStr(self)
         }
-        return nil
     }
 }
+
+extension UIColor: ColorRepresentable {
+    public var getColor: UIColor? { self }
+}
+///颜色来源，可以是颜色名称（支持系统颜色和十六进制字符串）或者UIColor对象

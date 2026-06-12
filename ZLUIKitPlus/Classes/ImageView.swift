@@ -6,20 +6,17 @@
 //
 
 import UIKit
-public protocol ImageSource {}
-extension ImageSource {
-    var img: UIImage? {
-        if let imageName = self as? String {
-            return UIImage(named: imageName)
-        } else if let img = self as? UIImage {
-            return img
-        }
-        return nil
+public protocol ImageSource {
+    var img: UIImage? {get}
+}
+extension String: ImageSource {
+    public var img: UIImage? {
+        UIImage(named: self)
     }
 }
-    
-extension String: ImageSource {}
-extension UIImage: ImageSource {}
+extension UIImage: ImageSource {
+    public var img: UIImage? { self }
+}
 
 extension UIImageView {
     @objc

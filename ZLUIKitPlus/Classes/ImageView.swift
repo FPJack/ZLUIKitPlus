@@ -58,7 +58,7 @@ open class ImageView: UIImageView {
     public var imageObjc: (_ image: AnyObject?) -> ImageView {
         { image in
             if let img = image as? ImageSource {
-                self.style.image(img)
+                self.dsl.image(img)
             }
             return self
         }
@@ -69,10 +69,10 @@ open class ImageView: UIImageView {
     public var urlObjc: (_ url: String?, _ placeholder: AnyObject?) -> ImageView {
         { url, placeholder in
             if placeholder != nil, let placeholder = placeholder as? ImageSource {
-                 self.style.url(url, placeholder: placeholder)
+                 self.dsl.url(url, placeholder: placeholder)
                 return self
             }
-             self.style.url(url, placeholder: nil)
+             self.dsl.url(url, placeholder: nil)
              return self
         }
     }

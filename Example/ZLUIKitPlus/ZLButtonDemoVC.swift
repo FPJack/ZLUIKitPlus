@@ -24,7 +24,7 @@
 
 import UIKit
 import ZLUIKitPlus
-
+import ZLFlexKit
 // MARK: - 私有 block 包装器（iOS 13 兼容 addTarget）
 private class _BtnAction: NSObject {
     let block: () -> Void
@@ -47,7 +47,25 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
         super.viewDidLoad()
         title = "Button Demo"
         let url = "https://gips3.baidu.com/it/u=3886271102,3123389489&fm=3028&app=3028&f=JPEG&fmt=auto?w=1280&h=960"
-        ImageView().style.url(url, placeholder: "猫狗通用-分离焦虑").layout.addTo(view).centerOffset(x: 0, y: 0)
+        ImageView().dsl.url(url, placeholder: "猫狗通用-分离焦虑").layout.addTo(view).center()
+        let str: String? = ""
+        
+        StackView {
+            UIButton().dsl
+                .title(title,for: .disabled)
+                .tapAction({ _ in
+                    print("点击了按钮")
+                    print(str!) // 故意触发崩溃，测试 tapInterval 防重复点击
+                })
+                .tapAction({ _ in
+                    print("第二个点击事件")
+                })
+                .flex
+                .alignSelf(.center)
+                .view
+            
+        }
+        
     }
 
     override func setupDemos() {

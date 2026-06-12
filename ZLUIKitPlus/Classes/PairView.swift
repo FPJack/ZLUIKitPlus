@@ -599,11 +599,6 @@ open class PairStackView: PairView {
     }
 }
 
-public protocol CreatableView: UIView {
-    init()
-}
-extension UIView: CreatableView {
-    
-}
+
 
 

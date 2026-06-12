@@ -54,9 +54,15 @@ class ZLViewControllerSwift: UIViewController, UITableViewDataSource, UITableVie
         ),
         DemoItem(
             title: "UIViewEx 扩展属性",
-            subtitle: "view.layout（Layout 链式 AutoLayout：addTo/center/top/edges/size/clear 等）\nview.flex（FlexItem：flex权重/alignSelf/spacing/isFlexibleSpace/startMarge/size 等）",
+            subtitle: "zl_btn / zl_lab / zl_imgView / zl_stackView / alt / extra 三组 + 全部 PairView zl_* 属性 + zl_wrapView 惰性单例用法",
             emoji: "🧩",
             makeVC: { ZLUIViewExDemoVC() }
+        ),
+        DemoItem(
+            title: "FlexKit DSL / decor / flex",
+            subtitle: "view.dsl 链式属性 · box AutoLayout · VStackView/HStackView Builder · flex权重/alignSelf/spacing/Spacer · decor when+sendValue · decor bind(Combine) · decor.box/flex交叉访问",
+            emoji: "🏗️",
+            makeVC: { ZLFlexKitDSLDemoVC() }
         ),
     ]
 

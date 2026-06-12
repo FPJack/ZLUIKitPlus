@@ -35,7 +35,7 @@ class ZLDemoBaseVC: UIViewController {
     func setupDemos() {}
 
     private func setupScrollView() {
-        stackView.wrapScrollView().layout.addToFull(view)
+        stackView.wrapScrollView().box.addToFull(view)
     }
 
     // MARK: - 辅助方法

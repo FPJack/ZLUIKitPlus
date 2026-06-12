@@ -7,7 +7,8 @@
 
 import UIKit
 import ZLUIKitPlus
-
+import Combine
+import ZLFlexKit
 class ZLViewControllerSwift: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     // MARK: - Demo 列表数据
@@ -65,6 +66,8 @@ class ZLViewControllerSwift: UIViewController, UITableViewDataSource, UITableVie
         title = "ZLUIKitPlus Demo"
         view.backgroundColor = .white
         setupTableView()
+        
+
     }
 
     private func setupTableView() {
@@ -83,6 +86,7 @@ class ZLViewControllerSwift: UIViewController, UITableViewDataSource, UITableVie
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
+        
     }
 
     // MARK: - UITableViewDataSource
@@ -162,6 +166,7 @@ private class DemoCell: UITableViewCell {
         emojiLabel.text = item.emoji
         titleLabel.text = item.title
         subtitleLabel.text = item.subtitle
+        
     }
 }
 

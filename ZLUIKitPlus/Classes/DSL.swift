@@ -7,23 +7,25 @@
 
 import ZLFlexKit
 
-class TestObj {
-    deinit {
-        print("TestObj deinitialized")
-    }
-}
+
+
 public struct DSL<Base: UIView>: StackViewDSL {
-    let test = TestObj()
     ///附属view
     public let view: Base
     
     ///系统约束布局属性
-    public var layout: Layout {
-        view.layout
+    public var box: Layout {
+        view.box
     }
     ///弹性布局属性
     public var flex: FlexItemSwift<Base> {
         view.flex
+    }
+    
+    ///装饰属性
+    @available(iOS 13.0, *)
+    public var decor: Decoration<Base> {
+        view.decor
     }
     
     ///StackView DSL协议方法
@@ -32,7 +34,6 @@ public struct DSL<Base: UIView>: StackViewDSL {
     }
     init(view: Base) {
         self.view = view
-        print("Created DSL for \(Base.self)")
     }
 }
 
@@ -181,6 +182,18 @@ public extension DSL {
     @discardableResult
     func hugging(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
         view.setContentHuggingPriority(priority, for: axis)
+        return self
+    }
+    
+    @discardableResult
+    func isUserInteractionEnabled(_ enabled: Bool) -> Self {
+        view.isUserInteractionEnabled = enabled
+        return self
+    }
+    
+    @discardableResult
+    func tag(_ tag: Int) -> Self {
+        view.tag = tag
         return self
     }
 }

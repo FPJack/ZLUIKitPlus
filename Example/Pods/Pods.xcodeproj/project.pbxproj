@@ -138,6 +138,7 @@
 		841D1F182FDA667B007D832A /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D1F172FDA667B007D832A /* ImageView.swift */; };
 		841D1F1A2FDA8B98007D832A /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D1F192FDA8B98007D832A /* Color.swift */; };
 		841D1F212FDB9941007D832A /* DSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D1F202FDB9941007D832A /* DSL.swift */; };
+		841D1F232FDBF4A0007D832A /* Decoration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D1F222FDBF4A0007D832A /* Decoration.swift */; };
 		854807558DCB972EDDFC1D00032BA6E4 /* SDWebImageDownloaderConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 8DB7666CEED5CEE837BACE38F8A07E0C /* SDWebImageDownloaderConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		85C0B4EE334B9972299E62DE61A4BB56 /* SDImageLoadersManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B2D2DD7C278A756358F4A78DB89D6AE8 /* SDImageLoadersManager.m */; };
 		864972FB0DF4B464B1B505AA5F788E91 /* SDInternalMacros.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CFE195B733D253C2E24156A1654D46D /* SDInternalMacros.m */; };
@@ -465,6 +466,7 @@
 		841D1F172FDA667B007D832A /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageView.swift; path = ZLUIKitPlus/Classes/ImageView.swift; sourceTree = "<group>"; };
 		841D1F192FDA8B98007D832A /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		841D1F202FDB9941007D832A /* DSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DSL.swift; path = ZLUIKitPlus/Classes/DSL.swift; sourceTree = "<group>"; };
+		841D1F222FDBF4A0007D832A /* Decoration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Decoration.swift; path = ZLUIKitPlus/Classes/Decoration.swift; sourceTree = "<group>"; };
 		845A7E5B45105C1C72AF9730EDC76BB5 /* SwiftSupport.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwiftSupport.swift; path = FBSnapshotTestCase/SwiftSupport.swift; sourceTree = "<group>"; };
 		87DC5DF0C003BB3D376AA7AD76DDF2D3 /* SDWebImageCacheSerializer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageCacheSerializer.h; path = SDWebImage/Core/SDWebImageCacheSerializer.h; sourceTree = "<group>"; };
 		892754EC5263B10A3339E0AC2001FA4B /* View+MASAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "View+MASAdditions.h"; path = "Masonry/View+MASAdditions.h"; sourceTree = "<group>"; };
@@ -884,6 +886,7 @@
 				841D1F172FDA667B007D832A /* ImageView.swift */,
 				841D1F192FDA8B98007D832A /* Color.swift */,
 				841D1F202FDB9941007D832A /* DSL.swift */,
+				841D1F222FDBF4A0007D832A /* Decoration.swift */,
 				FD6FF0639EC805BA347C19151C7B50BA /* Pod */,
 				C9C2DDCCC49BF62327BFB7007B9BE8B9 /* Support Files */,
 			);
@@ -1785,6 +1788,7 @@
 			files = (
 				841D1F182FDA667B007D832A /* ImageView.swift in Sources */,
 				621023BD880D810E5DA37E399F3942C0 /* Button.swift in Sources */,
+				841D1F232FDBF4A0007D832A /* Decoration.swift in Sources */,
 				B03DF0A86F8556C7B84A003919AAC847 /* Label.swift in Sources */,
 				453A74D58EA57C6055C4A23657ADFAA3 /* PairView.swift in Sources */,
 				7DB4B48EF335E302C0CDA368EF6C09CB /* UIViewEx.swift in Sources */,

@@ -46,26 +46,26 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Button Demo"
-        let url = "https://gips3.baidu.com/it/u=3886271102,3123389489&fm=3028&app=3028&f=JPEG&fmt=auto?w=1280&h=960"
-        ImageView().dsl.url(url, placeholder: "猫狗通用-分离焦虑").layout.addTo(view).center()
-        let str: String? = ""
-        
-        StackView {
-            UIButton().dsl
-                .title(title,for: .disabled)
-                .tapAction({ _ in
-                    print("点击了按钮")
-                    print(str!) // 故意触发崩溃，测试 tapInterval 防重复点击
-                })
-                .tapAction({ _ in
-                    print("第二个点击事件")
-                })
-                .flex
-                .alignSelf(.center)
-                .view
-            
-        }
-        
+//        let url = "https://gips3.baidu.com/it/u=3886271102,3123389489&fm=3028&app=3028&f=JPEG&fmt=auto?w=1280&h=960"
+//        ImageView().dsl.url(url, placeholder: "猫狗通用-分离焦虑").layout.addTo(view).center()
+//        let str: String? = ""
+//        
+//        StackView {
+//            UIButton().dsl
+//                .title(title,for: .disabled)
+//                .tapAction({ _ in
+//                    print("点击了按钮")
+//                    print(str!) // 故意触发崩溃，测试 tapInterval 防重复点击
+//                })
+//                .tapAction({ _ in
+//                    print("第二个点击事件")
+//                })
+//                .flex
+//                .alignSelf(.center)
+//                .view
+//            
+//        }
+//        
     }
 
     override func setupDemos() {
@@ -110,7 +110,12 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
         addDemo(btn1, height: 44)
         addCaption("axis(.horizontal)：图文水平排列（默认）")
         let btn2 = makeBtn(title: "垂直排列 axis(.vertical)", imageName: "house.fill")
-        btn2.imageTop.spacing(6).insets(UIEdgeInsets(top: 12, left: 24, bottom: 12, right: 24)).radius(12)
+        btn2
+            .imageTop
+            .spacing(6)
+            .insets(UIEdgeInsets(top: 12, left: 24, bottom: 12, right: 24))
+            .radius(12)
+        
         addDemo(btn2)
         addCaption("axis(.vertical)：图文垂直排列（图在上，文在下，默认 imageFirst）")
 

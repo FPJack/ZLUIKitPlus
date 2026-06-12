@@ -120,6 +120,18 @@ extension Decoration {
     }
 }
 
+
+
+@available(iOS 13.0, *)
+extension Decoration {
+    // MARK: - 发送值进行装饰
+    @discardableResult
+    public func sendValue(_ value: Any) -> Self{
+        handle(value)
+        return self
+    }
+}
+
 public protocol Decoratable where Self: UIView {}
 
 
@@ -143,7 +155,7 @@ extension UIView: Decoratable {}
 @available(iOS 13.0, *)
 extension Decoration {
     ///系统约束布局属性
-    public var box: Layout? {
+    public var box: LayoutBox? {
         view?.box 
     }
     ///弹性布局属性

@@ -14,7 +14,7 @@ public struct DSL<Base: UIView>: StackViewDSL {
     public let view: Base
     
     ///系统约束布局属性
-    public var box: Layout {
+    public var box: LayoutBox {
         view.box
     }
     ///弹性布局属性

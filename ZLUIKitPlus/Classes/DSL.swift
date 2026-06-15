@@ -101,7 +101,12 @@ public extension DSL {
     @discardableResult
     func backgroundColor(_ color: ColorRepresentable?) -> Self {
         view.backgroundColor = color?.getColor
-        
+        return self
+    }
+    
+    @discardableResult
+    func backgroundColor(_ color: UIColor?) -> Self {
+        view.backgroundColor = color
         return self
     }
     @discardableResult
@@ -128,8 +133,19 @@ public extension DSL {
     }
     
     @discardableResult
+    func tintColor(_ color: UIColor?) -> Self {
+        view.tintColor = color
+        return self
+    }
+    
+    @discardableResult
     func borderColor(color: ColorRepresentable?) -> Self {
         view.layer.borderColor = color?.getColor?.cgColor
+        return self
+    }
+    @discardableResult
+    func borderColor(color: UIColor?) -> Self {
+        view.layer.borderColor = color?.cgColor
         return self
     }
     
@@ -144,8 +160,17 @@ public extension DSL {
         return borderColor(color: color).borderWidth(w: w)
     }
     @discardableResult
+    func border(color: UIColor?, w: Double) -> Self {
+        return borderColor(color: color).borderWidth(w: w)
+    }
+    @discardableResult
     func shadowColor(color: ColorRepresentable?) -> Self {
         view.layer.shadowColor = color?.getColor?.cgColor
+        return self
+    }
+    @discardableResult
+    func shadowColor(color: UIColor?) -> Self {
+        view.layer.shadowColor = color?.cgColor
         return self
     }
     @discardableResult
@@ -231,7 +256,7 @@ extension DSL {
     /// - Parameter align: <#align description#>
     /// - Returns: <#description#>
     @discardableResult
-    public func alignSelf(_ align: FlexItemCrossAlign) -> Self {
+    public func align(_ align: FlexItemCrossAlign) -> Self {
         flex.alignSelf = align
         return self
     }
@@ -549,6 +574,12 @@ public extension DSL where Base: UILabel {
     }
     
     @discardableResult
+    func shadowColor(_ color: UIColor?) -> Self {
+        view.shadowColor = color
+        return self
+    }
+    
+    @discardableResult
     func shadowOffset(w: Double,h: Double) -> Self {
         view.shadowOffset = CGSize(width: w, height: h)
         return self
@@ -565,6 +596,11 @@ public extension DSL where Base: UIButton {
     @discardableResult
     func titleColor(_ color: ColorRepresentable?, for state: UIControl.State = .normal) -> Self {
         view.setTitleColor(color?.getColor, for: state)
+        return self
+    }
+    @discardableResult
+    func titleColor(_ color: UIColor?, for state: UIControl.State = .normal) -> Self {
+        view.setTitleColor(color, for: state)
         return self
     }
     @discardableResult
@@ -642,8 +678,18 @@ extension DSL where Base: UISwitch {
         return self
     }
     @discardableResult
+    public func onTintColor(_ color: UIColor?) -> Self {
+        view.onTintColor = color
+        return self
+    }
+    @discardableResult
     public func thumbTintColor(_ color: ColorRepresentable?) -> Self {
         view.thumbTintColor = color?.getColor
+        return self
+    }
+    @discardableResult
+    public func thumbTintColor(_ color: UIColor?) -> Self {
+        view.thumbTintColor = color
         return self
     }
     
@@ -678,6 +724,11 @@ extension DSL where Base: UITextField {
         view.textColor = color?.getColor
         return self
     }
+    @discardableResult
+    public func textColor(_ color: UIColor?) -> Self {
+        view.textColor = color
+        return self
+    }
     
     @discardableResult
     public func font(_ font: UIFont?) -> Self {
@@ -695,6 +746,17 @@ extension DSL where Base: UITextField {
         view.text = text
         if let color = color {
             view.textColor = color.getColor
+        }
+        if let fontSize = fontSize {
+            view.font = .systemFont(ofSize: fontSize)
+        }
+        return self
+    }
+    @discardableResult
+    func text(_ text: String?, color: UIColor? = nil, fontSize: CGFloat? = nil) -> Self {
+        view.text = text
+        if let color = color {
+            view.textColor = color
         }
         if let fontSize = fontSize {
             view.font = .systemFont(ofSize: fontSize)

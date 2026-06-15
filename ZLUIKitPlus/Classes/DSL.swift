@@ -70,7 +70,7 @@ public struct DSL<Base: UIView>: StackViewDSL {
 public protocol DSLCompatible where Self: UIView {}
 
 extension DSLCompatible {
-    ///StackView之外布局优先调用DSL
+    ///StackView之外布局优先调用DSL,提供系统约束布局和动态装饰的配置入口
     public var dsl: DSL<Self> {
         DSL(view: self)
     }
@@ -466,16 +466,27 @@ public extension DSL where Base: UILabel {
         return self
     }
     
+    
     @discardableResult
-    func font(_ font: UIFont?) -> Self {
-        view.font = font
+    func textColor(_ color: UIColor?) -> Self {
+        view.textColor = color
         return self
     }
     
     @discardableResult
-    func fontSize(_ size: CGFloat) -> Self {
-        self.font(.systemFont(ofSize: size))
+    func font(_ font: UIFont?) -> Self {
+        view.font = font
+        UIFont.systemFont(ofSize: 13, weight: .semibold)
+        return self
     }
+    
+    @discardableResult
+    func font(_ size: CGFloat,weight: UIFont.Weight? = .regular) -> Self {
+        view.font = .systemFont(ofSize: size, weight: weight ?? .regular)
+        return self
+    }
+    
+   
     
     @discardableResult
     func text(_ text: String?, color: ColorRepresentable? = nil, fontSize: CGFloat? = nil) -> Self {

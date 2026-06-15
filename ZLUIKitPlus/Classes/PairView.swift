@@ -40,26 +40,19 @@ open class PairView: StackView {
         _first.flex.isFlexibleSpace = flexible
         return self
     }
+    
     @discardableResult
-    public func firstStart(_ spacing: CGFloat) -> Self {
-        super.startMarge(spacing, for: _first)
+    public func firstMargin(_ margin: NSDirectionalEdgeInsets) -> Self {
+        super.setMargin(margin, for: _first)
         return self
     }
+    
     @discardableResult
-    public func firstEnd(_ spacing: CGFloat) -> Self {
-        super.endMarge(spacing, for: _first)
+    public func secondMargin(_ margin: NSDirectionalEdgeInsets) -> Self {
+        super.setMargin(margin, for: _second)
         return self
     }
-    @discardableResult
-    public func secondStart(_ spacing: CGFloat) -> Self {
-        super.startMarge(spacing, for: _second)
-        return self
-    }
-    @discardableResult
-    public func secondEnd(_ spacing: CGFloat) -> Self {
-        super.endMarge(spacing, for: _second)
-        return self
-    }
+        
     
     @discardableResult
     public func firstFlex(_ flex: Int) -> Self {
@@ -159,13 +152,10 @@ open class PairView: StackView {
         super.setAlignment(alignment, for: view)
     }
     @available(*, unavailable)
-    public override func startMarge(_ marge: CGFloat, for view: UIView?) {
-        super.startMarge(marge, for: view)
+    open override func setMargin(_ margin: NSDirectionalEdgeInsets, for view: UIView?) {
+        super.setMargin(margin, for: view)
     }
-    @available(*, unavailable)
-    public override func endMarge(_ marge: CGFloat, for view: UIView?) {
-        super.endMarge(marge, for: view)
-    }
+   
     @available(*, unavailable)
     public override func setFlexibleSpacing(_ flexible: Bool, after view: UIView?) {
         super.setFlexibleSpacing(flexible, after: view)

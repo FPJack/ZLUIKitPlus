@@ -11,7 +11,7 @@ public struct DecorRule<Value> {
     let action: (UIView, Value) -> Void
 }
 @available(iOS 13.0, *)
-public final class Decoration<T: UIView>: StackViewDSL {
+public final class DynamicViewStyle<T: UIView>: StackViewDSL {
     
     public weak var view: T?
     
@@ -29,7 +29,7 @@ public final class Decoration<T: UIView>: StackViewDSL {
 }
 
 @available(iOS 13.0, *)
-extension Decoration {
+extension DynamicViewStyle {
     @discardableResult
     public func when<Value>(
         _ type: Value.Type = (Any).self,
@@ -90,7 +90,7 @@ extension Decoration {
     
 }
 @available(iOS 13.0, *)
-extension Decoration {
+extension DynamicViewStyle {
     
     func handle(_ value: Any) {
         
@@ -106,7 +106,7 @@ extension Decoration {
 }
 
 @available(iOS 13.0, *)
-extension Decoration {
+extension DynamicViewStyle {
     @discardableResult
     public func bind<P: Publisher>(
         _ publisher: P
@@ -123,7 +123,7 @@ extension Decoration {
 
 
 @available(iOS 13.0, *)
-extension Decoration {
+extension DynamicViewStyle {
     // MARK: - 发送值进行装饰
     @discardableResult
     public func sendValue(_ value: Any) -> Self{
@@ -132,41 +132,32 @@ extension Decoration {
     }
 }
 
-public protocol Decoratable where Self: UIView {}
+public protocol DynamicStylable where Self: UIView {}
 
 
 
 private let key = "zl_decoration"
 @available(iOS 13.0, *)
-extension Decoratable {
-    public var decor: Decoration<Self>  {
+extension DynamicStylable {
+    /// 动态配置样式
+    public var dStyle: DynamicViewStyle<Self>  {
         /// 通过关联属性存储起来
-        if let decoration = objc_getAssociatedObject(self, key) as? Decoration<Self> {
+        if let decoration = objc_getAssociatedObject(self, key) as? DynamicViewStyle<Self> {
             return decoration
         } else {
-            let decoration = Decoration(view: self)
+            let decoration = DynamicViewStyle(view: self)
             objc_setAssociatedObject(self, key, decoration, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             return decoration
         }
     }
 }
 
-extension UIView: Decoratable {}
+extension UIView: DynamicStylable {}
 @available(iOS 13.0, *)
-extension Decoration {
+extension DynamicViewStyle {
     ///系统约束布局属性
     public var box: LayoutBox? {
         view?.box 
     }
-    ///弹性布局属性
-    public var flex: FlexItemSwift<T>? {
-        view?.flex
-    }
 }
 
-extension FlexItemSwift {
-    @available(iOS 13.0, *)
-    public var decor: Decoration<T>? {
-        view?.decor
-    }
-}

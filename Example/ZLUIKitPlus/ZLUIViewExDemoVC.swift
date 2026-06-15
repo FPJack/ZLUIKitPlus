@@ -247,7 +247,8 @@ class ZLUIViewExDemoVC: ZLDemoBaseVC {
         container.zl_stackView.axis = .horizontal
         container.zl_stackView.alignment = .center
         container.zl_stackView.spacing(12)
-        container.zl_stackView.insets(UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 14))
+        
+        container.zl_stackView.insets(NSDirectionalEdgeInsets(top: 0, leading: 14, bottom: 0, trailing: 14))
 
         // zl_altStackView：垂直排列，放主信息
         container.zl_altStackView.axis = .vertical
@@ -347,7 +348,7 @@ class ZLUIViewExDemoVC: ZLDemoBaseVC {
             label.numberOfLines = 1
         }
         row1.zl_pairLab.flexibleSpacing(true)
-        row1.zl_pairLab.insets = UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 14)
+        row1.zl_pairLab.insets = .init(top: 0, leading: 14, bottom: 0, trailing: 14)
 
         row1.zl_pairLab.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -376,7 +377,7 @@ class ZLUIViewExDemoVC: ZLDemoBaseVC {
             label.font = .systemFont(ofSize: 14)
         }
         row2.zl_imgViewLab.minSpacing(8)
-        row2.zl_imgViewLab.insets = UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 14)
+        row2.zl_imgViewLab.insets = .init(top: 0, leading: 14, bottom: 0, trailing: 14)
         row2.zl_imgViewLab.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             row2.zl_imgViewLab.topAnchor.constraint(equalTo: row2.topAnchor),
@@ -405,7 +406,7 @@ class ZLUIViewExDemoVC: ZLDemoBaseVC {
             iv.flex.size = CGSize(width: 14, height: 14)
         }
         row3.zl_labImgView.minSpacing(6)
-        row3.zl_labImgView.insets = UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 14)
+        row3.zl_labImgView.insets = .init(top: 0, leading: 14, bottom: 0, trailing: 14)
         row3.zl_labImgView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             row3.zl_labImgView.topAnchor.constraint(equalTo: row3.topAnchor),
@@ -437,7 +438,7 @@ class ZLUIViewExDemoVC: ZLDemoBaseVC {
             btn.flex.flex = 1
         }
         row4.zl_pairBtn.minSpacing(12)
-        row4.zl_pairBtn.insets = UIEdgeInsets(top: 6, left: 14, bottom: 6, right: 14)
+        row4.zl_pairBtn.insets = .init(top: 0, leading: 14, bottom: 0, trailing: 14)
         row4.zl_pairBtn.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             row4.zl_pairBtn.topAnchor.constraint(equalTo: row4.topAnchor),
@@ -468,7 +469,7 @@ class ZLUIViewExDemoVC: ZLDemoBaseVC {
             btn.insets(UIEdgeInsets(top: 7, left: 18, bottom: 7, right: 18))
         }
         row5.zl_imgViewBtn.flexibleSpacing(true)
-        row5.zl_imgViewBtn.insets = UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 14)
+        row5.zl_imgViewBtn.insets = .init(top: 0, leading: 14, bottom: 0, trailing: 14)
         row5.zl_imgViewBtn.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             row5.zl_imgViewBtn.topAnchor.constraint(equalTo: row5.topAnchor),
@@ -496,7 +497,7 @@ class ZLUIViewExDemoVC: ZLDemoBaseVC {
             label.textColor = .systemGray
         }
         row6.zl_btnLabel.minSpacing(6)
-        row6.zl_btnLabel.insets = UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 14)
+        row6.zl_btnLabel.insets = .init(top: 0, leading: 14, bottom: 0, trailing: 14)
         row6.zl_btnLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             row6.zl_btnLabel.topAnchor.constraint(equalTo: row6.topAnchor),
@@ -525,7 +526,7 @@ class ZLUIViewExDemoVC: ZLDemoBaseVC {
             btn.insets(UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 0))
         }
         row7.zl_labelBtn.minSpacing(8)
-        row7.zl_labelBtn.insets = UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 14)
+        row7.zl_labelBtn.insets = .init(top: 0, leading: 14, bottom: 0, trailing: 14)
         row7.zl_labelBtn.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             row7.zl_labelBtn.topAnchor.constraint(equalTo: row7.topAnchor),
@@ -556,7 +557,7 @@ class ZLUIViewExDemoVC: ZLDemoBaseVC {
             iv.flex.size = CGSize(width: 26, height: 26)
         }
         row8.zl_btnImgView.flexibleSpacing(true)
-        row8.zl_btnImgView.insets = UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 14)
+        row8.zl_btnImgView.insets = .init(top: 0, leading: 14, bottom: 0, trailing: 14)
         row8.zl_btnImgView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             row8.zl_btnImgView.topAnchor.constraint(equalTo: row8.topAnchor),
@@ -586,7 +587,7 @@ class ZLUIViewExDemoVC: ZLDemoBaseVC {
             iv.flex.size = CGSize(width: 36, height: 36)
         }
         row9.zl_pairImg.minSpacing(12)
-        row9.zl_pairImg.insets = UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 14)
+        row9.zl_pairImg.insets = .init(top: 0, leading: 14, bottom: 0, trailing: 14)
         row9.zl_pairImg.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             row9.zl_pairImg.topAnchor.constraint(equalTo: row9.topAnchor),
@@ -623,7 +624,7 @@ class ZLUIViewExDemoVC: ZLDemoBaseVC {
             sv.addArrangedSubview(n)
             sv.addArrangedSubview(t)
         }
-        row10.zl_pairStackView.insets = UIEdgeInsets(top: 8, left: 14, bottom: 8, right: 14)
+        row10.zl_pairStackView.insets = .init(top: 0, leading: 14, bottom: 0, trailing: 14)
         row10.zl_pairStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             row10.zl_pairStackView.topAnchor.constraint(equalTo: row10.topAnchor),
@@ -634,6 +635,7 @@ class ZLUIViewExDemoVC: ZLDemoBaseVC {
         addCaption("row.zl_pairStackView — 两列统计数据，各 flex:1 等宽")
 
         addSeparator()
+        
     }
 
     // MARK: ══════════════════════════════════════

@@ -118,8 +118,8 @@ class ZLButtonDemoVC: ZLDemoBaseVC {
         
         addDemo(btn2)
         addCaption("axis(.vertical)：图文垂直排列（图在上，文在下，默认 imageFirst）")
-
         addSeparator()
+        
     }
 
     // MARK: - ② contentOrder

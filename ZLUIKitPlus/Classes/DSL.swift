@@ -6,9 +6,7 @@
 //
 
 import ZLFlexKit
-
-
-
+import Combine
 public struct DSL<Base: UIView>: StackViewDSL {
     ///附属view
     public let view: Base
@@ -17,15 +15,16 @@ public struct DSL<Base: UIView>: StackViewDSL {
     public var box: LayoutBox {
         view.box
     }
+    
     ///弹性布局属性
-    public var flex: FlexItemSwift<Base> {
+    var flex: FlexItem {
         view.flex
     }
     
-    ///装饰属性
+    ///动态装饰属性
     @available(iOS 13.0, *)
-    public var decor: Decoration<Base> {
-        view.decor
+    var dStyle: DynamicViewStyle<Base> {
+        view.dStyle
     }
     
     ///StackView DSL协议方法
@@ -35,19 +34,57 @@ public struct DSL<Base: UIView>: StackViewDSL {
     init(view: Base) {
         self.view = view
     }
+    
+    @discardableResult
+    @available(iOS 13.0, *)
+    public func apply(
+        dsl: ((DSL) -> Void)? = nil,
+        dStyle: ((DynamicViewStyle<Base>) -> Void)? = nil,
+        flex:((FlexItem) -> Void)? = nil) -> Self {
+        dsl?(self)
+        dStyle?(self.dStyle)
+        flex?(self.flex)
+        return self
+    }
+    
+    @discardableResult
+    public func apply(
+        dsl: ((DSL) -> Void)? = nil,
+        flex:((FlexItem) -> Void)? = nil) -> Self {
+        dsl?(self)
+        flex?(self.flex)
+        return self
+    }
+    
+    @discardableResult
+    public func apply(
+        dsl: ((DSL) -> Void)? = nil,
+        box:((LayoutBox) -> Void)? = nil) -> Self {
+        dsl?(self)
+        box?(self.box)
+        return self
+    }
 }
 
 
 public protocol DSLCompatible where Self: UIView {}
 
 extension DSLCompatible {
+    ///StackView之外布局优先调用DSL
     public var dsl: DSL<Self> {
         DSL(view: self)
+    }
+    
+    
+    ///StackView 里面布局优先调用这个函数
+    public func flex(_ p: Void? = nil) -> DSL<Self> {
+        dsl
     }
 }
 extension UIView: DSLCompatible,TapActionable {}
 
 
+///view通用属性和方法
 public extension DSL {
     @discardableResult
     func addSubview(_ subview: UIView) -> Self {
@@ -150,28 +187,6 @@ public extension DSL {
         return self
     }
     
-    @discardableResult
-    func height(_ height: NumberConvertible) -> Self {
-        view.heightAnchor.constraint(equalToConstant: height.cgFloat).isActive = true
-        return self
-    }
-    
-    @discardableResult
-    func width(_ width: NumberConvertible) -> Self {
-        view.widthAnchor.constraint(equalToConstant: width.cgFloat).isActive = true
-        return self
-    }
-    
-    @discardableResult
-    func size(w: NumberConvertible,h: NumberConvertible) -> Self {
-        width(w.cgFloat).height(h.cgFloat)
-    }
-    
-    @discardableResult
-    func square(_ side: NumberConvertible) -> Self {
-        width(side).height(side)
-    }
-    
     
     @discardableResult
     func compression(_ priority: UILayoutPriority, for axis: NSLayoutConstraint.Axis) -> Self {
@@ -198,7 +213,243 @@ public extension DSL {
     }
 }
 
+/// 弹性布局
+extension DSL {
+    
+    /// 设置弹性布局的间距属性，
+    /// - Parameter spacing: 一个数字类型的值，表示子视图之间的间距，可以是整数、浮点数等类型。该值会被转换为CGFloat类型，并应用于弹性布局的spacing属性。
+    /// - Returns: 返回当前DSL实例，便于链式调用
+    @discardableResult
+    public func spacing(_ spacing: NumberConvertible) -> Self {
+        flex.spacing = spacing.cgFloat
+        return self
+    }
+    
+    
+    
+    /// 设置当前View纵轴方向的对齐方式，
+    /// - Parameter align: <#align description#>
+    /// - Returns: <#description#>
+    @discardableResult
+    public func alignSelf(_ align: FlexItemCrossAlign) -> Self {
+        flex.alignSelf = align
+        return self
+    }
+    
+    
+    
+    /// 设置当前View 在弹性布局中的外边距
+    /// - Parameter margin: <#margin description#>
+    /// - Returns: <#description#>
+    @discardableResult
+    public func margin(_ margin: NSDirectionalEdgeInsets) -> Self {
+        flex.margin = margin
+        return self
+    }
+    
+    
+    
+    /// 设置当前View 在弹性布局中的外边距
+    /// - Parameters:
+    ///   - top: <#top description#>
+    ///   - leading: <#leading description#>
+    ///   - bottom: <#bottom description#>
+    ///   - trailing: <#trailing description#>
+    /// - Returns: <#description#>
+    @discardableResult
+    public func margin(top: NumberConvertible? = nil,leading: NumberConvertible? = nil,  bottom: NumberConvertible? = nil,trailing: NumberConvertible? = nil) -> Self {
+        flex.margin(top: top,leading: leading,bottom: bottom,trailing: trailing)
+        return self
+    }
+    
+    
+    
+    ///  设置当前View 后面的最小间距
+    /// - Parameter spacing: <#spacing description#>
+    /// - Returns: <#description#>
+    @discardableResult
+    public func minSpacing(_ spacing: NumberConvertible) -> Self {
+        flex.minSpacing = spacing.cgFloat
+        return self
+    }
+    
+    
+    /// 设置当前View 后面的最大间距
+    /// - Parameter spacing: <#spacing description#>
+    /// - Returns: <#description#>
+    @discardableResult
+    public func maxSpacing(_ spacing: NumberConvertible) -> Self {
+        flex.maxSpacing = spacing.cgFloat
+        return self
+    }
+    
+    
+    
+    /// 设置当前View 后面是否为弹性空间
+    /// - Parameter isFlex: <#isFlex description#>
+    /// - Returns: <#description#>
+    @discardableResult
+    public func isFlexibleSpace(_ isFlex: Bool) -> Self {
+        flex.isFlexibleSpace = isFlex
+        return self
+    }
+    
+    
+    /// 设置当前View 的弹性系数，决定了在弹性布局中该View如何分配剩余空间
+    /// - Parameter value: <#value description#>
+    /// - Returns: <#description#>
+    @discardableResult
+    public func flex(_ value: Int) -> Self {
+        flex.flex = value
+        return self
+    }
+    
+    
+    /// 设置当前View 的高度，决定了在弹性布局中该View的尺寸
+    /// - Parameter height: <#height description#>
+    /// - Returns: <#description#>
+    @discardableResult
+    public func height(_ height: NumberConvertible) -> Self {
+        flex.height = height.cgFloat
+        return self
+    }
+    
+    
+    /// 设置当前View 的宽度，决定了在弹性布局中该View的尺寸
+    /// - Parameter width: <#width description#>
+    /// - Returns: <#description#>
+    @discardableResult
+    public func width(_ width: NumberConvertible) -> Self {
+        flex.width = width.cgFloat
+        return self
+    }
+    
+    
+    /// 设置当前View 的最小宽度，决定了在弹性布局中该View的尺寸不能小于这个值
+    /// - Parameter width: <#width description#>
+    /// - Returns: <#description#>
+    @discardableResult
+    public func minWidth(_ width: NumberConvertible) -> Self {
+        flex.minWidth = width.cgFloat
+        return self
+    }
+    
+    
+    
+    ///  设置当前View 的最大宽度，决定了在弹性布局中该View的尺寸不能大于这个值
+    /// - Parameter width: <#width description#>
+    /// - Returns: <#description#>
+    @discardableResult
+    public func maxWidth(_ width: NumberConvertible) -> Self {
+        flex.maxWidth = width.cgFloat
+        return self
+    }
+    
+    
+    
+    /// 设置当前View 的最小高度，决定了在弹性布局中该View的尺寸不能小于这个值
+    /// - Parameter height: <#height description#>
+    /// - Returns: <#description#>
+    @discardableResult
+    public func minHeight(_ height: NumberConvertible) -> Self {
+        flex.minHeight = height.cgFloat
+        return self
+    }
+    
+    
+    
+    ///  设置当前View 的最大高度，决定了在弹性布局中该View的尺寸不能大于这个值
+    /// - Parameter height: <#height description#>
+    /// - Returns: <#description#>
+    @discardableResult
+    public func maxHeight(_ height: NumberConvertible) -> Self {
+        flex.maxHeight = height.cgFloat
+        return self
+    }
+    
+    
+    
+    ///  设置当前View 的尺寸，决定了在弹性布局中该View的宽度和高度
+    /// - Parameters:
+    ///   - w: <#w description#>
+    ///   - h: <#h description#>
+    /// - Returns: <#description#>
+    @discardableResult
+    public func size(w: NumberConvertible,h: NumberConvertible) -> Self {
+        flex.size = CGSize(width: w.cgFloat, height: h.cgFloat)
+        return self
+    }
+    
+    
+    /// 设置当前View 的尺寸为一个正方形，决定了在弹性布局中该View的宽度和高度相等
+    /// - Parameter side: <#side description#>
+    /// - Returns: <#description#>
+    @discardableResult
+    public func square(_ side: NumberConvertible) -> Self {
+        width(side).height(side)
+    }
+}
 
+
+///动态装饰
+@available(iOS 13.0, *)
+public extension DSL {
+    
+    
+    
+    /// 根据一个值的类型和满足条件来触发动态装饰的更新
+    /// - Parameters:
+    ///   - type: 要匹配的值的类型，默认为Any
+    ///   - match: 一个闭包，接受一个值并返回一个布尔值，表示该值是否满足触发条件
+    ///   - action: 一个闭包，接受当前视图和匹配的值，当条件满足时执行，用于更新视图的装饰
+    /// - Returns: 返回当前DSL实例，便于链式调用
+    @discardableResult
+    func when<Value>(
+        _ type: Value.Type = (Any).self,
+        match: @escaping (Value) -> Bool,
+        do action: @escaping (Base, Value) -> Void
+    ) -> Self {
+        self.dStyle.when(type, match: match, do: action)
+        return self
+    }
+    
+    
+    
+    /// 根据一个值是否等于某个特定值来触发动态装饰的更新
+    /// - Parameters:
+    ///   - value: 要比较的值，必须是可比较的类型
+    ///   - action: 一个闭包，接受当前视图和比较的值，当条件满足时执行，用于更新视图的装饰
+    /// - Returns: 返回当前DSL实例，便于链式调用
+    @discardableResult
+    func when<Value: Equatable>(
+        _ value: Value,
+        do action: @escaping (Base,Value) -> Void
+    ) -> Self {
+        self.dStyle.when(value, do: action)
+        return self
+    }
+    
+    
+    /// 绑定一个Publisher，Publisher发送新值时触发动态装饰的更新
+    /// - Parameter publisher: 一个Publisher，必须满足Failure类型为Never，当Publisher发送新值时，动态装饰会根据新的值进行更新
+    /// - Returns: 返回当前DSL实例，便于链式调用
+    @discardableResult
+    func bind<P: Publisher>(
+        _ publisher: P
+    ) -> Self where P.Failure == Never {
+        self.dStyle.bind(publisher)
+        return self
+    }
+    
+    /// 发送一个值，触发动态装饰的更新
+    /// - Parameter value: 要发送的值，可以是任何类型，当调用此方法时，动态装饰会根据这个值进行更新
+    /// - Returns: 返回当前DSL实例，便于链式调用
+    @discardableResult
+    func sendValue(_ value: Any) -> Self{
+        self.dStyle.sendValue(value)
+        return self
+    }
+}
 
 public extension DSL where Base: UILabel {
     /// MARK: - UILabel

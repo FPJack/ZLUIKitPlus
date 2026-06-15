@@ -86,7 +86,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
             label.textColor = .systemRed
         }
         pv1.flexibleSpacing(true)  // first 靠左，second 靠右
-        pv1.insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        pv1.insets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         addDemo(wrap(pv1, height: 44))
         
         addCaption("flexibleSpacing(true)：左标题靠左，右价格靠右")
@@ -104,7 +104,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
         }
         pv2.minSpacing(12)
         pv2.justify(.center)
-        pv2.insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        pv2.insets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         addDemo(wrap(pv2, height: 38))
         addCaption("minSpacing(12)：两 label 间距至少 12pt")
 
@@ -128,7 +128,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
             label.font = .systemFont(ofSize: 14)
         }
         pv.minSpacing(10).justify(.center)
-        pv.insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        pv.insets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         addDemo(wrap(pv, height: 40))
         addCaption("ImgLabelView：icon(22×22) + label，minSpacing(10)")
 
@@ -153,7 +153,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
             iv.flex.size = CGSize(width: 14, height: 14)
         }
         pv.minSpacing(8).justify(.center)
-        pv.insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        pv.insets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         pv.layer.cornerRadius = 8
         pv.clipsToBounds = true
         addDemo(wrap(pv, height: 44, bg: UIColor.systemGray6))
@@ -181,7 +181,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
             iv.flex.size = CGSize(width: 36, height: 36)
         }
         pv.minSpacing(12).maxSpacing(30)
-        pv.insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        pv.insets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         pv.justify(.center)
         addDemo(wrap(pv, height: 54))
         addCaption("PairImageView：minSpacing(12) + maxSpacing(30) — 弹性间距区间")
@@ -212,7 +212,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
             .secondFlex(1)
             .minSpacing(12)
             .justify(.center)
-        pv1.insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        pv1.insets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         addDemo(wrap(pv1, height: 44))
         addCaption("firstFlex(1) + secondFlex(1)：两按钮等宽分配")
 
@@ -234,7 +234,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
             .secondFlex(2)
             .minSpacing(12)
             .justify(.center)
-        pv2.insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        pv2.insets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         addDemo(wrap(pv2, height: 44))
         addCaption("firstFlex(1) + secondFlex(2)：1:2 宽度比例")
 
@@ -261,7 +261,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
             btn.insets(UIEdgeInsets(top: 6, left: 18, bottom: 6, right: 18))
         }
         pv.flexibleSpacing(true)
-        pv.insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        pv.insets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         addDemo(wrap(pv, height: 56))
         addCaption("ImgButtonView：头像靠左，关注按钮靠右（flexibleSpacing）")
 
@@ -288,7 +288,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
             iv.flex.size = CGSize(width: 28, height: 28)
         }
         pv.flexibleSpacing(true)
-        pv.insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        pv.insets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         addDemo(wrap(pv, height: 52))
         addCaption("ButtonImgView：播放按钮靠左，音乐图标靠右")
 
@@ -312,7 +312,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
             label.textColor = .systemGray
         }
         pv.minSpacing(6)
-        pv.insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        pv.insets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         addDemo(wrap(pv, height: 48))
         addCaption("ButtonLabView：点赞按钮 + 数量文字")
 
@@ -337,7 +337,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
             btn.insets(UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 0))
         }
         pv.minSpacing(8)
-        pv.insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        pv.insets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         pv.layer.cornerRadius = 8
         pv.clipsToBounds = true
         addDemo(wrap(pv, height: 44, bg: UIColor.systemGray6))
@@ -376,7 +376,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
             sv.addArrangedSubview(tag)
         }
         pv.minSpacing(12)
-        pv.insets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+        pv.insets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         addDemo(wrap(pv, height: 64))
         addCaption("ZLButtonStackView：购物车按钮左 + 价格信息 StackView 右")
 
@@ -411,7 +411,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
             btn.insets(UIEdgeInsets(top: 10, left: 14, bottom: 10, right: 14))
         }
         pv.minSpacing(12)
-        pv.insets = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
+        pv.insets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         addDemo(wrap(pv, height: 66))
         addCaption("StackViewButton：商品信息 StackView(flex:1) 左 + 购买按钮右")
 
@@ -444,7 +444,7 @@ class ZLPairViewDemoVC: ZLDemoBaseVC {
             sv.addArrangedSubview(t)
             sv.addArrangedSubview(v)
         }
-        pv.insets = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
+        pv.insets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         addDemo(wrap(pv, height: 64))
         addCaption("PairStackView：两个竖向 StackView 各 flex:1 等宽排列")
 

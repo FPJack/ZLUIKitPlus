@@ -19,7 +19,7 @@ class ZLDemoBaseVC: UIViewController {
         sv.spacing = 16
         sv.justifyContent = .fill
         sv.alignment = .fill
-        sv.insets = UIEdgeInsets(top: 20, left: 16, bottom: 40, right: 16)
+        sv.insets = .init(top: 16, leading: 16, bottom: 16, trailing: 16)
 //        sv.isLayoutMarginsRelativeArrangement = true
         return sv
     }()

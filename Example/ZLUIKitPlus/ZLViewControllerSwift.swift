@@ -58,12 +58,7 @@ class ZLViewControllerSwift: UIViewController, UITableViewDataSource, UITableVie
             emoji: "🧩",
             makeVC: { ZLUIViewExDemoVC() }
         ),
-        DemoItem(
-            title: "FlexKit DSL / decor / flex",
-            subtitle: "view.dsl 链式属性 · box AutoLayout · VStackView/HStackView Builder · flex权重/alignSelf/spacing/Spacer · decor when+sendValue · decor bind(Combine) · decor.box/flex交叉访问",
-            emoji: "🏗️",
-            makeVC: { ZLFlexKitDSLDemoVC() }
-        ),
+       
     ]
 
     // MARK: - Life Cycle
@@ -73,6 +68,14 @@ class ZLViewControllerSwift: UIViewController, UITableViewDataSource, UITableVie
         view.backgroundColor = .white
         setupTableView()
         
+        
+        view.dsl.apply { _ in
+            
+        } dStyle: { _ in
+            
+        } flex: { item in
+            
+        }
     }
 
     private func setupTableView() {

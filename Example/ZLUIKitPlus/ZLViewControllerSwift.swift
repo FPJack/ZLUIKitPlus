@@ -69,13 +69,6 @@ class ZLViewControllerSwift: UIViewController, UITableViewDataSource, UITableVie
         setupTableView()
         
         
-        view.dsl.apply { _ in
-            
-        } dStyle: { _ in
-            
-        } flex: { item in
-            
-        }
     }
 
     private func setupTableView() {

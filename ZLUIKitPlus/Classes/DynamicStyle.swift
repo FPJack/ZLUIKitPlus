@@ -21,7 +21,7 @@ public enum MatchPolicy {
 }
 
 @available(iOS 13.0, *)
-public final class _DynamicViewStyle: StackViewDSL {
+final class _DynamicViewStyle: StackViewDSL {
     
      public weak var view: UIView?
     
@@ -167,8 +167,6 @@ public final class _DynamicViewStyle: StackViewDSL {
 @available(iOS 13.0, *)
 public final class DynamicViewStyle<T: UIView>: StackViewDSL {
     
-//    public weak var view: T?
-    
     var style: _DynamicViewStyle?
     
     init(style: _DynamicViewStyle) {
@@ -254,7 +252,6 @@ public final class DynamicViewStyle<T: UIView>: StackViewDSL {
 
 public protocol DynamicStylable where Self: UIView {}
 extension UIView: DynamicStylable {}
-
 private var key:      UInt8 = 0
 
 @available(iOS 13.0, *)

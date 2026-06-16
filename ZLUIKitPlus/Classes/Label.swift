@@ -65,9 +65,9 @@ open class Label: UILabel {
         )
         
     }
-    
-    
 }
+
+
 extension Label {
     @objc(tapAction)
     @available(swift, obsoleted: 1, renamed: "tapAction(_:)")
@@ -78,6 +78,14 @@ extension Label {
             }
             return self
         }
+    }
+}
+
+extension DSL where Base: Label {
+    @discardableResult
+    public func insets(_ insets: UIEdgeInsets) -> Self {
+        self.view.insets = insets
+        return self
     }
 }
 

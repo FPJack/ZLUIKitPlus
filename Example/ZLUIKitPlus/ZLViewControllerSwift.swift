@@ -65,17 +65,19 @@ class ZLViewControllerSwift: UIViewController, UITableViewDataSource, UITableVie
             emoji: "🧩",
             makeVC: { ZLDSLDemoVC() }
         ),
+        
        
     ]
-
+    var testView: UIView?
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "ZLUIKitPlus Demo"
         view.backgroundColor = .white
         setupTableView()
-        
-        
+//        testView = UIView()
+//        testView!.box.centerXTo(view.centerXAnchor,offset: 3)
+//        print("")
             
         
         

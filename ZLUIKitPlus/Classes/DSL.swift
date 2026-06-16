@@ -41,25 +41,17 @@ public struct DSL<Base: UIView>: StackViewDSL {
         dsl: ((DSL) -> Void)? = nil,
         dStyle: ((DynamicViewStyle<Base>) -> Void)? = nil,
         flex:((FlexItem) -> Void)? = nil,
+        box:((LayoutBox) -> Void)? = nil
         ) -> Self {
         dsl?(self)
         dStyle?(self.dStyle)
         flex?(self.flex)
+        box?(self.box)
         return self
     }
     
    
-    @available(iOS 13.0, *)
-    @discardableResult
-    public func apply(
-        dsl: ((DSL) -> Void)? = nil,
-        dStyle: ((DynamicViewStyle<Base>) -> Void)? = nil,
-        box:((LayoutBox) -> Void)? = nil) -> Self {
-        dsl?(self)
-        dStyle?(self.dStyle)
-        box?(self.box)
-        return self
-    }
+    
 }
 
 
@@ -76,6 +68,7 @@ extension DSLCompatible {
     public func flex(_ p: Void? = nil) -> DSL<Self> {
         dsl
     }
+    
 }
 extension UIView: DSLCompatible,TapActionable {}
 
@@ -92,6 +85,21 @@ public extension DSL {
     func insertSubview(_ subview: UIView, at index: Int) -> Self {
         view.insertSubview(subview, at: index)
         return self
+    }
+    
+    
+    ///将当前视图添加到指定的父视图中,需要手动布局
+    @discardableResult
+    func addTo(_ superview: UIView,) -> Self {
+        superview.addSubview(view)
+        return self
+    }
+    
+    ///将当前视图添加到指定的父视图中，并设置边距为0，使其填满父视图
+    @discardableResult
+    func addToFull(_ superview: UIView) -> Self {
+       self.view.box.addToFull(superview)
+       return self
     }
     
     @discardableResult
@@ -175,26 +183,26 @@ public extension DSL {
         return self
     }
     @discardableResult
-    func shadowRadius(radius: Double) -> Self {
+    func shadowRadius(_ radius: Double) -> Self {
         view.layer.shadowRadius = radius
         return self
     }
     @discardableResult
-    func shadowOpacity(opacity: Float) -> Self {
+    func shadowOpacity(_ opacity: Float) -> Self {
         view.layer.shadowOpacity = opacity
         return self
     }
     @discardableResult
     func radius(_ radius: CGFloat) -> Self {
         view.layer.cornerRadius = radius
-        return self
+        return self.masksToBounds()
     }
     @discardableResult
     @available(iOS 11.0, *)
     func corner(_ corners: CACornerMask, radius: CGFloat) -> Self {
         view.layer.cornerRadius = radius
         view.layer.maskedCorners = corners
-        return self
+        return self.masksToBounds()
     }
     @discardableResult
     func masksToBounds(_ masks: Bool = true) -> Self {
@@ -272,11 +280,8 @@ extension DSL {
     
     /// 设置当前View 在弹性布局中的外边距 top,start,bottom,end
     @discardableResult
-    public func margin(t: NumberConvertible? = nil,
-                       s: NumberConvertible? = nil,
-                       b: NumberConvertible? = nil,
-                       e: NumberConvertible? = nil) -> Self {
-        flex.margin(t: t,s: s,b: b,e: e)
+    public func margin(_ marge: EdgeInsets) -> Self {
+        flex.margin(marge)
         return self
     }
     
@@ -475,7 +480,7 @@ public extension DSL {
     /// 发送一个值，触发动态装饰的更新
     /// - Parameter value: 要发送的值，可以是任何类型，当调用此方法时，动态装饰会根据这个值进行更新
     /// - Returns: 返回当前DSL实例，便于链式调用
-    
+    @discardableResult
     func sendValue(_ value: Any,policy: MatchPolicy? = nil) -> Self{
         self.dStyle.sendValue(value,policy: policy)
         return self
@@ -529,6 +534,11 @@ public extension DSL where Base: UILabel {
         if let fontSize = fontSize {
             view.font = .systemFont(ofSize: fontSize)
         }
+        return self
+    }
+    @discardableResult
+    func textAlignment(_ alignment: NSTextAlignment) -> Self {
+        view.textAlignment = alignment
         return self
     }
     

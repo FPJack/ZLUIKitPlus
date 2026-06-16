@@ -290,7 +290,7 @@ class ZLUIViewExDemoVC: ZLDemoBaseVC {
         statusLabel.font = .systemFont(ofSize: 11)
         statusLabel.textColor = .systemGreen
         statusLabel.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.1)
-        statusLabel.insets = UIEdgeInsets(top: 2, left: 6, bottom: 2, right: 6)
+        statusLabel.insets = .init(top: 2, leading: 6, bottom: 2, trailing: 6)
         statusLabel.layer.cornerRadius = 8
         statusLabel.clipsToBounds = true
 

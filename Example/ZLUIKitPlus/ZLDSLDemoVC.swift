@@ -51,10 +51,10 @@ final class ZLDSLDemoVC: UIViewController {
     private func addSection(_ title: String) {
         let label = Label()
         label.dsl
-            .insets(.init(top: 10, left: 16, bottom: 10, right: 16))
+            .insets(.init(top: 10, leading: 16, bottom: 10, trailing: 16))
             .text(title,color: UIColor.systemGray,fontSize: 13)
             .multipleLines()
-            .bgColor(UIColor.systemGray6)
+            .bgColor(.systemGray6)
             .radius(8)
         stack.addArrangedSubview(label)
     }

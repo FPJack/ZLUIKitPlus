@@ -29,7 +29,7 @@ class ZLLabelDemoVC: ZLDemoBaseVC {
         let label1 = Label()
         label1.text = "insets = UIEdgeInsets(top:10, left:10, bottom:10, right:10)"
         label1.backgroundColor = UIColor.systemYellow.withAlphaComponent(0.4)
-        label1.insets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        label1.insets =  .init(top: 10, leading: 10, bottom: 10, trailing: 10)
         label1.layer.cornerRadius = 8
         label1.clipsToBounds = true
         
@@ -56,7 +56,7 @@ class ZLLabelDemoVC: ZLDemoBaseVC {
             tag.font = .systemFont(ofSize: 12, weight: .medium)
             tag.textColor = .white
             tag.backgroundColor = tagColors[i]
-            tag.insets = UIEdgeInsets(top: 4, left: 12, bottom: 4, right: 12)
+            tag.insets = .init(top: 4, leading: 16, bottom: 4, trailing: 16)
             tag.layer.cornerRadius = 12
             tag.clipsToBounds = true
             tagStack.addArrangedSubview(tag)
@@ -76,7 +76,7 @@ class ZLLabelDemoVC: ZLDemoBaseVC {
         let label3 = Label()
         label3.text = "★  左侧预留 30pt 给图标  左边距 = 30pt"
         label3.backgroundColor = UIColor.systemPurple.withAlphaComponent(0.1)
-        label3.insets = UIEdgeInsets(top: 8, left: 30, bottom: 8, right: 8)
+        label3.insets = .init(top: 8, leading: 30, bottom: 8, trailing: 8)
         label3.layer.cornerRadius = 8
         label3.clipsToBounds = true
         addDemo(label3)
@@ -94,7 +94,7 @@ class ZLLabelDemoVC: ZLDemoBaseVC {
         label4.text = "多行 Label 演示：这是一段比较长的文字内容，用来演示 Label 在多行显示时，insets 属性依然正确生效。上下左右各留了 12pt 的内边距，整体高度由文字行数自动撑开，无需手动设置 heightAnchor。"
         label4.numberOfLines = 0
         label4.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.12)
-        label4.insets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        label4.insets = .init(top: 12, leading: 12, bottom: 12, trailing: 12)
         label4.layer.cornerRadius = 10
         label4.clipsToBounds = true
         addDemo(label4)
@@ -109,7 +109,7 @@ class ZLLabelDemoVC: ZLDemoBaseVC {
         let label5 = Label()
         label5.text = "仅垂直方向留白 top=12, bottom=12"
         label5.backgroundColor = UIColor.systemTeal.withAlphaComponent(0.15)
-        label5.insets = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        label5.insets = .init(top: 12, leading: 0, bottom: 12, trailing: 0)
         label5.layer.cornerRadius = 6
         label5.clipsToBounds = true
         addDemo(label5)
@@ -140,7 +140,7 @@ class ZLLabelDemoVC: ZLDemoBaseVC {
             toggleBtn.addAction(UIAction { [weak label6] _ in
                 isLargeInsets.toggle()
                 label6?.insets = isLargeInsets
-                ? UIEdgeInsets(top: 16, left: 24, bottom: 16, right: 24)
+                ? .init(top: 16, leading: 24, bottom: 16, trailing: 24)
                 : .zero
             }, for: .touchUpInside)
         } else {
@@ -161,7 +161,8 @@ class ZLLabelDemoVC: ZLDemoBaseVC {
         label7.text = "insets.left = 40（左边大缩进），RTL 布局下自动变为右边大缩进"
         label7.numberOfLines = 0
         label7.backgroundColor = UIColor.systemIndigo.withAlphaComponent(0.1)
-        label7.insets = UIEdgeInsets(top: 8, left: 40, bottom: 8, right: 8)
+        label7.insets = .init(top: 8, leading: 40, bottom: 8, trailing: 8) // 在 RTL 下，leading 会自动适配为右边距
+        label7.semanticContentAttribute = .forceRightToLeft // 强制 LTR 布局，测试 RTL 时注释掉这行
         label7.layer.cornerRadius = 8
         label7.clipsToBounds = true
         addDemo(label7)

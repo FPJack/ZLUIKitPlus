@@ -1,32 +1,35 @@
 
 import UIKit
+import ZLFlexKit
 @objc(ZLLabel)
 open class Label: UILabel {
     @objc
-    public var insets: UIEdgeInsets = .zero {
+    public var insets: NSDirectionalEdgeInsets = .zero {
         didSet {
             invalidateIntrinsicContentSize()
             setNeedsDisplay()
         }
     }
-    private var effectiveInsets: UIEdgeInsets {
-        let isRTL = effectiveUserInterfaceLayoutDirection == .rightToLeft
-        let left = isRTL ? insets.right : insets.left
-        let right = isRTL ? insets.left : insets.right
-        return UIEdgeInsets(
-            
-            top: insets.top,
-            
-            left: left,
-            
-            bottom: insets.bottom,
-            
-            right: right
-            
-        )
+    
+    @discardableResult
+    public func insets(_ insets: EdgeInsets) -> Self {
+        self.insets = insets.directionalEdgeInsets
+        return self
     }
+    
+
     open override func drawText(in rect: CGRect) {
-        super.drawText(in: rect.inset(by: effectiveInsets))
+
+        let isRTL = effectiveUserInterfaceLayoutDirection == .rightToLeft
+
+        let insetRect = rect.inset(by: UIEdgeInsets(
+            top: insets.top,
+            left: isRTL ? insets.trailing : insets.leading,
+            bottom: insets.bottom,
+            right: isRTL ? insets.leading : insets.trailing
+        ))
+
+        super.drawText(in: insetRect)
     }
     
     
@@ -34,7 +37,7 @@ open class Label: UILabel {
         
         var size = super.intrinsicContentSize
         
-        size.width += insets.left + insets.right
+        size.width += insets.leading + insets.trailing
         
         size.height += insets.top + insets.bottom
         
@@ -48,7 +51,7 @@ open class Label: UILabel {
             
             CGSize(
                 
-                width: size.width - insets.left - insets.right,
+                width: size.width - insets.leading - insets.trailing,
                 
                 height: size.height - insets.top - insets.bottom
                 
@@ -58,7 +61,7 @@ open class Label: UILabel {
         
         return CGSize(
             
-            width: fitSize.width + insets.left + insets.right,
+            width: fitSize.width + insets.leading + insets.trailing,
             
             height: fitSize.height + insets.top + insets.bottom
             
@@ -83,8 +86,14 @@ extension Label {
 
 extension DSL where Base: Label {
     @discardableResult
-    public func insets(_ insets: UIEdgeInsets) -> Self {
+    public func insets(_ insets: NSDirectionalEdgeInsets) -> Self {
         self.view.insets = insets
+        return self
+    }
+    
+    @discardableResult
+    public func insets(_ insets: EdgeInsets) -> Self {
+        self.view.insets = insets.directionalEdgeInsets
         return self
     }
 }

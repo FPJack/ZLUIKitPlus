@@ -30,6 +30,7 @@
 		841D1F132FD93C5B007D832A /* ZLLabelDemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D1F0C2FD93C5B007D832A /* ZLLabelDemoVC.swift */; };
 		841D1F152FD93C8A007D832A /* ZLPairViewDemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D1F142FD93C8A007D832A /* ZLPairViewDemoVC.swift */; };
 		841D1F172FD93C5B007D832A /* ZLUIViewExDemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D1F162FD93C5B007D832A /* ZLUIViewExDemoVC.swift */; };
+		841D1F252FE1014F007D832A /* ZLDSLDemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D1F242FE1014F007D832A /* ZLDSLDemoVC.swift */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -75,6 +76,7 @@
 		841D1F0E2FD93C5B007D832A /* ZLWrapperViewDemoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLWrapperViewDemoVC.swift; sourceTree = "<group>"; };
 		841D1F142FD93C8A007D832A /* ZLPairViewDemoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLPairViewDemoVC.swift; sourceTree = "<group>"; };
 		841D1F162FD93C5B007D832A /* ZLUIViewExDemoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLUIViewExDemoVC.swift; sourceTree = "<group>"; };
+		841D1F242FE1014F007D832A /* ZLDSLDemoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLDSLDemoVC.swift; sourceTree = "<group>"; };
 		85F4B8346B22B8B5ACFFBD82 /* ZLUIKitPlus.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ZLUIKitPlus.podspec; path = ../ZLUIKitPlus.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AFE2B5E7D34344C837F6F6F2 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 				841D1F0D2FD93C5B007D832A /* ZLViewDemoVC.swift */,
 				841D1F142FD93C8A007D832A /* ZLPairViewDemoVC.swift */,
 				841D1F0E2FD93C5B007D832A /* ZLWrapperViewDemoVC.swift */,
+				841D1F242FE1014F007D832A /* ZLDSLDemoVC.swift */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -423,6 +426,7 @@
 				841D1F172FD93C5B007D832A /* ZLUIViewExDemoVC.swift in Sources */,
 				841D1F112FD93C5B007D832A /* ZLButtonDemoVC.swift in Sources */,
 				841D1F152FD93C8A007D832A /* ZLPairViewDemoVC.swift in Sources */,
+				841D1F252FE1014F007D832A /* ZLDSLDemoVC.swift in Sources */,
 				841D1F122FD93C5B007D832A /* ZLDemoBaseVC.swift in Sources */,
 				841D1F132FD93C5B007D832A /* ZLLabelDemoVC.swift in Sources */,
 				62507C202F9BB95C00397C32 /* ZLViewControllerSwift.swift in Sources */,

@@ -58,6 +58,13 @@ class ZLViewControllerSwift: UIViewController, UITableViewDataSource, UITableVie
             emoji: "🧩",
             makeVC: { ZLUIViewExDemoVC() }
         ),
+        
+        DemoItem(
+            title: "DSL",
+            subtitle: "DSL用法",
+            emoji: "🧩",
+            makeVC: { ZLDSLDemoVC() }
+        ),
        
     ]
 

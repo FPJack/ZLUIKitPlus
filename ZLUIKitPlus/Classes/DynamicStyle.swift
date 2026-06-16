@@ -21,29 +21,27 @@ public enum MatchPolicy {
 }
 
 @available(iOS 13.0, *)
-public final class DynamicViewStyle<T: UIView>: StackViewDSL {
+public final class _DynamicViewStyle: StackViewDSL {
     
-    public weak var view: T?
+     public weak var view: UIView?
     
-    private var rules: [DecorRule<Any>] = []
+     var rules: [DecorRule<Any>] = []
     
-    private var cancellables = Set<AnyCancellable>()
+     var cancellables = Set<AnyCancellable>()
     
-    private var policy: MatchPolicy = .first
+     var policy: MatchPolicy = .first
     
-    private var defaultAction: ((T, Any) -> Void)?
+     var defaultAction: ((UIView, Any) -> Void)?
     
-    init(view: T) {
+    init(view: UIView) {
         self.view = view
     }
     
     public func getDslView() -> UIView? {
         view
     }
-}
-
-@available(iOS 13.0, *)
-extension DynamicViewStyle {
+    
+    
     @discardableResult
     public func matchPolicy(_ policy: MatchPolicy) -> Self {
         self.policy = policy
@@ -53,7 +51,7 @@ extension DynamicViewStyle {
     public func when<Value>(
         _ type: Value.Type = (Any).self,
         match: @escaping (Value) -> Bool,
-        do action: @escaping (T, Value) -> Void
+        do action: @escaping (UIView, Value) -> Void
     ) -> Self {
         
         let rule = DecorRule<Any>(
@@ -62,8 +60,7 @@ extension DynamicViewStyle {
                 return match(v)
             },
             action: { view, value in
-                guard let v = value as? Value,
-                      let view = view as? T else { return }
+                guard let v = value as? Value else { return }
                 action(view, v)
             }
         )
@@ -79,7 +76,7 @@ extension DynamicViewStyle {
         
         _ value: Value,
         
-        do action: @escaping (T,Value) -> Void
+        do action: @escaping (UIView,Value) -> Void
         
     ) -> Self {
         
@@ -95,8 +92,7 @@ extension DynamicViewStyle {
             
             action: { view, value in
                 
-                guard let v = value as? Value,
-                      let view = view as? T else { return }
+                guard let v = value as? Value else { return }
                 action(view, v)
                 
             }
@@ -110,21 +106,13 @@ extension DynamicViewStyle {
     
     @discardableResult
     public func otherwise(
-        _ action: @escaping (T, Any) -> Void
+        _ action: @escaping (UIView, Any) -> Void
     ) -> Self {
         
         defaultAction = action
         
         return self
     }
-    
-}
-
-
-
-
-@available(iOS 13.0, *)
-extension DynamicViewStyle {
     
     func handle(_ value: Any,policy: MatchPolicy? = nil) {
         
@@ -147,10 +135,7 @@ extension DynamicViewStyle {
             defaultAction?(view, value)
         }
     }
-}
-
-@available(iOS 13.0, *)
-extension DynamicViewStyle {
+    
     @discardableResult
     public func bind<P: Publisher>(
         _ publisher: P
@@ -168,46 +153,123 @@ extension DynamicViewStyle {
             .store(in: &cancellables)
         return self
     }
-}
-
-
-
-@available(iOS 13.0, *)
-extension DynamicViewStyle {
+    
     // MARK: - 发送值进行装饰
     @discardableResult
     public func sendValue(_ value: Any,policy: MatchPolicy? = nil) -> Self{
         handle(value,policy: policy)
         return self
     }
+    
 }
 
+
+@available(iOS 13.0, *)
+public final class DynamicViewStyle<T: UIView>: StackViewDSL {
+    
+//    public weak var view: T?
+    
+    var style: _DynamicViewStyle?
+    
+    init(style: _DynamicViewStyle) {
+        self.style = style
+    }
+    
+    public func getDslView() -> UIView? {
+        style?.getDslView()
+    }
+    
+    
+    @discardableResult
+    public func matchPolicy(_ policy: MatchPolicy) -> Self {
+        self.style?.policy = policy
+        return self
+    }
+    @discardableResult
+    public func when<Value>(
+        _ type: Value.Type = (Any).self,
+        match: @escaping (Value) -> Bool,
+        do action: @escaping (T, Value) -> Void
+    ) -> Self {
+        self.style?.when(type, match: match) { view , value in
+            guard let view = view as? T else { return }
+            action(view, value)
+        }
+        return self
+    }
+    
+    
+    @discardableResult
+    
+    public func when<Value: Equatable>(
+        
+        _ value: Value,
+        
+        do action: @escaping (T,Value) -> Void
+        
+    ) -> Self {
+        
+        self.style?.when(value) { view, v in
+            guard let view = view as? T else { return }
+            action(view, v)
+        }
+        return self
+        
+    }
+    
+    
+    @discardableResult
+    public func otherwise(
+        _ action: @escaping (T, Any) -> Void
+    ) -> Self {
+        self.style?.otherwise { view , value in
+            guard let view = view as? T else { return }
+            action(view, value)
+        }
+        return self
+    }
+    
+    func handle(_ value: Any,policy: MatchPolicy? = nil) {
+        self.style?.handle(value,policy: policy)
+    }
+    
+    @discardableResult
+    public func bind<P: Publisher>(
+        _ publisher: P
+    ) -> Self where P.Failure == Never {
+        self.style?.bind(publisher)
+        return self
+    }
+    
+    // MARK: - 发送值进行装饰
+    @discardableResult
+    public func sendValue(_ value: Any,policy: MatchPolicy? = nil) -> Self{
+        self.style?.handle(value,policy: policy)
+        return self
+    }
+    
+}
+
+
+
 public protocol DynamicStylable where Self: UIView {}
+extension UIView: DynamicStylable {}
 
+private var key:      UInt8 = 0
 
-
-private let key = "zl_decoration"
 @available(iOS 13.0, *)
 extension DynamicStylable {
     /// 动态配置样式
     public var dStyle: DynamicViewStyle<Self>  {
         /// 通过关联属性存储起来
-        if let decoration = objc_getAssociatedObject(self, key) as? DynamicViewStyle<Self> {
-            return decoration
-        } else {
-            let decoration = DynamicViewStyle(view: self)
-            objc_setAssociatedObject(self, key, decoration, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            return decoration
+        var _style = objc_getAssociatedObject(self, &key) as? _DynamicViewStyle
+        if _style == nil {
+            _style = _DynamicViewStyle(view: self)
+            objc_setAssociatedObject(self, &key, _style, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
+        return DynamicViewStyle(style: _style!)
     }
 }
 
-extension UIView: DynamicStylable {}
-@available(iOS 13.0, *)
-extension DynamicViewStyle {
-    ///系统约束布局属性
-    public var box: LayoutBox? {
-        view?.box
-    }
-}
+
 

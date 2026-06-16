@@ -270,16 +270,13 @@ extension DSL {
     
     
     
-    /// 设置当前View 在弹性布局中的外边距
-    /// - Parameters:
-    ///   - top: <#top description#>
-    ///   - leading: <#leading description#>
-    ///   - bottom: <#bottom description#>
-    ///   - trailing: <#trailing description#>
-    /// - Returns: <#description#>
+    /// 设置当前View 在弹性布局中的外边距 top,start,bottom,end
     @discardableResult
-    public func margin(top: NumberConvertible? = nil,leading: NumberConvertible? = nil,  bottom: NumberConvertible? = nil,trailing: NumberConvertible? = nil) -> Self {
-        flex.margin(top: top,leading: leading,bottom: bottom,trailing: trailing)
+    public func margin(t: NumberConvertible? = nil,
+                       s: NumberConvertible? = nil,
+                       b: NumberConvertible? = nil,
+                       e: NumberConvertible? = nil) -> Self {
+        flex.margin(t: t,s: s,b: b,e: e)
         return self
     }
     

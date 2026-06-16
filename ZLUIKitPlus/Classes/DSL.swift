@@ -38,9 +38,9 @@ public struct DSL<Base: UIView>: StackViewDSL {
     @discardableResult
     @available(iOS 13.0, *)
     public func apply(
-        flex:((FlexItem) -> Void)? = nil,
         dsl: ((DSL) -> Void)? = nil,
-        dStyle: ((DynamicViewStyle<Base>) -> Void)? = nil
+        dStyle: ((DynamicViewStyle<Base>) -> Void)? = nil,
+        flex:((FlexItem) -> Void)? = nil,
         ) -> Self {
         dsl?(self)
         dStyle?(self.dStyle)
@@ -48,20 +48,15 @@ public struct DSL<Base: UIView>: StackViewDSL {
         return self
     }
     
+   
+    @available(iOS 13.0, *)
     @discardableResult
     public func apply(
         dsl: ((DSL) -> Void)? = nil,
-        flex:((FlexItem) -> Void)? = nil) -> Self {
-        dsl?(self)
-        flex?(self.flex)
-        return self
-    }
-    
-    @discardableResult
-    public func apply(
-        dsl: ((DSL) -> Void)? = nil,
+        dStyle: ((DynamicViewStyle<Base>) -> Void)? = nil,
         box:((LayoutBox) -> Void)? = nil) -> Self {
         dsl?(self)
+        dStyle?(self.dStyle)
         box?(self.box)
         return self
     }
@@ -100,13 +95,13 @@ public extension DSL {
     }
     
     @discardableResult
-    func backgroundColor(_ color: ColorRepresentable?) -> Self {
+    func bgColor(_ color: ColorRepresentable?) -> Self {
         view.backgroundColor = color?.getColor
         return self
     }
     
     @discardableResult
-    func backgroundColor(_ color: UIColor?) -> Self {
+    func bgColor(_ color: UIColor?) -> Self {
         view.backgroundColor = color
         return self
     }
@@ -456,6 +451,19 @@ public extension DSL {
     }
     
     
+    
+    /// 没有匹配到任何值的时候调用
+    /// - Parameter action: <#action description#>
+    /// - Returns: <#description#>
+    @discardableResult
+    func otherwise(
+        _ action: @escaping (Base, Any) -> Void
+    ) -> Self {
+        self.dStyle.otherwise(action)
+        return self
+    }
+    
+    
     /// 绑定一个Publisher，Publisher发送新值时触发动态装饰的更新
     /// - Parameter publisher: 一个Publisher，必须满足Failure类型为Never，当Publisher发送新值时，动态装饰会根据新的值进行更新
     /// - Returns: 返回当前DSL实例，便于链式调用
@@ -470,11 +478,12 @@ public extension DSL {
     /// 发送一个值，触发动态装饰的更新
     /// - Parameter value: 要发送的值，可以是任何类型，当调用此方法时，动态装饰会根据这个值进行更新
     /// - Returns: 返回当前DSL实例，便于链式调用
-    @discardableResult
-    func sendValue(_ value: Any) -> Self{
-        self.dStyle.sendValue(value)
+    
+    func sendValue(_ value: Any,policy: MatchPolicy? = nil) -> Self{
+        self.dStyle.sendValue(value,policy: policy)
         return self
     }
+
 }
 
 public extension DSL where Base: UILabel {

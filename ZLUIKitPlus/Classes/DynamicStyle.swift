@@ -10,6 +10,16 @@ public struct DecorRule<Value> {
     let match: (Value) -> Bool
     let action: (UIView, Value) -> Void
 }
+
+
+public enum MatchPolicy {
+    /// 匹配到一个后立即停止
+    case first
+    
+    /// 执行所有匹配的规则
+    case all
+}
+
 @available(iOS 13.0, *)
 public final class DynamicViewStyle<T: UIView>: StackViewDSL {
     
@@ -18,6 +28,10 @@ public final class DynamicViewStyle<T: UIView>: StackViewDSL {
     private var rules: [DecorRule<Any>] = []
     
     private var cancellables = Set<AnyCancellable>()
+    
+    private var policy: MatchPolicy = .first
+    
+    private var defaultAction: ((T, Any) -> Void)?
     
     init(view: T) {
         self.view = view
@@ -30,6 +44,11 @@ public final class DynamicViewStyle<T: UIView>: StackViewDSL {
 
 @available(iOS 13.0, *)
 extension DynamicViewStyle {
+    @discardableResult
+    public func matchPolicy(_ policy: MatchPolicy) -> Self {
+        self.policy = policy
+        return self
+    }
     @discardableResult
     public func when<Value>(
         _ type: Value.Type = (Any).self,
@@ -81,26 +100,51 @@ extension DynamicViewStyle {
                 action(view, v)
                 
             }
-
+            
         )
         rules.append(rule)
         return self
         
     }
     
+    
+    @discardableResult
+    public func otherwise(
+        _ action: @escaping (T, Any) -> Void
+    ) -> Self {
+        
+        defaultAction = action
+        
+        return self
+    }
+    
 }
+
+
+
+
 @available(iOS 13.0, *)
 extension DynamicViewStyle {
     
-    func handle(_ value: Any) {
+    func handle(_ value: Any,policy: MatchPolicy? = nil) {
         
         guard let view = view else { return }
         
+        let p = policy ?? .first
+        
+        var matched = false
+        
         for rule in rules {
             if rule.match(value) {
+                matched = true
                 rule.action(view, value)
-                break
+                if p == .first {
+                    break
+                }
             }
+        }
+        if !matched {
+            defaultAction?(view, value)
         }
     }
 }
@@ -113,7 +157,13 @@ extension DynamicViewStyle {
     ) -> Self where P.Failure == Never {
         publisher
             .sink { [weak self] value in
-                self?.handle(value)
+                if Thread.isMainThread {
+                    self?.handle(value)
+                } else {
+                    DispatchQueue.main.async { [weak self] in
+                        self?.handle(value)
+                    }
+                }
             }
             .store(in: &cancellables)
         return self
@@ -126,8 +176,8 @@ extension DynamicViewStyle {
 extension DynamicViewStyle {
     // MARK: - 发送值进行装饰
     @discardableResult
-    public func sendValue(_ value: Any) -> Self{
-        handle(value)
+    public func sendValue(_ value: Any,policy: MatchPolicy? = nil) -> Self{
+        handle(value,policy: policy)
         return self
     }
 }
@@ -157,7 +207,7 @@ extension UIView: DynamicStylable {}
 extension DynamicViewStyle {
     ///系统约束布局属性
     public var box: LayoutBox? {
-        view?.box 
+        view?.box
     }
 }
 

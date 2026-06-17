@@ -742,7 +742,6 @@ final class ZLDSLDemoVC: UIViewController {
                     lab.dsl.bgColor(.systemBlue).text("已支付")
                 }
                 .when(OrderState.done) { lab, _ in
-                    
                     lab.dsl.bgColor(.systemGreen).text("已完成")
                 }
                 .sendState(OrderState.pending)

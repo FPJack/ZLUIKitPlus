@@ -222,12 +222,6 @@ public final class DynamicViewStyle<T: UIView>: StackViewDSL {
     
     var style: _DynamicViewStyle
     
-    public var cancellables: Set<AnyCancellable>  {
-        style.cancellables
-    }
-
-    
-   
     public var stateStore: CurrentValueSubject<Any?, Never>? {
         style.stateStore
     }

@@ -787,6 +787,9 @@ final class ZLDSLDemoVC: UIViewController {
                     lab.text = "\(v)"
                     lab.backgroundColor = .red
                 })
+                . whenNil(do: { _ in
+                    
+                })
                 .sendState(0)
             
             

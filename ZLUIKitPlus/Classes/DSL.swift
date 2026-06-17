@@ -34,10 +34,6 @@ public struct DSL<Base: UIView>: StackViewDSL {
         view.dStyle.stateStore
     }
     
-    @available(iOS 13.0, *)
-    public var cancellables: Set<AnyCancellable>  {
-        view.dStyle.cancellables
-    }
     
     ///StackView DSL协议方法
     public func getDslView() -> UIView? {

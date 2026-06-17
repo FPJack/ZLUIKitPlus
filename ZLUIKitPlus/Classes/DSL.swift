@@ -27,15 +27,16 @@ public struct DSL<Base: UIView>: StackViewDSL {
         view.dStyle
     }
     
-    @available(iOS 13.0, *)
-    public var state: Any? {
-        view.dStyle.state
-    }
     
     @available(iOS 13.0, *)
     ///自动bind的状态存储器
     public var stateStore: CurrentValueSubject<Any?, Never>? {
         view.dStyle.stateStore
+    }
+    
+    @available(iOS 13.0, *)
+    public var cancellables: Set<AnyCancellable>  {
+        view.dStyle.cancellables
     }
     
     ///StackView DSL协议方法
@@ -464,6 +465,14 @@ public extension DSL {
     }
     
     
+    @discardableResult
+    func whenNil(
+        do action: @escaping (Base) -> Void
+    ) -> Self {
+        self.dStyle.whenNil(do: action)
+        return self
+    }
+    
     
     /// 没有匹配到任何值的时候调用
     /// - Parameter action: <#action description#>
@@ -492,7 +501,7 @@ public extension DSL {
     /// - Parameter value: 要发送的值，可以是任何类型，当调用此方法时，动态装饰会根据这个值进行更新
     /// - Returns: 返回当前DSL实例，便于链式调用
     @discardableResult
-    func sendState(_ state: Any,policy: MatchPolicy? = nil) -> Self{
+    func sendState(_ state: Any?,policy: MatchPolicy? = nil) -> Self{
         self.dStyle.sendState(state,policy: policy)
         return self
     }

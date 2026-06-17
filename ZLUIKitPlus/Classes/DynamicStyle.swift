@@ -20,7 +20,7 @@ public enum MatchPolicy {
     case all
 }
 
-struct StateWrapper {
+public struct StateWrapper {
     let value: Any?
     let policy: MatchPolicy?
 }
@@ -36,10 +36,7 @@ final class _DynamicViewStyle: StackViewDSL {
     
      var policy: MatchPolicy = .first
     
-     var defaultAction: ((UIView, Any?) -> Void)?
-    
-     /// 当前状态值
-     var state: Any?
+     var defaultAction: ((UIView, Any) -> Void)?
     
      lazy var stateStore: CurrentValueSubject<Any?, Never> = {
            let subject = CurrentValueSubject<Any?, Never>(nil)
@@ -118,6 +115,29 @@ final class _DynamicViewStyle: StackViewDSL {
         
     }
     
+    @discardableResult
+    public func whenNil(
+        do action: @escaping (UIView) -> Void
+    ) -> Self {
+        let rule = DecorRule<Any>(
+            match: { input in
+                switch input {
+                case .none:
+                    return true
+                case .some(_):
+                    return false
+                }
+            },
+            action: { view, _ in
+                action(view)
+            }
+        )
+
+        rules.append(rule)
+        return self
+    }
+   
+    
     
     @discardableResult
     public func otherwise(
@@ -141,14 +161,15 @@ final class _DynamicViewStyle: StackViewDSL {
             if rule.match(state) {
                 matched = true
                 rule.action(view, state)
-                self.state = state
                 if p == .first {
                     break
                 }
             }
         }
         if !matched {
-            defaultAction?(view, state)
+            if let state = state {
+                defaultAction?(view, state)
+            }
         }
     }
     
@@ -159,17 +180,21 @@ final class _DynamicViewStyle: StackViewDSL {
         publisher
             .dropFirst()
             .sink { [weak self] value in
-                var policy: MatchPolicy?
-                var state: Any? = value
                 if let wraperValue = value as? StateWrapper {
-                    policy = wraperValue.policy
-                    state = wraperValue.value
-                }
-                if Thread.isMainThread {
-                    self?.handle(state,policy: policy)
+                    if Thread.isMainThread {
+                        self?.handle(wraperValue.value,policy: wraperValue.policy)
+                    } else {
+                        DispatchQueue.main.async { [weak self] in
+                            self?.handle(wraperValue.value,policy: wraperValue.policy)
+                        }
+                    }
                 } else {
-                    DispatchQueue.main.async { [weak self] in
-                        self?.handle(state,policy: policy)
+                    if Thread.isMainThread {
+                        self?.handle(value)
+                    } else {
+                        DispatchQueue.main.async { [weak self] in
+                            self?.handle(value)
+                        }
                     }
                 }
             }
@@ -179,7 +204,7 @@ final class _DynamicViewStyle: StackViewDSL {
     
     // MARK: - 发送值进行装饰
     @discardableResult
-    public func sendState(_ state: Any,policy: MatchPolicy? = nil) -> Self{
+    public func sendState(_ state: Any?,policy: MatchPolicy? = nil) -> Self{
         if state is StateWrapper {
             self.stateStore.send(state)
         }else {
@@ -195,14 +220,16 @@ final class _DynamicViewStyle: StackViewDSL {
 @available(iOS 13.0, *)
 public final class DynamicViewStyle<T: UIView>: StackViewDSL {
     
-    var style: _DynamicViewStyle?
+    var style: _DynamicViewStyle
     
-    public var state: Any? {
-        style?.state
+    public var cancellables: Set<AnyCancellable>  {
+        style.cancellables
     }
+
     
+   
     public var stateStore: CurrentValueSubject<Any?, Never>? {
-        style?.stateStore
+        style.stateStore
     }
     
     init(style: _DynamicViewStyle) {
@@ -210,13 +237,13 @@ public final class DynamicViewStyle<T: UIView>: StackViewDSL {
     }
     
     public func getDslView() -> UIView? {
-        style?.getDslView()
+        style.getDslView()
     }
     
     
     @discardableResult
     public func matchPolicy(_ policy: MatchPolicy) -> Self {
-        self.style?.policy = policy
+        self.style.policy = policy
         return self
     }
     @discardableResult
@@ -225,7 +252,7 @@ public final class DynamicViewStyle<T: UIView>: StackViewDSL {
         match: @escaping (State) -> Bool,
         do action: @escaping (T, State) -> Void
     ) -> Self {
-        self.style?.when(type, match: match) { view , value in
+        self.style.when(type, match: match) { view , value in
             guard let view = view as? T else { return }
             action(view, value)
         }
@@ -243,7 +270,7 @@ public final class DynamicViewStyle<T: UIView>: StackViewDSL {
         
     ) -> Self {
         
-        self.style?.when(value) { view, v in
+        self.style.when(value) { view, v in
             guard let view = view as? T else { return }
             action(view, v)
         }
@@ -251,12 +278,23 @@ public final class DynamicViewStyle<T: UIView>: StackViewDSL {
         
     }
     
+    @discardableResult
+    public func whenNil(
+        do action: @escaping (T) -> Void
+    ) -> Self {
+        self.style.whenNil { view   in
+            guard let view = view as? T else { return }
+            action(view)
+        }
+        return self
+    }
+    
     
     @discardableResult
     public func otherwise(
         _ action: @escaping (T, Any) -> Void
     ) -> Self {
-        self.style?.otherwise { view , value in
+        self.style.otherwise { view , value in
             guard let view = view as? T else { return }
             action(view, value)
         }
@@ -264,21 +302,21 @@ public final class DynamicViewStyle<T: UIView>: StackViewDSL {
     }
     
     func handle(_ state: Any,policy: MatchPolicy? = nil) {
-        self.style?.handle(state,policy: policy)
+        self.style.handle(state,policy: policy)
     }
     
     @discardableResult
     public func bind<P: Publisher>(
         _ publisher: P
     ) -> Self where P.Failure == Never {
-        self.style?.bind(publisher)
+        self.style.bind(publisher)
         return self
     }
     
     // MARK: - 发送值进行装饰
     @discardableResult
-    public func sendState(_ state: Any,policy: MatchPolicy? = nil) -> Self{
-        self.style?.sendState(state,policy: policy)
+    public func sendState(_ state: Any?,policy: MatchPolicy? = nil) -> Self{
+        self.style.sendState(state,policy: policy)
         return self
     }
     

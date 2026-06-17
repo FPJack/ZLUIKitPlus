@@ -851,6 +851,8 @@ final class ZLDSLDemoVC: UIViewController {
                 .when("offline") { lab, _ in
                     lab.text = "离线 🔴"
                     lab.backgroundColor = UIColor.systemRed
+                }.whenNil { lab in
+                    lab.text = "无状态"
                 }.otherwise { lab , _ in
                     lab.text = "未知状态"
                     lab.backgroundColor = UIColor.systemGray

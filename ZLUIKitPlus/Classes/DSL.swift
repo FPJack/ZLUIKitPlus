@@ -27,6 +27,11 @@ public struct DSL<Base: UIView>: StackViewDSL {
         view.dStyle
     }
     
+    @available(iOS 13.0, *)
+    public var state: Any? {
+        view.dStyle.state
+    }
+    
     ///StackView DSL协议方法
     public func getDslView() -> UIView? {
         view
@@ -481,8 +486,8 @@ public extension DSL {
     /// - Parameter value: 要发送的值，可以是任何类型，当调用此方法时，动态装饰会根据这个值进行更新
     /// - Returns: 返回当前DSL实例，便于链式调用
     @discardableResult
-    func sendValue(_ value: Any,policy: MatchPolicy? = nil) -> Self{
-        self.dStyle.sendValue(value,policy: policy)
+    func sendState(_ state: Any,policy: MatchPolicy? = nil) -> Self{
+        self.dStyle.sendState(state,policy: policy)
         return self
     }
 

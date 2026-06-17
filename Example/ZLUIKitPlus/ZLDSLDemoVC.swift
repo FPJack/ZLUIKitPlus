@@ -742,16 +742,17 @@ final class ZLDSLDemoVC: UIViewController {
                     lab.dsl.bgColor(.systemBlue).text("已支付")
                 }
                 .when(OrderState.done) { lab, _ in
+                    
                     lab.dsl.bgColor(.systemGreen).text("已完成")
                 }
-                .sendValue(OrderState.pending)
+                .sendState(OrderState.pending)
             
             UIButton().dsl
                 .title("切换状态 →")
                 .titleColor(.systemBlue)
                 .tapAction { _ in
                     stateIdx = (stateIdx + 1) % states.count
-                    label.dsl.sendValue(states[stateIdx])
+                    label.dsl.sendState(states[stateIdx])
                 }
         }
         
@@ -786,7 +787,7 @@ final class ZLDSLDemoVC: UIViewController {
                     lab.text = "\(v)"
                     lab.backgroundColor = .red
                 })
-                .sendValue(0)
+                .sendState(0)
             
             
             UIButton().dsl
@@ -794,7 +795,7 @@ final class ZLDSLDemoVC: UIViewController {
                 .titleColor(.systemBlue)
                 .tapAction { _ in
                     progress = (progress + 25) % 125
-                    progressLab.dsl.sendValue(progress)
+                    progressLab.dsl.sendState(progress)
                 }
         }
         
@@ -823,7 +824,7 @@ final class ZLDSLDemoVC: UIViewController {
                 lab.text = "未知: \(value)"
                 lab.backgroundColor = UIColor.systemGray
             }
-            .sendValue("unknown_state")   // 触发 otherwise
+            .sendState("unknown_state")   // 触发 otherwise
         
         addDemo(note: "otherwise — 无匹配时的兜底回调", view: fallbackLab)
         
@@ -904,7 +905,7 @@ final class ZLDSLDemoVC: UIViewController {
             $0.flex(0).height(40)
         }
         
-        v2.dStyle.sendValue("active")
+        v2.dStyle.sendState("active")
         
         let container = HStackView(spacing: 8) {
             v1

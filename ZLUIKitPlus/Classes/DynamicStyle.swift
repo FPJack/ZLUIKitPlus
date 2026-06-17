@@ -6,9 +6,9 @@
 //
 import Combine
 import ZLFlexKit
-public struct DecorRule<Value> {
-    let match: (Value) -> Bool
-    let action: (UIView, Value) -> Void
+public struct DecorRule<State> {
+    let match: (State) -> Bool
+    let action: (UIView, State) -> Void
 }
 
 
@@ -33,6 +33,8 @@ final class _DynamicViewStyle: StackViewDSL {
     
      var defaultAction: ((UIView, Any) -> Void)?
     
+     var state: Any?
+    
     init(view: UIView) {
         self.view = view
     }
@@ -48,19 +50,19 @@ final class _DynamicViewStyle: StackViewDSL {
         return self
     }
     @discardableResult
-    public func when<Value>(
-        _ type: Value.Type = (Any).self,
-        match: @escaping (Value) -> Bool,
-        do action: @escaping (UIView, Value) -> Void
+    public func when<State>(
+        _ type: State.Type = (Any).self,
+        match: @escaping (State) -> Bool,
+        do action: @escaping (UIView, State) -> Void
     ) -> Self {
         
         let rule = DecorRule<Any>(
-            match: { value in
-                guard let v = value as? Value else { return false }
+            match: { state in
+                guard let v = state as? State else { return false }
                 return match(v)
             },
-            action: { view, value in
-                guard let v = value as? Value else { return }
+            action: { view, state in
+                guard let v = state as? State else { return }
                 action(view, v)
             }
         )
@@ -72,11 +74,11 @@ final class _DynamicViewStyle: StackViewDSL {
     
     @discardableResult
     
-    public func when<Value: Equatable>(
+    public func when<State: Equatable>(
         
-        _ value: Value,
+        _ value: State,
         
-        do action: @escaping (UIView,Value) -> Void
+        do action: @escaping (UIView,State) -> Void
         
     ) -> Self {
         
@@ -84,7 +86,7 @@ final class _DynamicViewStyle: StackViewDSL {
             
             match: { input in
                 
-                guard let v = input as? Value else { return false }
+                guard let v = input as? State else { return false }
                 
                 return v == value
                 
@@ -92,7 +94,7 @@ final class _DynamicViewStyle: StackViewDSL {
             
             action: { view, value in
                 
-                guard let v = value as? Value else { return }
+                guard let v = value as? State else { return }
                 action(view, v)
                 
             }
@@ -126,6 +128,7 @@ final class _DynamicViewStyle: StackViewDSL {
             if rule.match(value) {
                 matched = true
                 rule.action(view, value)
+                self.state = value
                 if p == .first {
                     break
                 }
@@ -156,8 +159,8 @@ final class _DynamicViewStyle: StackViewDSL {
     
     // MARK: - 发送值进行装饰
     @discardableResult
-    public func sendValue(_ value: Any,policy: MatchPolicy? = nil) -> Self{
-        handle(value,policy: policy)
+    public func sendValue(_ state: Any,policy: MatchPolicy? = nil) -> Self{
+        handle(state,policy: policy)
         return self
     }
     
@@ -168,6 +171,10 @@ final class _DynamicViewStyle: StackViewDSL {
 public final class DynamicViewStyle<T: UIView>: StackViewDSL {
     
     var style: _DynamicViewStyle?
+    
+    var state: Any? {
+        style?.state
+    }
     
     init(style: _DynamicViewStyle) {
         self.style = style
@@ -184,10 +191,10 @@ public final class DynamicViewStyle<T: UIView>: StackViewDSL {
         return self
     }
     @discardableResult
-    public func when<Value>(
-        _ type: Value.Type = (Any).self,
-        match: @escaping (Value) -> Bool,
-        do action: @escaping (T, Value) -> Void
+    public func when<State>(
+        _ type: State.Type = (Any).self,
+        match: @escaping (State) -> Bool,
+        do action: @escaping (T, State) -> Void
     ) -> Self {
         self.style?.when(type, match: match) { view , value in
             guard let view = view as? T else { return }
@@ -199,11 +206,11 @@ public final class DynamicViewStyle<T: UIView>: StackViewDSL {
     
     @discardableResult
     
-    public func when<Value: Equatable>(
+    public func when<State: Equatable>(
         
-        _ value: Value,
+        _ value: State,
         
-        do action: @escaping (T,Value) -> Void
+        do action: @escaping (T,State) -> Void
         
     ) -> Self {
         
@@ -227,8 +234,8 @@ public final class DynamicViewStyle<T: UIView>: StackViewDSL {
         return self
     }
     
-    func handle(_ value: Any,policy: MatchPolicy? = nil) {
-        self.style?.handle(value,policy: policy)
+    func handle(_ state: Any,policy: MatchPolicy? = nil) {
+        self.style?.handle(state,policy: policy)
     }
     
     @discardableResult
@@ -241,8 +248,8 @@ public final class DynamicViewStyle<T: UIView>: StackViewDSL {
     
     // MARK: - 发送值进行装饰
     @discardableResult
-    public func sendValue(_ value: Any,policy: MatchPolicy? = nil) -> Self{
-        self.style?.handle(value,policy: policy)
+    public func sendState(_ state: Any,policy: MatchPolicy? = nil) -> Self{
+        self.style?.handle(state,policy: policy)
         return self
     }
     

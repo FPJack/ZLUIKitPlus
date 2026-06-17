@@ -898,7 +898,7 @@ final class ZLDSLDemoVC: UIViewController {
                 .bgColor(UIColor.systemGray)
                 .radius(8)
                 .masksToBounds()
-        } dStyle: {
+        } state: {
             $0.when("active") { lab, _ in
                 lab.backgroundColor = UIColor.systemGreen
                 lab.text = "激活 ✓"
@@ -925,13 +925,12 @@ final class ZLDSLDemoVC: UIViewController {
             .textAlignment(.center)
             .size(w: 200, h: 40)
             .apply(
-                dsl: { d in
-                    d.text("apply + box 约束")
-                        .textColor(UIColor.white)
-                        .bgColor(UIColor.systemPurple)
-                        .radius(10)
+                style: {
+                    $0.text("apply + box 约束",color: UIColor.white)
+                      .bgColor(UIColor.systemPurple)
+                      .radius(10)
                 },
-                dStyle: { ds in
+                state: { ds in
                     ds.when(Bool.self, match: { $0 }) { lab, _ in
                         lab.backgroundColor = UIColor.systemPurple
                     }

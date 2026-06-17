@@ -46,13 +46,13 @@ public struct DSL<Base: UIView>: StackViewDSL {
     @discardableResult
     @available(iOS 13.0, *)
     public func apply(
-        dsl: ((DSL) -> Void)? = nil,
-        dStyle: ((DynamicViewStyle<Base>) -> Void)? = nil,
+        style: ((DSL) -> Void)? = nil,
+        state: ((DynamicViewStyle<Base>) -> Void)? = nil,
         flex:((FlexItem) -> Void)? = nil,
         box:((LayoutBox) -> Void)? = nil
         ) -> Self {
-        dsl?(self)
-        dStyle?(self.dStyle)
+        style?(self)
+        state?(self.dStyle)
         flex?(self.flex)
         box?(self.box)
         return self

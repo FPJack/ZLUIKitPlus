@@ -222,6 +222,10 @@ public final class DynamicViewStyle<T: UIView>: StackViewDSL {
     
     var style: _DynamicViewStyle
     
+    public var view: T? {
+        style.view as? T
+    }
+    
     public var stateStore: CurrentValueSubject<Any?, Never>? {
         style.stateStore
     }

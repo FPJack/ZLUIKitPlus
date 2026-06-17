@@ -829,7 +829,6 @@ final class ZLDSLDemoVC: UIViewController {
         addDemo(note: "otherwise — 无匹配时的兜底回调", view: fallbackLab)
         
         // 4. bind(Combine Publisher)
-        let subject = PassthroughSubject<String, Never>()
         
         
         var isOnline = false
@@ -845,22 +844,24 @@ final class ZLDSLDemoVC: UIViewController {
                 .radius(8)
                 .textAlignment(.center)
                 .size(w: 180, h: 36)
-                .bind(subject)
-                .when("online") { lab, _ in
+                .when(String.self, match: { $0 == "online" }) { lab, _ in
                     lab.text = "在线 🟢"
                     lab.backgroundColor = UIColor.systemGreen
                 }
                 .when("offline") { lab, _ in
                     lab.text = "离线 🔴"
                     lab.backgroundColor = UIColor.systemRed
+                }.otherwise { lab , _ in
+                    lab.text = "未知状态"
+                    lab.backgroundColor = UIColor.systemGray
                 }
             
             UIButton().dsl
                 .title("发送状态")
                 .titleColor(.systemBlue)
-                .tapAction { _ in
+                .tapAction {[weak bindLab] btn in
                     isOnline.toggle()
-                    subject.send(isOnline ? "online" : "offline")
+                    bindLab?.dsl.stateStore?.send(isOnline ? "online" : "offline")
                 }
         }
         

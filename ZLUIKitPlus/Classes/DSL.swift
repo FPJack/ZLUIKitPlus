@@ -32,6 +32,12 @@ public struct DSL<Base: UIView>: StackViewDSL {
         view.dStyle.state
     }
     
+    @available(iOS 13.0, *)
+    ///自动bind的状态存储器
+    public var stateStore: CurrentValueSubject<Any?, Never>? {
+        view.dStyle.stateStore
+    }
+    
     ///StackView DSL协议方法
     public func getDslView() -> UIView? {
         view

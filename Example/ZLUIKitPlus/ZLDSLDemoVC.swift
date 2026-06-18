@@ -644,9 +644,7 @@ final class ZLDSLDemoVC: UIViewController {
             v2
             
             let v3 = UIView()
-            v3.dsl
-                .bgColor(UIColor.systemRed)
-                .size(w: 44, h: 44)
+            v3.dsl.bgColor(UIColor.systemRed).size(w: 44, h: 44)
             v3
         }
         addDemo(note: "spacing(16) — 后置间距  margin(t:s:b:e:) — 外边距", view: hStack4)
@@ -655,8 +653,7 @@ final class ZLDSLDemoVC: UIViewController {
         let hStack5 = HStackView(spacing: 8) {
             
             UILabel().dsl
-                .text("start")
-                .textColor(.white)
+                .text("start",color: UIColor.white)
                 .bgColor(.systemBlue)
                 .radius(6)
                 .align(.start)   // 靠上
@@ -664,8 +661,7 @@ final class ZLDSLDemoVC: UIViewController {
             
             
             UILabel().dsl
-                .text("center")
-                .textColor(.white)
+                .text("center",color: UIColor.white)
                 .bgColor(.systemOrange)
                 .radius(6)
                 .align(.center)  // 居中
@@ -673,8 +669,7 @@ final class ZLDSLDemoVC: UIViewController {
             
             
             UILabel().dsl
-                .text("end")
-                .textColor(.white)
+                .text("end",color: UIColor.white)
                 .bgColor(.systemGreen)
                 .radius(6)
                 .align(.end)     // 靠下
@@ -682,8 +677,7 @@ final class ZLDSLDemoVC: UIViewController {
             
             
             UILabel().dsl
-                .text("fill")
-                .textColor(.white)
+                .text("fill",color: UIColor.white)
                 .bgColor(.systemRed)
                 .radius(6)
                 .align(.fill)    // 填满

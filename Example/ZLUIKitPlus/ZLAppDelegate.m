@@ -28,7 +28,6 @@
 //        
 //        view.layout.addTo(self.window).centerOffset(0, 0);
 //    });
-    
     return YES;
 }
 

@@ -845,4 +845,77 @@ extension DSL where Base: UITextField {
         view.delegate = delegate
         return self
     }
+    
+}
+
+
+public extension DSL where Base: UIScrollView {
+    @discardableResult
+    func delegate(_ delegate: UIScrollViewDelegate?) -> Self {
+        view.delegate = delegate
+        return self
+    }
+    
+    @discardableResult
+    func contentOffset(_ offset: CGPoint) -> Self {
+        view.contentOffset = offset
+        return self
+    }
+    
+    @discardableResult
+    func contentSize(_ size: CGSize) -> Self {
+        view.contentSize = size
+        return self
+    }
+    
+    @discardableResult
+    func contentInset(_ insets: UIEdgeInsets) -> Self {
+        view.contentInset = insets
+        return self
+    }
+    
+    @discardableResult
+    func bounces(_ on: Bool) -> Self {
+        view.bounces = on
+        return self
+    }
+    
+    @discardableResult
+    func showsVIndicator(_ show: Bool) -> Self{
+        view.showsVerticalScrollIndicator = show
+        return self
+    }
+    
+    @discardableResult
+    func showsHIndicator(_ show: Bool) -> Self {
+        view.showsHorizontalScrollIndicator = show
+        return self
+    }
+    
+    @discardableResult
+    func isPagingEnabled(_ enabled: Bool) -> Self {
+        view.isPagingEnabled = enabled
+        return self
+    }
+    
+    @discardableResult
+    func isScrollEnabled(_ enabled: Bool) -> Self {
+        view.isScrollEnabled = enabled
+        return self
+    }
+
+    
+    
+    @discardableResult
+    func keyboardDismissMode(_ mode: UIScrollView.KeyboardDismissMode) -> Self {
+        view.keyboardDismissMode = mode
+        return self
+    }
+    
+    
+    @discardableResult
+    func scrollsToTop(_ scrolls: Bool) -> Self {
+        view.scrollsToTop = scrolls
+        return self
+    }
 }

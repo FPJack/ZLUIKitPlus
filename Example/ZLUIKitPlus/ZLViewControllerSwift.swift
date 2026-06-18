@@ -179,7 +179,6 @@ private class DemoCell: UITableViewCell {
         emojiLabel.text = item.emoji
         titleLabel.text = item.title
         subtitleLabel.text = item.subtitle
-        
     }
 }
 

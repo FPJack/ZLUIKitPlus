@@ -435,10 +435,10 @@ public extension DSL {
     ///   - action: 一个闭包，接受当前视图和匹配的值，当条件满足时执行，用于更新视图的装饰
     /// - Returns: 返回当前DSL实例，便于链式调用
     @discardableResult
-    func when<Value>(
-        _ type: Value.Type = (Any).self,
-        match: @escaping (Value) -> Bool,
-        do action: @escaping (Base, Value) -> Void
+    func when<State: Equatable>(
+        _ type: State.Type ,
+        match: @escaping (State) -> Bool,
+        do action: @escaping (Base, State) -> Void
     ) -> Self {
         self.dStyle.when(type, match: match, do: action)
         return self

@@ -60,8 +60,8 @@ final class _DynamicViewStyle: StackViewDSL {
         return self
     }
     @discardableResult
-    public func when<State>(
-        _ type: State.Type = (Any).self,
+    public func when<State: Equatable>(
+        _ type: State.Type,
         match: @escaping (State) -> Bool,
         do action: @escaping (UIView, State) -> Void
     ) -> Self {
@@ -245,8 +245,8 @@ public final class DynamicViewStyle<T: UIView>: StackViewDSL {
         return self
     }
     @discardableResult
-    public func when<State>(
-        _ type: State.Type = (Any).self,
+    public func when<State: Equatable>(
+        _ type: State.Type,
         match: @escaping (State) -> Bool,
         do action: @escaping (T, State) -> Void
     ) -> Self {

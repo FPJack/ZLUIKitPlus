@@ -393,6 +393,17 @@ public extension DSLCompatible where A: UIView {
     func square(_ side: NumberConvertible) -> Self {
         width(side).height(side)
     }
+    
+    @discardableResult
+    func assign(to binding: inout A) -> Self {
+        binding = view
+        return self
+    }
+    @discardableResult
+    func assign(to binding: inout A?) -> Self {
+        binding = view
+        return self
+    }
 }
 
 

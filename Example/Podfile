@@ -13,7 +13,7 @@ target 'ZLUIKitPlus_Example' do
   pod 'ZLFlexKit', :path => '../../ZLFlexKit'
 #  pod 'Alamofire'
 #  pod 'YogaKit'
-
+ pod 'SmartCodable'
   target 'ZLUIKitPlus_Tests' do
     inherit! :search_paths
 

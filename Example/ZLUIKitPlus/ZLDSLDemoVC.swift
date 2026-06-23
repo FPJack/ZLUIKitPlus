@@ -22,6 +22,12 @@ import ZLUIKitPlus
 import ZLFlexKit
 import Combine
 
+class CustomButton: UIButton {
+    deinit {
+        print("CustomButton deinit")
+    }
+}
+
 final class ZLDSLDemoVC: UIViewController {
     
     // MARK: - scroll container
@@ -195,6 +201,7 @@ final class ZLDSLDemoVC: UIViewController {
             .radius(8)
             .tag(101)
             .size(w: 60, h: 30)
+        
        
         addDemo(note: "tag(101) — 设置 tag，tag=\(tagView.tag)", view: tagView)
     }
@@ -574,6 +581,7 @@ final class ZLDSLDemoVC: UIViewController {
             
         }.align(.fill)
         
+        
         hStack.heightAnchor.constraint(equalToConstant: 40).isActive = true
         hStack.widthAnchor.constraint(equalToConstant: 300).isActive = true
         addDemo(note: "flex(1):flex(2):flex(1) — 按比例 1:2:1 分配宽度", view: hStack)
@@ -650,38 +658,31 @@ final class ZLDSLDemoVC: UIViewController {
         
         // align — 交叉轴对齐
         let hStack5 = HStackView(spacing: 8) {
-            
-            UILabel().dx
+
+            UILabel.dx
                 .text("start",color: UIColor.white)
                 .bgColor(.systemBlue)
                 .radius(6)
                 .align(.start)   // 靠上
-                .height(28)
             
             
-            UILabel().dx
+            UILabel.dx
                 .text("center",color: UIColor.white)
                 .bgColor(.systemOrange)
                 .radius(6)
                 .align(.center)  // 居中
-                .height(28)
             
-            
-            UILabel().dx
+            UILabel.dx
                 .text("end",color: UIColor.white)
                 .bgColor(.systemGreen)
                 .radius(6)
                 .align(.end)     // 靠下
-                .height(28)
             
-            
-            
-            UILabel().dx
+            UILabel.dx
                 .text("fill",color: UIColor.white)
                 .bgColor(.systemRed)
                 .radius(6)
                 .align(.fill)    // 填满
-            
         }
         hStack5.spacing = 8
         hStack5.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -854,7 +855,7 @@ final class ZLDSLDemoVC: UIViewController {
                     lab.backgroundColor = UIColor.systemGray
                 }
             
-            UIButton().ds
+            CustomButton.ds
                 .title("发送状态")
                 .titleColor(.systemBlue)
                 .tapAction {[weak bindLab] btn in
@@ -936,6 +937,9 @@ final class ZLDSLDemoVC: UIViewController {
         
         addDemo(note: "apply(dsl:dStyle:) — StackView 外通过 AutoLayout 约束", view: v3)
     }
+    deinit {
+        print("DemoViewController deinit")
+    }
 }
 
 // MARK: - UIButton tap helper (iOS 13 compatible)
@@ -959,3 +963,4 @@ private class ClosureTapGesture: UITapGestureRecognizer {
         action(v)
     }
 }
+

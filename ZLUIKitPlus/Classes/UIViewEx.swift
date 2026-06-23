@@ -192,7 +192,7 @@ extension TapActionable {
        let tapKey = "\(key)_gesture"
        if zl_storage[tapKey] == nil {
            let tap =  _ZLViewTapGesture(view: self) { view in
-               let block = self.zl_storage[key] as? (Self) -> Void
+               let block = view.zl_storage[key] as? (Self) -> Void
                block?(view as! Self)
            }
            zl_storage[tapKey] = tap

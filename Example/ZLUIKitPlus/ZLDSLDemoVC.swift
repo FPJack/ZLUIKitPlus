@@ -558,24 +558,22 @@ final class ZLDSLDemoVC: UIViewController {
         
         // flex(1) — 按比例分配宽度
         let hStack = HStackView {
-            let v1 = UIView()
-            v1.dx
-                .bgColor(UIColor.systemBlue)
-                .flex(1)       // 占 1 份
-            v1
             
-            let v2 = UIView()
-            v2.dx
-                .bgColor(UIColor.systemOrange)
+            UIView.dx
+                .bgColor(.systemBlue)
+                .flex(1)       // 占 1 份
+            
+            
+            UIView.dx
+                .bgColor(.systemOrange)
                 .flex(2)       // 占 2 份
-            v2
-            
-            let v3 = UIView()
-            v3.dx
-                .bgColor(UIColor.systemGreen)
+           
+            UIView.dx
+                .bgColor(.systemGreen)
                 .flex(1)       // 占 1 份
-            v3
-        }
+            
+        }.align(.fill)
+        
         hStack.heightAnchor.constraint(equalToConstant: 40).isActive = true
         hStack.widthAnchor.constraint(equalToConstant: 300).isActive = true
         addDemo(note: "flex(1):flex(2):flex(1) — 按比例 1:2:1 分配宽度", view: hStack)
@@ -593,6 +591,7 @@ final class ZLDSLDemoVC: UIViewController {
                 .bgColor(UIColor.systemTeal)
                 .square(36)           // 正方形
             v2
+            
             
             let v3 = UIView()
             v3.dx
@@ -674,6 +673,7 @@ final class ZLDSLDemoVC: UIViewController {
                 .radius(6)
                 .align(.end)     // 靠下
                 .height(28)
+            
             
             
             UILabel().dx
@@ -874,24 +874,25 @@ final class ZLDSLDemoVC: UIViewController {
         // apply(dsl:dStyle:flex:) — 在 StackView 内部使用
         // 提前创建 view，避免在 builder 内执行 Void 语句
         let v1 = Label()
-        v1.dx.apply {
-                $0.text("apply dsl")
-                    .textColor(.white)
-                    .bgColor(.systemBlue)
-                    .radius(8)
-            } flex: {
-                $0.flex(1).height(40)
-            }
+        v1.dx.style {
+            $0.text("apply dsl")
+                .textColor(.white)
+                .bgColor(.systemBlue)
+                .radius(8)
+        }.flex {
+            $0.flex(1).height(40)
+        }
+       
         
         
         let v2 = Label()
-        v2.dx.apply {
+        v2.dx.style {
             $0.text("apply dStyle")
                 .textColor(UIColor.white)
                 .bgColor(UIColor.systemGray)
                 .radius(8)
                 .masksToBounds()
-        } state: {
+        } .state {
             $0.when("active") { lab, _ in
                 lab.backgroundColor = UIColor.systemGreen
                 lab.text = "激活 ✓"
@@ -900,9 +901,13 @@ final class ZLDSLDemoVC: UIViewController {
                 lab.backgroundColor = UIColor.systemGray
                 lab.text = "apply dStyle"
             }
-        } flex: {
+        }.flex {
             $0.flex(0).height(40)
+
         }
+        
+        
+        
         
         v2.dStyle.sendState("active")
         
@@ -914,22 +919,21 @@ final class ZLDSLDemoVC: UIViewController {
         
         // 独立 apply(dsl:dStyle:box:) — StackView 外用 box 做约束
         let v3 = Label()
-        v3.ds
-            .textAlignment(.center)
-            .size(w: 200, h: 40)
-            .apply(
-                style: {
-                    $0.text("apply + box 约束",color: UIColor.white)
-                      .bgColor(UIColor.systemPurple)
-                      .radius(10)
-                },
-                state: { ds in
-                    ds.when(Bool.self, match: { $0 }) { lab, _ in
-                        lab.backgroundColor = UIColor.systemPurple
-                    }
-                },
-                box: nil
-            )
+        v3.ds.style {
+            $0.text("apply + box 约束",color: UIColor.white)
+              .textAlignment(.center)
+              .bgColor(UIColor.systemPurple)
+              .radius(10)
+        }.state {
+            $0.when(Bool.self, match: { $0 }) { lab, _ in
+                lab.backgroundColor = UIColor.systemPurple
+            }
+        }.box {
+            $0.size(w: 200, h:40)
+        }
+        
+        
+        
         addDemo(note: "apply(dsl:dStyle:) — StackView 外通过 AutoLayout 约束", view: v3)
     }
 }

@@ -122,17 +122,21 @@ public extension DSLCompatible where A: UIView {
     
     
     @discardableResult
-    @available(iOS 13.0, *)
-    func apply(
-        style: ((Self) -> Void)? = nil,
-        state: ((DynamicViewStyle<A>) -> Void)? = nil,
-        box:((LayoutBox) -> Void)? = nil
-        ) -> Self {
-        style?(self)
-        state?(self.dStyle)
-        box?(self.box)
+    func style(_ style: (Self) -> Void) -> Self {
+        style(self)
         return self
     }
+    @discardableResult
+    func state(_ state: (DynamicViewStyle<A>) -> Void) -> Self {
+        state(self.dStyle)
+        return self
+    }
+    @discardableResult
+    func box(_ box:(LayoutBox) -> Void) -> Self {
+        box(self.box)
+        return self
+    }
+    
 }
 
 
@@ -909,15 +913,8 @@ public extension DXCompatible where A: UIView {
 
 public extension DXCompatible where A: UIView {
     @discardableResult
-    @available(iOS 13.0, *)
-    func apply(
-        style: ((Self) -> Void)? = nil,
-        state: ((DynamicViewStyle<A>) -> Void)? = nil,
-        flex: ((FlexItem) -> Void)? = nil,
-        ) -> Self {
-        style?(self)
-        state?(self.dStyle)
-        flex?(self.flex)
+    func flex(_ flex: (FlexItem) -> Void) -> Self {
+        flex(self.flex)
         return self
     }
 }
@@ -943,6 +940,22 @@ extension DSLXCompatible {
     /// ds + flex
     public var dx: DXImpl<Self> {
         DXImpl(view: self)
+    }
+    
+    static public var ds: DSLImpl<Self> {
+        DSLImpl(view: Self())
+    }
+    static public var dx: DXImpl<Self> {
+        DXImpl(view: Self())
+    }
+}
+
+extension DSLXCompatible where Self: UIButton {
+    static public var ds: DSLImpl<Self> {
+        DSLImpl(view: Self(type: .custom))
+    }
+    static public var dx: DXImpl<Self> {
+        DXImpl(view: Self(type: .custom))
     }
 }
 

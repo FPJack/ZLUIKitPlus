@@ -50,7 +50,7 @@ final class ZLDSLDemoVC: UIViewController {
     // MARK: - helpers
     private func addSection(_ title: String) {
         let label = Label()
-        label.dsl
+        label.ds
             .insets(.init(top: 10, leading: 16, bottom: 10, trailing: 16))
             .text(title,color: UIColor.systemGray,fontSize: 13)
             .multipleLines()
@@ -143,7 +143,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // bgColor + radius + masksToBounds
         let v1 = UIView()
-        v1.dsl
+        v1.ds
             .bgColor(UIColor.systemBlue)
             .radius(16)
             .size(w: 80, h: 40)
@@ -152,7 +152,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // alpha
         let v2 = UIView()
-        v2.dsl
+        v2.ds
             .bgColor(UIColor.systemRed)
             .radius(12)
             .alpha(0.4)
@@ -162,7 +162,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // hidden(false) — 显示
         let v3 = UIView()
-        v3.dsl
+        v3.ds
             .bgColor(UIColor.systemGreen)
             .radius(12)
             .hidden(false)   // 明确可见
@@ -172,7 +172,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // corner — 仅指定角
         let v4 = UIView()
-        v4.dsl
+        v4.ds
             .bgColor(UIColor.systemOrange)
             .corner([.layerMinXMinYCorner, .layerMaxXMaxYCorner], radius: 20)
             .size(w: 80, h: 60)
@@ -181,7 +181,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // tintColor
         let img = UIImageView(image: UIImage(systemName: "star.fill"))
-        img.dsl
+        img.ds
             .tintColor(UIColor.systemPurple)
             .contentMode(.scaleAspectFit)
             .square(36)
@@ -190,7 +190,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // tag
         let tagView = UIView()
-        tagView.dsl
+        tagView.ds
             .bgColor(UIColor.systemTeal)
             .radius(8)
             .tag(101)
@@ -205,7 +205,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // border 一次性设置
         let v1 = UIView()
-        v1.dsl
+        v1.ds
             .bgColor(UIColor.white)
             .border(color: UIColor.systemBlue, w: 2)
             .radius(10)
@@ -214,7 +214,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // borderColor + borderWidth 分步
         let v2 = UIView()
-        v2.dsl
+        v2.ds
             .bgColor(UIColor.white)
             .borderColor(color: UIColor.systemRed)
             .borderWidth(w: 1.5)
@@ -225,7 +225,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // shadow
         let v3 = UIView()
-        v3.dsl
+        v3.ds
             .bgColor(UIColor.white)
             .radius(12)
             .shadowColor(color: UIColor.black)
@@ -241,7 +241,7 @@ final class ZLDSLDemoVC: UIViewController {
         addSection("③ 手势  tapAction")
         
         let lb = Label()
-        lb.dsl
+        lb.ds
             .text("点我 👆")
             .textColor(UIColor.white)
             .font(15, weight: .semibold)
@@ -270,7 +270,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // 高 hugging — 不拉伸
         let l1 = UILabel()
-        l1.dsl
+        l1.ds
             .text("不拉伸")
             .textColor(UIColor.white)
             .font(13)
@@ -283,7 +283,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // 低 hugging — 填满剩余空间
         let l2 = UILabel()
-        l2.dsl
+        l2.ds
             .text("自动填满 ←→")
             .textColor(UIColor.white)
             .font(13)
@@ -306,13 +306,13 @@ final class ZLDSLDemoVC: UIViewController {
         
         // text + font + textColor
         let l1 = Label()
-        l1.dsl
+        l1.ds
             .text("Hello DSL", color: UIColor.systemBlue, fontSize: 18)
         addDemo(note: "text(_:color:fontSize:) — 一步设置文本+颜色+字号", view: l1)
         
         // font weight
         let l2 = Label()
-        l2.dsl
+        l2.ds
             .text("粗体 Semibold 16pt")
             .font(16, weight: .semibold)
             .textColor(UIColor.label)
@@ -320,7 +320,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // singleLine vs multipleLines
         let l3 = Label()
-        l3.dsl
+        l3.ds
             .text("这是一段很长的文字，singleLine 截断 —— 超出部分用省略号表示，不换行")
             .singleLine()
             .textColor(UIColor.label)
@@ -329,7 +329,7 @@ final class ZLDSLDemoVC: UIViewController {
         addDemo(note: "singleLine() — 单行截断", view: l3)
         
         let l4 = Label()
-        l4.dsl
+        l4.ds
             .text("这是一段很长的文字，multipleLines 允许换行\n第二行 / 第三行都可以显示出来")
             .multipleLines()
             .textColor(UIColor.label)
@@ -338,7 +338,7 @@ final class ZLDSLDemoVC: UIViewController {
         addDemo(note: "multipleLines() — 不限行数", view: l4)
         
         let l5 = Label()
-        l5.dsl
+        l5.ds
             .text("这是三行以上内容，twoLines 仅显示两行，超出截断")
             .twoLines()
             .textColor(UIColor.label)
@@ -348,7 +348,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // numberOfLines
         let l6 = Label()
-        l6.dsl
+        l6.ds
             .text("numberOfLines(3) — 限定三行")
             .numberOfLines(3)
             .font(14)
@@ -357,7 +357,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // adjustsFontSizeToFitWidth
         let l7 = Label()
-        l7.dsl
+        l7.ds
             .text("字号自动缩小以适应宽度 adjustsFontSizeToFitWidth")
             .singleLine()
             .font(20)
@@ -372,14 +372,14 @@ final class ZLDSLDemoVC: UIViewController {
         attr.addAttribute(.strikethroughStyle, value: 2, range: NSRange(location: 5, length: 3))
         attr.addAttribute(.foregroundColor, value: UIColor.systemBlue, range: NSRange(location: 9, length: 3))
         let l8 = Label()
-        l8.dsl
+        l8.ds
             .attributedText(attr)
             .font(15)
         addDemo(note: "attributedText — 富文本（多色+删除线）", view: l8)
         
         // shadowColor + shadowOffset
         let l9 = Label()
-        l9.dsl
+        l9.ds
             .text("文字阴影 Shadow")
             .font(20, weight: .bold)
             .textColor(UIColor.systemIndigo)
@@ -394,7 +394,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // title + titleColor + fontSize
         let b1 = UIButton(type: .system)
-        b1.dsl
+        b1.ds
             .title("普通按钮")
             .titleColor(UIColor.white)
             .fontSize(15)
@@ -407,7 +407,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // selected 状态
         let b2 = UIButton(type: .system)
-        b2.dsl
+        b2.ds
             .title("未选中", for: .normal)
             .title("已选中 ✓", for: .selected)
             .titleColor(UIColor.systemGray, for: .normal)
@@ -426,7 +426,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // enabled(false)
         let b3 = UIButton(type: .system)
-        b3.dsl
+        b3.ds
             .title("不可点击")
             .titleColor(UIColor.systemGray3, for: .disabled)
             .fontSize(14)
@@ -440,7 +440,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // image + backgroundImage
         let b4 = UIButton(type: .system)
-        b4.dsl
+        b4.ds
             .image(UIImage(systemName: "heart.fill"), for: .normal)
             .title(" 收藏")
             .titleColor(UIColor.systemPink)
@@ -459,7 +459,7 @@ final class ZLDSLDemoVC: UIViewController {
         addSection("⑦ UIImageView 专属  image / contentMode / url")
         
         let iv1 = UIImageView()
-        iv1.dsl
+        iv1.ds
             .image(UIImage(systemName: "photo.fill"))
             .tintColor(UIColor.systemBlue)
             .contentMode(.scaleAspectFit)
@@ -471,7 +471,7 @@ final class ZLDSLDemoVC: UIViewController {
         addDemo(note: "image(_:)  contentMode(.scaleAspectFit)", view: iv1)
         
         let iv2 = UIImageView()
-        iv2.dsl
+        iv2.ds
             .image(UIImage(systemName: "person.crop.circle.fill"))
             .tintColor(UIColor.systemPurple)
             .contentMode(.scaleAspectFill)
@@ -484,7 +484,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // url 演示（需要 SDWebImage）
         let iv3 = UIImageView()
-        iv3.dsl
+        iv3.ds
             .url("https://picsum.photos/80", placeholder: UIImage(systemName: "photo"))
             .contentMode(.scaleAspectFill)
             .radius(8)
@@ -499,14 +499,14 @@ final class ZLDSLDemoVC: UIViewController {
         addSection("⑧ UISwitch  setOn / onTintColor / thumbTintColor")
         
         let sw1 = UISwitch()
-        sw1.dsl
+        sw1.ds
             .setOn(true, animated: false)
             .onTintColor(UIColor.systemGreen)
             .thumbTintColor(UIColor.white)
         addDemo(note: "setOn(true)  onTintColor(.systemGreen)  thumbTintColor(.white)", view: sw1)
         
         let sw2 = UISwitch()
-        sw2.dsl
+        sw2.ds
             .setOn(false, animated: false)
             .onTintColor(UIColor.systemOrange)
             .thumbTintColor(UIColor.systemYellow)
@@ -518,7 +518,7 @@ final class ZLDSLDemoVC: UIViewController {
         addSection("⑨ UITextField  text / placeholder / textColor / font / borderStyle / isSecureTextEntry / clearButtonMode / leftView")
         
         let tf1 = UITextField()
-        tf1.dsl
+        tf1.ds
             .placeholder("请输入用户名")
             .textColor(UIColor.label)
             .fontSize(15)
@@ -528,7 +528,7 @@ final class ZLDSLDemoVC: UIViewController {
         addDemo(note: "placeholder + borderStyle(.roundedRect) + clearButtonMode", view: tf1)
         
         let tf2 = UITextField()
-        tf2.dsl
+        tf2.ds
             .placeholder("请输入密码")
             .textColor(UIColor.label)
             .fontSize(15)
@@ -543,7 +543,7 @@ final class ZLDSLDemoVC: UIViewController {
         iconView.tintColor = UIColor.systemGray
         iconView.frame = CGRect(x: 0, y: 0, width: 32, height: 20)
         iconView.contentMode = .scaleAspectFit
-        tf3.dsl
+        tf3.ds
             .placeholder("搜索")
             .fontSize(15)
             .borderStyle(.roundedRect)
@@ -559,19 +559,19 @@ final class ZLDSLDemoVC: UIViewController {
         // flex(1) — 按比例分配宽度
         let hStack = HStackView {
             let v1 = UIView()
-            v1.dsl
+            v1.dx
                 .bgColor(UIColor.systemBlue)
                 .flex(1)       // 占 1 份
             v1
             
             let v2 = UIView()
-            v2.dsl
+            v2.dx
                 .bgColor(UIColor.systemOrange)
                 .flex(2)       // 占 2 份
             v2
             
             let v3 = UIView()
-            v3.dsl
+            v3.dx
                 .bgColor(UIColor.systemGreen)
                 .flex(1)       // 占 1 份
             v3
@@ -583,19 +583,19 @@ final class ZLDSLDemoVC: UIViewController {
         // fixed size — width / height / size / square
         let hStack2 = HStackView {
             let v1 = UIView()
-            v1.dsl
+            v1.dx
                 .bgColor(UIColor.systemPurple)
                 .size(w: 60, h: 36)   // 固定宽高
             v1
             
             let v2 = UIView()
-            v2.dsl
+            v2.dx
                 .bgColor(UIColor.systemTeal)
                 .square(36)           // 正方形
             v2
             
             let v3 = UIView()
-            v3.dsl
+            v3.dx
                 .bgColor(UIColor.systemRed)
                 .width(80)
                 .height(36)           // 宽 + 高分开
@@ -607,7 +607,7 @@ final class ZLDSLDemoVC: UIViewController {
         // minWidth / maxWidth
         let hStack3 = HStackView {
             let v1 = UIView()
-            v1.dsl
+            v1.dx
                 .bgColor(UIColor.systemYellow)
                 .minWidth(60)    // 最小 60
                 .maxWidth(120)   // 最大 120
@@ -616,7 +616,7 @@ final class ZLDSLDemoVC: UIViewController {
             v1
             
             let v2 = UIView()
-            v2.dsl
+            v2.dx
                 .bgColor(UIColor.systemOrange)
                 .minWidth(60)
                 .maxWidth(120)
@@ -630,21 +630,21 @@ final class ZLDSLDemoVC: UIViewController {
         // spacing + margin
         let hStack4 = HStackView {
             let v1 = UIView()
-            v1.dsl
+            v1.dx
                 .bgColor(UIColor.systemGreen)
                 .size(w: 44, h: 44)
                 .spacing(16)     // 后面间距 16
             v1
             //
             let v2 = UIView()
-            v2.dsl
+            v2.dx
                 .bgColor(UIColor.systemBlue)
                 .size(w: 44, h: 44)
                 .margin(.all(8))   // 上下内缩 8
             v2
             
             let v3 = UIView()
-            v3.dsl.bgColor(UIColor.systemRed).size(w: 44, h: 44)
+            v3.dx.bgColor(UIColor.systemRed).size(w: 44, h: 44)
             v3
         }
         addDemo(note: "spacing(16) — 后置间距  margin(t:s:b:e:) — 外边距", view: hStack4)
@@ -652,7 +652,7 @@ final class ZLDSLDemoVC: UIViewController {
         // align — 交叉轴对齐
         let hStack5 = HStackView(spacing: 8) {
             
-            UILabel().dsl
+            UILabel().dx
                 .text("start",color: UIColor.white)
                 .bgColor(.systemBlue)
                 .radius(6)
@@ -660,7 +660,7 @@ final class ZLDSLDemoVC: UIViewController {
                 .height(28)
             
             
-            UILabel().dsl
+            UILabel().dx
                 .text("center",color: UIColor.white)
                 .bgColor(.systemOrange)
                 .radius(6)
@@ -668,7 +668,7 @@ final class ZLDSLDemoVC: UIViewController {
                 .height(28)
             
             
-            UILabel().dsl
+            UILabel().dx
                 .text("end",color: UIColor.white)
                 .bgColor(.systemGreen)
                 .radius(6)
@@ -676,7 +676,7 @@ final class ZLDSLDemoVC: UIViewController {
                 .height(28)
             
             
-            UILabel().dsl
+            UILabel().dx
                 .text("fill",color: UIColor.white)
                 .bgColor(.systemRed)
                 .radius(6)
@@ -690,18 +690,18 @@ final class ZLDSLDemoVC: UIViewController {
         // isFlexibleSpace
         let hStack6 = HStackView {
             let l1 = UILabel()
-            l1.dsl
+            l1.dx
                 .text("左侧")
                 .font(14)
                 .textColor(UIColor.label)
             l1
             
             let sp = UIView()
-            sp.dsl.isFlexibleSpace(true)   // 弹性空白，推开右侧
+            sp.dx.isFlexibleSpace(true)   // 弹性空白，推开右侧
             sp
             
             let l2 = UILabel()
-            l2.dsl
+            l2.dx
                 .text("右侧")
                 .font(14)
                 .textColor(UIColor.label)
@@ -723,29 +723,29 @@ final class ZLDSLDemoVC: UIViewController {
         
         let row1 = HStackView(spacing: 10) {
             let label = Label()
-            label.dsl
+            label.dx
                 .textColor(UIColor.white)
                 .font(14, weight: .semibold)
                 .radius(8)
                 .textAlignment(.center)
                 .size(w: 90, h: 32)
                 .when(OrderState.pending) {lab, _ in
-                    lab.dsl.bgColor(.systemOrange).text("待支付")
+                    lab.ds.bgColor(.systemOrange).text("待支付")
                 }
                 .when(OrderState.paid) {lab,_ in
-                    lab.dsl.bgColor(.systemBlue).text("已支付")
+                    lab.ds.bgColor(.systemBlue).text("已支付")
                 }
                 .when(OrderState.done) { lab, _ in
-                    lab.dsl.bgColor(.systemGreen).text("已完成")
+                    lab.ds.bgColor(.systemGreen).text("已完成")
                 }
                 .sendState(OrderState.pending)
             
-            UIButton().dsl
+            UIButton().dx
                 .title("切换状态 →")
                 .titleColor(.systemBlue)
                 .tapAction { _ in
                     stateIdx = (stateIdx + 1) % states.count
-                    label.dsl.sendState(states[stateIdx])
+                    label.ds.sendState(states[stateIdx])
                 }
         }
         
@@ -758,7 +758,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         let row2 = HStackView(spacing: 10) {
             let progressLab = Label()
-            progressLab.dsl
+            progressLab.dx
                 .text("0%")
                 .textColor(UIColor.white)
                 .font(14, weight: .bold)
@@ -786,12 +786,12 @@ final class ZLDSLDemoVC: UIViewController {
                 .sendState(0)
             
             
-            UIButton().dsl
+            UIButton().ds
                 .title("+25%")
                 .titleColor(.systemBlue)
                 .tapAction { _ in
                     progress = (progress + 25) % 125
-                    progressLab.dsl.sendState(progress)
+                    progressLab.ds.sendState(progress)
                 }
         }
         
@@ -801,7 +801,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // 3. otherwise — 无匹配时的默认处理
         let fallbackLab = Label()
-        fallbackLab.dsl
+        fallbackLab.ds
             .text("?")
             .textColor(UIColor.white)
             .font(14, weight: .bold)
@@ -832,7 +832,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         let row4 = HStackView(spacing: 12) {
             let bindLab = Label()
-            bindLab.dsl
+            bindLab.ds
                 .text("等待消息…")
                 .font(14)
                 .textColor(UIColor.white)
@@ -854,12 +854,12 @@ final class ZLDSLDemoVC: UIViewController {
                     lab.backgroundColor = UIColor.systemGray
                 }
             
-            UIButton().dsl
+            UIButton().ds
                 .title("发送状态")
                 .titleColor(.systemBlue)
                 .tapAction {[weak bindLab] btn in
                     isOnline.toggle()
-                    bindLab?.dsl.stateStore?.send(isOnline ? "online" : "offline")
+                    bindLab?.ds.stateStore?.send(isOnline ? "online" : "offline")
                 }
         }
         
@@ -874,7 +874,7 @@ final class ZLDSLDemoVC: UIViewController {
         // apply(dsl:dStyle:flex:) — 在 StackView 内部使用
         // 提前创建 view，避免在 builder 内执行 Void 语句
         let v1 = Label()
-        v1.dsl.apply {
+        v1.dx.apply {
                 $0.text("apply dsl")
                     .textColor(.white)
                     .bgColor(.systemBlue)
@@ -885,7 +885,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         
         let v2 = Label()
-        v2.dsl.apply {
+        v2.dx.apply {
             $0.text("apply dStyle")
                 .textColor(UIColor.white)
                 .bgColor(UIColor.systemGray)
@@ -914,7 +914,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         // 独立 apply(dsl:dStyle:box:) — StackView 外用 box 做约束
         let v3 = Label()
-        v3.dsl
+        v3.ds
             .textAlignment(.center)
             .size(w: 200, h: 40)
             .apply(

@@ -84,7 +84,7 @@ extension Label {
     }
 }
 
-extension DSL where Base: Label {
+extension DSLCompatible where A: Label {
     @discardableResult
     public func insets(_ insets: NSDirectionalEdgeInsets) -> Self {
         self.view.insets = insets

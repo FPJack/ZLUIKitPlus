@@ -44,7 +44,7 @@ open class ImageView: UIImageView {
     public var tapActionObjc: ((_ block: ((ImageView) -> Void)?) -> ImageView) {
         { block in
             if let block = block {
-                return self.tapAction(block)
+                return self.onTap(block)
             }
             return self
         }

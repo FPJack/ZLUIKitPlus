@@ -141,6 +141,9 @@ final class ZLDSLDemoVC: UIViewController {
         demo10_FlexLayout()
         demo11_DynamicStyle()
         demo12_Apply()
+        
+        
+        
     }
     
     // MARK: ① 通用属性
@@ -255,7 +258,7 @@ final class ZLDSLDemoVC: UIViewController {
             .bgColor(UIColor.systemIndigo)
             .radius(10)
             .masksToBounds()
-            .tapAction { [weak lb] _ in
+            .onTap { [weak lb] _ in
                 lb?.text = "已点击 ✅"
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     lb?.text = "点我 👆"
@@ -424,7 +427,7 @@ final class ZLDSLDemoVC: UIViewController {
             .radius(10)
             .masksToBounds()
             .selected(true)   // 初始为 selected
-            .tapAction { btn in
+            .onTap { btn in
                 btn.isSelected.toggle()
             }
         b2.widthAnchor.constraint(equalToConstant: 140).isActive = true
@@ -744,7 +747,7 @@ final class ZLDSLDemoVC: UIViewController {
             UIButton().dx
                 .title("切换状态 →")
                 .titleColor(.systemBlue)
-                .tapAction { _ in
+                .onTap { _ in
                     stateIdx = (stateIdx + 1) % states.count
                     label.ds.sendState(states[stateIdx])
                 }
@@ -790,7 +793,7 @@ final class ZLDSLDemoVC: UIViewController {
             UIButton().ds
                 .title("+25%")
                 .titleColor(.systemBlue)
-                .tapAction { _ in
+                .onTap { _ in
                     progress = (progress + 25) % 125
                     progressLab.ds.sendState(progress)
                 }
@@ -858,7 +861,7 @@ final class ZLDSLDemoVC: UIViewController {
             CustomButton.ds
                 .title("发送状态")
                 .titleColor(.systemBlue)
-                .tapAction {[weak bindLab] btn in
+                .onTap {[weak bindLab] btn in
                     isOnline.toggle()
                     bindLab?.ds.stateStore?.send(isOnline ? "online" : "offline")
                 }

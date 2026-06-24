@@ -258,7 +258,7 @@ extension PairView {
     var tapActionObjc: ((_ block: ((PairView) -> Void)?) -> PairView) {
         { block in
             if let block = block {
-                return self.tapAction(block)
+                return self.onTap(block)
             }
             return self
         }

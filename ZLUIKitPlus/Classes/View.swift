@@ -33,7 +33,7 @@ extension View {
     var tapActionObjc: ((_ block: ((View) -> Void)?) -> View) {
         { block in
             if let block = block {
-                return self.tapAction(block)
+                return self.onTap(block)
             }
             return self
         }

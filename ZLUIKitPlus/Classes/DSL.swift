@@ -278,8 +278,8 @@ public extension DSLCompatible where A: UIView {
     }
     
     @discardableResult
-    func tapAction(_ action: @escaping (A) -> Void) -> Self {
-        view.tapAction {action($0)}
+    func onTap(_ action: @escaping (A) -> Void) -> Self {
+        view.onTap {action($0)}
         return self
     }
     

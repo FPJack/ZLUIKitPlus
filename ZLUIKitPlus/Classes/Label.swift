@@ -77,7 +77,7 @@ extension Label {
     var tapActionObjc: ((_ block: ((Label) -> Void)?) -> Label) {
         { block in
             if let block = block {
-                return self.tapAction(block)
+                return self.onTap(block)
             }
             return self
         }

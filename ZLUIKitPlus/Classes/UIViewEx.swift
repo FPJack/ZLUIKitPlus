@@ -181,12 +181,12 @@ final class _ZLViewTapGesture: UITapGestureRecognizer {
 }
 
 public protocol TapActionable where Self: UIView {
-    func tapAction(_ action: @escaping (Self) -> Void) -> Self
+    func onTap(_ action: @escaping (Self) -> Void) -> Self
 }
 private let tapActionKey = "zl_tapAction"
 extension TapActionable {
    @discardableResult
-   public func tapAction(_ action: @escaping (Self) -> Void) -> Self {
+   public func onTap(_ action: @escaping (Self) -> Void) -> Self {
        let key = tapActionKey
        zl_storage[key] = action
        let tapKey = "\(key)_gesture"

@@ -20,6 +20,13 @@ public enum MatchPolicy {
     case all
 }
 
+enum UserInteractionPolicy {
+    case enabled
+    case disabled
+}
+
+
+
 public struct StateWrapper {
     let value: Any?
     let policy: MatchPolicy?
@@ -168,7 +175,9 @@ final class _DynamicViewStyle: StackViewDSL {
         }
         if !matched {
             if let state = state {
-                defaultAction?(view, state)
+                if !(state is UserInteractionPolicy) {
+                    defaultAction?(view, state)
+                }
             }
         }
     }

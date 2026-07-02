@@ -43,9 +43,47 @@ extension DSLCompatible where A: UIView {
 ///动态装饰
 @available(iOS 13.0, *)
 public extension DSLCompatible where A: UIView {
+    /// 设置不可点击样式  userActive(false)触发
+    @discardableResult
+    func inactiveStyle(_ block: @escaping (A) -> Void) -> Self{
+        
+        self.when(UserInteractionPolicy.disabled, do: { view, _ in
+            block(view)
+        })
+        if !view.isUserInteractionEnabled {
+            block(view)
+        }
+        return self
+    }
     
+    /// 设置可点击样式  userActive(true)触发
+    @discardableResult
+    func activeStyle(_ block: @escaping (A) -> Void) -> Self{
+        self.when(UserInteractionPolicy.enabled, do: { view, _ in
+            block(view)
+        })
+        
+        if view.isUserInteractionEnabled {
+            block(view)
+        }
+        return self
+    }
     
+    /// 设置是否可交互（激活/非激活）isUserInteractionEnabled,触发相对应的配置样式block调用
+    @discardableResult
+    func userActive(_ enabled: Bool) -> Self {
+        view.isUserInteractionEnabled = enabled
+        let value = enabled ? UserInteractionPolicy.enabled : UserInteractionPolicy.disabled
+        dy.handle(value)
+        return self
+    }
     
+    ///切换当前View的可交互状态
+    @discardableResult
+    func toggleUserActive() -> Self {
+        userActive(!view.isUserInteractionEnabled)
+    }
+
     /// 根据一个值的类型和满足条件来触发动态装饰的更新
     /// - Parameters:
     ///   - type: 要匹配的值的类型，默认为Any
@@ -304,10 +342,11 @@ public extension DSLCompatible where A: UIView {
     }
     
     @discardableResult
-    func isUserInteractionEnabled(_ enabled: Bool) -> Self {
+    func userInteractionEnabled(_ enabled: Bool) -> Self {
         view.isUserInteractionEnabled = enabled
         return self
     }
+
     
     @discardableResult
     func tag(_ tag: Int) -> Self {

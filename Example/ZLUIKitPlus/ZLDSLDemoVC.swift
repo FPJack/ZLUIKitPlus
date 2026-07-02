@@ -281,12 +281,9 @@ final class ZLDSLDemoVC: UIViewController {
         // 高 hugging — 不拉伸
         let l1 = UILabel()
         l1.ds
-            .text("不拉伸")
-            .textColor(UIColor.white)
-            .font(13)
+            .text("不拉伸",color: UIColor.white,fontSize: 3)
             .bgColor(UIColor.systemGreen)
             .radius(6)
-            .masksToBounds()
             .hugging(.required, for: .horizontal)
         l1.textAlignment = .center
         l1.heightAnchor.constraint(equalToConstant: 32).isActive = true
@@ -913,7 +910,7 @@ final class ZLDSLDemoVC: UIViewController {
         
         
         
-        v2.dStyle.sendState("active")
+        v2.ds.sendState("active")
         
         let container = HStackView(spacing: 8) {
             v1
@@ -964,6 +961,7 @@ private class ClosureTapGesture: UITapGestureRecognizer {
     @objc private func fire() {
         guard let v = view else { return }
         action(v)
+        
     }
 }
 

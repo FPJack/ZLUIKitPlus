@@ -329,7 +329,7 @@ private var key:      UInt8 = 0
 @available(iOS 13.0, *)
 extension DynamicStylable {
     /// 动态配置样式
-    public var dStyle: DynamicViewStyle<Self>  {
+    var dy: DynamicViewStyle<Self>  {
         /// 通过关联属性存储起来
         var _style = objc_getAssociatedObject(self, &key) as? _DynamicViewStyle
         if _style == nil {

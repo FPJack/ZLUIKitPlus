@@ -28,15 +28,15 @@ extension DSLCompatible where A: UIView {
     
     ///动态装饰属性
     @available(iOS 13.0, *)
-    var dStyle: DynamicViewStyle<A> {
-        view.dStyle
+    var dy: DynamicViewStyle<A> {
+        view.dy
     }
     
     
     @available(iOS 13.0, *)
     ///自动bind的状态存储器
     public var stateStore: CurrentValueSubject<Any?, Never>? {
-        view.dStyle.stateStore
+        view.dy.stateStore
     }
 }
 
@@ -58,7 +58,7 @@ public extension DSLCompatible where A: UIView {
         match: @escaping (State) -> Bool,
         do action: @escaping (A, State) -> Void
     ) -> Self {
-        self.dStyle.when(type, match: match, do: action)
+        self.dy.when(type, match: match, do: action)
         return self
     }
     
@@ -74,7 +74,7 @@ public extension DSLCompatible where A: UIView {
         _ value: Value,
         do action: @escaping (A,Value) -> Void
     ) -> Self {
-        self.dStyle.when(value, do: action)
+        self.dy.when(value, do: action)
         return self
     }
     
@@ -83,7 +83,7 @@ public extension DSLCompatible where A: UIView {
     func whenNil(
         do action: @escaping (A) -> Void
     ) -> Self {
-        self.dStyle.whenNil(do: action)
+        self.dy.whenNil(do: action)
         return self
     }
     
@@ -95,7 +95,7 @@ public extension DSLCompatible where A: UIView {
     func otherwise(
         _ action: @escaping (A, Any) -> Void
     ) -> Self {
-        self.dStyle.otherwise(action)
+        self.dy.otherwise(action)
         return self
     }
     
@@ -107,7 +107,7 @@ public extension DSLCompatible where A: UIView {
     func bind<P: Publisher>(
         _ publisher: P
     ) -> Self where P.Failure == Never {
-        self.dStyle.bind(publisher)
+        self.dy.bind(publisher)
         return self
     }
     
@@ -116,7 +116,7 @@ public extension DSLCompatible where A: UIView {
     /// - Returns: 返回当前DSL实例，便于链式调用
     @discardableResult
     func sendState(_ state: Any?,policy: MatchPolicy? = nil) -> Self{
-        self.dStyle.sendState(state,policy: policy)
+        self.dy.sendState(state,policy: policy)
         return self
     }
     
@@ -128,7 +128,7 @@ public extension DSLCompatible where A: UIView {
     }
     @discardableResult
     func state(_ state: (DynamicViewStyle<A>) -> Void) -> Self {
-        state(self.dStyle)
+        state(self.dy)
         return self
     }
     @discardableResult
@@ -145,6 +145,13 @@ public extension DSLCompatible where A: UIView {
     @discardableResult
     func addSubview(_ subview: UIView) -> Self {
         view.addSubview(subview)
+        return self
+    }
+    
+    @discardableResult
+    func addSubview(_ subview: UIView, box: (LayoutBox) -> Void) -> Self {
+        view.addSubview(subview)
+        box(subview.box)
         return self
     }
     

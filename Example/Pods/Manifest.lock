@@ -5,27 +5,49 @@ PODS:
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
   - Masonry (1.1.0)
-  - ZLUIKitPlus (0.1.0)
+  - SDWebImage (5.21.7):
+    - SDWebImage/Core (= 5.21.7)
+  - SDWebImage/Core (5.21.7)
+  - SmartCodable (6.0.8):
+    - SmartCodable/Core (= 6.0.8)
+  - SmartCodable/Core (6.0.8)
+  - Then (3.0.0)
+  - ZLFlexKit (0.1.6)
+  - ZLUIKitPlus (0.1.0):
+    - ZLFlexKit
 
 DEPENDENCIES:
   - FBSnapshotTestCase
   - Masonry
+  - SDWebImage
+  - SmartCodable
+  - Then
+  - ZLFlexKit (from `../../ZLFlexKit`)
   - ZLUIKitPlus (from `../`)
 
 SPEC REPOS:
   trunk:
     - FBSnapshotTestCase
     - Masonry
+    - SDWebImage
+    - SmartCodable
+    - Then
 
 EXTERNAL SOURCES:
+  ZLFlexKit:
+    :path: "../../ZLFlexKit"
   ZLUIKitPlus:
     :path: "../"
 
 SPEC CHECKSUMS:
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
-  ZLUIKitPlus: ec796051dca5a67e95e0db94072441d0da2d443d
+  SDWebImage: e9fc87c1aab89a8ab1bbd74eba378c6f53be8abf
+  SmartCodable: db7f9dc94eb9022ede18adf5052772432c5286c7
+  Then: 844265ae87834bbe1147d91d5d41a404da2ec27d
+  ZLFlexKit: 07532e18e9cd8c661f129d0da2c69cdf811a0152
+  ZLUIKitPlus: 10dd7f2bcdd42c08dac45974e02662ef9b8ad02c
 
-PODFILE CHECKSUM: 9bde354dc35b8edbd7329afdd375756445e7737f
+PODFILE CHECKSUM: 34be4120ecdae50e2556059dbebefe00f5d89918
 
 COCOAPODS: 1.16.2

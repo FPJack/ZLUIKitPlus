@@ -13,7 +13,7 @@ PODS:
   - SmartCodable/Core (6.0.8)
   - Then (3.0.0)
   - ZLFlexKit (0.1.8)
-  - ZLUIKitPlus (0.1.0):
+  - ZLUIKitPlus (1.0.1):
     - ZLFlexKit
 
 DEPENDENCIES:
@@ -44,8 +44,8 @@ SPEC CHECKSUMS:
   SmartCodable: db7f9dc94eb9022ede18adf5052772432c5286c7
   Then: 844265ae87834bbe1147d91d5d41a404da2ec27d
   ZLFlexKit: 1d0320448e1ee07ac4a73d895ecc5dfb2aadac41
-  ZLUIKitPlus: 10dd7f2bcdd42c08dac45974e02662ef9b8ad02c
+  ZLUIKitPlus: 9051e1627519a5e5f09b1d90f97d6b52c3a8413f
 
-PODFILE CHECKSUM: ed6eac1e85be4825113553216b1a17edb67f14b7
+PODFILE CHECKSUM: fd39aeee08c999cc6cd389c722e91bfd182c58e3
 
 COCOAPODS: 1.16.2

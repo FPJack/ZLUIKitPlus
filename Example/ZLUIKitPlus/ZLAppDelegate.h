@@ -10,6 +10,6 @@
 
 @interface ZLAppDelegate : UIResponder <UIApplicationDelegate>
 
-@property (strong, nonatomic) UIWindow *window;
+// UIScene 适配后，window 由 ZLSceneDelegate 持有，这里不再需要 window 属性
 
 @end

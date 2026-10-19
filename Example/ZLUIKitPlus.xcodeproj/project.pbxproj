@@ -15,6 +15,7 @@
 		6003F598195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F596195388D20070C39A /* InfoPlist.strings */; };
 		6003F59A195388D20070C39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F599195388D20070C39A /* main.m */; };
 		6003F59E195388D20070C39A /* ZLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* ZLAppDelegate.m */; };
+		84AA11112FE0000100000001 /* ZLSceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AA11112FE0000100000003 /* ZLSceneDelegate.m */; };
 		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
 		6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F5AF195388D20070C39A /* XCTest.framework */; };
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -59,6 +60,8 @@
 		6003F59B195388D20070C39A /* ZLUIKitPlus-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ZLUIKitPlus-Prefix.pch"; sourceTree = "<group>"; };
 		6003F59C195388D20070C39A /* ZLAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLAppDelegate.h; sourceTree = "<group>"; };
 		6003F59D195388D20070C39A /* ZLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLAppDelegate.m; sourceTree = "<group>"; };
+		84AA11112FE0000100000002 /* ZLSceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLSceneDelegate.h; sourceTree = "<group>"; };
+		84AA11112FE0000100000003 /* ZLSceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLSceneDelegate.m; sourceTree = "<group>"; };
 		6003F5A8195388D20070C39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6003F5AE195388D20070C39A /* ZLUIKitPlus_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZLUIKitPlus_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -150,6 +153,8 @@
 			children = (
 				6003F59C195388D20070C39A /* ZLAppDelegate.h */,
 				6003F59D195388D20070C39A /* ZLAppDelegate.m */,
+				84AA11112FE0000100000002 /* ZLSceneDelegate.h */,
+				84AA11112FE0000100000003 /* ZLSceneDelegate.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				62507C1F2F9BB95C00397C32 /* ZLViewControllerSwift.swift */,
 				841D1F162FD93C5B007D832A /* ZLUIViewExDemoVC.swift */,
@@ -423,6 +428,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6003F59E195388D20070C39A /* ZLAppDelegate.m in Sources */,
+				84AA11112FE0000100000001 /* ZLSceneDelegate.m in Sources */,
 				841D1F0F2FD93C5B007D832A /* ZLViewDemoVC.swift in Sources */,
 				841D1F102FD93C5B007D832A /* ZLWrapperViewDemoVC.swift in Sources */,
 				841D1F172FD93C5B007D832A /* ZLUIViewExDemoVC.swift in Sources */,
@@ -515,7 +521,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -548,7 +554,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -569,7 +575,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ZLUIKitPlus/ZLUIKitPlus-Prefix.pch";
 				INFOPLIST_FILE = "ZLUIKitPlus/ZLUIKitPlus-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wws.tesddd;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -596,7 +602,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ZLUIKitPlus/ZLUIKitPlus-Prefix.pch";
 				INFOPLIST_FILE = "ZLUIKitPlus/ZLUIKitPlus-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wws.tesddd;
 				PRODUCT_NAME = "$(TARGET_NAME)";
